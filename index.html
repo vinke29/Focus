@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus · 集中</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── TIMER VIEW ── -->
+<div id="view-timer" class="view active">
+  <button id="btn-open-collection" class="nav-btn">集</button>
+
+  <main class="timer-main">
+    <div id="egg-stage">
+      <svg id="progress-ring" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="ring-track" cx="130" cy="130" r="118"/>
+        <circle id="ring-fill" class="ring-fill" cx="130" cy="130" r="118"/>
+      </svg>
+      <div id="timer-egg">
+        <!-- egg injected by JS -->
+      </div>
+    </div>
+
+    <div id="time-display">
+      <span id="time-minutes">25</span><span class="time-sep">:</span><span id="time-seconds">00</span>
+    </div>
+
+    <div id="duration-picker">
+      <button class="dur-btn active" data-min="25">25</button>
+      <span class="dur-sep">·</span>
+      <button class="dur-btn" data-min="45">45</button>
+      <span class="dur-sep">·</span>
+      <button class="dur-btn" data-min="60">60</button>
+      <span class="dur-unit">min</span>
+    </div>
+
+    <button id="btn-start-focus"><span>begin focus</span></button>
+  </main>
+</div>
+
+<!-- ── HATCH VIEW ── -->
+<div id="view-hatch" class="view">
+  <div id="flash"></div>
+  <div id="speed-wrap">
+    <svg id="speed-svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice"></svg>
+  </div>
+  <canvas id="particles"></canvas>
+
+  <div id="hatch-stage">
+    <div id="hatch-header">
+      <div id="char-name"></div>
+      <div id="char-sub"></div>
+      <div id="char-rarity"></div>
+    </div>
+
+    <div id="hatch-egg-wrap">
+      <!-- Egg -->
+      <svg id="hatch-egg" width="220" height="280" viewBox="0 0 220 280">
+        <defs>
+          <radialGradient id="heggGrd" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#fefcf5"/>
+            <stop offset="100%" stop-color="#ddd8ca"/>
+          </radialGradient>
+          <radialGradient id="heggGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#0047ff" stop-opacity=".22"/>
+            <stop offset="100%" stop-color="#0047ff" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="heggBlur"><feGaussianBlur stdDeviation="1.2"/></filter>
+        </defs>
+        <ellipse cx="110" cy="268" rx="55" ry="9" fill="rgba(0,0,0,.12)"/>
+        <path d="M110,8 C158,8 196,60 196,148 C196,222 158,272 110,272 C62,272 24,222 24,148 C24,60 62,8 110,8 Z"
+          fill="url(#heggGrd)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M110,8 C158,8 196,60 196,148 C196,222 158,272 110,272 C62,272 24,222 24,148 C24,60 62,8 110,8 Z"
+          fill="url(#heggGlow)"/>
+        <path d="M75,45 C82,32 96,24 105,22" stroke="white" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".7"/>
+        <path d="M60,80 C64,68 70,58 76,52" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"/>
+        <g class="egg-rune" opacity=".5">
+          <path d="M118,85 L102,118 L114,118 L98,155" stroke="#0047ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M118,85 L102,118 L114,118 L98,155" stroke="#00e5ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".6"/>
+        </g>
+      </svg>
+
+      <!-- Cracks -->
+      <svg id="hatch-cracks" width="220" height="280" viewBox="0 0 220 280">
+        <g stroke="#080810" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <path id="hc1" d="M110,80 L98,102 L107,108 L95,132" stroke-width="2.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+          <path id="hc2" d="M107,108 L120,122 L115,138" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+          <path id="hc3" d="M138,90 L128,115 L135,125 L122,148" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+          <path id="hc4" d="M82,105 L92,128 L85,140" stroke-width="1.8" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+          <path id="hc5" d="M115,140 L130,158 L125,170" stroke-width="1.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+          <path id="hc1g" d="M110,80 L98,102 L107,108 L95,132" stroke="#00e5ff" stroke-width="1" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity=".7"/>
+          <path id="hc2g" d="M107,108 L120,122 L115,138" stroke="#00e5ff" stroke-width=".8" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity=".6"/>
+          <path id="hc3g" d="M138,90 L128,115 L135,125 L122,148" stroke="#00e5ff" stroke-width=".8" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity=".6"/>
+        </g>
+      </svg>
+
+      <!-- Character revealed here -->
+      <div id="char-wrap"></div>
+    </div>
+
+    <div id="hatch-actions">
+      <button id="btn-see-collection"><span>collection</span></button>
+      <button id="btn-focus-again"><span>focus again</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── COLLECTION VIEW ── -->
+<div id="view-collection" class="view">
+  <header class="collection-header">
+    <div class="collection-top">
+      <button id="btn-back-to-timer" class="nav-btn">←</button>
+      <span class="collection-title">図鑑 · collection</span>
+    </div>
+    <div class="region-tabs">
+      <button class="region-btn active" data-region="all">all</button>
+      <button class="region-btn" data-region="japanese">日本</button>
+      <button class="region-btn" data-region="americas">americas</button>
+      <button class="region-btn" data-region="european">europe</button>
+      <button class="region-btn" data-region="african">africa</button>
+      <button class="region-btn" data-region="fantasy">fantasy</button>
+    </div>
+  </header>
+  <div id="collection-grid">
+    <!-- cards injected by JS -->
+  </div>
+</div>
+
+<!-- ── CARD MODAL ── -->
+<div id="card-modal" class="modal-overlay">
+  <div id="card-modal-inner" class="modal-inner">
+    <button id="modal-close" class="modal-close">×</button>
+    <div id="modal-art" class="modal-art"></div>
+    <div class="modal-info">
+      <div id="modal-name" class="modal-name"></div>
+      <div id="modal-sub" class="modal-sub"></div>
+      <div id="modal-rarity" class="modal-rarity"></div>
+      <div id="modal-haiku" class="modal-haiku"></div>
+      <div id="modal-variants" class="modal-variants"></div>
+    </div>
+  </div>
+</div>
+
+<script src="characters.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
