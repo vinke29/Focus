@@ -326,6 +326,10 @@ const CHARACTERS = {
       <stop offset="0%" stop-color="#fefcf5"/>
       <stop offset="100%" stop-color="#ccc8be"/>
     </radialGradient>
+    <radialGradient id="kyubi-tail-warm" cx="35%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#fdf5dc"/>
+      <stop offset="100%" stop-color="#d4cbb0"/>
+    </radialGradient>
     <radialGradient id="kyubi-head" cx="36%" cy="30%" r="68%">
       <stop offset="0%" stop-color="#fefcf5"/>
       <stop offset="100%" stop-color="#d4d0c4"/>
@@ -352,31 +356,31 @@ const CHARACTERS = {
 
     <!-- Tail 0 – far left -->
     <path d="M143,324 Q65,232 35,130 Q88,220 153,324Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
     <!-- Tail 1 -->
     <path d="M146,323 Q95,200 68,90 Q115,192 156,323Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
     <!-- Tail 2 -->
     <path d="M149,322 Q118,180 102,65 Q135,174 159,322Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
     <!-- Tail 3 -->
     <path d="M152,321 Q138,174 132,52 Q152,167 162,321Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
     <!-- Tail 4 – center, longest -->
     <path d="M155,320 Q151,177 160,46 Q169,177 165,320Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
     <!-- Tail 5 -->
     <path d="M158,321 Q168,167 188,52 Q182,174 168,321Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
     <!-- Tail 6 -->
     <path d="M161,322 Q185,174 218,65 Q202,180 171,322Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
     <!-- Tail 7 -->
     <path d="M164,323 Q205,192 252,90 Q225,200 174,323Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
     <!-- Tail 8 – far right -->
     <path d="M167,324 Q232,220 285,130 Q255,232 177,324Z"
-      fill="url(#kyubi-fur)" stroke="#080810" stroke-width="2.2" stroke-linejoin="round"/>
+      fill="url(#kyubi-tail-warm)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
 
     <!-- ── FOX BODY (compact, lower third — tails emerge behind) ── -->
 
@@ -604,71 +608,62 @@ const CHARACTERS = {
   </defs>
 
   <ellipse cx="160" cy="355" rx="80" ry="8" fill="rgba(0,0,0,.08)"/>
-  <ellipse class="char-aura" cx="160" cy="210" rx="115" ry="88" fill="url(#koi-aura)"/>
+  <ellipse class="char-aura" cx="160" cy="200" rx="130" ry="100" fill="url(#koi-aura)"/>
 
-  <g class="koi-swim">
+  <g class="char-float">
 
-    <!-- Tail fin (forked, flowing) -->
-    <path d="M264,178 C290,145 298,108 288,90 C275,118 268,148 264,168 M264,178 C290,210 298,248 288,268 C275,240 268,210 264,188Z"
-      fill="#E84000" stroke="#080810" stroke-width="2.5" stroke-linejoin="round" opacity=".85"/>
+    <!-- Forked tail fin — two dramatic sweeping fins on the right -->
+    <path d="M272,178 C295,138 305,100 295,80 C280,112 274,148 272,168 M272,178 C295,218 305,256 295,276 C280,244 274,208 272,188Z"
+      fill="#E84000" stroke="#080810" stroke-width="2.5" stroke-linejoin="round" opacity=".9"/>
     <!-- Tail fin inner lines -->
-    <path d="M280,100 C274,125 270,152 266,172" stroke="#080810" stroke-width="1" fill="none" stroke-linecap="round" opacity=".3"/>
-    <path d="M280,256 C274,233 270,208 266,188" stroke="#080810" stroke-width="1" fill="none" stroke-linecap="round" opacity=".3"/>
+    <path d="M290,92 C282,118 276,148 274,168" stroke="#080810" stroke-width="1" fill="none" stroke-linecap="round" opacity=".35"/>
+    <path d="M290,264 C282,240 276,210 274,188" stroke="#080810" stroke-width="1" fill="none" stroke-linecap="round" opacity=".35"/>
 
-    <!-- Main body (elongated S-curve fish) -->
-    <path d="M80,178 C80,128 112,98 160,98 C204,98 258,118 264,178 C258,238 204,258 160,258 C112,258 80,228 80,178Z"
+    <!-- Main body (elongated horizontal oval) -->
+    <path d="M70,178 C70,115 115,88 160,88 C210,88 268,115 272,178 C268,241 210,268 160,268 C115,268 70,241 70,178Z"
       fill="url(#koi-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
 
-    <!-- Scale pattern (arcing lines) -->
-    <path d="M108,130 C124,122 158,120 178,128" stroke="#080810" stroke-width="1.2" fill="none" opacity=".15"/>
-    <path d="M98,152 C118,142 158,140 182,148" stroke="#080810" stroke-width="1.2" fill="none" opacity=".15"/>
-    <path d="M94,175 C116,165 158,163 186,170" stroke="#080810" stroke-width="1.2" fill="none" opacity=".15"/>
-    <path d="M96,198 C118,190 158,188 184,195" stroke="#080810" stroke-width="1.2" fill="none" opacity=".14"/>
-    <path d="M102,220 C122,213 158,211 180,217" stroke="#080810" stroke-width="1.2" fill="none" opacity=".13"/>
+    <!-- Scale lines (subtle arc lines across body) -->
+    <path d="M100,122 C122,112 162,110 190,120" stroke="#080810" stroke-width="1.2" fill="none" opacity=".15"/>
+    <path d="M85,148 C112,136 158,134 194,144" stroke="#080810" stroke-width="1.2" fill="none" opacity=".15"/>
+    <path d="M80,175 C110,163 158,161 198,170" stroke="#080810" stroke-width="1.2" fill="none" opacity=".15"/>
+    <path d="M83,202 C112,192 158,190 196,198" stroke="#080810" stroke-width="1.2" fill="none" opacity=".14"/>
+    <path d="M92,228 C118,219 158,217 192,224" stroke="#080810" stroke-width="1.2" fill="none" opacity=".13"/>
 
-    <!-- Orange accent patches -->
-    <path d="M130,132 C140,122 172,122 182,132 C172,142 140,142 130,132Z" fill="#E84000" opacity=".5"/>
-    <path d="M108,168 C118,158 142,158 150,168 C142,178 118,178 108,168Z" fill="#E84000" opacity=".4"/>
-    <path d="M175,195 C185,185 210,185 218,195 C210,205 185,205 175,195Z" fill="#E84000" opacity=".4"/>
+    <!-- Orange patches — 2-3 bold blotches -->
+    <path d="M118,110 C132,96 178,96 192,110 C178,126 132,126 118,110Z" fill="#E84000" opacity=".55"/>
+    <path d="M95,160 C110,144 148,144 160,160 C148,176 110,176 95,160Z" fill="#E84000" opacity=".45"/>
+    <path d="M190,210 C204,194 240,194 252,210 C240,226 204,226 190,210Z" fill="#E84000" opacity=".45"/>
 
-    <!-- Dorsal fin -->
-    <g class="koi-fin">
-      <path d="M130,100 C125,72 135,52 142,46 C144,62 142,82 138,98Z"
+    <!-- Dorsal fin — 3 tall spikes pointing up -->
+    <g class="char-body">
+      <path d="M138,90 C132,62 140,38 148,28 C150,48 150,70 146,90Z"
         fill="url(#koi-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M152,99 C150,70 158,50 163,46 C164,62 162,82 158,97Z"
+      <path d="M162,88 C158,58 165,34 170,24 C172,44 172,68 168,88Z"
         fill="url(#koi-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M172,101 C174,74 182,56 188,52 C186,68 182,88 176,101Z"
+      <path d="M184,92 C184,64 192,42 200,36 C198,56 194,78 188,92Z"
         fill="url(#koi-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
     </g>
 
-    <!-- Pectoral fin (top) -->
-    <g class="koi-fin" style="animation-delay:-.4s">
-      <path d="M148,120 C128,96 110,86 98,90 C112,104 130,115 145,122Z"
-        fill="#E84000" stroke="#080810" stroke-width="2" stroke-linejoin="round" opacity=".75"/>
-    </g>
-    <!-- Pectoral fin (bottom) -->
-    <g class="koi-fin" style="animation-delay:-.8s">
-      <path d="M148,236 C128,260 110,270 98,266 C112,252 130,241 145,234Z"
-        fill="#E84000" stroke="#080810" stroke-width="2" stroke-linejoin="round" opacity=".75"/>
-    </g>
+    <!-- Orange pectoral fins on each side -->
+    <path d="M148,130 C124,104 104,92 90,96 C106,112 128,124 144,132Z"
+      fill="#E84000" stroke="#080810" stroke-width="2" stroke-linejoin="round" opacity=".8"/>
+    <path d="M148,226 C124,250 104,262 90,258 C106,242 128,230 144,224Z"
+      fill="#E84000" stroke="#080810" stroke-width="2" stroke-linejoin="round" opacity=".8"/>
 
-    <!-- Anal fin -->
-    <path d="M198,246 C212,264 224,270 232,264 C220,254 208,248 200,244Z"
-      fill="#E84000" stroke="#080810" stroke-width="1.8" opacity=".65"/>
+    <!-- Head (smaller circle) -->
+    <circle cx="92" cy="178" r="30" fill="url(#koi-body)" stroke="#080810" stroke-width="3.5"/>
 
-    <!-- Head -->
-    <ellipse cx="106" cy="178" rx="36" ry="46" fill="url(#koi-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Eye — tiny, not dominant -->
+    <circle cx="82" cy="170" r="9" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="82" cy="170" r="5" fill="#E84000"/>
+    <circle cx="84" cy="168" r="2" fill="white" opacity=".9"/>
 
-    <!-- Eye -->
-    <circle cx="96" cy="165" r="12" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="96" cy="165" r="7" fill="#E84000"/>
-    <circle cx="99" cy="162" r="2.5" fill="white" opacity=".9"/>
-
-    <!-- Mouth (pursed) -->
-    <path d="M76,186 C82,192 94,192 98,186" stroke="#080810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <!-- Mouth -->
+    <path d="M68,184 C74,190 84,190 88,184" stroke="#080810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
     <!-- Barbels -->
-    <path d="M78,189 C72,198 72,208 76,214" stroke="#080810" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".5"/>
-    <path d="M86,190 C82,200 83,210 88,215" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".4"/>
+    <path d="M70,187 C64,196 65,206 70,212" stroke="#080810" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".5"/>
+    <path d="M78,188 C74,198 75,208 80,213" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".4"/>
 
   </g>
 </svg>`
@@ -988,97 +983,81 @@ const CHARACTERS = {
     subtitle: 'Dream Eater · Slumbering Form',
     rarity: 'rare',
     rarityLabel: '◈ Rare',
-    accentColor: '#6944CC',
+    accentColor: '#7b4aff',
     region: 'japanese',
     lore: 'A chimeric spirit that devours nightmares, leaving only the sweetest dreams behind.',
     haiku: '悪夢を食らう<br>朝の光の前に<br>獏は消えゆく',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="baku-body" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#f0eef8"/>
-      <stop offset="100%" stop-color="#d0cce0"/>
+    <radialGradient id="baku-body" cx="35%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#fefcf5"/>
+      <stop offset="100%" stop-color="#c8c0d8"/>
     </radialGradient>
     <radialGradient id="baku-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#6944CC" stop-opacity=".35"/>
-      <stop offset="100%" stop-color="#6944CC" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#7b4aff" stop-opacity=".28"/>
+      <stop offset="100%" stop-color="#7b4aff" stop-opacity="0"/>
     </radialGradient>
+    <filter id="baku-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
-
-  <ellipse cx="160" cy="360" rx="64" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="235" rx="95" ry="85" fill="url(#baku-aura)"/>
-
-  <!-- Dream wisps floating around -->
-  <g class="baku-drift">
-    <circle cx="90"  cy="160" r="8"  fill="#6944CC" opacity=".22"/>
-    <circle cx="235" cy="178" r="6"  fill="#6944CC" opacity=".18"/>
-    <circle cx="100" cy="290" r="5"  fill="#6944CC" opacity=".15"/>
-    <circle cx="226" cy="308" r="7"  fill="#6944CC" opacity=".2"/>
-    <circle cx="148" cy="88"  r="5"  fill="#6944CC" opacity=".18"/>
-    <circle cx="182" cy="78"  r="4"  fill="#9966ff" opacity=".2"/>
+  <ellipse class="char-aura" cx="160" cy="210" rx="120" ry="110" fill="url(#baku-aura)"/>
+  <!-- Dream wisps floating (eaten nightmares) -->
+  <g opacity=".5">
+    <ellipse class="wisp-bob" cx="88" cy="108" rx="18" ry="12" fill="#7b4aff" opacity=".25" filter="url(#baku-glow)"/>
+    <ellipse class="wisp-bob" cx="240" cy="120" rx="14" ry="9" fill="#7b4aff" opacity=".2" filter="url(#baku-glow)" style="animation-delay:-.8s"/>
+    <ellipse class="wisp-bob" cx="68" cy="168" rx="10" ry="7" fill="#7b4aff" opacity=".18" filter="url(#baku-glow)" style="animation-delay:-1.4s"/>
   </g>
-
-  <g class="char-body">
-    <!-- Tiger-stripe legs (bear paws) -->
-    <path d="M118,302 L108,348 C102,354 96,354 94,348 C100,342 104,336 106,328Z"
-      fill="url(#baku-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M202,302 L212,348 C218,354 224,354 226,348 C220,342 216,336 214,328Z"
-      fill="url(#baku-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <!-- Stripe marks on legs -->
-    <path d="M108,320 C112,316 118,315 122,318" stroke="#6944CC" stroke-width="1.5" fill="none" opacity=".4"/>
-    <path d="M210,320 C206,316 200,315 196,318" stroke="#6944CC" stroke-width="1.5" fill="none" opacity=".4"/>
-
-    <!-- Main body -->
-    <ellipse cx="160" cy="262" rx="70" ry="72" fill="url(#baku-body)" stroke="#080810" stroke-width="4"/>
-
-    <!-- Tiger stripes on body -->
-    <path d="M98,242 C106,232 118,230 128,236" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round" opacity=".2"/>
-    <path d="M94,262 C104,252 118,250 130,256" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round" opacity=".18"/>
-    <path d="M222,242 C214,232 202,230 192,236" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round" opacity=".2"/>
-
-    <!-- Ox tail -->
-    <path d="M226,268 C250,258 262,238 252,218 C244,200 228,198 222,212 C230,208 240,216 238,232 C236,244 228,254 226,268Z"
-      fill="url(#baku-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M248,222 C244,214 236,212 232,218" stroke="#080810" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".3"/>
-  </g>
-
-  <!-- Head with elephant trunk -->
   <g class="char-float">
-    <circle cx="160" cy="178" r="56" fill="url(#baku-body)" stroke="#080810" stroke-width="4"/>
-    <!-- Purple dream shimmer -->
-    <circle cx="160" cy="178" r="56" fill="#6944CC" opacity=".08"/>
-
-    <!-- Ears (large, tapir-like) -->
-    <path d="M112,148 C90,130 80,108 92,92 C104,104 110,128 112,148Z"
-      fill="url(#baku-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M112,146 C96,130 90,112 98,98 C106,108 110,128 112,146Z" fill="#6944CC" opacity=".3"/>
-    <path d="M208,148 C230,130 240,108 228,92 C216,104 210,128 208,148Z"
-      fill="url(#baku-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M208,146 C224,130 230,112 222,98 C214,108 210,128 208,146Z" fill="#6944CC" opacity=".3"/>
-
-    <!-- Trunk (elephant-like, curled at tip) -->
-    <path d="M160,210 C148,218 138,232 136,248 C134,262 140,272 148,268 C142,260 140,250 144,240 C148,230 156,222 160,218Z"
-      fill="url(#baku-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M148,268 C144,274 148,280 155,278 C149,275 148,270 150,266Z"
-      fill="url(#baku-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-
-    <!-- Eyes (dreamy, half-lidded) -->
-    <path d="M126,166 C126,156 136,150 146,150 C156,150 164,156 164,166 C164,172 158,176 146,176 C136,176 126,172 126,166Z"
-      fill="white" stroke="#080810" stroke-width="2.5"/>
-    <!-- Heavy eyelid -->
-    <path d="M126,163 C136,158 156,158 164,163" stroke="#080810" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <circle cx="146" cy="166" r="7" fill="#6944CC"/>
-    <circle cx="149" cy="163" r="2.5" fill="white" opacity=".9"/>
-
-    <path d="M156,166 C156,156 166,150 176,150 C186,150 194,156 194,166 C194,172 188,176 176,176 C166,176 156,172 156,166Z"
-      fill="white" stroke="#080810" stroke-width="2.5"/>
-    <path d="M156,163 C166,158 186,158 194,163" stroke="#080810" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <circle cx="176" cy="166" r="7" fill="#6944CC"/>
-    <circle cx="179" cy="163" r="2.5" fill="white" opacity=".9"/>
-
+    <!-- Body (round and fluffy) -->
+    <ellipse cx="160" cy="262" rx="72" ry="58" fill="url(#baku-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Tiger stripe on one leg (chimera detail) -->
+    <!-- Back legs -->
+    <rect x="108" y="304" width="28" height="52" rx="14" fill="url(#baku-body)" stroke="#080810" stroke-width="3.5"/>
+    <path d="M108,315 L136,315 M110,324 L136,324 M110,333 L134,333" stroke="#080810" stroke-width="2" stroke-linecap="round" opacity=".3"/>
+    <rect x="186" y="304" width="28" height="52" rx="14" fill="url(#baku-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Paws (bear-like, broad) -->
+    <ellipse cx="122" cy="358" rx="18" ry="10" fill="url(#baku-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M108,356 L105,364 M116,358 L114,366 M124,359 L123,367 M132,358 L133,366" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+    <ellipse cx="200" cy="358" rx="18" ry="10" fill="url(#baku-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M186,356 L183,364 M194,358 L192,366 M202,359 L201,367 M210,358 L211,366" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+    <!-- Head (round, large) -->
+    <ellipse cx="160" cy="188" rx="58" ry="52" fill="url(#baku-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Large elephant ears (floppy) -->
+    <path d="M104,170 C82,155 62,160 55,178 C50,195 62,212 80,215 C95,218 108,208 108,195Z"
+      fill="url(#baku-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M216,170 C238,155 258,160 265,178 C270,195 258,212 240,215 C225,218 212,208 212,195Z"
+      fill="url(#baku-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <!-- Ear inner shadow -->
+    <path d="M106,175 C92,165 75,168 70,182 C67,194 75,206 86,208" stroke="#080810" stroke-width="1.5" fill="none" opacity=".15"/>
+    <path d="M214,175 C228,165 245,168 250,182 C253,194 245,206 234,208" stroke="#080810" stroke-width="1.5" fill="none" opacity=".15"/>
+    <!-- Dreamy half-lidded eyes -->
+    <ellipse cx="138" cy="182" rx="15" ry="10" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <path d="M123,182 C128,176 148,176 153,182" fill="#7b4aff" opacity=".7"/>
+    <ellipse cx="138" cy="180" rx="9" ry="6" fill="#7b4aff"/>
+    <ellipse cx="138" cy="180" rx="5" ry="5" fill="#080810"/>
+    <circle cx="141" cy="177" r="2" fill="white" opacity=".9"/>
+    <!-- Heavy upper eyelid (sleepy) -->
+    <path d="M123,176 C128,172 148,172 153,176" stroke="#080810" stroke-width="3" fill="none"/>
+    <ellipse cx="182" cy="182" rx="14" ry="10" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="182" cy="180" rx="8" ry="6" fill="#7b4aff"/>
+    <ellipse cx="182" cy="180" rx="4.5" ry="4.5" fill="#080810"/>
+    <circle cx="185" cy="177" r="2" fill="white" opacity=".9"/>
+    <path d="M168,176 C172,172 192,172 196,176" stroke="#080810" stroke-width="3" fill="none"/>
+    <!-- THE TRUNK — curling up dramatically, the hero feature -->
+    <path d="M140,224 C120,232 105,245 98,260 C92,275 96,290 106,294 C118,298 130,290 132,278 C125,284 116,282 114,274 C112,265 118,254 128,248 C138,242 148,235 148,225Z"
+      fill="url(#baku-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+    <!-- Trunk tip/nostril -->
+    <ellipse cx="109" cy="292" rx="8" ry="6" fill="#c0b8cc" stroke="#080810" stroke-width="2.5"/>
+    <!-- Trunk wrinkle lines -->
+    <path d="M120,256 C115,260 112,264 112,268" stroke="#080810" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".3"/>
+    <path d="M126,246 C120,250 116,254 114,260" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".25"/>
     <!-- Dream spiral on forehead -->
-    <path d="M158,132 C160,126 165,124 168,128 C171,132 169,138 165,140 C162,142 159,140 158,137 C157,134 159,131 161,132"
-      stroke="#6944CC" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>
+    <path d="M162,148 C166,144 172,144 174,148 C176,153 172,158 166,158 C162,158 160,155 162,151 C163,149 165,148 167,149" stroke="#7b4aff" stroke-width="2.5" fill="none" stroke-linecap="round" filter="url(#baku-glow)" opacity=".7"/>
+    <!-- Ground shadow -->
+    <ellipse cx="160" cy="370" rx="75" ry="8" fill="rgba(0,0,0,.08)"/>
   </g>
 </svg>`
   },
@@ -1091,113 +1070,81 @@ const CHARACTERS = {
     subtitle: 'Thunder Wolf · Storm Cub',
     rarity: 'legendary',
     rarityLabel: '✦ Legendary',
-    accentColor: '#F5A000',
+    accentColor: '#00b4ff',
     region: 'japanese',
     lore: 'A wolf pup born inside a thundercloud, whose howl calls lightning from a clear sky.',
     haiku: '雷鳴の子よ<br>空を引き裂く牙で<br>嵐を呼ぶ狼',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="rwolf-body" cx="35%" cy="30%" r="70%">
+    <radialGradient id="rwolf-body" cx="32%" cy="28%" r="72%">
       <stop offset="0%" stop-color="#fefcf5"/>
-      <stop offset="100%" stop-color="#ccc8be"/>
+      <stop offset="100%" stop-color="#b8bcc8"/>
     </radialGradient>
     <radialGradient id="rwolf-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#F5A000" stop-opacity=".45"/>
-      <stop offset="60%" stop-color="#F5A000" stop-opacity=".18"/>
-      <stop offset="100%" stop-color="#F5A000" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#00b4ff" stop-opacity=".3"/>
+      <stop offset="100%" stop-color="#00b4ff" stop-opacity="0"/>
     </radialGradient>
     <filter id="rwolf-glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-
-  <ellipse cx="160" cy="362" rx="62" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="220" rx="108" ry="98" fill="url(#rwolf-aura)"/>
-
-  <!-- Lightning bolts orbiting -->
-  <g class="bolt" filter="url(#rwolf-glow)">
-    <path d="M72,148 L82,128 L78,138 L90,118" stroke="#F5A000" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-  <g class="bolt-2" filter="url(#rwolf-glow)">
-    <path d="M248,148 L238,128 L242,138 L230,118" stroke="#F5A000" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-  <g class="bolt-3" filter="url(#rwolf-glow)">
-    <path d="M162,58 L155,42 L158,52 L150,36" stroke="#F5A000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-
+  <ellipse class="char-aura" cx="160" cy="220" rx="120" ry="100" fill="url(#rwolf-aura)"/>
+  <!-- Body -->
   <g class="char-float">
-
-    <!-- Tail (raised, electric tip) -->
-    <path d="M215,272 C248,252 268,222 260,192 C252,165 228,162 212,180 C222,176 236,188 232,208 C228,226 216,244 215,272Z"
-      fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <g filter="url(#rwolf-glow)">
-      <path d="M258,196 L265,182 L261,192 L270,178" stroke="#F5A000" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    </g>
-
-    <!-- Body -->
-    <g class="char-body">
-      <ellipse cx="155" cy="262" rx="68" ry="74" fill="url(#rwolf-body)" stroke="#080810" stroke-width="4"/>
-      <!-- Lightning marking on body -->
-      <path d="M126,232 L136,212 L130,224 L142,204" stroke="#F5A000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".7"/>
-      <!-- Belly -->
-      <ellipse cx="155" cy="270" rx="38" ry="52" fill="white" opacity=".4" stroke="#080810" stroke-width="2"/>
-
-      <!-- Front paws -->
-      <ellipse cx="108" cy="330" rx="30" ry="14" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3"/>
-      <path d="M86,329 L90,338" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M100,332 L102,341" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M114,332 L114,341" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-
-      <ellipse cx="204" cy="330" rx="30" ry="14" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3"/>
-      <path d="M226,329 L222,338" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M212,332 L210,341" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M198,332 L198,341" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-    </g>
-
-    <!-- Ears -->
-    <path d="M116,118 L102,72 L150,106Z" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M120,114 L110,78 L146,106Z" fill="#F5A000" opacity=".7"/>
-    <path d="M204,118 L218,72 L170,106Z" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M200,114 L210,78 L174,106Z" fill="#F5A000" opacity=".7"/>
-
+    <!-- Torso -->
+    <ellipse cx="168" cy="248" rx="68" ry="44" fill="url(#rwolf-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Neck -->
+    <ellipse cx="132" cy="210" rx="30" ry="22" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5"/>
     <!-- Head -->
-    <circle cx="160" cy="150" r="60" fill="url(#rwolf-body)" stroke="#080810" stroke-width="4"/>
-
-    <!-- Forehead lightning mark -->
-    <g filter="url(#rwolf-glow)">
-      <path d="M166,108 L156,126 L164,126 L152,148" stroke="#F5A000" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <path d="M166,108 L156,126 L164,126 L152,148" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".6"/>
-    </g>
-
-    <!-- Muzzle -->
-    <path d="M160,158 C145,158 134,165 134,175 C134,185 144,190 160,190 C176,190 186,185 186,175 C186,165 175,158 160,158Z"
-      fill="#e8e4da" stroke="#080810" stroke-width="3"/>
-
+    <ellipse cx="118" cy="178" rx="44" ry="40" fill="url(#rwolf-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Pointed wolf ears -->
+    <path d="M96,148 L80,108 L120,138Z" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M92,146 L80,112 L116,140Z" fill="#00b4ff" opacity=".35"/>
+    <path d="M140,145 L150,105 L168,138Z" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M142,143 L150,109 L165,140Z" fill="#00b4ff" opacity=".35"/>
+    <!-- Long wolf snout -->
+    <path d="M82,188 C68,188 56,194 55,202 C55,210 66,216 82,216 C96,216 105,210 105,202 C105,194 96,188 82,188Z"
+      fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5"/>
     <!-- Nose -->
-    <path d="M154,166 C154,162 166,162 166,166 C166,170 163,172 160,172 C157,172 154,170 154,166Z" fill="#080810"/>
-
-    <!-- Mouth -->
-    <path d="M152,176 C156,182 164,182 168,176" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
-
-    <!-- Eyes (amber, glowing) -->
-    <ellipse cx="134" cy="146" rx="20" ry="18" fill="white" stroke="#080810" stroke-width="3"/>
-    <circle cx="134" cy="146" r="12" fill="#F5A000" filter="url(#rwolf-glow)"/>
-    <path d="M134,133 C136,139 136,153 134,158 C132,153 132,139 134,133Z" fill="#080810"/>
-    <circle cx="140" cy="140" r="4" fill="white" opacity=".9"/>
-
-    <ellipse cx="186" cy="146" rx="20" ry="18" fill="white" stroke="#080810" stroke-width="3"/>
-    <circle cx="186" cy="146" r="12" fill="#F5A000" filter="url(#rwolf-glow)"/>
-    <path d="M186,133 C188,139 188,153 186,158 C184,153 184,139 186,133Z" fill="#080810"/>
-    <circle cx="192" cy="140" r="4" fill="white" opacity=".9"/>
-
-    <!-- Whiskers -->
-    <line x1="96"  y1="170" x2="128" y2="172" stroke="#080810" stroke-width="1.5" opacity=".4"/>
-    <line x1="92"  y1="179" x2="126" y2="178" stroke="#080810" stroke-width="1.3" opacity=".3"/>
-    <line x1="228" y1="170" x2="192" y2="172" stroke="#080810" stroke-width="1.5" opacity=".4"/>
-    <line x1="232" y1="179" x2="194" y2="178" stroke="#080810" stroke-width="1.3" opacity=".3"/>
-
+    <ellipse cx="62" cy="200" rx="8" ry="6" fill="#080810"/>
+    <!-- Mouth line -->
+    <path d="M62,206 L68,212 M62,206 L56,212" stroke="#080810" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <!-- Eyes (electric blue) -->
+    <ellipse cx="104" cy="175" rx="12" ry="10" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="104" cy="175" rx="7" ry="7" fill="#00b4ff" filter="url(#rwolf-glow)"/>
+    <circle cx="104" cy="175" r="3.5" fill="#080810"/>
+    <circle cx="107" cy="172" r="2" fill="white" opacity=".9"/>
+    <ellipse cx="140" cy="172" rx="11" ry="9" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="140" cy="172" rx="6" ry="6" fill="#00b4ff" filter="url(#rwolf-glow)"/>
+    <circle cx="140" cy="172" r="3" fill="#080810"/>
+    <circle cx="143" cy="169" r="1.8" fill="white" opacity=".9"/>
+    <!-- Lightning bolt forehead marking -->
+    <g filter="url(#rwolf-glow)">
+      <path d="M122,138 L114,156 L122,156 L114,174" stroke="#00b4ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </g>
+    <!-- Wolf tail (arcing up) -->
+    <path d="M234,240 C255,220 272,195 268,170 C260,148 245,145 238,155 C232,165 238,178 245,185 C238,182 230,188 228,200 C226,215 232,230 234,240Z"
+      fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <!-- Tail tip spark -->
+    <circle cx="260" cy="162" r="6" fill="#00b4ff" filter="url(#rwolf-glow)" opacity=".9"/>
+    <!-- Front legs -->
+    <rect x="104" y="278" width="22" height="60" rx="11" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="140" y="280" width="22" height="58" rx="11" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Back legs -->
+    <rect x="185" y="278" width="22" height="60" rx="11" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="218" y="276" width="22" height="58" rx="11" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Paws -->
+    <ellipse cx="115" cy="340" rx="14" ry="8" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="151" cy="339" rx="14" ry="8" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="196" cy="340" rx="14" ry="8" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="229" cy="339" rx="14" ry="8" fill="url(#rwolf-body)" stroke="#080810" stroke-width="3"/>
+    <!-- Ground shadow -->
+    <ellipse cx="170" cy="352" rx="78" ry="8" fill="rgba(0,0,0,.08)"/>
+    <!-- Back fur (dark saddle on back) -->
+    <path d="M130,218 C148,208 178,206 208,215" stroke="#080810" stroke-width="1.5" fill="none" opacity=".25"/>
+    <path d="M124,228 C145,218 185,216 215,225" stroke="#080810" stroke-width="1.2" fill="none" opacity=".2"/>
   </g>
 </svg>`
   },
@@ -1561,103 +1508,91 @@ const CHARACTERS = {
     subtitle: 'Spotted King · Prowl Form',
     rarity: 'rare',
     rarityLabel: '◈ Rare',
-    accentColor: '#E65100',
+    accentColor: '#3a8c2f',
     region: 'americas',
     lore: 'The shadow lord of the rainforest, who steps so softly that even leaves refuse to stir.',
     haiku: '斑点の王よ<br>密林に溶け込む<br>足音なき夜',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="jag-body" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#f5e8d0"/>
-      <stop offset="100%" stop-color="#d8c8a0"/>
+    <radialGradient id="jag-body" cx="35%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#e8c870"/>
+      <stop offset="100%" stop-color="#a87830"/>
+    </radialGradient>
+    <radialGradient id="jag-belly" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#fefcf5"/>
+      <stop offset="100%" stop-color="#e8d8b0"/>
     </radialGradient>
     <radialGradient id="jag-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#E65100" stop-opacity=".2"/>
-      <stop offset="100%" stop-color="#E65100" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#3a8c2f" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#3a8c2f" stop-opacity="0"/>
     </radialGradient>
   </defs>
-
-  <ellipse cx="160" cy="360" rx="65" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="240" rx="90" ry="80" fill="url(#jag-aura)"/>
-
+  <ellipse class="char-aura" cx="160" cy="220" rx="115" ry="105" fill="url(#jag-aura)"/>
   <g class="char-float">
-
-    <!-- Tail (long, curved) -->
-    <path d="M215,265 C248,248 268,220 262,192 C255,165 234,160 218,176 C228,172 240,184 236,202 C232,218 220,236 215,265Z"
-      fill="url(#jag-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <!-- Tail spots -->
-    <circle cx="244" cy="194" r="5" fill="#080810" opacity=".35"/>
-    <circle cx="238" cy="212" r="4" fill="#080810" opacity=".3"/>
-    <path d="M260,190 L262,182 L258,186Z" fill="#080810" opacity=".2"/>
-
     <!-- Body -->
-    <g class="char-body">
-      <ellipse cx="155" cy="258" rx="70" ry="74" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
-
-      <!-- Rosette spots on body -->
-      <g class="spot-anim">
-        <path d="M112,230 C116,222 126,220 132,226 C130,234 120,236 112,230Z" fill="none" stroke="#080810" stroke-width="1.8" opacity=".5"/>
-        <circle cx="122" cy="228" r="3" fill="#080810" opacity=".4"/>
-        <path d="M188,222 C194,214 204,214 208,220 C206,228 196,230 188,222Z" fill="none" stroke="#080810" stroke-width="1.8" opacity=".5"/>
-        <circle cx="198" cy="220" r="3" fill="#080810" opacity=".4"/>
-        <path d="M134,270 C138,262 148,260 154,266 C152,274 142,276 134,270Z" fill="none" stroke="#080810" stroke-width="1.8" opacity=".45"/>
-        <circle cx="144" cy="268" r="2.5" fill="#080810" opacity=".35"/>
-        <path d="M170,260 C174,252 184,250 190,256 C188,264 178,266 170,260Z" fill="none" stroke="#080810" stroke-width="1.8" opacity=".45"/>
-        <circle cx="180" cy="258" r="2.5" fill="#080810" opacity=".35"/>
-      </g>
-
-      <!-- Paws -->
-      <ellipse cx="108" cy="328" rx="30" ry="14" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
-      <path d="M86,326 L90,336" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M100,330 L102,340" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M114,330 L114,340" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <ellipse cx="204" cy="328" rx="30" ry="14" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
-      <path d="M226,326 L222,336" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M212,330 L210,340" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M198,330 L198,340" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-    </g>
-
+    <ellipse cx="165" cy="255" rx="72" ry="48" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Belly -->
+    <ellipse cx="158" cy="268" rx="42" ry="30" fill="url(#jag-belly)"/>
+    <!-- Body spots (rosettes) -->
+    <circle cx="138" cy="238" r="10" fill="none" stroke="#5a3010" stroke-width="3" opacity=".6"/>
+    <circle cx="138" cy="238" r="4" fill="#5a3010" opacity=".4"/>
+    <circle cx="178" cy="232" r="11" fill="none" stroke="#5a3010" stroke-width="3" opacity=".6"/>
+    <circle cx="178" cy="232" r="4.5" fill="#5a3010" opacity=".4"/>
+    <circle cx="210" cy="250" r="9" fill="none" stroke="#5a3010" stroke-width="3" opacity=".55"/>
+    <circle cx="210" cy="250" r="3.5" fill="#5a3010" opacity=".35"/>
+    <circle cx="124" cy="265" r="8" fill="none" stroke="#5a3010" stroke-width="2.5" opacity=".5"/>
+    <!-- Tail (long, curling) -->
+    <path d="M236,260 C258,245 278,230 285,210 C290,192 282,178 272,178 C262,178 256,188 258,198 C252,190 244,190 240,198 C236,208 242,225 236,260Z"
+      fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <circle cx="275" cy="182" r="7" fill="none" stroke="#5a3010" stroke-width="2.5" opacity=".6"/>
+    <!-- Neck -->
+    <ellipse cx="128" cy="218" rx="32" ry="26" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Head (big round cat head) -->
+    <ellipse cx="115" cy="182" rx="52" ry="48" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Ear spots -->
+    <circle cx="98" cy="175" r="6" fill="#5a3010" opacity=".4"/>
+    <circle cx="132" cy="170" r="6" fill="#5a3010" opacity=".4"/>
+    <!-- Belly white patch on face -->
+    <ellipse cx="112" cy="200" rx="28" ry="18" fill="url(#jag-belly)"/>
     <!-- Ears -->
-    <path d="M118,136 L105,98 L148,124Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M121,133 L112,106 L144,124Z" fill="#E65100" opacity=".5"/>
-    <path d="M202,136 L215,98 L172,124Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M199,133 L208,106 L176,124Z" fill="#E65100" opacity=".5"/>
-
-    <!-- Head -->
-    <circle cx="160" cy="164" r="58" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
-
-    <!-- Face spots/rosettes -->
-    <circle cx="130" cy="178" r="4" fill="#080810" opacity=".3"/>
-    <circle cx="190" cy="178" r="4" fill="#080810" opacity=".3"/>
-    <g class="spot-anim">
-      <circle cx="118" cy="158" r="5" fill="none" stroke="#080810" stroke-width="1.5" opacity=".35"/>
-      <circle cx="202" cy="158" r="5" fill="none" stroke="#080810" stroke-width="1.5" opacity=".35"/>
-    </g>
-
-    <!-- Eyes (fierce orange) -->
-    <ellipse cx="134" cy="152" rx="20" ry="18" fill="white" stroke="#080810" stroke-width="3"/>
-    <circle cx="134" cy="152" r="12" fill="#E65100"/>
-    <path d="M134,140 C136,146 136,158 134,163 C132,158 132,146 134,140Z" fill="#080810"/>
-    <circle cx="140" cy="146" r="4" fill="white" opacity=".9"/>
-
-    <ellipse cx="186" cy="152" rx="20" ry="18" fill="white" stroke="#080810" stroke-width="3"/>
-    <circle cx="186" cy="152" r="12" fill="#E65100"/>
-    <path d="M186,140 C188,146 188,158 186,163 C184,158 184,146 186,140Z" fill="#080810"/>
-    <circle cx="192" cy="146" r="4" fill="white" opacity=".9"/>
-
-    <!-- Muzzle -->
-    <path d="M160,166 C145,166 134,174 134,184 C134,194 144,200 160,200 C176,200 186,194 186,184 C186,174 175,166 160,166Z"
-      fill="#e8d8b0" stroke="#080810" stroke-width="3"/>
-    <path d="M154,174 L166,174 L160,180Z" fill="#080810" opacity=".7"/>
-    <path d="M152,182 C156,188 164,188 168,182" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
-
+    <path d="M76,152 L62,118 L104,142Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M79,150 L67,122 L100,143Z" fill="#c8682a" opacity=".5"/>
+    <path d="M148,148 L162,114 L172,143Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M150,147 L162,118 L168,143Z" fill="#c8682a" opacity=".5"/>
+    <!-- Eyes (green) -->
+    <ellipse cx="96" cy="178" rx="13" ry="11" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="96" cy="178" rx="8" ry="8" fill="#3a8c2f"/>
+    <ellipse cx="96" cy="178" rx="3.5" ry="5" fill="#080810"/>
+    <circle cx="99" cy="175" r="2.5" fill="white" opacity=".9"/>
+    <ellipse cx="136" cy="175" rx="12" ry="10" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="136" cy="175" rx="7.5" ry="7.5" fill="#3a8c2f"/>
+    <ellipse cx="136" cy="175" rx="3" ry="4.5" fill="#080810"/>
+    <circle cx="139" cy="172" r="2" fill="white" opacity=".9"/>
+    <!-- Nose -->
+    <ellipse cx="112" cy="196" rx="8" ry="5" fill="#c8682a" stroke="#080810" stroke-width="1.5"/>
+    <!-- Mouth -->
+    <path d="M104,202 Q112,208 120,202" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
     <!-- Whiskers -->
-    <line x1="95"  y1="182" x2="128" y2="184" stroke="#080810" stroke-width="1.5" opacity=".4"/>
-    <line x1="92"  y1="190" x2="126" y2="190" stroke="#080810" stroke-width="1.3" opacity=".3"/>
-    <line x1="225" y1="182" x2="192" y2="184" stroke="#080810" stroke-width="1.5" opacity=".4"/>
-    <line x1="228" y1="190" x2="194" y2="190" stroke="#080810" stroke-width="1.3" opacity=".3"/>
-
+    <path d="M90,198 L60,194" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+    <path d="M90,202 L62,202" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+    <path d="M135,195 L162,190" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+    <path d="M135,200 L163,200" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+    <!-- Face spots -->
+    <circle cx="80" cy="183" r="5" fill="#5a3010" opacity=".35"/>
+    <circle cx="148" cy="180" r="4.5" fill="#5a3010" opacity=".35"/>
+    <!-- Legs -->
+    <rect x="95" y="292" width="24" height="55" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="132" y="295" width="24" height="52" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="172" y="292" width="24" height="55" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="207" y="294" width="22" height="52" rx="11" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Paws -->
+    <ellipse cx="107" cy="349" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="144" cy="348" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="184" cy="349" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="218" cy="347" rx="14" ry="8" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <!-- Ground shadow -->
+    <ellipse cx="168" cy="360" rx="80" ry="8" fill="rgba(0,0,0,.08)"/>
   </g>
 </svg>`
   },
@@ -1767,89 +1702,76 @@ const CHARACTERS = {
     subtitle: 'Andean Guide · Highland Form',
     rarity: 'common',
     rarityLabel: '◇ Common',
-    accentColor: '#D4827A',
+    accentColor: '#e88c50',
     region: 'americas',
     lore: 'A fluffy mountain companion who spits at problems and carries burdens without complaint.',
     haiku: '高地の道を<br>荷を担い歩む<br>リャマの誇り',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="llama-body" cx="38%" cy="32%" r="68%">
+    <radialGradient id="llama-body" cx="35%" cy="28%" r="72%">
       <stop offset="0%" stop-color="#fefcf5"/>
-      <stop offset="100%" stop-color="#e0dace"/>
+      <stop offset="100%" stop-color="#d4c8a8"/>
     </radialGradient>
     <radialGradient id="llama-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#D4827A" stop-opacity=".2"/>
-      <stop offset="100%" stop-color="#D4827A" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#e88c50" stop-opacity=".2"/>
+      <stop offset="100%" stop-color="#e88c50" stop-opacity="0"/>
     </radialGradient>
   </defs>
-
-  <ellipse cx="160" cy="364" rx="58" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="250" rx="82" ry="85" fill="url(#llama-aura)"/>
-
+  <ellipse class="char-aura" cx="160" cy="230" rx="108" ry="105" fill="url(#llama-aura)"/>
   <g class="char-float">
-
-    <!-- Body (fluffy, rectangular) -->
-    <g class="char-body">
-      <path d="M98,230 C98,190 120,168 160,168 C200,168 222,190 222,230 C222,272 205,305 160,305 C115,305 98,272 98,230Z"
-        fill="url(#llama-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
-      <!-- Fluffy texture -->
-      <path d="M106,218 C112,208 120,205 128,210" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".15"/>
-      <path d="M104,238 C112,228 122,225 132,230" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".13"/>
-      <path d="M214,218 C208,208 200,205 192,210" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".15"/>
-      <path d="M216,238 C208,228 198,225 188,230" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".13"/>
-
-      <!-- Legs (long, slender) -->
-      <rect x="122" y="298" width="18" height="64" rx="8" fill="url(#llama-body)" stroke="#080810" stroke-width="3"/>
-      <rect x="148" y="298" width="18" height="64" rx="8" fill="url(#llama-body)" stroke="#080810" stroke-width="3"/>
-      <rect x="154" y="298" width="18" height="64" rx="8" fill="url(#llama-body)" stroke="#080810" stroke-width="3"/>
-      <rect x="180" y="298" width="18" height="64" rx="8" fill="url(#llama-body)" stroke="#080810" stroke-width="3"/>
-      <!-- Hooves -->
-      <rect x="122" y="354" width="18" height="10" rx="5" fill="#080810" opacity=".7"/>
-      <rect x="148" y="354" width="18" height="10" rx="5" fill="#080810" opacity=".7"/>
-      <rect x="154" y="354" width="18" height="10" rx="5" fill="#080810" opacity=".7"/>
-      <rect x="180" y="354" width="18" height="10" rx="5" fill="#080810" opacity=".7"/>
-    </g>
-
-    <!-- Long neck -->
-    <g class="neck-sway">
-      <path d="M140,170 C136,145 138,118 142,96 C148,100 160,102 172,100 C176,122 174,148 170,170Z"
-        fill="url(#llama-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
-      <!-- Neck fluff -->
-      <path d="M140,150 C136,140 136,128 140,118" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".15"/>
-      <path d="M170,150 C174,140 174,128 170,118" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".15"/>
-    </g>
-
-    <!-- Head -->
-    <ellipse cx="158" cy="90" rx="36" ry="42" fill="url(#llama-body)" stroke="#080810" stroke-width="4"/>
-
-    <!-- Banana ears -->
-    <path d="M133,68 L122,38 L145,62Z" fill="url(#llama-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M135,66 L127,44 L143,63Z" fill="#D4827A" opacity=".55"/>
-    <path d="M183,68 L194,38 L171,62Z" fill="url(#llama-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M181,66 L189,44 L173,63Z" fill="#D4827A" opacity=".55"/>
-
-    <!-- Eyes (gentle) -->
-    <ellipse cx="140" cy="85" rx="14" ry="13" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="140" cy="86" r="8" fill="#080810"/>
-    <circle cx="143" cy="83" r="3" fill="white" opacity=".9"/>
-
-    <ellipse cx="176" cy="85" rx="14" ry="13" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="176" cy="86" r="8" fill="#080810"/>
-    <circle cx="179" cy="83" r="3" fill="white" opacity=".9"/>
-
-    <!-- Muzzle (boxy) -->
-    <path d="M140,104 C142,114 154,120 158,120 C162,120 174,114 176,104Z"
-      fill="#e8d8c0" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Fluffy rectangular body -->
+    <rect x="88" y="225" width="148" height="110" rx="32" fill="url(#llama-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Fluffy texture bumps (wavy outline detail) -->
+    <path d="M90,240 C100,233 115,233 125,240 C135,233 150,233 160,240 C170,233 185,233 195,240 C205,233 220,233 230,240" stroke="#080810" stroke-width="1.2" fill="none" opacity=".18"/>
+    <path d="M90,255 C100,248 115,248 125,255 C135,248 150,248 160,255 C170,248 185,248 195,255 C205,248 218,248 228,255" stroke="#080810" stroke-width="1" fill="none" opacity=".14"/>
+    <!-- Legs (sturdy, not stick-thin) -->
+    <rect x="102" y="325" width="28" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="142" y="325" width="28" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="172" y="325" width="28" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="208" y="325" width="26" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Hooves (split) -->
+    <path d="M100,368 L100,375 M116,368 L116,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M140,368 L140,375 M156,368 L156,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M170,368 L170,375 M186,368 L186,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M206,368 L206,375 M220,368 L220,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <!-- Long proud neck (key feature) -->
+    <path d="M148,230 C148,195 150,162 152,140 C154,118 158,108 162,108 C166,108 170,118 172,140 C174,162 176,195 176,230Z"
+      fill="url(#llama-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+    <!-- Head (small oval on top of neck) -->
+    <ellipse cx="162" cy="98" rx="32" ry="28" fill="url(#llama-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Banana ears (llama's signature long curved ears) -->
+    <path d="M138,82 C130,68 128,48 132,36 C138,30 148,32 150,42 C152,52 148,68 144,80Z"
+      fill="url(#llama-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M140,80 C133,68 132,52 135,40 C138,34 145,34 146,42 C148,52 145,66 141,78Z"
+      fill="#e88c50" opacity=".45"/>
+    <path d="M186,82 C194,68 196,48 192,36 C186,30 176,32 174,42 C172,52 176,68 180,80Z"
+      fill="url(#llama-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M184,80 C191,68 192,52 189,40 C186,34 179,34 178,42 C176,52 179,66 183,78Z"
+      fill="#e88c50" opacity=".45"/>
+    <!-- Pompom topknot (fluffy tuft) -->
+    <circle cx="148" cy="75" r="9" fill="url(#llama-body)" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="163" cy="68" r="10" fill="url(#llama-body)" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="178" cy="73" r="8" fill="url(#llama-body)" stroke="#080810" stroke-width="2.5"/>
+    <!-- Eyes (long-lashed, serene) -->
+    <ellipse cx="148" cy="96" rx="11" ry="9" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="148" cy="97" rx="6" ry="6" fill="#4a3820"/>
+    <circle cx="148" cy="97" r="3" fill="#080810"/>
+    <circle cx="151" cy="94" r="2" fill="white" opacity=".9"/>
+    <!-- Eyelashes -->
+    <path d="M138,90 L135,85 M142,88 L140,83 M148,87 L148,82" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+    <ellipse cx="176" cy="96" rx="10" ry="9" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="176" cy="97" rx="6" ry="6" fill="#4a3820"/>
+    <circle cx="176" cy="97" r="3" fill="#080810"/>
+    <circle cx="179" cy="94" r="2" fill="white" opacity=".9"/>
+    <path d="M167,90 L164,85 M172,88 L170,83 M177,87 L177,82" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+    <!-- Muzzle (boxy, llama-ish) -->
+    <rect x="148" y="105" width="28" height="18" rx="6" fill="#e8e0d0" stroke="#080810" stroke-width="2.5"/>
     <!-- Nostrils -->
-    <circle cx="151" cy="112" r="4" fill="#D4827A" opacity=".6"/>
-    <circle cx="165" cy="112" r="4" fill="#D4827A" opacity=".6"/>
-
-    <!-- Fluffy top knot -->
-    <path d="M145,52 C140,42 143,32 150,30 C153,40 152,50 148,56Z" fill="url(#llama-body)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M158,48 C156,36 160,26 165,26 C166,37 163,48 160,52Z" fill="url(#llama-body)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M171,52 C176,42 173,32 166,30 C163,40 164,50 168,56Z" fill="url(#llama-body)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
-
+    <ellipse cx="155" cy="116" rx="3.5" ry="2.5" fill="#080810" opacity=".5"/>
+    <ellipse cx="167" cy="116" rx="3.5" ry="2.5" fill="#080810" opacity=".5"/>
+    <!-- Ground shadow -->
+    <ellipse cx="165" cy="373" rx="70" ry="7" fill="rgba(0,0,0,.08)"/>
   </g>
 </svg>`
   },
@@ -2250,104 +2172,79 @@ const CHARACTERS = {
     subtitle: 'Noble Beast · Fledgling Form',
     rarity: 'rare',
     rarityLabel: '◈ Rare',
-    accentColor: '#FFB300',
+    accentColor: '#c8a840',
     region: 'european',
     lore: 'Half eagle, half lion — the gryphon guards what is most precious and cannot be bribed.',
     haiku: '翼と爪で<br>宝を守り抜く<br>天と地の子',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="gryph-fore" cx="38%" cy="32%" r="68%">
-      <stop offset="0%" stop-color="#f5e8cc"/>
-      <stop offset="100%" stop-color="#d8c890"/>
+    <radialGradient id="gryph-body" cx="35%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#f0e8c8"/>
+      <stop offset="100%" stop-color="#c8a840"/>
     </radialGradient>
-    <radialGradient id="gryph-hind" cx="38%" cy="32%" r="68%">
-      <stop offset="0%" stop-color="#f0e4c0"/>
-      <stop offset="100%" stop-color="#ccc080"/>
+    <radialGradient id="gryph-wing" cx="20%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#fefcf5"/>
+      <stop offset="100%" stop-color="#d4c48a"/>
     </radialGradient>
-    <radialGradient id="gryph-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFB300" stop-opacity=".25"/>
-      <stop offset="100%" stop-color="#FFB300" stop-opacity="0"/>
+    <radialGradient id="gryph-aura" cx="50%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#c8a840" stop-opacity=".25"/>
+      <stop offset="100%" stop-color="#c8a840" stop-opacity="0"/>
     </radialGradient>
   </defs>
-
-  <ellipse cx="160" cy="365" rx="66" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="240" rx="95" ry="88" fill="url(#gryph-aura)"/>
-
+  <ellipse class="char-aura" cx="160" cy="200" rx="140" ry="130" fill="url(#gryph-aura)"/>
   <g class="char-float">
-
-    <!-- Wings (folded, behind) -->
-    <g class="wing-soar">
-      <path d="M108,200 C82,185 60,195 52,215 C64,208 80,204 94,210 C78,225 72,248 84,260 C92,240 100,220 108,210Z"
-        fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <!-- Feather detail -->
-      <path d="M60,216 C70,222 82,226 92,222" stroke="#080810" stroke-width="1.2" fill="none" opacity=".3"/>
-      <path d="M56,232 C68,236 80,238 90,234" stroke="#080810" stroke-width="1" fill="none" opacity=".25"/>
-    </g>
-    <g class="wing-soar" style="animation-delay:-.4s">
-      <path d="M212,200 C238,185 260,195 268,215 C256,208 240,204 226,210 C242,225 248,248 236,260 C228,240 220,220 212,210Z"
-        fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M260,216 C250,222 238,226 228,222" stroke="#080810" stroke-width="1.2" fill="none" opacity=".3"/>
-      <path d="M264,232 C252,236 240,238 230,234" stroke="#080810" stroke-width="1" fill="none" opacity=".25"/>
-    </g>
-
-    <!-- Lion hindquarters -->
-    <g class="char-body">
-      <ellipse cx="160" cy="280" rx="68" ry="62" fill="url(#gryph-hind)" stroke="#080810" stroke-width="4"/>
-      <!-- Lion tail -->
-      <path d="M220,272 C248,255 262,228 250,205 C242,188 224,186 216,200 C224,196 234,207 230,222 C226,236 218,252 220,272Z"
-        fill="url(#gryph-hind)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-      <!-- Tail tuft -->
-      <ellipse cx="248" cy="206" rx="10" ry="14" fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" transform="rotate(-20,248,206)"/>
-
-      <!-- Lion paws (back) -->
-      <path d="M110,328 C96,328 84,338 84,348 C94,344 106,340 114,342Z" fill="url(#gryph-hind)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M84,348 L80,356 M90,350 L88,358 M98,351 L98,359" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M210,328 C224,328 236,338 236,348 C226,344 214,340 206,342Z" fill="url(#gryph-hind)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M236,348 L240,356 M230,350 L232,358 M222,351 L222,359" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-    </g>
-
-    <!-- Eagle body/breast -->
-    <path d="M120,225 C120,192 138,172 160,172 C182,172 200,192 200,225 C200,252 184,268 160,268 C136,268 120,252 120,225Z"
-      fill="url(#gryph-fore)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <!-- Breast feather lines -->
-    <path d="M134,210 C140,202 152,200 160,204" stroke="#080810" stroke-width="1.2" fill="none" opacity=".2"/>
-    <path d="M130,225 C138,216 152,214 162,218" stroke="#080810" stroke-width="1.2" fill="none" opacity=".18"/>
-
-    <!-- Eagle head -->
-    <circle cx="160" cy="158" r="44" fill="url(#gryph-fore)" stroke="#080810" stroke-width="4"/>
-
-    <!-- Crest feathers -->
-    <path d="M145,118 L138,95 L150,112Z" fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M158,114 L155,90 L164,112Z" fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M171,118 L178,95 L166,112Z" fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-
-    <!-- Eyes (eagle, sharp) -->
-    <ellipse cx="136" cy="152" rx="17" ry="15" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="136" cy="152" r="10" fill="#FFB300"/>
-    <path d="M136,142 C138,147 138,157 136,162 C134,157 134,147 136,142Z" fill="#080810"/>
-    <circle cx="140" cy="147" r="3.5" fill="white" opacity=".9"/>
-    <!-- Fierce brow -->
-    <path d="M120,144 L148,140" stroke="#080810" stroke-width="3.5" stroke-linecap="round"/>
-
-    <ellipse cx="184" cy="152" rx="17" ry="15" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="184" cy="152" r="10" fill="#FFB300"/>
-    <path d="M184,142 C186,147 186,157 184,162 C182,157 182,147 184,142Z" fill="#080810"/>
-    <circle cx="188" cy="147" r="3.5" fill="white" opacity=".9"/>
-    <path d="M200,144 L172,140" stroke="#080810" stroke-width="3.5" stroke-linecap="round"/>
-
-    <!-- Eagle beak (hooked) -->
-    <path d="M147,166 C152,174 168,174 173,166 L170,182 C165,188 155,188 150,182Z"
-      fill="#FFB300" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M147,168 L173,168" stroke="#080810" stroke-width="1.2" opacity=".4"/>
-    <path d="M150,182 C153,188 160,190 166,186" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
-
+    <!-- LEFT WING (spread wide) -->
+    <path d="M118,200 C95,180 52,155 28,128 C42,140 55,158 65,175 M118,200 C88,195 45,188 20,180 C40,185 72,192 95,198 M118,200 C88,210 45,222 22,232 C44,222 78,212 102,205Z"
+      fill="url(#gryph-wing)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <!-- RIGHT WING (spread wide) -->
+    <path d="M202,200 C225,180 268,155 292,128 C278,140 265,158 255,175 M202,200 C232,195 275,188 300,180 C280,185 248,192 225,198 M202,200 C232,210 275,222 298,232 C276,222 242,212 218,205Z"
+      fill="url(#gryph-wing)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Lion body (hindquarters) -->
+    <ellipse cx="160" cy="285" rx="62" ry="50" fill="url(#gryph-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Lion tail -->
+    <path d="M220,298 C240,278 252,255 248,235 C244,220 234,218 228,225 C224,233 228,244 232,252 C222,248 216,255 218,266 C220,278 220,288 220,298Z"
+      fill="url(#gryph-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <!-- Tail tuft -->
+    <path d="M244,224 C248,215 252,210 255,212 C252,220 248,226 244,230Z"
+      fill="#080810" opacity=".6"/>
+    <!-- Lion hind legs -->
+    <rect x="118" y="320" width="26" height="48" rx="13" fill="url(#gryph-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="180" y="320" width="26" height="48" rx="13" fill="url(#gryph-body)" stroke="#080810" stroke-width="3.5"/>
+    <ellipse cx="131" cy="370" rx="16" ry="9" fill="url(#gryph-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="193" cy="370" rx="16" ry="9" fill="url(#gryph-body)" stroke="#080810" stroke-width="3"/>
+    <!-- Eagle chest/body (upper) -->
+    <ellipse cx="160" cy="228" rx="52" ry="48" fill="url(#gryph-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Feather texture on chest -->
+    <path d="M132,212 C140,206 152,204 162,208" stroke="#080810" stroke-width="1.5" fill="none" opacity=".2"/>
+    <path d="M128,222 C138,215 154,213 166,217" stroke="#080810" stroke-width="1.5" fill="none" opacity=".2"/>
+    <path d="M126,234 C138,227 156,225 170,229" stroke="#080810" stroke-width="1.5" fill="none" opacity=".2"/>
     <!-- Eagle talons (front) -->
-    <path d="M124,258 C112,258 100,266 100,276 C108,272 118,268 126,270Z" fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M100,276 L96,284 M106,278 L104,286 M114,279 L114,287" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-    <path d="M196,258 C208,258 220,266 220,276 C212,272 202,268 194,270Z" fill="url(#gryph-fore)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M220,276 L224,284 M214,278 L216,286 M206,279 L206,287" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-
+    <rect x="122" y="262" width="20" height="38" rx="10" fill="url(#gryph-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="180" y="262" width="20" height="38" rx="10" fill="url(#gryph-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Talon claws -->
+    <path d="M118,296 L112,306 M126,298 L122,308 M134,298 L132,308" stroke="#080810" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <path d="M176,296 L170,306 M184,298 L180,308 M192,298 L192,308" stroke="#080810" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+    <!-- EAGLE HEAD (the hero) -->
+    <ellipse cx="160" cy="170" rx="42" ry="40" fill="url(#gryph-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Crest feathers -->
+    <path d="M148,132 L144,108 L156,128Z" fill="url(#gryph-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M160,130 L158,104 L170,128Z" fill="url(#gryph-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M172,132 L174,108 L182,130Z" fill="url(#gryph-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- HOOKED EAGLE BEAK (very prominent) -->
+    <path d="M118,175 C105,175 92,180 88,188 C88,196 96,200 108,198 C118,198 128,192 130,184 C128,178 124,175 118,175Z"
+      fill="#c8a840" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <!-- Beak hook -->
+    <path d="M88,188 C84,194 86,202 92,204" stroke="#080810" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Fierce eyes -->
+    <ellipse cx="148" cy="162" rx="13" ry="11" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="148" cy="162" rx="8" ry="8" fill="#c8a840"/>
+    <circle cx="148" cy="162" r="4" fill="#080810"/>
+    <circle cx="151" cy="159" r="2" fill="white" opacity=".9"/>
+    <!-- Fierce eyebrow -->
+    <path d="M136,152 L160,155" stroke="#080810" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- Ground shadow -->
+    <ellipse cx="160" cy="362" rx="70" ry="8" fill="rgba(0,0,0,.08)"/>
   </g>
 </svg>`
   },

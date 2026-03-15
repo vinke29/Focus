@@ -446,8 +446,8 @@ function renderCollection() {
         return `<span class="var-dot ${owned ? 'owned' : ''}" style="background:${v.color}" title="${v.label}${n > 1 ? ' ×' + n : ''}"></span>`;
       }).join('');
 
-      // English name: take the part after the last '·' in char.name
-      const nameEn = char.name.includes('·') ? char.name.split('·').pop().trim() : char.name;
+      // English name: use charNameEn to handle Japanese-first vs English-first names
+      const nameEn = charNameEn(char);
 
       // Info
       const info = document.createElement('div');
@@ -484,7 +484,10 @@ let modalOwnedVariants = [];
 let modalVariantIndex  = 0;
 
 function charNameEn(char) {
-  return char.name.includes('·') ? char.name.split('·').pop().trim() : char.name;
+  if (!char.name.includes('·')) return char.name;
+  const parts = char.name.split('·').map(s => s.trim());
+  // If first part is ASCII (English first), use it; otherwise use last part
+  return /^[A-Za-z0-9'\-\s]+$/.test(parts[0]) ? parts[0] : parts[parts.length - 1];
 }
 
 function openCardModal(charId, vc) {
