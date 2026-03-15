@@ -112,11 +112,11 @@
   <header class="collection-header">
     <div class="collection-top">
       <button id="btn-back-to-timer" class="nav-btn">←</button>
-      <span class="collection-title">図鑑 · collection</span>
+      <span class="collection-title">collection</span>
     </div>
     <div class="region-tabs">
       <button class="region-btn active" data-region="all">all</button>
-      <button class="region-btn" data-region="japanese">日本</button>
+      <button class="region-btn" data-region="japanese">japan</button>
       <button class="region-btn" data-region="americas">americas</button>
       <button class="region-btn" data-region="european">europe</button>
       <button class="region-btn" data-region="african">africa</button>
@@ -132,13 +132,33 @@
 <div id="card-modal" class="modal-overlay">
   <div id="card-modal-inner" class="modal-inner">
     <button id="modal-close" class="modal-close">×</button>
-    <div id="modal-art" class="modal-art"></div>
+
+    <!-- Flippable card: click art to see lore/haiku on back -->
+    <div id="modal-card" class="modal-card">
+      <div class="modal-card-inner">
+        <div class="modal-card-front">
+          <div id="modal-art" class="modal-art"></div>
+        </div>
+        <div class="modal-card-back">
+          <div id="modal-back-name" class="modal-back-name"></div>
+          <div id="modal-back-lore" class="modal-back-lore"></div>
+          <div id="modal-back-haiku" class="modal-back-haiku"></div>
+          <div class="modal-back-hint">click to flip</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info strip -->
     <div class="modal-info">
       <div id="modal-name" class="modal-name"></div>
       <div id="modal-sub" class="modal-sub"></div>
       <div id="modal-rarity" class="modal-rarity"></div>
-      <div id="modal-haiku" class="modal-haiku"></div>
-      <div id="modal-variants" class="modal-variants"></div>
+      <!-- Variant navigation (hidden when only 1 variant owned) -->
+      <div id="modal-var-nav" class="modal-var-nav">
+        <button id="modal-prev" class="modal-nav-arrow">←</button>
+        <span id="modal-var-label" class="modal-var-label"></span>
+        <button id="modal-next" class="modal-nav-arrow">→</button>
+      </div>
     </div>
   </div>
 </div>

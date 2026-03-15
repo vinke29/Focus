@@ -32,12 +32,14 @@ const CHARACTERS = {
   shiro: {
     id: 'shiro',
     name: '白猫 · Shiro',
-    nameShort: '白猫',
+    nameShort: 'Shiro',
+    region: 'japanese',
     subtitle: 'White Cat Spirit · Baby Form',
     rarity: 'common',
     rarityLabel: '◇ Common',
     accentColor: '#f0a500',
-    haiku: '月の下で<br>白猫は夢を見る<br>静かな夜明け',
+    lore: 'A ghost-white cat spirit born from a moonbeam, who brings calm focus to those who welcome her into their study.',
+    haiku: 'Beneath the full moon<br>the white cat dreams in silence<br>still dawn holds her breath',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -162,12 +164,14 @@ const CHARACTERS = {
   karasu: {
     id: 'karasu',
     name: '烏天狗 · Karasu',
-    nameShort: '烏天狗',
+    nameShort: 'Karasu',
+    region: 'japanese',
     subtitle: 'Crow Tengu · Fledgling Form',
     rarity: 'rare',
     rarityLabel: '◈ Rare',
     accentColor: '#d40000',
-    haiku: '赤い瞳で<br>嵐を見通す鴉<br>知恵の使者よ',
+    lore: 'A young crow tengu who memorises every secret spoken beneath the forest canopy and trades wisdom for focused silence.',
+    haiku: 'Red eyes cut the storm<br>the crow reads winds before dawn<br>wisdom needs no words',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -302,12 +306,14 @@ const CHARACTERS = {
   kyubi: {
     id: 'kyubi',
     name: '九尾狐 · Kyūbi',
-    nameShort: '九尾',
+    nameShort: 'Kyūbi',
+    region: 'japanese',
     subtitle: 'Nine-Tail Fox Spirit · Baby Form',
     rarity: 'legendary',
     rarityLabel: '✦ Legendary',
     accentColor: '#0047ff',
-    haiku: '雷光の狐<br>集中の炎が<br>今、覚醒す',
+    lore: 'A legendary nine-tailed fox whose tails fan like starlight — each one earned through a century of perfect, unbroken focus.',
+    haiku: 'Nine tails arc like stars<br>the fox spirit wakes at dusk<br>focus lights the sky',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
   <defs>

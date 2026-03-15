@@ -481,74 +481,82 @@ function renderCollection() {
 }
 
 // ── CARD MODAL ────────────────────────────────────────────────────────────────
-let modalActiveVariantId = 'standard';
+let modalChar          = null;
+let modalVc            = null;
+let modalOwnedVariants = [];
+let modalVariantIndex  = 0;
 
-function openCardModal(charId, vc) {
-  const char    = CHARACTERS[charId];
-  if (!char) return;
-
-  const overlay = document.getElementById('card-modal');
-  const nameEn  = char.name.includes('·') ? char.name.split('·').pop().trim() : char.name;
-  const ownedVariants = VARIANTS.filter(v => (vc[v.id] || 0) > 0);
-
-  // Default to rarest owned variant
-  const bestVariant = ownedVariants.length
-    ? ownedVariants[ownedVariants.length - 1]
-    : VARIANTS[0];
-  modalActiveVariantId = bestVariant.id;
-
-  document.getElementById('modal-art').innerHTML     = char.svg;
-  document.getElementById('modal-name').textContent  = nameEn;
-  document.getElementById('modal-sub').textContent   = char.subtitle;
-  document.getElementById('modal-haiku').innerHTML   = char.haiku || '';
-
-  renderModalVariants(vc);
-  updateModalRarity(char, bestVariant);
-
-  overlay.classList.add('open');
+function charNameEn(char) {
+  return char.name.includes('·') ? char.name.split('·').pop().trim() : char.name;
 }
 
-function renderModalVariants(vc) {
-  const container = document.getElementById('modal-variants');
-  const ownedVariants = VARIANTS.filter(v => (vc[v.id] || 0) > 0);
+function openCardModal(charId, vc) {
+  const char = CHARACTERS[charId];
+  if (!char) return;
 
-  // Only show variant selector if user owns more than one variant type
-  if (ownedVariants.length < 2) { container.innerHTML = ''; return; }
+  modalChar          = char;
+  modalVc            = vc;
+  modalOwnedVariants = VARIANTS.filter(v => (vc[v.id] || 0) > 0);
+  // Start on rarest owned variant
+  modalVariantIndex  = Math.max(0, modalOwnedVariants.length - 1);
 
-  container.innerHTML = ownedVariants.map(v => {
-    const n       = vc[v.id] || 0;
-    const active  = v.id === modalActiveVariantId ? 'active' : '';
-    const label   = n > 1 ? `${v.label} ×${n}` : v.label;
-    return `<button class="modal-var-btn ${active}" style="color:${v.color};border-color:${v.color}"
-      data-variant="${v.id}">${label}</button>`;
-  }).join('');
+  const nameEn = charNameEn(char);
 
-  container.querySelectorAll('.modal-var-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      modalActiveVariantId = btn.dataset.variant;
-      container.querySelectorAll('.modal-var-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // Update rarity badge color
-      const char    = CHARACTERS[document.getElementById('modal-name').textContent.toLowerCase()] ||
-                      Object.values(CHARACTERS).find(c => {
-                        const en = c.name.includes('·') ? c.name.split('·').pop().trim() : c.name;
-                        return en === document.getElementById('modal-name').textContent;
-                      });
-      const variant = VARIANTS.find(v => v.id === modalActiveVariantId);
-      if (char && variant) updateModalRarity(char, variant);
-    });
-  });
+  // Reset flip state
+  document.getElementById('modal-card').classList.remove('flipped');
+
+  // Front: art
+  document.getElementById('modal-art').innerHTML = char.svg;
+
+  // Back: lore + haiku
+  document.getElementById('modal-back-name').textContent = nameEn;
+  document.getElementById('modal-back-lore').textContent  = char.lore  || '';
+  document.getElementById('modal-back-haiku').innerHTML   = char.haiku || '';
+
+  // Info strip
+  document.getElementById('modal-name').textContent = nameEn;
+  document.getElementById('modal-sub').textContent  = char.subtitle;
+
+  renderModalVariantNav();
+  document.getElementById('card-modal').classList.add('open');
+}
+
+function renderModalVariantNav() {
+  const variant = modalOwnedVariants[modalVariantIndex] || VARIANTS[0];
+  updateModalRarity(modalChar, variant);
+
+  const nav = document.getElementById('modal-var-nav');
+  if (modalOwnedVariants.length < 2) { nav.style.display = 'none'; return; }
+  nav.style.display = 'flex';
+
+  const label = document.getElementById('modal-var-label');
+  const n     = modalVc[variant.id] || 0;
+  label.textContent = n > 1 ? `${variant.label} ×${n}` : variant.label;
+  label.style.color = variant.color;
+
+  const prev = document.getElementById('modal-prev');
+  const next = document.getElementById('modal-next');
+  prev.disabled = modalVariantIndex === 0;
+  next.disabled = modalVariantIndex === modalOwnedVariants.length - 1;
+}
+
+function stepModalVariant(dir) {
+  const newIdx = modalVariantIndex + dir;
+  if (newIdx < 0 || newIdx >= modalOwnedVariants.length) return;
+  modalVariantIndex = newIdx;
+  renderModalVariantNav();
 }
 
 function updateModalRarity(char, variant) {
   const el = document.getElementById('modal-rarity');
-  el.textContent   = char.rarityLabel + ' · ' + variant.label;
-  el.style.color   = variant.color;
+  el.textContent       = char.rarityLabel + ' · ' + variant.label;
+  el.style.color       = variant.color;
   el.style.borderColor = variant.color;
 }
 
 function closeCardModal() {
   document.getElementById('card-modal').classList.remove('open');
+  document.getElementById('modal-card').classList.remove('flipped');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
@@ -569,10 +577,19 @@ function init() {
   document.getElementById('timer-egg').innerHTML = EGG_SVG_SMALL;
   updateTimerDisplay();
 
-  // Card modal close
+  // Card modal
   document.getElementById('modal-close').addEventListener('click', closeCardModal);
   document.getElementById('card-modal').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeCardModal(); // click backdrop
+    if (e.target === e.currentTarget) closeCardModal();
+  });
+  document.getElementById('modal-card').addEventListener('click', () => {
+    document.getElementById('modal-card').classList.toggle('flipped');
+  });
+  document.getElementById('modal-prev').addEventListener('click', e => {
+    e.stopPropagation(); stepModalVariant(-1);
+  });
+  document.getElementById('modal-next').addEventListener('click', e => {
+    e.stopPropagation(); stepModalVariant(1);
   });
 
   // Duration picker
@@ -626,6 +643,11 @@ function init() {
         state.previewAll = !state.previewAll;
         renderCollection();
       }
+    }
+    // Arrow keys — cycle variants in modal
+    if (document.getElementById('card-modal').classList.contains('open')) {
+      if (e.key === 'ArrowLeft')  { stepModalVariant(-1); return; }
+      if (e.key === 'ArrowRight') { stepModalVariant(1);  return; }
     }
     // Escape — close modal first, then back to timer from collection
     if (e.key === 'Escape') {
