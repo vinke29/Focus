@@ -363,15 +363,9 @@ body::after {
 }
 .char-card:hover .card-tooltip { opacity: 1; }
 .tip-haiku {
-  font-size: .56rem; letter-spacing: .08em;
-  line-height: 2; color: #555;
+  font-size: .54rem; letter-spacing: .06em;
+  line-height: 2.1; color: #666;
   font-style: italic;
-}
-.tip-lore {
-  font-size: .5rem; letter-spacing: .05em;
-  color: #888; line-height: 1.6;
-  border-top: 1px solid rgba(8,8,16,.12);
-  padding-top: .4rem;
 }
 
 /* ── CARD MODAL ── */

@@ -431,14 +431,11 @@ function renderCollection() {
         card.appendChild(badge);
       }
 
-      // Tooltip (haiku + lore)
-      if (char.haiku || char.lore) {
+      // Tooltip — haiku only on small card; lore lives in the modal
+      if (char.haiku) {
         const tip = document.createElement('div');
         tip.className = 'card-tooltip';
-        tip.innerHTML = `
-          ${char.lore ? `<div class="tip-lore">${char.lore}</div>` : ''}
-          ${char.haiku ? `<div class="tip-haiku">${char.haiku}</div>` : ''}
-        `;
+        tip.innerHTML = `<div class="tip-haiku">${char.haiku}</div>`;
         card.appendChild(tip);
       }
 
