@@ -897,8 +897,20 @@ function renderCollection() {
     }
   }
 
-  // All characters in defined order (insertion order from CHARACTERS object)
-  const allIds = Object.keys(CHARACTERS);
+  // Most recently collected first, locked cards at the end
+  const latestTs = {}; // charId → most recent timestamp
+  state.collection.forEach(e => {
+    if (!latestTs[e.id] || e.timestamp > latestTs[e.id]) latestTs[e.id] = e.timestamp;
+  });
+
+  const allIds = Object.keys(CHARACTERS).sort((a, b) => {
+    const tsA = latestTs[a] || 0;
+    const tsB = latestTs[b] || 0;
+    if (tsA && tsB) return tsB - tsA;   // both owned — newest first
+    if (tsA) return -1;                 // a owned, b locked — a first
+    if (tsB) return 1;                  // b owned, a locked — b first
+    return 0;                           // both locked — keep original order
+  });
 
   allIds.forEach(id => {
     const char  = CHARACTERS[id];
