@@ -523,6 +523,7 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #collection-grid {
   width: 100%; max-width: 760px;
   display: grid; grid-template-columns: repeat(4, 1fr);
+  align-content: start;
   gap: 1rem; padding: 1.2rem 1.8rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
