@@ -770,6 +770,20 @@ function init() {
         onTimerComplete();
       }
     }
+    // F — force fusion test: seeds 2 Shiro Standard then hatches a 3rd (from timer view)
+    if (e.key === 'f' || e.key === 'F') {
+      if (state.view === 'timer') {
+        state.collection.push(
+          { id: 'shiro', variant: 'standard', timestamp: Date.now() - 2000 },
+          { id: 'shiro', variant: 'standard', timestamp: Date.now() - 1000 }
+        );
+        saveCollection();
+        const orig = rollCharacter;
+        window.rollCharacter = () => ({ character: CHARACTERS.shiro, variant: VARIANTS[0] });
+        onTimerComplete();
+        window.rollCharacter = orig;
+      }
+    }
     // C — open collection from timer
     if (e.key === 'c' || e.key === 'C') {
       if (state.view === 'timer') navigateTo('collection');
