@@ -777,9 +777,10 @@ function renderCollection() {
       // Click → open modal
       card.addEventListener('click', () => openCardModal(id, vc));
     } else {
-      // Locked
+      // Locked — show silhouette of the character for mystery/desire
       const art = document.createElement('div');
       art.className = 'card-art';
+      art.innerHTML = char.svg;
       card.appendChild(art);
       const info = document.createElement('div');
       info.className = 'card-info';
@@ -1488,6 +1489,8 @@ async function init() {
     // Auto-focus sign-in email field
     setTimeout(() => document.getElementById('si-email').focus(), 100);
   }
+  // Reveal — show the correct view now that auth is determined (prevents flash)
+  document.body.style.opacity = '1';
 }
 
 document.addEventListener('DOMContentLoaded', init);
