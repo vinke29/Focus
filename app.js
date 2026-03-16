@@ -1,3 +1,8 @@
+// Capture at script-parse time — before DOMContentLoaded and before Supabase's
+// async initialize() can clear the URL hash. Used to detect OAuth redirects.
+const _isOAuthRedirect = window.location.hash.includes('access_token=') ||
+                         window.location.search.includes('code=');
+
 // ── FUSION ────────────────────────────────────────────────────────────────────
 const VARIANT_NEXT = { standard: 'gold', gold: 'crimson', crimson: 'void' };
 
@@ -1378,8 +1383,14 @@ async function handleSignedIn(user) {
   renderTimerStats();
 
   // fast-path: per-user flag avoids a profile fetch on every login
+  // Also checks legacy global flag (migration for accounts from before per-user key)
   const onboardedKey = `focus-onboarded-${user.id}`;
-  const hasOnboarded = localStorage.getItem(onboardedKey) === 'true';
+  const legacyOnboarded = localStorage.getItem('focus-onboarded') === 'true';
+  const hasOnboarded = localStorage.getItem(onboardedKey) === 'true' || legacyOnboarded;
+  if (legacyOnboarded) {
+    localStorage.setItem(onboardedKey, 'true');
+    localStorage.removeItem('focus-onboarded');
+  }
   const profile = hasOnboarded ? null : await DB.loadProfile().catch(() => null);
 
   if (hasOnboarded || profile?.name) {
@@ -1504,10 +1515,6 @@ function showOnboardingEgg(name) {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
-  // Must capture BEFORE any awaits — Supabase's async initialize() clears the hash
-  const isOAuthRedirect = window.location.hash.includes('access_token=') ||
-                          window.location.search.includes('code=');
-
   loadMuteState();
   initDarkMode();
   initReminder();
@@ -1680,7 +1687,7 @@ async function init() {
       } else if (event === 'INITIAL_SESSION') {
         if (sess) {
           subscription.unsubscribe(); done(sess);       // returning user
-        } else if (!isOAuthRedirect) {
+        } else if (!_isOAuthRedirect) {
           subscription.unsubscribe(); done(null);       // no session, no OAuth
         }
         // null + isOAuthRedirect → stay subscribed, wait for SIGNED_IN
