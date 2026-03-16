@@ -54,6 +54,15 @@ const DB = {
     if (error) throw error;
   },
 
+  async signInWithGoogle() {
+    if (!_sb) throw new Error('offline');
+    const { error } = await _sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href }
+    });
+    if (error) throw error;
+  },
+
   // ── PROFILE ───────────────────────────────────────────────────────────────
 
   async loadProfile() {

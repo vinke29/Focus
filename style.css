@@ -90,6 +90,30 @@ body::after {
 .auth-btn:hover::before { transform: scaleX(1); }
 .auth-btn:disabled { opacity: .45; pointer-events: none; }
 
+.auth-btn-google {
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  width: 100%; padding: .62rem 1rem;
+  background: none; border: 1.5px solid rgba(8,8,16,.28);
+  border-radius: 6px; cursor: pointer;
+  font-family: 'Noto Serif JP', serif;
+  font-size: .72rem; letter-spacing: .06em; color: var(--ink);
+  transition: border-color .2s, background .2s;
+}
+.auth-btn-google:hover { border-color: var(--ink); background: rgba(8,8,16,.04); }
+.auth-btn-google:disabled { opacity: .45; pointer-events: none; }
+
+.auth-divider {
+  display: flex; align-items: center; gap: .7rem;
+  font-size: .62rem; letter-spacing: .1em; opacity: .38;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--ink); opacity: .28;
+}
+
+body.dark .auth-btn-google { border-color: rgba(221,215,200,.2); }
+body.dark .auth-btn-google:hover { border-color: rgba(221,215,200,.6); background: rgba(221,215,200,.04); }
+
 .auth-error {
   font-size: .65rem; letter-spacing: .06em;
   color: var(--red); min-height: 1rem;

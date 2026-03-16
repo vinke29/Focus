@@ -1219,11 +1219,42 @@ function setAuthLoading(btn, loading) {
   span.textContent = loading ? '...' : btn.dataset.origText;
 }
 
+function isNewGoogleUser(user) {
+  return (
+    user.app_metadata?.provider === 'google' &&
+    (Date.now() - new Date(user.created_at).getTime() < 90_000) &&
+    !localStorage.getItem('focus-name')
+  );
+}
+
+async function performGoogleSignIn() {
+  const btn = document.getElementById('btn-google');
+  btn.disabled = true;
+  document.getElementById('google-error').textContent = '';
+  try {
+    await DB.signInWithGoogle(); // redirects; execution stops here
+  } catch(e) {
+    document.getElementById('google-error').textContent = e.message || 'google sign-in failed';
+    btn.disabled = false;
+  }
+}
+
 async function handleSignedIn(user) {
   // Use localStorage cache immediately for fast render
   loadCollection();
   loadSessions();
   renderTimerStats();
+
+  // New Google user — detect via creation timestamp + no local name
+  if (isNewGoogleUser(user)) {
+    const name = user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name || 'there';
+    localStorage.setItem('focus-name', name);
+    state.collection = [];
+    sessions = [];
+    await DB.saveProfile(name).catch(() => {});
+    showOnboardingEgg(name);
+    return;
+  }
 
   // New user who confirmed email after sign-up: show onboarding egg
   if (localStorage.getItem('focus-new-user') === 'true') {
@@ -1418,6 +1449,9 @@ async function init() {
     SFX.crack(0.7);
     startOnboarding();
   });
+
+  // Google sign-in
+  document.getElementById('btn-google').addEventListener('click', performGoogleSignIn);
 
   // Auth: tab switching
   document.getElementById('tab-signin').addEventListener('click', () => {
