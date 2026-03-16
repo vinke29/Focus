@@ -1656,31 +1656,27 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  const isOAuthCallback = window.location.hash.includes('access_token=');
+  // onAuthStateChange fires after Supabase's async initialize() completes
+  // (including processing OAuth tokens). Use it as the primary signal with
+  // a getSession() fallback after 1s for versions that don't fire INITIAL_SESSION.
+  const session = await new Promise(resolve => {
+    let resolved = false;
+    const done = (sess) => { if (!resolved) { resolved = true; resolve(sess); } };
 
-  let session;
-  if (isOAuthCallback) {
-    // OAuth redirect: Supabase may fire SIGNED_OUT then SIGNED_IN.
-    // Wait specifically for SIGNED_IN to avoid resolving on the SIGNED_OUT.
-    session = await new Promise(resolve => {
-      let resolved = false;
-      const { data: { subscription } } = DB.onAuthStateChange((event, sess) => {
-        if (resolved) return;
-        if (event === 'SIGNED_IN' && sess) {
-          resolved = true;
-          subscription.unsubscribe();
-          resolve(sess);
-        }
-      });
-      setTimeout(() => {
-        if (!resolved) { resolved = true; subscription.unsubscribe(); resolve(null); }
-      }, 5000);
+    const { data: { subscription } } = DB.onAuthStateChange((event, sess) => {
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
+        subscription.unsubscribe();
+        done(sess);
+      }
     });
-  } else {
-    // Normal load: session is already in localStorage, getSession() is instant.
-    const { data } = await DB.getSession();
-    session = data.session;
-  }
+
+    // Fallback: if INITIAL_SESSION never fires, read from localStorage directly
+    setTimeout(async () => {
+      const { data } = await DB.getSession();
+      subscription.unsubscribe();
+      done(data.session);
+    }, 1000);
+  });
 
   if (session) {
     await handleSignedIn(session.user);
