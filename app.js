@@ -80,10 +80,13 @@ function showFusionScreen(char, fromVariant, toVariant) {
 
   // Animation sequence
   setTimeout(() => title.classList.add('show'), 200);
-  setTimeout(() => orbs.forEach(o => o.classList.add('pop')), 600);
+  setTimeout(() => {
+    orbs.forEach((o, i) => setTimeout(() => { o.classList.add('pop'); SFX.fusionOrbPop(); }, i * 80));
+  }, 600);
 
   // Converge orbs toward center
   setTimeout(() => {
+    SFX.fusionConverge();
     const rowEl = document.getElementById('fusion-orbs-row');
     const rowCx = rowEl.getBoundingClientRect().left + rowEl.getBoundingClientRect().width / 2;
     orbs.forEach((o, i) => {
@@ -95,8 +98,8 @@ function showFusionScreen(char, fromVariant, toVariant) {
     });
   }, 1500);
 
-  setTimeout(() => core.classList.add('burst'), 1960);
-  setTimeout(() => result.classList.add('reveal'), 2200);
+  setTimeout(() => { core.classList.add('burst'); SFX.fusionBurst(); }, 1960);
+  setTimeout(() => { result.classList.add('reveal'); SFX.fusionReveal(toVariant.id); }, 2200);
   setTimeout(() => btn.classList.add('show'), 2950);
 }
 
@@ -160,11 +163,12 @@ function renderTimerStats() {
   const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
   const parts     = [];
 
-  if (streak > 0) parts.push(`<span class="stat-streak">🔥 ${streak}</span>`);
-  parts.push(`${sessions.length} session${sessions.length !== 1 ? 's' : ''}`);
-  parts.push(formatHours(totalMins));
+  const streakLine = streak > 0
+    ? `<span class="stat-streak">🔥 ${streak} day streak</span>`
+    : '';
+  const totalsLine = `<span class="stat-totals">${sessions.length} session${sessions.length !== 1 ? 's' : ''}<span class="stat-sep"> · </span>${formatHours(totalMins)} focused</span>`;
 
-  el.innerHTML = parts.join('<span class="stat-sep"> · </span>');
+  el.innerHTML = streakLine + totalsLine;
   el.classList.add('has-data');
 }
 
@@ -222,7 +226,8 @@ const state = {
   hatch: { character: null, variant: null },
   collection: [],  // [{ id, timestamp }]
   filter: 'all',
-  previewAll: false
+  previewAll: false,
+  onboarding: false   // true during the welcome hatch
 };
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -247,7 +252,7 @@ function navigateTo(viewId) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
-  if (viewId === 'collection') renderCollection();
+  if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
 }
 
 
@@ -329,6 +334,7 @@ function resetTimerState() {
 function onTimerComplete() {
   addSession(state.timer.duration / 60);
   renderTimerStats();
+  notifySessionComplete();
 
   const { character, variant } = rollCharacter();
   state.hatch.character = character;
@@ -431,13 +437,17 @@ function runHatchSequence() {
     cracks.style.opacity    = '1';
     cracks.style.transition = 'opacity .1s';
     animateCracks();
+    SFX.crack();
   }, 1600);
 
+  setTimeout(() => SFX.crack(0.55), 1920);
+
   // 2. Shake at 2.2s
-  setTimeout(() => shakeEgg(egg), 2200);
+  setTimeout(() => { shakeEgg(egg); SFX.rumble(); }, 2200);
 
   // 3. BURST at 3.0s
   setTimeout(() => {
+    SFX.burst(state.hatch.character.rarity);
     // Flash
     flash.style.opacity = '1';
     setTimeout(() => {
@@ -812,11 +822,124 @@ function closeCardModal() {
   document.getElementById('modal-card').classList.remove('flipped');
 }
 
+// ── ONBOARDING ────────────────────────────────────────────────────────────────
+function getUserName() {
+  return localStorage.getItem('focus-name') || '';
+}
+
+function saveName(name) {
+  localStorage.setItem('focus-name', name.trim());
+}
+
+function updateCollectionTitle() {
+  const el = document.getElementById('collection-title');
+  if (!el) return;
+  const name = getUserName();
+  el.textContent = name ? `${name}'s collection` : 'collection';
+}
+
+function rollWelcomeCharacter() {
+  const pool = RARITY_WEIGHTS.find(t => t.rarity === 'common').pool;
+  const id   = pool[Math.floor(Math.random() * pool.length)];
+  return { character: CHARACTERS[id], variant: VARIANTS[0] }; // always standard
+}
+
+function startOnboarding() {
+  const { character, variant } = rollWelcomeCharacter();
+  state.hatch.character = character;
+  state.hatch.variant   = variant;
+  state.onboarding      = true;
+  addToCollection(character, variant);
+
+  // Customise the hatch CTA for onboarding
+  document.getElementById('btn-focus-again').innerHTML  = '<span>begin your journey</span>';
+  document.getElementById('btn-see-collection').innerHTML = '<span>see your collection</span>';
+
+  prepareHatchView(character, variant);
+  navigateTo('hatch');
+  setTimeout(runHatchSequence, 400);
+}
+
+function finishOnboarding() {
+  state.onboarding = false;
+  // Restore normal hatch button labels
+  document.getElementById('btn-focus-again').innerHTML  = '<span>focus again</span>';
+  document.getElementById('btn-see-collection').innerHTML = '<span>collection</span>';
+  resetTimerState();
+  navigateTo('timer');
+}
+
+function showOnboarding() {
+  navigateTo('onboard');
+  document.getElementById('ob-slide-1').classList.add('active');
+  document.getElementById('ob-slide-2').classList.remove('active');
+  document.getElementById('ob-egg-wrap').innerHTML = EGG_SVG_SMALL;
+  // Reset ring + begin button for re-entry (e.g. after Shift+X)
+  document.getElementById('ob-ring-fill').style.strokeDashoffset = '741.12';
+  document.getElementById('ob-begin').style.opacity = '1';
+  document.getElementById('ob-begin').style.pointerEvents = 'auto';
+  document.getElementById('ob-egg-wrap').style.filter = '';
+  // Auto-focus name input after view fades in
+  setTimeout(() => document.getElementById('ob-name').focus(), 500);
+}
+
+function runObTimer() {
+  const ringFill    = document.getElementById('ob-ring-fill');
+  const eggWrap     = document.getElementById('ob-egg-wrap');
+  const circumference = 741.12;
+  const duration    = 30;
+  let elapsed       = 0;
+
+  const tick = setInterval(() => {
+    elapsed++;
+    const progress = elapsed / duration;
+    ringFill.style.transition     = 'stroke-dashoffset .8s linear';
+    ringFill.style.strokeDashoffset = circumference * (1 - progress);
+
+    // Egg glow builds toward full intensity
+    const glow = Math.round(progress * 22);
+    const alpha = (progress * 0.55).toFixed(2);
+    const svg   = eggWrap.querySelector('svg');
+    if (svg) svg.style.filter = `drop-shadow(0 0 ${glow}px rgba(0,71,255,${alpha}))`;
+
+    if (elapsed >= duration) {
+      clearInterval(tick);
+      startOnboarding();
+    }
+  }, 1000);
+}
+
+// ── NOTIFICATIONS ─────────────────────────────────────────────────────────────
+function requestNotificationPermission() {
+  if (!('Notification' in window) || Notification.permission !== 'default') return;
+  Notification.requestPermission();
+}
+
+function notifySessionComplete() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+  if (!document.hidden) return; // tab is visible — no need
+  new Notification('Focus · 集中', {
+    body: 'Session complete — your creature is ready to hatch 🥚',
+    icon: '/icon.svg',
+    tag:  'focus-complete',
+    renotify: false
+  });
+}
+
+// ── SERVICE WORKER ────────────────────────────────────────────────────────────
+function registerSW() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
   loadCollection();
   loadSessions();
   renderTimerStats();
+  registerSW();
 
   // Particle canvas
   particleCanvas = document.getElementById('particles');
@@ -831,6 +954,13 @@ function init() {
   // Inject small egg into timer view
   document.getElementById('timer-egg').innerHTML = EGG_SVG_SMALL;
   updateTimerDisplay();
+
+  // Route: first visit → onboarding, returning user → timer
+  if (!getUserName()) {
+    showOnboarding();
+  } else {
+    navigateTo('timer');
+  }
 
   // Fusion overlay
   document.getElementById('btn-fusion-ok').addEventListener('click', closeFusionScreen);
@@ -855,8 +985,12 @@ function init() {
     btn.addEventListener('click', () => setDuration(parseInt(btn.dataset.min)));
   });
 
-  // Start/pause button
-  document.getElementById('btn-start-focus').addEventListener('click', toggleTimer);
+  // Start/pause button — also unlocks AudioContext and requests notification permission on first gesture
+  document.getElementById('btn-start-focus').addEventListener('click', () => {
+    SFX.unlock();
+    requestNotificationPermission();
+    toggleTimer();
+  });
 
   // Collection button
   document.getElementById('btn-open-collection').addEventListener('click', () => navigateTo('collection'));
@@ -866,10 +1000,41 @@ function init() {
   });
 
   // Hatch actions
-  document.getElementById('btn-see-collection').addEventListener('click', () => navigateTo('collection'));
+  document.getElementById('btn-see-collection').addEventListener('click', () => {
+    if (state.onboarding) finishOnboarding();
+    navigateTo('collection');
+  });
   document.getElementById('btn-focus-again').addEventListener('click', () => {
+    if (state.onboarding) { finishOnboarding(); return; }
     resetTimerState();
     navigateTo('timer');
+  });
+
+  // Onboarding: name slide → welcome slide
+  const obNext = document.getElementById('ob-next');
+  const obName = document.getElementById('ob-name');
+  function submitName() {
+    const val = obName.value.trim();
+    if (!val) { obName.focus(); return; }
+    saveName(val);
+    SFX.unlock();
+    // Transition slide 1 → slide 2
+    const s1 = document.getElementById('ob-slide-1');
+    const s2 = document.getElementById('ob-slide-2');
+    s1.classList.remove('active');
+    document.getElementById('ob-greeting').textContent = `welcome, ${val}`;
+    setTimeout(() => s2.classList.add('active'), 200);
+  }
+  obNext.addEventListener('click', submitName);
+  obName.addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+
+  // Onboarding: begin button → 30s focus countdown
+  document.getElementById('ob-begin').addEventListener('click', () => {
+    SFX.unlock();
+    const btn = document.getElementById('ob-begin');
+    btn.style.opacity = '0';
+    btn.style.pointerEvents = 'none';
+    runObTimer();
   });
 
   // Region filter tabs
@@ -944,8 +1109,9 @@ function init() {
         saveCollection();
         sessions = [];
         localStorage.removeItem('focus-sessions');
+        localStorage.removeItem('focus-name');
         renderTimerStats();
-        navigateTo('timer');
+        showOnboarding();
       }
     }
     // S — seed fake session history for testing stats (Shift+S)

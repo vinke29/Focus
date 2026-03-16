@@ -5,11 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Focus · 集中</title>
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#080810">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Focus">
+<link rel="apple-touch-icon" href="icon.svg">
 </head>
 <body>
 
+<!-- ── ONBOARD VIEW ── -->
+<div id="view-onboard" class="view active">
+  <div id="ob-slide-1" class="ob-slide">
+    <div class="ob-logo">Focus · 集中</div>
+    <p class="ob-prompt">what's your name?</p>
+    <input id="ob-name" class="ob-input" type="text"
+           placeholder="your name" maxlength="24"
+           autocomplete="off" autocapitalize="words" spellcheck="false">
+    <button id="ob-next" class="ob-btn"><span>→</span></button>
+  </div>
+  <div id="ob-slide-2" class="ob-slide">
+    <p id="ob-greeting" class="ob-greeting"></p>
+    <div id="ob-egg-stage">
+      <svg id="ob-ring" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle class="ring-track" cx="130" cy="130" r="118"/>
+        <circle id="ob-ring-fill" class="ring-fill" cx="130" cy="130" r="118"/>
+      </svg>
+      <div id="ob-egg-wrap"><!-- egg injected by JS --></div>
+    </div>
+    <p class="ob-hint">take 30 seconds · breathe</p>
+    <button id="ob-begin" class="ob-btn"><span>begin</span></button>
+  </div>
+</div>
+
 <!-- ── TIMER VIEW ── -->
-<div id="view-timer" class="view active">
+<div id="view-timer" class="view">
   <button id="btn-open-collection" class="nav-btn">集</button>
 
   <main class="timer-main">
@@ -114,7 +144,7 @@
   <header class="collection-header">
     <div class="collection-top">
       <button id="btn-back-to-timer" class="nav-btn">←</button>
-      <span class="collection-title">collection</span>
+      <span class="collection-title" id="collection-title">collection</span>
     </div>
     <div id="collection-stats"></div>
     <div class="region-tabs">
@@ -186,6 +216,7 @@
 </div>
 
 <script src="characters.js"></script>
+<script src="sounds.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
