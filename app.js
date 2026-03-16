@@ -773,13 +773,35 @@ function init() {
 
   // DEV shortcuts
   document.addEventListener('keydown', e => {
-    // H — instant hatch (from timer view)
+    // H — instant hatch (from timer view); Shift+H cycles through all rarity/variant combos for badge preview
     if (e.key === 'h' || e.key === 'H') {
-      if (state.view === 'timer') {
-        state.timer.remaining = 0;
-        clearInterval(state.timer.interval);
-        state.timer.running = false;
-        onTimerComplete();
+      if (state.view === 'timer' || state.view === 'hatch') {
+        if (e.shiftKey) {
+          // Cycle through a showcase: common·standard → rare·standard → legendary·standard → legendary·gold → legendary·crimson → legendary·void
+          const showcase = [
+            { char: CHARACTERS.shiro,       variant: VARIANTS[0] }, // common standard
+            { char: CHARACTERS.koi,         variant: VARIANTS[0] }, // rare standard
+            { char: CHARACTERS.kyubi,       variant: VARIANTS[0] }, // legendary standard
+            { char: CHARACTERS.kyubi,       variant: VARIANTS[1] }, // legendary gold
+            { char: CHARACTERS.kyubi,       variant: VARIANTS[2] }, // legendary crimson
+            { char: CHARACTERS.kyubi,       variant: VARIANTS[3] }, // legendary void
+          ];
+          const idx = ((state._showcaseIdx || 0)) % showcase.length;
+          state._showcaseIdx = idx + 1;
+          const { char, variant } = showcase[idx];
+          state.hatch.character = char;
+          state.hatch.variant   = variant;
+          prepareHatchView(char, variant);
+          navigateTo('hatch');
+          document.getElementById('hatch-header').classList.add('show');
+          document.getElementById('hatch-actions').classList.add('show');
+          document.getElementById('char-wrap').style.opacity = '1';
+        } else {
+          clearInterval(state.timer.interval);
+          state.timer.remaining = 0;
+          state.timer.running = false;
+          onTimerComplete();
+        }
       }
     }
     // F — force fusion test: seeds 2 Shiro Standard then hatches a 3rd (from timer view)
@@ -794,6 +816,24 @@ function init() {
         window.rollCharacter = () => ({ character: CHARACTERS.shiro, variant: VARIANTS[0] });
         onTimerComplete();
         window.rollCharacter = orig;
+      }
+    }
+    // G — god mode: fill collection with every character × every variant
+    if (e.key === 'g' || e.key === 'G') {
+      Object.keys(CHARACTERS).forEach(id => {
+        VARIANTS.forEach(v => {
+          state.collection.push({ id, variant: v.id, timestamp: Date.now() });
+        });
+      });
+      saveCollection();
+      navigateTo('collection');
+    }
+    // X — wipe collection (reset god mode)
+    if (e.key === 'x' || e.key === 'X') {
+      if (e.shiftKey) {
+        state.collection = [];
+        saveCollection();
+        navigateTo('timer');
       }
     }
     // C — open collection from timer
