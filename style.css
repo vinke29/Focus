@@ -382,6 +382,19 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 }
 #streak-warning.show { opacity: .55; }
 #view-timer.running #streak-warning { opacity: 0; pointer-events: none; }
+
+#reminder-btn {
+  margin-top: .5rem;
+  background: none; border: none; cursor: pointer;
+  font-family: 'Noto Serif JP', serif;
+  font-size: .5rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink); opacity: 0; transition: opacity .4s ease;
+  padding: .25rem .4rem;
+}
+#reminder-btn.visible { opacity: .35; }
+#reminder-btn.on      { opacity: .65; }
+#reminder-btn:hover   { opacity: .7; }
+#view-timer.running #reminder-btn { opacity: 0; pointer-events: none; }
 .stat-streak {
   font-size: .58rem; letter-spacing: .18em;
   text-transform: uppercase; color: var(--ink); opacity: .55;

@@ -225,6 +225,71 @@ function updateStreakWarning() {
   el.classList.add('show');
 }
 
+// ── DAILY REMINDER ────────────────────────────────────────────────────────────
+
+const REMINDER_HOUR = 20; // 8 pm
+
+function todayDateKey() {
+  const d = new Date();
+  return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate();
+}
+
+function reminderEnabled() {
+  return localStorage.getItem('focus-reminder') === 'on';
+}
+
+function updateReminderBtn() {
+  const btn = document.getElementById('reminder-btn');
+  if (!btn) return;
+  const on = reminderEnabled();
+  btn.textContent = on ? '🔔 remind me at 8pm — on' : '🔔 remind me at 8pm';
+  btn.classList.toggle('on', on);
+  btn.classList.add('visible');
+}
+
+function checkReminderNotification() {
+  if (!reminderEnabled()) return;
+  if (Notification.permission !== 'granted') return;
+  const now = new Date();
+  if (now.getHours() < REMINDER_HOUR) return;
+  const dayKey = ts => { const d = new Date(ts); return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate(); };
+  const todayKey = todayDateKey();
+  if (sessions.some(s => dayKey(s.timestamp) === todayKey)) return; // already sessioned today
+  if (localStorage.getItem('focus-reminded-date') === String(todayKey)) return; // already notified today
+  localStorage.setItem('focus-reminded-date', String(todayKey));
+  const n = new Notification('Focus · 集中', {
+    body: 'Time for your daily focus session 🔥',
+    icon: '/icon.svg',
+    tag:  'focus-daily-reminder',
+  });
+  n.onclick = () => { window.focus(); n.close(); };
+}
+
+async function toggleReminder() {
+  if (!('Notification' in window)) return;
+  if (reminderEnabled()) {
+    localStorage.setItem('focus-reminder', 'off');
+    updateReminderBtn();
+    return;
+  }
+  let perm = Notification.permission;
+  if (perm === 'default') perm = await Notification.requestPermission();
+  if (perm !== 'granted') return; // user denied — silently do nothing
+  localStorage.setItem('focus-reminder', 'on');
+  updateReminderBtn();
+  checkReminderNotification();
+}
+
+function initReminder() {
+  if (!('Notification' in window)) return;
+  updateReminderBtn();
+  checkReminderNotification();
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) checkReminderNotification();
+  });
+  setInterval(checkReminderNotification, 5 * 60 * 1000);
+}
+
 function renderCollectionStats() {
   const ownedIds   = new Set(state.collection.map(e => e.id));
   const totalChars = Object.keys(CHARACTERS).length;
@@ -314,6 +379,7 @@ function navigateTo(viewId) {
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
+  if (viewId === 'timer') { updateStreakWarning(); updateReminderBtn(); }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard';
   const muteBtn = document.getElementById('btn-mute');
   if (muteBtn) { muteBtn.style.opacity = noMute ? '0' : ''; muteBtn.style.pointerEvents = noMute ? 'none' : ''; }
@@ -1370,6 +1436,7 @@ function showOnboardingEgg(name) {
 async function init() {
   loadMuteState();
   initDarkMode();
+  initReminder();
   registerSW();
   setInterval(updateStreakWarning, 5 * 60 * 1000); // re-check every 5 min
 
@@ -1427,6 +1494,9 @@ async function init() {
   document.getElementById('btn-back-to-timer').addEventListener('click', () => {
     navigateTo('timer');
   });
+
+  // Daily reminder toggle
+  document.getElementById('reminder-btn').addEventListener('click', toggleReminder);
 
   // Sign out
   document.getElementById('btn-signout').addEventListener('click', performSignOut);
