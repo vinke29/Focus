@@ -1673,24 +1673,9 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  // Detect Supabase OAuth callback — PKCE uses ?code=, implicit uses #access_token=
-  const isOAuthCallback = window.location.search.includes('code=') ||
-                          window.location.hash.includes('access_token=');
-
-  let session = null;
-  if (isOAuthCallback) {
-    // Supabase exchanges the OAuth code asynchronously after client init.
-    // Poll getSession() until it resolves (up to ~3s), then proceed.
-    for (let i = 0; i < 15; i++) {
-      const { data } = await DB.getSession();
-      if (data.session) { session = data.session; break; }
-      await new Promise(r => setTimeout(r, 200));
-    }
-  } else {
-    const { data } = await DB.getSession();
-    session = data.session;
-  }
-
+  // With implicit flow, tokens land in the URL hash immediately — no async
+  // code exchange, no sessionStorage dependency (which iOS Safari clears).
+  const { data: { session } } = await DB.getSession();
   if (session) {
     await handleSignedIn(session.user);
   } else {

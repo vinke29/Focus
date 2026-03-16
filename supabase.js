@@ -8,7 +8,11 @@ let _sb = null;
 try {
   if (window.supabase && SUPABASE_URL.includes('supabase.co')) {
     _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: { persistSession: true, autoRefreshToken: true }
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        flowType: 'implicit',   // PKCE loses sessionStorage on iOS Safari redirect
+      }
     });
   }
 } catch(e) {
