@@ -1,3 +1,106 @@
+// ── FUSION ────────────────────────────────────────────────────────────────────
+const VARIANT_NEXT = { standard: 'gold', gold: 'crimson', crimson: 'void' };
+
+// Drop hint: shown on hatch screen for uncommon finds only
+const DROP_HINTS = {
+  'rare-standard':     '~1 in 4 sessions',
+  'legendary-standard':'~1 in 16 sessions',
+  'common-gold':       '~1 in 17 sessions',
+  'rare-gold':         '~1 in 40 sessions',
+  'legendary-gold':    '~1 in 160 sessions',
+  'common-crimson':    '~1 in 170 sessions',
+  'rare-crimson':      '~1 in 400 sessions',
+  'legendary-crimson': '~1 in 1,600 sessions',
+  'common-void':       '~1 in 1,700 sessions',
+  'rare-void':         '~1 in 4,000 sessions',
+  'legendary-void':    '~1 in 16,000 sessions',
+};
+
+function checkFusion(charId, variantId) {
+  if (!VARIANT_NEXT[variantId]) return false; // Void can't fuse further
+  const count = state.collection.filter(
+    e => e.id === charId && (e.variant || 'standard') === variantId
+  ).length;
+  return count >= 3;
+}
+
+function applyFusion(charId, fromVariantId) {
+  const toVariantId = VARIANT_NEXT[fromVariantId];
+  if (!toVariantId) return null;
+  let removed = 0;
+  state.collection = state.collection.filter(e => {
+    if (removed < 3 && e.id === charId && (e.variant || 'standard') === fromVariantId) {
+      removed++;
+      return false;
+    }
+    return true;
+  });
+  state.collection.push({ id: charId, variant: toVariantId, timestamp: Date.now() });
+  saveCollection();
+  return VARIANTS.find(v => v.id === toVariantId);
+}
+
+let pendingFusion = null;
+
+function showFusionScreen(char, fromVariant, toVariant) {
+  const overlay = document.getElementById('fusion-overlay');
+  const title   = document.getElementById('fusion-title');
+  const orbs    = [document.getElementById('fo0'), document.getElementById('fo1'), document.getElementById('fo2')];
+  const core    = document.getElementById('fusion-core');
+  const result  = document.getElementById('fusion-result');
+  const btn     = document.getElementById('btn-fusion-ok');
+
+  // Reset state
+  title.classList.remove('show');
+  orbs.forEach(o => {
+    o.classList.remove('pop');
+    o.style.cssText = '';
+    o.style.color      = fromVariant.color;
+    o.style.background = fromVariant.color + '1a';
+    o.style.boxShadow  = `0 0 18px ${fromVariant.color}44`;
+  });
+  core.classList.remove('burst');
+  core.style.background = toVariant.color;
+  core.style.boxShadow  = `0 0 50px 24px ${toVariant.color}66`;
+  result.classList.remove('reveal');
+  btn.classList.remove('show');
+
+  // Populate result
+  document.getElementById('fusion-result-art').innerHTML = char.svg;
+  document.getElementById('fusion-result-name').textContent = charNameEn(char);
+  const badge = document.getElementById('fusion-result-badge');
+  badge.textContent    = char.rarityLabel + ' · ' + toVariant.label;
+  badge.style.color    = toVariant.color;
+  badge.style.borderColor = toVariant.color;
+
+  overlay.classList.add('open');
+
+  // Animation sequence
+  setTimeout(() => title.classList.add('show'), 200);
+  setTimeout(() => orbs.forEach(o => o.classList.add('pop')), 600);
+
+  // Converge orbs toward center
+  setTimeout(() => {
+    const rowEl = document.getElementById('fusion-orbs-row');
+    const rowCx = rowEl.getBoundingClientRect().left + rowEl.getBoundingClientRect().width / 2;
+    orbs.forEach((o, i) => {
+      const oCx = o.getBoundingClientRect().left + o.getBoundingClientRect().width / 2;
+      const dx  = rowCx - oCx;
+      o.style.transition = 'all .42s ease-in';
+      o.style.transform  = `translateX(${dx}px) scale(0.25)`;
+      o.style.opacity    = '0';
+    });
+  }, 1500);
+
+  setTimeout(() => core.classList.add('burst'), 1960);
+  setTimeout(() => result.classList.add('reveal'), 2200);
+  setTimeout(() => btn.classList.add('show'), 2950);
+}
+
+function closeFusionScreen() {
+  document.getElementById('fusion-overlay').classList.remove('open');
+}
+
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const state = {
   view: 'timer',
@@ -118,9 +221,32 @@ function onTimerComplete() {
   state.hatch.character = character;
   state.hatch.variant   = variant;
   addToCollection(character, variant);
+
+  // Check if this hatch triggered a fusion
+  if (checkFusion(character.id, variant.id)) {
+    const toVariant = applyFusion(character.id, variant.id);
+    if (toVariant) {
+      const fromVariant = VARIANTS.find(v => v.id === variant.id);
+      pendingFusion = { char: character, fromVariant, toVariant };
+    }
+  } else {
+    pendingFusion = null;
+  }
+
   prepareHatchView(character, variant);
   navigateTo('hatch');
   setTimeout(runHatchSequence, 400);
+
+  // Auto-trigger fusion animation after the hatch sequence finishes
+  if (pendingFusion) {
+    setTimeout(() => {
+      if (pendingFusion) {
+        const { char, fromVariant, toVariant } = pendingFusion;
+        pendingFusion = null;
+        showFusionScreen(char, fromVariant, toVariant);
+      }
+    }, 5600);
+  }
 }
 
 // ── HATCH SEQUENCE ────────────────────────────────────────────────────────────
@@ -137,10 +263,18 @@ function prepareHatchView(character, variant) {
   // Character info
   document.getElementById('char-name').textContent   = character.name;
   document.getElementById('char-sub').textContent    = character.subtitle;
-  // Rarity badge shows variant tier (color + label)
-  document.getElementById('char-rarity').textContent   = character.rarityLabel + ' · ' + variant.label;
-  document.getElementById('char-rarity').style.borderColor = variant.color;
-  document.getElementById('char-rarity').style.color       = variant.color;
+
+  // Rarity badge — styled by tier + variant
+  const rarityEl = document.getElementById('char-rarity');
+  rarityEl.textContent    = character.rarityLabel + ' · ' + variant.label;
+  rarityEl.style.color    = variant.color;
+  rarityEl.style.borderColor = variant.color;
+  rarityEl.style.background  = variant.id !== 'standard' ? variant.color + '18' : 'transparent';
+  rarityEl.className = `tier-${character.rarity} variant-${variant.id}`;
+
+  // Drop hint (only for rarer finds)
+  const hintEl = document.getElementById('char-drop-hint');
+  hintEl.textContent = DROP_HINTS[`${character.rarity}-${variant.id}`] || '';
 
   // Reset egg
   const egg = document.getElementById('hatch-egg');
@@ -576,6 +710,9 @@ function init() {
   // Inject small egg into timer view
   document.getElementById('timer-egg').innerHTML = EGG_SVG_SMALL;
   updateTimerDisplay();
+
+  // Fusion overlay
+  document.getElementById('btn-fusion-ok').addEventListener('click', closeFusionScreen);
 
   // Card modal
   document.getElementById('modal-close').addEventListener('click', closeCardModal);
