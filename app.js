@@ -1377,8 +1377,9 @@ async function handleSignedIn(user) {
   loadSessions();
   renderTimerStats();
 
-  // fast-path: if this device has already completed onboarding, skip profile fetch
-  const hasOnboarded = localStorage.getItem('focus-onboarded') === 'true';
+  // fast-path: per-user flag avoids a profile fetch on every login
+  const onboardedKey = `focus-onboarded-${user.id}`;
+  const hasOnboarded = localStorage.getItem(onboardedKey) === 'true';
   const profile = hasOnboarded ? null : await DB.loadProfile().catch(() => null);
 
   if (hasOnboarded || profile?.name) {
@@ -1405,7 +1406,7 @@ async function handleSignedIn(user) {
                user.user_metadata?.name || 'there';
 
   localStorage.setItem('focus-name', name);
-  localStorage.setItem('focus-onboarded', 'true'); // set before onboarding in case of crash
+  localStorage.setItem(onboardedKey, 'true'); // set before onboarding in case of crash
   state.collection = [];
   sessions = [];
   await DB.saveProfile(name).catch(() => {});
