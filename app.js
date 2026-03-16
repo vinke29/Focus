@@ -1281,7 +1281,6 @@ async function init() {
   // Collection button
   document.getElementById('btn-open-collection').addEventListener('click', () => navigateTo('collection'));
   document.getElementById('btn-back-to-timer').addEventListener('click', () => {
-    resetTimerState();
     navigateTo('timer');
   });
 
@@ -1471,7 +1470,6 @@ async function init() {
     if (e.key === 'Escape') {
       if (document.getElementById('card-modal').classList.contains('open')) { closeCardModal(); return; }
       if (state.view === 'collection') {
-        resetTimerState();
         navigateTo('timer');
       }
     }
