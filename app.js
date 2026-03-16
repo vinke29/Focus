@@ -1673,26 +1673,36 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  // Use onAuthStateChange as the single source of truth.
-  // INITIAL_SESSION fires immediately on subscribe with the current session
-  // (or null), replacing getSession(). SIGNED_IN catches OAuth redirects
-  // that finish resolving after INITIAL_SESSION fires with null.
-  let authInitDone = false;
-  DB.onAuthStateChange(async (event, session) => {
-    if (event === 'INITIAL_SESSION') {
-      authInitDone = true;
-      if (session) {
+  // Detect Supabase OAuth callback — PKCE flow uses ?code=, implicit uses #access_token=
+  const isOAuthCallback = window.location.search.includes('code=') ||
+                          window.location.hash.includes('access_token=');
+
+  if (isOAuthCallback) {
+    // Keep page invisible and wait for Supabase to finish the token exchange,
+    // which fires SIGNED_IN. Don't show auth at all during this window.
+    DB.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session) {
         await handleSignedIn(session.user);
-      } else {
-        navigateTo('auth');
-        setTimeout(() => document.getElementById('si-email').focus(), 100);
+        document.body.style.opacity = '1';
       }
-      document.body.style.opacity = '1';
-    } else if (event === 'SIGNED_IN' && authInitDone && state.view === 'auth') {
-      // OAuth redirect resolved after initial session check returned null
-      handleSignedIn(session.user);
+    });
+    // Safety fallback: if exchange fails or takes too long, show auth
+    setTimeout(() => {
+      if (document.body.style.opacity !== '1') {
+        navigateTo('auth');
+        document.body.style.opacity = '1';
+      }
+    }, 8000);
+  } else {
+    const { data: { session } } = await DB.getSession();
+    if (session) {
+      await handleSignedIn(session.user);
+    } else {
+      navigateTo('auth');
+      setTimeout(() => document.getElementById('si-email').focus(), 100);
     }
-  });
+    document.body.style.opacity = '1';
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);
