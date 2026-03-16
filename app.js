@@ -253,6 +253,22 @@ function navigateTo(viewId) {
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
+  // Hide mute button on collection (back button occupies that corner)
+  const muteBtn = document.getElementById('btn-mute');
+  if (muteBtn) muteBtn.style.opacity = viewId === 'collection' ? '0' : '';
+}
+
+function loadMuteState() {
+  const m = localStorage.getItem('focus-muted') === 'true';
+  SFX.setMuted(m);
+  document.getElementById('btn-mute').classList.toggle('muted', m);
+}
+
+function toggleMute() {
+  const m = !SFX.isMuted();
+  SFX.setMuted(m);
+  localStorage.setItem('focus-muted', String(m));
+  document.getElementById('btn-mute').classList.toggle('muted', m);
 }
 
 
@@ -906,6 +922,7 @@ function registerSW() {
 function init() {
   loadCollection();
   loadSessions();
+  loadMuteState();
   renderTimerStats();
   registerSW();
 
@@ -952,6 +969,9 @@ function init() {
   document.querySelectorAll('.dur-btn').forEach(btn => {
     btn.addEventListener('click', () => setDuration(parseInt(btn.dataset.min)));
   });
+
+  // Mute toggle
+  document.getElementById('btn-mute').addEventListener('click', toggleMute);
 
   // Start/pause button — also unlocks AudioContext and requests notification permission on first gesture
   document.getElementById('btn-start-focus').addEventListener('click', () => {

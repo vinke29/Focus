@@ -99,6 +99,15 @@ body::after {
 }
 .view.active { opacity: 1; pointer-events: all; }
 
+/* ── MUTE BUTTON ── */
+.mute-btn {
+  position: fixed; top: 1.4rem; left: 1.8rem; z-index: 50;
+  transition: opacity .2s;
+}
+.mute-btn .sv-x    { display: none; }
+.mute-btn.muted .sv-waves { display: none; }
+.mute-btn.muted .sv-x    { display: block; }
+
 /* ── NAV BUTTON ── */
 .nav-btn {
   background: none; border: none;

@@ -1,12 +1,16 @@
 // ── SOUND DESIGN — Web Audio synthesis, no files ──────────────────────────────
 const SFX = (() => {
   let ctx = null;
+  let muted = false;
 
   function ac() {
     if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
     if (ctx.state === 'suspended') ctx.resume();
     return ctx;
   }
+
+  function setMuted(val) { muted = val; }
+  function isMuted()     { return muted; }
 
   // Unlock AudioContext on first user gesture
   function unlock() { ac(); }
@@ -48,6 +52,7 @@ const SFX = (() => {
 
   // A short shell-crack transient
   function crack(vol = 1) {
+    if (muted) return;
     const c = ac(), t = c.currentTime;
     noise(c, t,        0.07, 1400, 2.8, 0.32 * vol);
     noise(c, t,        0.14, 350,  1.4, 0.18 * vol);
@@ -56,6 +61,7 @@ const SFX = (() => {
 
   // Low rumble during egg shake
   function rumble() {
+    if (muted) return;
     const c = ac(), t = c.currentTime;
     noise(c, t,      0.55, 90,  1.2, 0.12);
     noise(c, t+0.1,  0.4,  170, 1.5, 0.08);
@@ -63,6 +69,7 @@ const SFX = (() => {
 
   // Burst + rarity-tuned sparkle reveal
   function burst(rarity) {
+    if (muted) return;
     const c = ac(), t = c.currentTime;
 
     // Shell shatter — layered noise
@@ -97,6 +104,7 @@ const SFX = (() => {
 
   // Soft magical pop when each orb appears
   function fusionOrbPop() {
+    if (muted) return;
     const c = ac(), t = c.currentTime;
     tone(c, 320, 'sine', t,      0.22, 0.14, 180);
     noise(c, t,  0.1,   2200, 5, 0.08);
@@ -104,6 +112,7 @@ const SFX = (() => {
 
   // Rising whine as orbs converge (call once, it lasts ~0.45s)
   function fusionConverge() {
+    if (muted) return;
     const c = ac(), t = c.currentTime;
     // Rising sawtooth through lowpass — sounds like energy building
     const o    = c.createOscillator();
@@ -124,6 +133,7 @@ const SFX = (() => {
 
   // Core implosion/explosion moment
   function fusionBurst() {
+    if (muted) return;
     const c = ac(), t = c.currentTime;
     noise(c, t,      0.22, 700,  1.4, 0.6);
     noise(c, t,      0.12, 3500, 3,   0.35);
@@ -139,6 +149,7 @@ const SFX = (() => {
 
   // Triumphant variant reveal arpeggio
   function fusionReveal(toVariantId) {
+    if (muted) return;
     const c = ac(), t = c.currentTime;
     const arps = {
       gold:    [392, 494, 587, 784, 988],   // G major — warm, bright
@@ -153,5 +164,5 @@ const SFX = (() => {
     tone(c, freqs[freqs.length - 1] * 2, 'triangle', t + freqs.length * 0.09, 0.8, 0.09);
   }
 
-  return { unlock, crack, rumble, burst, fusionOrbPop, fusionConverge, fusionBurst, fusionReveal };
+  return { unlock, setMuted, isMuted, crack, rumble, burst, fusionOrbPop, fusionConverge, fusionBurst, fusionReveal };
 })();
