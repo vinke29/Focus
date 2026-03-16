@@ -1359,14 +1359,6 @@ function setAuthLoading(btn, loading) {
   span.textContent = loading ? '...' : btn.dataset.origText;
 }
 
-function isNewGoogleUser(user) {
-  return (
-    user.app_metadata?.provider === 'google' &&
-    (Date.now() - new Date(user.created_at).getTime() < 90_000) &&
-    !localStorage.getItem('focus-name')
-  );
-}
-
 async function performGoogleSignIn() {
   const btn = document.getElementById('btn-google');
   btn.disabled = true;
@@ -1380,54 +1372,45 @@ async function performGoogleSignIn() {
 }
 
 async function handleSignedIn(user) {
-  // Use localStorage cache immediately for fast render
+  // Load from localStorage immediately for fast render
   loadCollection();
   loadSessions();
   renderTimerStats();
 
-  // New Google user — detect via creation timestamp + no local name
-  if (isNewGoogleUser(user)) {
-    const name = user.user_metadata?.full_name?.split(' ')[0] || user.user_metadata?.name || 'there';
-    localStorage.setItem('focus-name', name);
-    state.collection = [];
-    sessions = [];
-    await DB.saveProfile(name).catch(() => {});
-    showOnboardingEgg(name);
+  // Profile is the source of truth for new vs returning user.
+  // Await it before deciding — avoids heuristic races.
+  const profile = await DB.loadProfile().catch(() => null);
+
+  if (profile?.name) {
+    // ── Returning user ──────────────────────────────────────────────────────
+    localStorage.setItem('focus-name', profile.name);
+    updateCollectionTitle();
+    navigateTo('timer');
+    // Sync collection + sessions in background
+    Promise.all([DB.loadCollection(), DB.loadSessions()])
+      .then(([col, sess]) => {
+        if (col  !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
+        if (sess !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
+      })
+      .catch(() => {});
     return;
   }
 
-  // New user who confirmed email after sign-up (same device)
-  if (localStorage.getItem('focus-new-user') === 'true') {
-    localStorage.removeItem('focus-new-user');
-    const name = localStorage.getItem('focus-name') || user.user_metadata?.name || 'there';
-    state.collection = [];
-    sessions = [];
-    DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
-    showOnboardingEgg(name);
-    return;
-  }
+  // ── New user ──────────────────────────────────────────────────────────────
+  // No profile means they've never completed onboarding.
+  const isEmailNew = localStorage.getItem('focus-new-user') === 'true';
+  if (isEmailNew) localStorage.removeItem('focus-new-user');
 
-  navigateTo('timer');
+  const name = localStorage.getItem('focus-name') ||
+               user.user_metadata?.full_name?.split(' ')[0] ||
+               user.user_metadata?.name || 'there';
 
-  // Sync from Supabase in background and update cache
-  Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadProfile()])
-    .then(([col, sess, profile]) => {
-      if (col   !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
-      if (sess  !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
-      if (profile?.name)  { localStorage.setItem('focus-name', profile.name); updateCollectionTitle(); }
-
-      // Cross-device new user: confirmed email on a different device —
-      // no localStorage flag, but profile and collection are both empty
-      if (!profile?.name && col !== null && col.length === 0 && state.view === 'timer') {
-        const name = user.user_metadata?.name || 'there';
-        localStorage.setItem('focus-name', name);
-        DB.saveProfile(name).catch(() => {});
-        state.collection = [];
-        sessions = [];
-        showOnboardingEgg(name);
-      }
-    })
-    .catch(() => {}); // offline — localStorage cache is sufficient
+  localStorage.setItem('focus-name', name);
+  state.collection = [];
+  sessions = [];
+  await DB.saveProfile(name).catch(() => {});
+  if (isEmailNew) DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
+  showOnboardingEgg(name);
 }
 
 async function performSignIn() {
