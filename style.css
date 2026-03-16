@@ -100,8 +100,14 @@ body::after {
 }
 
 /* Sign-out button in collection header */
-.signout-btn { opacity: .6; font-size: .8rem; border: 1.5px solid rgba(8,8,16,.25); padding: .3rem .7rem; border-radius: 1px; }
-.signout-btn:hover { opacity: 1; border-color: var(--ink); }
+.signout-btn {
+  opacity: 1; font-size: .55rem; letter-spacing: .18em;
+  text-transform: lowercase;
+  border: 1.5px solid rgba(8,8,16,.3); padding: .32rem .8rem;
+  border-radius: 1px; color: var(--ink);
+  transition: opacity .2s, border-color .2s, background .2s, color .2s;
+}
+.signout-btn:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 
 /* ── ONBOARDING ── */
 #view-onboard { gap: 0; }
@@ -522,6 +528,9 @@ body::after {
   font-size: .5rem; letter-spacing: .2em;
   text-transform: uppercase; opacity: .35;
   user-select: none;
+}
+.locked-art {
+  border-bottom: none;
 }
 
 .card-info {
