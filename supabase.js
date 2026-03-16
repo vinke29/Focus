@@ -39,12 +39,12 @@ const DB = {
 
   async signUp(name, email, password) {
     if (!_sb) throw new Error('offline');
-    const { data, error } = await _sb.auth.signUp({ email, password });
+    // Pass name as metadata — a DB trigger picks it up and writes profiles
+    const { data, error } = await _sb.auth.signUp({
+      email, password,
+      options: { data: { name } }
+    });
     if (error) throw error;
-    // Insert profile row (may fail silently if email confirmation pending)
-    if (data.user) {
-      await _sb.from('profiles').upsert({ id: data.user.id, name }).throwOnError();
-    }
     return data; // data.session is null when email confirmation is required
   },
 
