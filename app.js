@@ -17,6 +17,27 @@ const DROP_HINTS = {
   'legendary-void':    '~1 in 80,000 sessions',
 };
 
+// ── MILESTONES ────────────────────────────────────────────────────────────────
+const MILESTONES = {
+  10:  { label: '10 sessions',   msg: "you're building a habit" },
+  25:  { label: '25 sessions',   msg: 'focus is becoming part of you' },
+  50:  { label: '50 sessions',   msg: 'halfway to a hundred' },
+  100: { label: '100 sessions',  msg: 'one hundred. legendary.' },
+  200: { label: '200 sessions',  msg: 'two hundred sessions deep' },
+  365: { label: '365 sessions',  msg: 'a full year of focus' },
+};
+
+function seenMilestones() {
+  try { return new Set(JSON.parse(localStorage.getItem('focus-milestones') || '[]')); }
+  catch(e) { return new Set(); }
+}
+
+function markMilestoneSeen(n) {
+  const seen = seenMilestones();
+  seen.add(n);
+  localStorage.setItem('focus-milestones', JSON.stringify([...seen]));
+}
+
 function checkFusion(charId, variantId) {
   if (!VARIANT_NEXT[variantId]) return false; // Void can't fuse further
   const count = state.collection.filter(
@@ -242,7 +263,8 @@ const state = {
   collection: [],  // [{ id, timestamp }]
   filter: 'all',
   previewAll: false,
-  onboarding: false   // true during the welcome hatch
+  onboarding: false,    // true during the welcome hatch
+  pendingMilestone: null
 };
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -294,11 +316,13 @@ function toggleMute() {
 
 function initDarkMode() {
   const dark = localStorage.getItem('focus-dark') === 'true';
+  document.documentElement.classList.toggle('dark', dark);
   document.body.classList.toggle('dark', dark);
 }
 
 function toggleDark() {
   const dark = document.body.classList.toggle('dark');
+  document.documentElement.classList.toggle('dark', dark);
   localStorage.setItem('focus-dark', String(dark));
 }
 
@@ -383,6 +407,15 @@ function onTimerComplete() {
   renderTimerStats();
   notifySessionComplete();
 
+  // Check for first-time milestone
+  const n = sessions.length;
+  if (MILESTONES[n] && !seenMilestones().has(n)) {
+    state.pendingMilestone = MILESTONES[n];
+    markMilestoneSeen(n);
+  } else {
+    state.pendingMilestone = null;
+  }
+
   const { character, variant } = rollCharacter();
   state.hatch.character = character;
   state.hatch.variant   = variant;
@@ -466,6 +499,7 @@ function prepareHatchView(character, variant) {
   // Reset UI
   document.getElementById('hatch-header').classList.remove('show');
   document.getElementById('hatch-actions').classList.remove('show');
+  document.getElementById('milestone-toast').classList.remove('show');
 
   // Resize particle canvas
   particleCanvas.width  = window.innerWidth;
@@ -545,6 +579,20 @@ function runHatchSequence() {
       document.getElementById('hatch-actions').classList.add('show');
     }, 600);
   }, 3600);
+
+  // 5. Milestone toast (if applicable) — appears after actions settle
+  if (state.pendingMilestone) {
+    const m = state.pendingMilestone;
+    setTimeout(() => {
+      document.getElementById('milestone-num').textContent = m.label;
+      document.getElementById('milestone-msg').textContent = m.msg;
+      document.getElementById('milestone-toast').classList.add('show');
+      // Auto-dismiss after 5s
+      setTimeout(() => {
+        document.getElementById('milestone-toast').classList.remove('show');
+      }, 5000);
+    }, 5000);
+  }
 }
 
 function animateCracks() {
@@ -823,10 +871,17 @@ function openCardModal(charId, vc) {
   // Front: art (filter applied in renderModalVariantNav after variant is known)
   document.getElementById('modal-art').innerHTML = char.svg;
 
-  // Back: lore + haiku
+  // Back: lore + haiku + meta
   document.getElementById('modal-back-name').textContent = nameEn;
   document.getElementById('modal-back-lore').textContent  = char.lore  || '';
   document.getElementById('modal-back-haiku').innerHTML   = char.haiku || '';
+
+  // Date first collected
+  const entries = state.collection.filter(e => e.id === charId && e.timestamp);
+  const firstTs = entries.length ? Math.min(...entries.map(e => e.timestamp)) : null;
+  document.getElementById('modal-back-date').textContent = firstTs
+    ? 'collected ' + new Date(firstTs).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    : '';
 
   // Info strip
   document.getElementById('modal-name').textContent = nameEn;
@@ -840,6 +895,10 @@ function renderModalVariantNav() {
   const variant = modalOwnedVariants[modalVariantIndex] || VARIANTS[0];
   updateModalRarity(modalChar, variant);
   applyVariantFilter(document.getElementById('modal-art'), variant.id);
+
+  // Update rarity odds on card back for current variant
+  const oddsKey = `${modalChar.rarity}-${variant.id}`;
+  document.getElementById('modal-back-odds').textContent = DROP_HINTS[oddsKey] || '';
 
   const nav = document.getElementById('modal-var-nav');
   if (modalOwnedVariants.length < 2) { nav.style.display = 'none'; return; }

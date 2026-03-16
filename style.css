@@ -205,6 +205,7 @@ body.dark .dark-btn-inline .icon-moon { display: none; }
 body.dark .dark-btn-inline .icon-sun  { display: block; }
 
 /* ── DARK MODE THEME ── */
+html.dark { background: #0f0f1a; }
 body.dark {
   --ink:   #ddd7c8;
   --paper: #0f0f1a;
@@ -476,6 +477,27 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #btn-see-collection, #btn-focus-again { flex: 1; }
 #hatch-actions.show { opacity: 1; }
 
+/* ── MILESTONE TOAST ── */
+#milestone-toast {
+  text-align: center;
+  opacity: 0; pointer-events: none;
+  transform: translateY(.6rem);
+  transition: opacity .6s ease, transform .6s ease;
+  margin-top: .8rem;
+}
+#milestone-toast.show {
+  opacity: 1; transform: translateY(0);
+}
+#milestone-num {
+  font-family: 'Zen Antique Soft', serif;
+  font-size: 1.1rem; letter-spacing: .12em; color: var(--ink);
+}
+#milestone-msg {
+  font-size: .5rem; letter-spacing: .22em;
+  text-transform: uppercase; opacity: .5;
+  margin-top: .25rem;
+}
+
 #hatch-actions button {
   background: none; border: 2px solid var(--ink);
   font-family: 'Noto Serif JP', serif;
@@ -726,6 +748,14 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   border-top: 1px solid rgba(8,8,16,.1);
   padding-top: .8rem; width: 100%;
 }
+.modal-back-meta {
+  display: flex; flex-direction: column; align-items: center; gap: .28rem;
+  width: 100%; border-top: 1px solid rgba(8,8,16,.1);
+  padding-top: .7rem; margin-top: .1rem;
+  font-size: .45rem; letter-spacing: .15em;
+  text-transform: uppercase; opacity: .45;
+}
+body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
 .modal-back-hint {
   font-size: .4rem; letter-spacing: .18em;
   text-transform: uppercase; opacity: .22;
