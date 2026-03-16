@@ -133,4 +133,9 @@ const DB = {
     if (!user) return;
     await _sb.from('sessions').insert({ user_id: user.id, duration });
   },
+
+  async invokeFunction(name, body) {
+    if (!_sb) return null;
+    return _sb.functions.invoke(name, { body });
+  },
 };

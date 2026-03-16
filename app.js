@@ -1122,6 +1122,7 @@ async function handleSignedIn(user) {
     const name = localStorage.getItem('focus-name') || 'there';
     state.collection = [];
     sessions = [];
+    DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
     showOnboardingEgg(name);
   } else {
     navigateTo('timer');
@@ -1178,6 +1179,7 @@ async function performSignUp() {
     state.collection = [];
     sessions = [];
     localStorage.removeItem('focus-new-user');
+    DB.invokeFunction('send-welcome-email', { email, name }).catch(() => {});
     showOnboardingEgg(name);
   } catch(e) {
     showAuthError('signup', e.message || 'sign up failed');

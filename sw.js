@@ -1,6 +1,6 @@
 // ── Focus Service Worker ───────────────────────────────────────────────────────
 // Network-first: always fetch fresh app files; fall back to cache when offline.
-const CACHE = 'focus-v14';
+const CACHE = 'focus-v15';
 const STATIC = ['/icon.svg', '/manifest.json'];
 
 self.addEventListener('install', e => {
