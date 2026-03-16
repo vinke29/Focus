@@ -38,6 +38,23 @@ function markMilestoneSeen(n) {
   localStorage.setItem('focus-milestones', JSON.stringify([...seen]));
 }
 
+const REGION_LABELS = {
+  japanese: 'japan', americas: 'americas', european: 'europe',
+  african: 'africa', fantasy: 'fantasy'
+};
+
+function getCompletedRegions(ownedIds) {
+  const regionTotal = {}, regionOwned = {};
+  Object.values(CHARACTERS).forEach(c => {
+    regionTotal[c.region] = (regionTotal[c.region] || 0) + 1;
+  });
+  ownedIds.forEach(id => {
+    const r = CHARACTERS[id]?.region;
+    if (r) regionOwned[r] = (regionOwned[r] || 0) + 1;
+  });
+  return new Set(Object.keys(regionTotal).filter(r => regionOwned[r] === regionTotal[r]));
+}
+
 function checkFusion(charId, variantId) {
   if (!VARIANT_NEXT[variantId]) return false; // Void can't fuse further
   const count = state.collection.filter(
@@ -264,7 +281,8 @@ const state = {
   filter: 'all',
   previewAll: false,
   onboarding: false,    // true during the welcome hatch
-  pendingMilestone: null
+  pendingMilestone: null,
+  pendingRegionComplete: null
 };
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -419,7 +437,15 @@ function onTimerComplete() {
   const { character, variant } = rollCharacter();
   state.hatch.character = character;
   state.hatch.variant   = variant;
+
+  // Detect newly completed region
+  const completedBefore = getCompletedRegions(new Set(state.collection.map(e => e.id)));
   addToCollection(character, variant);
+  const completedAfter  = getCompletedRegions(new Set(state.collection.map(e => e.id)));
+  const newRegion = [...completedAfter].find(r => !completedBefore.has(r));
+  state.pendingRegionComplete = newRegion || null;
+  // Region completion takes priority — suppress milestone toast if both fire
+  if (newRegion) state.pendingMilestone = null;
 
   // Check if this hatch triggered a fusion
   if (checkFusion(character.id, variant.id)) {
@@ -580,17 +606,27 @@ function runHatchSequence() {
     }, 600);
   }, 3600);
 
-  // 5. Milestone toast (if applicable) — appears after actions settle
-  if (state.pendingMilestone) {
+  // 5. Region complete or milestone toast — appears after actions settle
+  if (state.pendingRegionComplete) {
+    const region = state.pendingRegionComplete;
+    const label  = REGION_LABELS[region] || region;
+    const total  = Object.values(CHARACTERS).filter(c => c.region === region).length;
+    setTimeout(() => {
+      document.getElementById('milestone-num').textContent = `${label} complete`;
+      document.getElementById('milestone-msg').textContent = `all ${total} characters discovered`;
+      const toast = document.getElementById('milestone-toast');
+      toast.classList.add('show', 'region-complete');
+      setTimeout(() => toast.classList.remove('show', 'region-complete'), 5000);
+      state.pendingRegionComplete = null;
+    }, 5000);
+  } else if (state.pendingMilestone) {
     const m = state.pendingMilestone;
     setTimeout(() => {
       document.getElementById('milestone-num').textContent = m.label;
       document.getElementById('milestone-msg').textContent = m.msg;
-      document.getElementById('milestone-toast').classList.add('show');
-      // Auto-dismiss after 5s
-      setTimeout(() => {
-        document.getElementById('milestone-toast').classList.remove('show');
-      }, 5000);
+      const toast = document.getElementById('milestone-toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 5000);
     }, 5000);
   }
 }
@@ -757,6 +793,19 @@ function renderCollection() {
     const v = e.variant || 'standard'; // backward compat
     variantCounts[e.id][v] = (variantCounts[e.id][v] || 0) + 1;
   });
+
+  // Completion banner for a fully-discovered region
+  if (state.filter !== 'all') {
+    const ownedIds = new Set(state.collection.map(e => e.id));
+    const regionChars = Object.values(CHARACTERS).filter(c => c.region === state.filter);
+    const isComplete  = regionChars.length > 0 && regionChars.every(c => ownedIds.has(c.id));
+    if (isComplete) {
+      const banner = document.createElement('div');
+      banner.className = 'region-complete-banner';
+      banner.textContent = `✦  ${REGION_LABELS[state.filter] || state.filter} complete  ✦  all ${regionChars.length} characters discovered`;
+      grid.appendChild(banner);
+    }
+  }
 
   // All characters in defined order (insertion order from CHARACTERS object)
   const allIds = Object.keys(CHARACTERS);

@@ -571,7 +571,39 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   font-size: .48rem; opacity: .5; letter-spacing: .08em;
   margin-left: .15rem;
 }
+.region-btn.complete {
+  border-color: #c9a227;
+  color: #c9a227;
+}
 .region-btn.complete .tab-count { opacity: .9; }
+.region-btn.complete::after {
+  content: ' ✦';
+  font-size: .5rem; opacity: .8;
+}
+body.dark .region-btn.complete { border-color: #d4ad3a; color: #d4ad3a; }
+
+/* ── REGION COMPLETE BANNER ── */
+.region-complete-banner {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: .9rem 1rem;
+  border: 1.5px solid #c9a227;
+  color: #c9a227;
+  font-size: .52rem; letter-spacing: .28em;
+  text-transform: uppercase;
+  background: rgba(201,162,39,.06);
+}
+body.dark .region-complete-banner {
+  border-color: #d4ad3a; color: #d4ad3a;
+  background: rgba(212,173,58,.08);
+}
+
+/* Region complete toast — more prominent than milestone */
+#milestone-toast.region-complete #milestone-num {
+  color: #c9a227;
+  font-size: 1.3rem;
+}
+body.dark #milestone-toast.region-complete #milestone-num { color: #d4ad3a; }
 
 #collection-grid {
   width: 100%; max-width: 760px;
