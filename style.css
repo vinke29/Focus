@@ -475,7 +475,7 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #btn-share:hover   { color: #fff !important; }
 
 /* ── COLLECTION VIEW ── */
-#view-collection { justify-content: flex-start; }
+#view-collection { justify-content: flex-start; overflow-y: auto; }
 
 .collection-header {
   width: 100%; flex-shrink: 0;
@@ -525,9 +525,6 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   display: grid; grid-template-columns: repeat(4, 1fr);
   align-content: start;
   gap: 1rem; padding: 1.2rem 1.8rem;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 130px);
 }
 
 .char-card {
@@ -1136,7 +1133,6 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   #collection-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: .7rem; padding: .9rem 1rem;
-    max-height: calc(100vh - 120px);
   }
 
   /* Fusion */
