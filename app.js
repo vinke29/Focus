@@ -1360,17 +1360,18 @@ async function handleSignedIn(user) {
     return;
   }
 
-  // New user who confirmed email after sign-up: show onboarding egg
+  // New user who confirmed email after sign-up (same device)
   if (localStorage.getItem('focus-new-user') === 'true') {
     localStorage.removeItem('focus-new-user');
-    const name = localStorage.getItem('focus-name') || 'there';
+    const name = localStorage.getItem('focus-name') || user.user_metadata?.name || 'there';
     state.collection = [];
     sessions = [];
     DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
     showOnboardingEgg(name);
-  } else {
-    navigateTo('timer');
+    return;
   }
+
+  navigateTo('timer');
 
   // Sync from Supabase in background and update cache
   Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadProfile()])
@@ -1378,6 +1379,17 @@ async function handleSignedIn(user) {
       if (col   !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
       if (sess  !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
       if (profile?.name)  { localStorage.setItem('focus-name', profile.name); updateCollectionTitle(); }
+
+      // Cross-device new user: confirmed email on a different device —
+      // no localStorage flag, but profile and collection are both empty
+      if (!profile?.name && col !== null && col.length === 0 && state.view === 'timer') {
+        const name = user.user_metadata?.name || 'there';
+        localStorage.setItem('focus-name', name);
+        DB.saveProfile(name).catch(() => {});
+        state.collection = [];
+        sessions = [];
+        showOnboardingEgg(name);
+      }
     })
     .catch(() => {}); // offline — localStorage cache is sufficient
 }
@@ -1625,6 +1637,13 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
+  // Listen for OAuth redirects (e.g. Google) that resolve after init runs
+  DB.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session && state.view === 'auth') {
+      handleSignedIn(session.user);
+    }
+  });
+
   const { data: { session } } = await DB.getSession();
   if (session) {
     await handleSignedIn(session.user);

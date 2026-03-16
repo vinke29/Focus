@@ -147,4 +147,9 @@ const DB = {
     if (!_sb) return null;
     return _sb.functions.invoke(name, { body });
   },
+
+  onAuthStateChange(callback) {
+    if (!_sb) return { data: { subscription: { unsubscribe: () => {} } } };
+    return _sb.auth.onAuthStateChange(callback);
+  },
 };

@@ -1261,8 +1261,15 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   #btn-start-focus { margin-top: 1.4rem; padding: .68rem 2rem; }
 
   /* Onboarding */
-  #ob-egg-wrap svg{ width: 108px; }
-  .ob-input       { width: 12rem; font-size: 1.25rem; }
+  #ob-egg-wrap svg  { width: 108px; }
+  .ob-input         { width: 12rem; font-size: 1.25rem; }
+  .ob-logo          { font-size: .75rem; opacity: .5; }
+  .ob-intro-name    { font-size: 1.2rem; }
+  .ob-loop          { gap: .8rem; }
+  .ob-loop-step     { font-size: .75rem; letter-spacing: .16em; opacity: .7; }
+  .ob-loop-arrow    { font-size: .7rem; opacity: .35; }
+  .ob-hint          { font-size: .68rem; letter-spacing: .14em; opacity: .45; }
+  .ob-greeting      { font-size: 1.1rem; }
 
   /* Hatch */
   #hatch-egg-wrap { width: 260px; height: 316px; }
