@@ -1250,6 +1250,44 @@ async function shareCreature() {
   }
 }
 
+async function shareFromModal() {
+  const btn = document.getElementById('btn-modal-share');
+  const char    = modalChar;
+  const variant = modalOwnedVariants[modalVariantIndex] || VARIANTS[0];
+  if (!char || !variant) return;
+
+  btn.disabled = true;
+  btn.querySelector('span').textContent = '...';
+
+  try {
+    const canvas   = await generateShareCard(char, variant);
+    const nameEn   = charNameEn(char);
+    const fileName = `focus-${char.id}-${variant.id}.png`;
+
+    canvas.toBlob(async (blob) => {
+      const file = new File([blob], fileName, { type: 'image/png' });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({
+            title: `I collected ${nameEn}!`,
+            text:  `${char.rarityLabel} · ${variant.label} — Focus · 集中`,
+            files: [file],
+          });
+        } catch(e) {
+          if (e.name !== 'AbortError') downloadBlob(blob, fileName);
+        }
+      } else {
+        downloadBlob(blob, fileName);
+      }
+      btn.disabled = false;
+      btn.querySelector('span').textContent = 'share';
+    }, 'image/png');
+  } catch(e) {
+    btn.disabled = false;
+    btn.querySelector('span').textContent = 'share';
+  }
+}
+
 function downloadBlob(blob, fileName) {
   const url = URL.createObjectURL(blob);
   const a   = document.createElement('a');
@@ -1503,6 +1541,7 @@ async function init() {
 
   // Hatch actions
   document.getElementById('btn-share').addEventListener('click', shareCreature);
+  document.getElementById('btn-modal-share').addEventListener('click', shareFromModal);
   document.getElementById('btn-see-collection').addEventListener('click', () => {
     if (state.onboarding) finishOnboarding();
     navigateTo('collection');
