@@ -730,9 +730,30 @@ body::after {
 
 /* ── VARIANT COLOUR FILTERS ── */
 /* Applied to art containers so the full character palette shifts per tier  */
-.vf-gold    { filter: sepia(.48) saturate(2.6) hue-rotate(8deg)    brightness(1.1);  }
-.vf-crimson { filter: sepia(.52) saturate(3.2) hue-rotate(-22deg)  brightness(1.04); }
-.vf-void    { filter: saturate(.22) brightness(.62) hue-rotate(222deg) contrast(1.12); }
+.vf-gold    { filter: sepia(.48) saturate(2.6) hue-rotate(8deg)   brightness(1.1);  }
+.vf-crimson { filter: sepia(.52) saturate(3.2) hue-rotate(-22deg) brightness(1.04); }
+
+/* Void: dark cosmic background + luminous electric character                */
+.vf-void {
+  position: relative;
+  filter: none;
+  background: radial-gradient(ellipse at 48% 42%, #2e1158 0%, #130426 55%, #060110 100%);
+  overflow: hidden;
+}
+/* Nebula colour patches */
+.vf-void::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(170,0,255,.32) 0%, transparent 42%),
+    radial-gradient(circle at 76% 70%, rgba(0,190,255,.24) 0%, transparent 38%),
+    radial-gradient(circle at 52% 88%, rgba(255,0,180,.18) 0%, transparent 32%);
+}
+/* Character SVG: vivid electric glow against the dark field */
+.vf-void svg {
+  position: relative; z-index: 1;
+  filter: hue-rotate(255deg) saturate(2.6) brightness(1.45) contrast(1.08);
+}
 
 /* ── FUSION OVERLAY ── */
 #fusion-overlay {

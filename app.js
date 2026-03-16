@@ -1,19 +1,20 @@
 // ── FUSION ────────────────────────────────────────────────────────────────────
 const VARIANT_NEXT = { standard: 'gold', gold: 'crimson', crimson: 'void' };
 
-// Drop hint: shown on hatch screen for uncommon finds only
+// Drop hint: per-character odds (rarity × variant ÷ pool size)
+// Pools: common 12 chars, rare 11, legendary 5. Variant weights: std 1000, gold 100, crimson 10, void 1 / 1111 total
 const DROP_HINTS = {
-  'rare-standard':     '~1 in 4 sessions',
-  'legendary-standard':'~1 in 16 sessions',
-  'common-gold':       '~1 in 17 sessions',
-  'rare-gold':         '~1 in 40 sessions',
-  'legendary-gold':    '~1 in 160 sessions',
-  'common-crimson':    '~1 in 170 sessions',
-  'rare-crimson':      '~1 in 400 sessions',
-  'legendary-crimson': '~1 in 1,600 sessions',
-  'common-void':       '~1 in 1,700 sessions',
-  'rare-void':         '~1 in 4,000 sessions',
-  'legendary-void':    '~1 in 16,000 sessions',
+  'rare-standard':     '~1 in 44 sessions',
+  'legendary-standard':'~1 in 80 sessions',
+  'common-gold':       '~1 in 200 sessions',
+  'rare-gold':         '~1 in 440 sessions',
+  'legendary-gold':    '~1 in 800 sessions',
+  'common-crimson':    '~1 in 2,000 sessions',
+  'rare-crimson':      '~1 in 4,400 sessions',
+  'legendary-crimson': '~1 in 8,000 sessions',
+  'common-void':       '~1 in 20,000 sessions',
+  'rare-void':         '~1 in 44,000 sessions',
+  'legendary-void':    '~1 in 80,000 sessions',
 };
 
 function checkFusion(charId, variantId) {
