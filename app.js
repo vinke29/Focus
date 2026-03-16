@@ -1673,36 +1673,31 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  // Detect Supabase OAuth callback — PKCE flow uses ?code=, implicit uses #access_token=
+  // Detect Supabase OAuth callback — PKCE uses ?code=, implicit uses #access_token=
   const isOAuthCallback = window.location.search.includes('code=') ||
                           window.location.hash.includes('access_token=');
 
+  let session = null;
   if (isOAuthCallback) {
-    // Keep page invisible and wait for Supabase to finish the token exchange,
-    // which fires SIGNED_IN. Don't show auth at all during this window.
-    DB.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        await handleSignedIn(session.user);
-        document.body.style.opacity = '1';
-      }
-    });
-    // Safety fallback: if exchange fails or takes too long, show auth
-    setTimeout(() => {
-      if (document.body.style.opacity !== '1') {
-        navigateTo('auth');
-        document.body.style.opacity = '1';
-      }
-    }, 8000);
-  } else {
-    const { data: { session } } = await DB.getSession();
-    if (session) {
-      await handleSignedIn(session.user);
-    } else {
-      navigateTo('auth');
-      setTimeout(() => document.getElementById('si-email').focus(), 100);
+    // Supabase exchanges the OAuth code asynchronously after client init.
+    // Poll getSession() until it resolves (up to ~3s), then proceed.
+    for (let i = 0; i < 15; i++) {
+      const { data } = await DB.getSession();
+      if (data.session) { session = data.session; break; }
+      await new Promise(r => setTimeout(r, 200));
     }
-    document.body.style.opacity = '1';
+  } else {
+    const { data } = await DB.getSession();
+    session = data.session;
   }
+
+  if (session) {
+    await handleSignedIn(session.user);
+  } else {
+    navigateTo('auth');
+    setTimeout(() => document.getElementById('si-email').focus(), 100);
+  }
+  document.body.style.opacity = '1';
 }
 
 document.addEventListener('DOMContentLoaded', init);
