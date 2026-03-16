@@ -1269,12 +1269,13 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   }
   .nav-btn          { font-size: 1rem; opacity: .7; }
   #btn-signout      { font-size: .72rem; letter-spacing: .12em; white-space: nowrap; opacity: .7; }
-  #collection-stats { padding: .1rem 1.2rem .5rem; font-size: .6rem; }
+  #collection-stats { padding: .1rem 1.2rem .5rem; font-size: .68rem; opacity: .6; }
 
   /* Tabs: tighter + hidden scrollbar */
   .region-tabs      { padding: 0 1rem .7rem; gap: .3rem; scrollbar-width: none; }
   .region-tabs::-webkit-scrollbar { display: none; }
-  .region-btn       { padding: .32rem .7rem; font-size: .65rem; letter-spacing: .1em; }
+  .region-btn       { padding: .38rem .8rem; font-size: .72rem; letter-spacing: .08em; opacity: .75; }
+  .region-btn.active, .region-btn:hover { opacity: 1; }
   .region-btn.complete { color: #8c6d10; border-color: #8c6d10; } /* darker gold for cream bg */
 
   /* Collection grid: 2 columns on mobile for bigger, readable cards */
@@ -1295,12 +1296,13 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   .modal-var-label { font-size: .65rem; letter-spacing: .15em; }
   .modal-nav-arrow { font-size: 1.1rem; padding: .2rem .5rem; }
 
-  /* Card modal — back face */
-  .modal-back-name { font-size: .68rem; opacity: .55; }
-  .modal-back-lore { font-size: .82rem; line-height: 1.8; }
-  .modal-back-haiku{ font-size: .72rem; line-height: 2; }
-  .modal-back-meta { font-size: .62rem; letter-spacing: .12em; opacity: .6; }
-  .modal-back-hint { font-size: .58rem; letter-spacing: .14em; opacity: .35; }
+  /* Card modal — back face: reduce padding + gap so content breathes */
+  .modal-card-back { padding: 1.2rem 1.2rem; gap: .5rem; }
+  .modal-back-name { font-size: .65rem; opacity: .55; }
+  .modal-back-lore { font-size: .73rem; line-height: 1.7; }
+  .modal-back-haiku{ font-size: .66rem; line-height: 1.85; padding-top: .5rem; }
+  .modal-back-meta { font-size: .6rem; letter-spacing: .12em; opacity: .6; padding-top: .5rem; }
+  .modal-back-hint { font-size: .55rem; letter-spacing: .14em; opacity: .35; }
 
   /* Fusion */
   #fusion-stage       { gap: 1.4rem; }
