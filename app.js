@@ -285,7 +285,26 @@ function initReminder() {
   updateReminderBtn();
   checkReminderNotification();
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) checkReminderNotification();
+    if (!document.hidden) {
+      checkReminderNotification();
+      // Reconcile timer against wall clock after coming back from background
+      if (state.timer.running && state.timer.endTime) {
+        const remaining = Math.round((state.timer.endTime - Date.now()) / 1000);
+        if (remaining <= 0) {
+          clearInterval(state.timer.interval);
+          state.timer.running   = false;
+          state.timer.remaining = 0;
+          state.timer.endTime   = null;
+          updateTimerDisplay();
+          onTimerComplete();
+        } else {
+          state.timer.remaining = remaining;
+          updateTimerDisplay();
+          updateProgressRing(1 - remaining / state.timer.duration);
+          updateEggGlow(1 - remaining / state.timer.duration);
+        }
+      }
+    }
   });
   setInterval(checkReminderNotification, 5 * 60 * 1000);
 }
@@ -339,7 +358,8 @@ const state = {
     duration: 25 * 60,
     remaining: 25 * 60,
     running: false,
-    interval: null
+    interval: null,
+    endTime: null,   // wall-clock ms when timer should complete
   },
   hatch: { character: null, variant: null },
   collection: [],  // [{ id, timestamp }]
@@ -447,11 +467,13 @@ function setDuration(minutes) {
 
 function startTimer() {
   state.timer.running = true;
+  state.timer.endTime = Date.now() + state.timer.remaining * 1000;
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
   document.getElementById('view-timer').classList.add('running');
 
   state.timer.interval = setInterval(() => {
-    state.timer.remaining = Math.max(0, state.timer.remaining - 1);
+    // Derive remaining from wall clock — survives background throttling
+    state.timer.remaining = Math.max(0, Math.round((state.timer.endTime - Date.now()) / 1000));
     updateTimerDisplay();
     const progress = 1 - state.timer.remaining / state.timer.duration;
     updateProgressRing(progress);
@@ -459,6 +481,7 @@ function startTimer() {
     if (state.timer.remaining <= 0) {
       clearInterval(state.timer.interval);
       state.timer.running = false;
+      state.timer.endTime = null;
       onTimerComplete();
     }
   }, 1000);
@@ -466,6 +489,7 @@ function startTimer() {
 
 function pauseTimer() {
   state.timer.running = false;
+  state.timer.endTime = null;
   clearInterval(state.timer.interval);
   document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
 }
