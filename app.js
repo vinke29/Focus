@@ -1105,7 +1105,17 @@ async function handleSignedIn(user) {
   loadCollection();
   loadSessions();
   renderTimerStats();
-  navigateTo('timer');
+
+  // New user who confirmed email after sign-up: show onboarding egg
+  if (localStorage.getItem('focus-new-user') === 'true') {
+    localStorage.removeItem('focus-new-user');
+    const name = localStorage.getItem('focus-name') || 'there';
+    state.collection = [];
+    sessions = [];
+    showOnboardingEgg(name);
+  } else {
+    navigateTo('timer');
+  }
 
   // Sync from Supabase in background and update cache
   Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadProfile()])
@@ -1145,16 +1155,19 @@ async function performSignUp() {
   setAuthLoading(btn, true);
   try {
     const data = await DB.signUp(name, email, password);
+    // Always persist name + new-user flag so onboarding fires after email confirmation too
+    localStorage.setItem('focus-name', name);
+    localStorage.setItem('focus-new-user', 'true');
     if (!data.session) {
-      // Email confirmation required — show notice
+      // Email confirmation required — show notice; onboarding will fire on next sign-in
       document.getElementById('panel-signup').style.display  = 'none';
       document.getElementById('auth-confirm').style.display  = 'flex';
       return;
     }
-    // Auto-confirmed: store name locally and show onboarding egg
-    localStorage.setItem('focus-name', name);
+    // Auto-confirmed: go straight to onboarding egg
     state.collection = [];
     sessions = [];
+    localStorage.removeItem('focus-new-user');
     showOnboardingEgg(name);
   } catch(e) {
     showAuthError('signup', e.message || 'sign up failed');
