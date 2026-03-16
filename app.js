@@ -260,9 +260,12 @@ function navigateTo(viewId) {
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
+  const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard';
+  const noDark = viewId === 'auth' || viewId === 'onboard';
   const muteBtn = document.getElementById('btn-mute');
-  const noMute  = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard';
+  const darkBtn = document.getElementById('btn-dark');
   if (muteBtn) muteBtn.style.opacity = noMute ? '0' : '';
+  if (darkBtn) darkBtn.style.opacity = noDark ? '0' : '';
 }
 
 function loadMuteState() {
@@ -276,6 +279,16 @@ function toggleMute() {
   SFX.setMuted(m);
   localStorage.setItem('focus-muted', String(m));
   document.getElementById('btn-mute').classList.toggle('muted', m);
+}
+
+function initDarkMode() {
+  const dark = localStorage.getItem('focus-dark') === 'true';
+  document.body.classList.toggle('dark', dark);
+}
+
+function toggleDark() {
+  const dark = document.body.classList.toggle('dark');
+  localStorage.setItem('focus-dark', String(dark));
 }
 
 
@@ -1191,6 +1204,7 @@ function showOnboardingEgg(name) {
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
   loadMuteState();
+  initDarkMode();
   registerSW();
 
   // Particle canvas
@@ -1231,8 +1245,9 @@ async function init() {
     btn.addEventListener('click', () => setDuration(parseInt(btn.dataset.min)));
   });
 
-  // Mute toggle
+  // Mute + dark toggles
   document.getElementById('btn-mute').addEventListener('click', toggleMute);
+  document.getElementById('btn-dark').addEventListener('click', toggleDark);
 
   // Start/pause button
   document.getElementById('btn-start-focus').addEventListener('click', () => {
