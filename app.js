@@ -1673,23 +1673,26 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  // Listen for OAuth redirects (e.g. Google) that resolve after init runs
-  DB.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN' && session && state.view === 'auth') {
+  // Use onAuthStateChange as the single source of truth.
+  // INITIAL_SESSION fires immediately on subscribe with the current session
+  // (or null), replacing getSession(). SIGNED_IN catches OAuth redirects
+  // that finish resolving after INITIAL_SESSION fires with null.
+  let authInitDone = false;
+  DB.onAuthStateChange(async (event, session) => {
+    if (event === 'INITIAL_SESSION') {
+      authInitDone = true;
+      if (session) {
+        await handleSignedIn(session.user);
+      } else {
+        navigateTo('auth');
+        setTimeout(() => document.getElementById('si-email').focus(), 100);
+      }
+      document.body.style.opacity = '1';
+    } else if (event === 'SIGNED_IN' && authInitDone && state.view === 'auth') {
+      // OAuth redirect resolved after initial session check returned null
       handleSignedIn(session.user);
     }
   });
-
-  const { data: { session } } = await DB.getSession();
-  if (session) {
-    await handleSignedIn(session.user);
-  } else {
-    navigateTo('auth');
-    // Auto-focus sign-in email field
-    setTimeout(() => document.getElementById('si-email').focus(), 100);
-  }
-  // Reveal — show the correct view now that auth is determined (prevents flash)
-  document.body.style.opacity = '1';
 }
 
 document.addEventListener('DOMContentLoaded', init);
