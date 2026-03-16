@@ -937,12 +937,42 @@ function init() {
       saveCollection();
       navigateTo('collection');
     }
-    // X — wipe collection (reset god mode)
+    // X — wipe collection + sessions (Shift+X)
     if (e.key === 'x' || e.key === 'X') {
       if (e.shiftKey) {
         state.collection = [];
         saveCollection();
+        sessions = [];
+        localStorage.removeItem('focus-sessions');
+        renderTimerStats();
         navigateTo('timer');
+      }
+    }
+    // S — seed fake session history for testing stats (Shift+S)
+    if (e.key === 's' || e.key === 'S') {
+      if (e.shiftKey) {
+        const now = Date.now();
+        const day = 86400000;
+        // 12 sessions spread over the last 8 days (skipping day 5 to show streak break)
+        const fakes = [
+          { daysAgo: 0,   dur: 25 },
+          { daysAgo: 0,   dur: 45 },
+          { daysAgo: 1,   dur: 60 },
+          { daysAgo: 2,   dur: 25 },
+          { daysAgo: 2,   dur: 25 },
+          { daysAgo: 3,   dur: 45 },
+          { daysAgo: 4,   dur: 60 },
+          // day 5 intentionally skipped — streak resets here
+          { daysAgo: 6,   dur: 25 },
+          { daysAgo: 7,   dur: 45 },
+          { daysAgo: 7,   dur: 60 },
+        ];
+        fakes.forEach(f => {
+          sessions.push({ timestamp: now - f.daysAgo * day, duration: f.dur });
+        });
+        localStorage.setItem('focus-sessions', JSON.stringify(sessions));
+        renderTimerStats();
+        alert('Seeded 10 fake sessions across 8 days. Streak should show 5.');
       }
     }
     // C — open collection from timer
