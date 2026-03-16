@@ -158,11 +158,10 @@ function formatHours(totalMinutes) {
 function renderTimerStats() {
   const el = document.getElementById('timer-stats');
   if (!el) return;
-  if (!sessions.length) { el.classList.remove('has-data'); return; }
+  if (!sessions.length) { el.classList.remove('has-data'); updateStreakWarning(); return; }
 
   const streak    = calcStreak();
   const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
-  const parts     = [];
 
   const streakLine = streak > 0
     ? `<span class="stat-streak">🔥 ${streak} day streak</span>`
@@ -171,6 +170,21 @@ function renderTimerStats() {
 
   el.innerHTML = streakLine + totalsLine;
   el.classList.add('has-data');
+  updateStreakWarning();
+}
+
+function updateStreakWarning() {
+  const el = document.getElementById('streak-warning');
+  if (!el) return;
+  const hour = new Date().getHours();
+  if (hour < 17) { el.classList.remove('show'); return; }
+  const dayKey = ts => { const d = new Date(ts); return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate(); };
+  const todayKey = dayKey(Date.now());
+  const todayHasSessions = sessions.some(s => dayKey(s.timestamp) === todayKey);
+  if (todayHasSessions) { el.classList.remove('show'); return; }
+  if (calcStreak() === 0) { el.classList.remove('show'); return; }
+  el.textContent = '🔥 focus tonight to keep your streak';
+  el.classList.add('show');
 }
 
 function renderCollectionStats() {
@@ -412,6 +426,10 @@ function prepareHatchView(character, variant) {
   wrap.style.opacity = '0';
   wrap.style.transition = 'none';
   applyVariantFilter(wrap, variant.id);
+
+  // Session number
+  const sessionNumEl = document.getElementById('hatch-session-num');
+  if (sessionNumEl) sessionNumEl.textContent = sessions.length ? `session ${sessions.length}` : '';
 
   // Character info
   document.getElementById('char-name').textContent   = character.name;
@@ -1209,6 +1227,7 @@ async function init() {
   loadMuteState();
   initDarkMode();
   registerSW();
+  setInterval(updateStreakWarning, 5 * 60 * 1000); // re-check every 5 min
 
   // Particle canvas
   particleCanvas = document.getElementById('particles');

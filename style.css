@@ -333,6 +333,15 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 }
 #timer-stats.has-data { opacity: 1; }
 #view-timer.running #timer-stats { opacity: 0; pointer-events: none; }
+
+#streak-warning {
+  margin-top: .6rem;
+  font-size: .5rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink); opacity: 0; transition: opacity .6s ease;
+  user-select: none; text-align: center;
+}
+#streak-warning.show { opacity: .55; }
+#view-timer.running #streak-warning { opacity: 0; pointer-events: none; }
 .stat-streak {
   font-size: .58rem; letter-spacing: .18em;
   text-transform: uppercase; color: var(--ink); opacity: .55;
@@ -372,6 +381,11 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   transition: opacity .8s ease;
 }
 #hatch-header.show { opacity: 1; }
+
+#hatch-session-num {
+  font-size: .48rem; letter-spacing: .28em; text-transform: uppercase;
+  color: var(--ink); opacity: .38; margin-bottom: .4rem;
+}
 
 #char-name {
   font-family: 'Zen Antique Soft', serif;
