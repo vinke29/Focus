@@ -137,6 +137,19 @@ body::after {
 
 #view-timer.running #duration-picker { opacity: 0; pointer-events: none; }
 
+#timer-stats {
+  margin-top: 1.4rem;
+  font-size: .56rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink);
+  display: flex; align-items: center; gap: .5rem;
+  opacity: 0; transition: opacity .6s ease;
+  user-select: none;
+}
+#timer-stats.has-data { opacity: .32; }
+#view-timer.running #timer-stats { opacity: 0; pointer-events: none; }
+.stat-sep { opacity: .4; }
+.stat-streak { color: var(--ink); }
+
 /* ── HATCH VIEW ── */
 #flash {
   position: fixed; inset: 0; background: #fff;
@@ -271,6 +284,16 @@ body::after {
   font-size: .85rem; letter-spacing: .25em; opacity: .65;
 }
 
+#collection-stats {
+  padding: .1rem 2rem .65rem;
+  font-size: .5rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink);
+  opacity: .38; display: flex; align-items: center; gap: .6rem;
+}
+#collection-stats .cs-frac { }
+#collection-stats .cs-total { opacity: .55; }
+#collection-stats .cs-sep   { opacity: .35; }
+
 .region-tabs {
   display: flex; gap: .3rem; padding: 0 1.6rem .9rem;
   overflow-x: auto;
@@ -285,6 +308,11 @@ body::after {
   white-space: nowrap;
 }
 .region-btn.active, .region-btn:hover { opacity: 1; border-color: var(--ink); }
+.tab-count {
+  font-size: .48rem; opacity: .5; letter-spacing: .08em;
+  margin-left: .15rem;
+}
+.region-btn.complete .tab-count { opacity: .9; }
 
 #collection-grid {
   width: 100%; max-width: 760px;

@@ -37,6 +37,7 @@
     </div>
 
     <button id="btn-start-focus"><span>begin focus</span></button>
+    <div id="timer-stats"></div>
   </main>
 </div>
 
@@ -115,13 +116,14 @@
       <button id="btn-back-to-timer" class="nav-btn">←</button>
       <span class="collection-title">collection</span>
     </div>
+    <div id="collection-stats"></div>
     <div class="region-tabs">
-      <button class="region-btn active" data-region="all">all</button>
-      <button class="region-btn" data-region="japanese">japan</button>
-      <button class="region-btn" data-region="americas">americas</button>
-      <button class="region-btn" data-region="european">europe</button>
-      <button class="region-btn" data-region="african">africa</button>
-      <button class="region-btn" data-region="fantasy">fantasy</button>
+      <button class="region-btn active" data-region="all">all <span class="tab-count"></span></button>
+      <button class="region-btn" data-region="japanese">japan <span class="tab-count"></span></button>
+      <button class="region-btn" data-region="americas">americas <span class="tab-count"></span></button>
+      <button class="region-btn" data-region="european">europe <span class="tab-count"></span></button>
+      <button class="region-btn" data-region="african">africa <span class="tab-count"></span></button>
+      <button class="region-btn" data-region="fantasy">fantasy <span class="tab-count"></span></button>
     </div>
   </header>
   <div id="collection-grid">

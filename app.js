@@ -110,6 +110,106 @@ function applyVariantFilter(el, variantId) {
   if (variantId !== 'standard') el.classList.add(`vf-${variantId}`);
 }
 
+// ── SESSION LOG ───────────────────────────────────────────────────────────────
+let sessions = [];
+
+function loadSessions() {
+  try {
+    const saved = localStorage.getItem('focus-sessions');
+    if (saved) sessions = JSON.parse(saved);
+  } catch(e) { sessions = []; }
+}
+
+function addSession(durationMinutes) {
+  sessions.push({ timestamp: Date.now(), duration: durationMinutes });
+  localStorage.setItem('focus-sessions', JSON.stringify(sessions));
+}
+
+function calcStreak() {
+  if (!sessions.length) return 0;
+  // Unique calendar days that had at least one session
+  const dayKey = ts => {
+    const d = new Date(ts);
+    return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate();
+  };
+  const days = new Set(sessions.map(s => dayKey(s.timestamp)));
+  const today = new Date();
+  // Start from today; if no session today, try from yesterday (grace period)
+  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  if (!days.has(dayKey(cursor))) cursor.setDate(cursor.getDate() - 1);
+  let streak = 0;
+  while (days.has(dayKey(cursor))) {
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
+function formatHours(totalMinutes) {
+  if (totalMinutes < 60)  return `${totalMinutes} min`;
+  const h = totalMinutes / 60;
+  return h < 10 ? `${h.toFixed(1)} hrs` : `${Math.round(h)} hrs`;
+}
+
+function renderTimerStats() {
+  const el = document.getElementById('timer-stats');
+  if (!el) return;
+  if (!sessions.length) { el.classList.remove('has-data'); return; }
+
+  const streak    = calcStreak();
+  const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
+  const parts     = [];
+
+  if (streak > 0) parts.push(`<span class="stat-streak">🔥 ${streak}</span>`);
+  parts.push(`${sessions.length} session${sessions.length !== 1 ? 's' : ''}`);
+  parts.push(formatHours(totalMins));
+
+  el.innerHTML = parts.join('<span class="stat-sep"> · </span>');
+  el.classList.add('has-data');
+}
+
+function renderCollectionStats() {
+  const ownedIds   = new Set(state.collection.map(e => e.id));
+  const totalChars = Object.keys(CHARACTERS).length;
+  const unlocked   = ownedIds.size;
+  const totalCards = state.collection.length;
+
+  // Per-region totals and owned counts
+  const regionTotal = {}, regionOwned = {};
+  Object.values(CHARACTERS).forEach(c => {
+    regionTotal[c.region] = (regionTotal[c.region] || 0) + 1;
+  });
+  ownedIds.forEach(id => {
+    const r = CHARACTERS[id]?.region;
+    if (r) regionOwned[r] = (regionOwned[r] || 0) + 1;
+  });
+
+  // Stats strip
+  const statsEl = document.getElementById('collection-stats');
+  if (statsEl) {
+    statsEl.innerHTML =
+      `<span><span class="cs-frac">${unlocked}</span>` +
+      `<span class="cs-total"> / ${totalChars} characters</span></span>` +
+      `<span class="cs-sep">·</span>` +
+      `<span>${totalCards} cards</span>`;
+  }
+
+  // Region tab counts
+  document.querySelectorAll('.region-btn').forEach(btn => {
+    const region = btn.dataset.region;
+    const span   = btn.querySelector('.tab-count');
+    if (!span) return;
+    if (region === 'all') {
+      span.textContent = `${unlocked}/${totalChars}`;
+    } else {
+      const o = regionOwned[region] || 0;
+      const t = regionTotal[region] || 0;
+      span.textContent = `${o}/${t}`;
+      btn.classList.toggle('complete', t > 0 && o === t);
+    }
+  });
+}
+
 // ── STATE ─────────────────────────────────────────────────────────────────────
 const state = {
   view: 'timer',
@@ -149,6 +249,7 @@ function navigateTo(viewId) {
   state.view = viewId;
   if (viewId === 'collection') renderCollection();
 }
+
 
 // ── TIMER ─────────────────────────────────────────────────────────────────────
 const RING_CIRC = 2 * Math.PI * 118; // 741.12
@@ -226,6 +327,9 @@ function resetTimerState() {
 }
 
 function onTimerComplete() {
+  addSession(state.timer.duration / 60);
+  renderTimerStats();
+
   const { character, variant } = rollCharacter();
   state.hatch.character = character;
   state.hatch.variant   = variant;
@@ -514,6 +618,8 @@ function renderCollection() {
   const grid = document.getElementById('collection-grid');
   grid.innerHTML = '';
 
+  renderCollectionStats();
+
   // Update region tab active state
   document.querySelectorAll('.region-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.region === state.filter);
@@ -709,6 +815,8 @@ function closeCardModal() {
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
   loadCollection();
+  loadSessions();
+  renderTimerStats();
 
   // Particle canvas
   particleCanvas = document.getElementById('particles');
