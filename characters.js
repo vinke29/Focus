@@ -1901,6 +1901,200 @@ const CHARACTERS = {
 </svg>`
   },
 
+  // ── Coati · コアティ ─ Common ─ Orange ───────────────────────────────────────
+  coati: {
+    id: 'coati',
+    name: 'Coati · コアティ',
+    nameShort: 'コアティ',
+    subtitle: 'Ring-Tail Wanderer · Curious Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#E8762A',
+    region: 'americas',
+    lore: 'A curious ring-tailed wanderer of the forest floor, always poking its long nose into tomorrow.',
+    haiku: '縞の尾を振り<br>森の秘密を探す<br>鼻先の旅よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="coat-body" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#f5d8b0"/>
+      <stop offset="100%" stop-color="#c07a35"/>
+    </radialGradient>
+    <radialGradient id="coat-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E8762A" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#E8762A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="155" cy="364" rx="62" ry="8" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura" cx="155" cy="258" rx="82" ry="90" fill="url(#coat-aura)"/>
+  <g class="char-float">
+    <g class="cat-tail" style="transform-origin:198px 300px">
+      <path d="M198,300 C220,278 244,250 248,218 C252,188 238,168 222,164 C206,160 193,174 192,194 C191,214 200,235 205,252 C210,270 208,288 198,300Z"
+        fill="url(#coat-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M220,172 C229,184 232,198 228,210" stroke="#080810" stroke-width="6.5" stroke-linecap="round" fill="none" opacity=".4"/>
+      <path d="M208,198 C216,210 218,224 215,236" stroke="#080810" stroke-width="5.5" stroke-linecap="round" fill="none" opacity=".38"/>
+      <path d="M200,226 C207,238 208,252 205,264" stroke="#080810" stroke-width="5" stroke-linecap="round" fill="none" opacity=".35"/>
+    </g>
+    <ellipse cx="152" cy="300" rx="60" ry="52" fill="url(#coat-body)" stroke="#080810" stroke-width="4"/>
+    <ellipse cx="148" cy="308" rx="36" ry="40" fill="#fef2e4" stroke="#080810" stroke-width="1.8" opacity=".5"/>
+    <ellipse cx="116" cy="348" rx="26" ry="14" fill="url(#coat-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M102,349 L96,362" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M114,353 L112,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M128,353 L130,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <ellipse cx="186" cy="348" rx="26" ry="14" fill="url(#coat-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M200,349 L206,362" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M188,353 L190,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M174,353 L172,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M106,285 C93,290 84,302 86,318 C94,310 104,300 106,292Z"
+      fill="url(#coat-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M196,285 C210,290 218,302 216,318 C208,310 198,300 196,292Z"
+      fill="url(#coat-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+  </g>
+  <g class="head-scan">
+    <ellipse cx="148" cy="252" rx="26" ry="22" fill="url(#coat-body)" stroke="#080810" stroke-width="3"/>
+    <circle cx="148" cy="218" r="38" fill="url(#coat-body)" stroke="#080810" stroke-width="4"/>
+    <path d="M118,210 C124,202 140,198 152,200 C152,206 148,212 140,214 C132,216 122,214 118,210Z"
+      fill="#080810" opacity=".3"/>
+    <path d="M118,224 C106,228 92,225 84,216 C82,208 86,200 94,197 C106,193 120,202 124,214Z"
+      fill="#c07a35" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <ellipse cx="87" cy="212" rx="5" ry="4" fill="#080810" opacity=".65"/>
+    <ellipse cx="134" cy="208" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
+    <circle cx="134" cy="208" r="7" fill="#080810"/>
+    <circle cx="137" cy="205" r="2.5" fill="white" opacity=".9"/>
+    <ellipse cx="162" cy="208" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
+    <circle cx="162" cy="208" r="7" fill="#080810"/>
+    <circle cx="165" cy="205" r="2.5" fill="white" opacity=".9"/>
+    <ellipse cx="122" cy="190" rx="14" ry="13" fill="url(#coat-body)" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="122" cy="190" rx="8" ry="7" fill="#E8762A" opacity=".42"/>
+    <ellipse cx="174" cy="190" rx="14" ry="13" fill="url(#coat-body)" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="174" cy="190" rx="8" ry="7" fill="#E8762A" opacity=".42"/>
+  </g>
+</svg>`
+  },
+
+  // ── Tapir · バク ─ Common ─ Brown ─────────────────────────────────────────────
+  tapir: {
+    id: 'tapir',
+    name: 'Tapir · バク',
+    nameShort: 'バク',
+    subtitle: 'Dream-Eater · Ancient Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#7B6B5A',
+    region: 'americas',
+    lore: 'An ancient shape between pig and elephant, walking the same forest paths for sixty million years.',
+    haiku: '億年の道<br>変わらぬ姿で歩く<br>太古の歩みよ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="tapir-body" cx="38%" cy="32%" r="70%">
+      <stop offset="0%" stop-color="#cfc2b0"/>
+      <stop offset="100%" stop-color="#7a6856"/>
+    </radialGradient>
+    <radialGradient id="tapir-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B6B5A" stop-opacity=".2"/>
+      <stop offset="100%" stop-color="#7B6B5A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="160" cy="364" rx="72" ry="8" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura" cx="160" cy="268" rx="92" ry="88" fill="url(#tapir-aura)"/>
+  <g class="char-float">
+    <ellipse cx="228" cy="285" rx="13" ry="9" fill="url(#tapir-body)" stroke="#080810" stroke-width="2"/>
+    <ellipse cx="160" cy="300" rx="82" ry="68" fill="url(#tapir-body)" stroke="#080810" stroke-width="4.5"/>
+    <ellipse cx="108" cy="358" rx="26" ry="14" fill="url(#tapir-body)" stroke="#080810" stroke-width="3.5"/>
+    <path d="M90,358 L87,371" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M104,362 L102,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M122,362 L122,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="212" cy="358" rx="26" ry="14" fill="url(#tapir-body)" stroke="#080810" stroke-width="3.5"/>
+    <path d="M230,358 L233,371" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M216,362 L218,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M198,362 L198,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g class="char-body">
+    <ellipse cx="160" cy="240" rx="42" ry="30" fill="url(#tapir-body)" stroke="#080810" stroke-width="4"/>
+    <ellipse cx="160" cy="200" rx="52" ry="44" fill="url(#tapir-body)" stroke="#080810" stroke-width="4.5"/>
+    <g class="trunk-sway" style="transform-origin:160px 215px">
+      <path d="M140,220 C138,236 142,252 152,262 C158,268 164,268 170,262 C178,252 180,236 178,220Z"
+        fill="url(#tapir-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="153" cy="260" rx="5" ry="4" fill="#080810" opacity=".65"/>
+      <ellipse cx="167" cy="260" rx="5" ry="4" fill="#080810" opacity=".65"/>
+    </g>
+    <ellipse cx="128" cy="192" rx="15" ry="14" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="128" cy="192" r="8.5" fill="#080810"/>
+    <circle cx="131" cy="189" r="3" fill="white" opacity=".9"/>
+    <ellipse cx="192" cy="192" rx="15" ry="14" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="192" cy="192" r="8.5" fill="#080810"/>
+    <circle cx="195" cy="189" r="3" fill="white" opacity=".9"/>
+    <ellipse cx="118" cy="166" rx="20" ry="17" fill="url(#tapir-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="118" cy="166" rx="12" ry="10" fill="#7B6B5A" opacity=".4"/>
+    <ellipse cx="202" cy="166" rx="20" ry="17" fill="url(#tapir-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="202" cy="166" rx="12" ry="10" fill="#7B6B5A" opacity=".4"/>
+  </g>
+</svg>`
+  },
+
+  // ── Anaconda · アナコンダ ─ Rare ─ Green ──────────────────────────────────────
+  anaconda: {
+    id: 'anaconda',
+    name: 'Anaconda · アナコンダ',
+    nameShort: 'アナコンダ',
+    subtitle: 'River Sovereign · Coiled Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#2E7D32',
+    region: 'americas',
+    lore: 'The river\'s own pulse, coiled and patient, who measures time in the slow drift of floodwaters.',
+    haiku: '川の底から<br>静かに世界を巻く<br>水の支配者よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="anac-body" cx="40%" cy="30%" r="68%">
+      <stop offset="0%" stop-color="#a8c880"/>
+      <stop offset="100%" stop-color="#2a5a28"/>
+    </radialGradient>
+    <radialGradient id="anac-belly" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#e8d8b0"/>
+      <stop offset="100%" stop-color="#c0b080"/>
+    </radialGradient>
+    <radialGradient id="anac-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2E7D32" stop-opacity=".25"/>
+      <stop offset="100%" stop-color="#2E7D32" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="160" cy="364" rx="78" ry="9" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura" cx="160" cy="295" rx="95" ry="72" fill="url(#anac-aura)"/>
+  <g class="anac-coil">
+    <ellipse cx="160" cy="324" rx="88" ry="40" fill="url(#anac-body)" stroke="#080810" stroke-width="5"/>
+    <path d="M80,310 C100,300 130,296 160,296 C190,296 220,300 240,310" stroke="#080810" stroke-width="1.8" fill="none" opacity=".18"/>
+    <path d="M75,322 C98,312 130,308 160,308 C190,308 222,312 245,322" stroke="#080810" stroke-width="1.8" fill="none" opacity=".16"/>
+    <ellipse cx="168" cy="314" rx="58" ry="28" fill="url(#anac-body)" stroke="#080810" stroke-width="4.5"/>
+    <ellipse cx="168" cy="318" rx="40" ry="20" fill="url(#anac-belly)" stroke="#080810" stroke-width="2" opacity=".6"/>
+  </g>
+  <g class="char-float">
+    <path d="M148,282 C144,254 148,228 156,208 C162,190 170,186 178,195 C186,206 186,230 182,260 C178,280 172,290 162,290Z"
+      fill="url(#anac-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M156,282 C154,254 156,228 160,210 C164,194 170,193 170,202 C172,218 172,244 168,268 C166,280 162,288 158,288Z"
+      fill="url(#anac-belly)" opacity=".55"/>
+    <path d="M136,182 C138,158 150,142 164,138 C180,134 196,142 202,160 C208,178 198,196 180,198 C166,200 146,196 136,182Z"
+      fill="url(#anac-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+    <ellipse cx="148" cy="168" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
+    <ellipse cx="148" cy="168" rx="8" ry="10" fill="#d4a800"/>
+    <path d="M148,158 C149,163 149,173 148,178 C147,173 147,163 148,158Z" fill="#080810"/>
+    <circle cx="151" cy="163" r="2.5" fill="white" opacity=".8"/>
+    <ellipse cx="192" cy="168" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
+    <ellipse cx="192" cy="168" rx="8" ry="10" fill="#d4a800"/>
+    <path d="M192,158 C193,163 193,173 192,178 C191,173 191,163 192,158Z" fill="#080810"/>
+    <circle cx="195" cy="163" r="2.5" fill="white" opacity=".8"/>
+    <ellipse cx="140" cy="178" rx="5" ry="3" fill="#080810" opacity=".35"/>
+    <ellipse cx="199" cy="178" rx="5" ry="3" fill="#080810" opacity=".35"/>
+    <g class="tongue-fork">
+      <path d="M168,198 L168,214" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M168,214 L160,224 M168,214 L176,224" stroke="#c0392b" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>`
+  },
+
   // ── Hedgehog · ハリネズミ ─ Common ─ Brown ───────────────────────────────────
   hedgehog: {
     id: 'hedgehog',
@@ -2865,6 +3059,300 @@ const CHARACTERS = {
 
   </g>
 </svg>`
+  },
+
+  // ── Pangolin · センザンコウ ─ Common ─ Tan ────────────────────────────────────
+  pangolin: {
+    id: 'pangolin',
+    name: 'Pangolin · センザンコウ',
+    nameShort: 'センザンコウ',
+    subtitle: 'Scale Moon · Armored Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#B8956E',
+    region: 'african',
+    lore: 'The only scaled mammal on earth, rolling into a perfect moon of armor when danger comes near.',
+    haiku: '鱗の月よ<br>脅威に丸く閉じる<br>無敵の守りよ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="pang-body" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#e8d0b0"/>
+      <stop offset="100%" stop-color="#a07850"/>
+    </radialGradient>
+    <radialGradient id="pang-scale" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#d4b88a"/>
+      <stop offset="100%" stop-color="#8c6835"/>
+    </radialGradient>
+    <radialGradient id="pang-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#B8956E" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#B8956E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="160" cy="364" rx="55" ry="8" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura" cx="160" cy="265" rx="72" ry="85" fill="url(#pang-aura)"/>
+  <g class="char-float">
+    <path d="M188,330 C218,310 244,286 250,258 C258,230 246,208 228,204 C212,200 202,212 200,228 C198,242 206,258 210,272 C214,288 214,312 188,330Z"
+      fill="url(#pang-scale)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M240,222 C246,236 246,252 242,264" stroke="#080810" stroke-width="2" fill="none" opacity=".28"/>
+    <path d="M226,210 C234,224 236,242 232,254" stroke="#080810" stroke-width="2" fill="none" opacity=".25"/>
+    <path d="M214,210 C220,224 222,240 218,254" stroke="#080810" stroke-width="1.8" fill="none" opacity=".22"/>
+    <path d="M106,300 C104,268 114,242 132,228 C148,214 168,210 186,218 C204,226 212,248 210,276 C208,302 196,328 166,340 C146,348 128,338 116,326 C108,316 106,308 106,300Z"
+      fill="url(#pang-scale)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+    <path d="M114,288 C126,276 148,270 170,272 C190,274 202,280 208,290" stroke="#080810" stroke-width="1.8" fill="none" opacity=".22"/>
+    <path d="M110,306 C124,294 146,288 168,290 C188,292 200,298 206,308" stroke="#080810" stroke-width="1.8" fill="none" opacity=".2"/>
+    <path d="M118,324 C132,314 154,308 172,310 C188,312 198,318 202,326" stroke="#080810" stroke-width="1.8" fill="none" opacity=".18"/>
+    <ellipse cx="130" cy="256" rx="12" ry="8" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".65"/>
+    <ellipse cx="150" cy="248" rx="12" ry="8" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".65"/>
+    <ellipse cx="170" cy="246" rx="12" ry="8" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".65"/>
+    <ellipse cx="190" cy="250" rx="11" ry="8" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".65"/>
+    <ellipse cx="120" cy="272" rx="13" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".6"/>
+    <ellipse cx="142" cy="265" rx="13" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".6"/>
+    <ellipse cx="164" cy="262" rx="13" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".6"/>
+    <ellipse cx="186" cy="266" rx="12" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".6"/>
+    <ellipse cx="128" cy="288" rx="13" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".55"/>
+    <ellipse cx="150" cy="281" rx="13" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".55"/>
+    <ellipse cx="172" cy="278" rx="12" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".55"/>
+    <ellipse cx="192" cy="282" rx="12" ry="9" fill="url(#pang-scale)" stroke="#080810" stroke-width="1.5" opacity=".55"/>
+    <path d="M118,334 C110,342 106,354 108,364" stroke="#080810" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M132,340 C130,352 130,362 132,370" stroke="#080810" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M178,340 C180,352 180,362 178,370" stroke="#080810" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M192,334 C200,342 202,354 200,364" stroke="#080810" stroke-width="6" stroke-linecap="round" fill="none"/>
+  </g>
+  <g class="head-scan">
+    <ellipse cx="140" cy="228" rx="26" ry="20" fill="url(#pang-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="130" cy="200" rx="34" ry="28" fill="url(#pang-body)" stroke="#080810" stroke-width="3.5"/>
+    <path d="M100,208 C90,212 80,208 78,198 C76,190 82,184 90,183 C102,182 114,192 116,202Z"
+      fill="url(#pang-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <ellipse cx="81" cy="198" rx="5" ry="4" fill="#080810" opacity=".65"/>
+    <ellipse cx="116" cy="196" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
+    <circle cx="116" cy="196" r="7" fill="#080810"/>
+    <circle cx="119" cy="193" r="2.5" fill="white" opacity=".9"/>
+    <path d="M148,188 L158,172 L162,190Z" fill="url(#pang-body)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+</svg>`
+  },
+
+  // ── Warthog · イボイノシシ ─ Common ─ Brown ───────────────────────────────────
+  warthog: {
+    id: 'warthog',
+    name: 'Warthog · イボイノシシ',
+    nameShort: 'イボイノシシ',
+    subtitle: 'Tusk Brave · Prairie Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#8B7355',
+    region: 'african',
+    lore: 'Brave enough to charge a lion, wise enough to know when to run, and happy either way.',
+    haiku: '牙を誇らし<br>草原を駆け抜けて<br>恐れを知らぬよ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="wart-body" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#bfb0a0"/>
+      <stop offset="100%" stop-color="#786050"/>
+    </radialGradient>
+    <radialGradient id="wart-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8B7355" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#8B7355" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="160" cy="364" rx="68" ry="8" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura" cx="160" cy="268" rx="85" ry="88" fill="url(#wart-aura)"/>
+  <g class="char-float">
+    <path d="M192,255 C205,245 210,232 205,220 C202,228 200,242 192,255Z"
+      fill="url(#wart-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="205" cy="220" r="6" fill="#080810" opacity=".55"/>
+    <path d="M118,234 C128,218 148,208 160,206 C172,208 192,218 202,234"
+      stroke="#080810" stroke-width="7" fill="none" stroke-linecap="round" opacity=".35"/>
+    <path d="M122,228 C132,212 150,204 160,202 C170,204 188,212 198,228"
+      stroke="#8B7355" stroke-width="3" fill="none" stroke-linecap="round" opacity=".4"/>
+    <ellipse cx="160" cy="302" rx="78" ry="64" fill="url(#wart-body)" stroke="#080810" stroke-width="4.5"/>
+    <ellipse cx="108" cy="358" rx="25" ry="13" fill="url(#wart-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M96,358 L92,370" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M108,361 L108,372" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M122,361 L124,372" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <ellipse cx="212" cy="358" rx="25" ry="13" fill="url(#wart-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M224,358 L228,370" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M212,361 L212,372" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+    <path d="M198,361 L196,372" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g class="char-body">
+    <ellipse cx="160" cy="248" rx="44" ry="32" fill="url(#wart-body)" stroke="#080810" stroke-width="4"/>
+    <ellipse cx="160" cy="206" rx="58" ry="46" fill="url(#wart-body)" stroke="#080810" stroke-width="4.5"/>
+    <ellipse cx="160" cy="234" rx="42" ry="26" fill="#a09080" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="144" cy="234" rx="9" ry="8" fill="#080810" opacity=".7"/>
+    <ellipse cx="176" cy="234" rx="9" ry="8" fill="#080810" opacity=".7"/>
+    <path d="M120,238 C106,242 96,250 100,264 C108,258 114,248 124,244Z"
+      fill="#f5eed8" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M200,238 C214,242 224,250 220,264 C212,258 206,248 196,244Z"
+      fill="#f5eed8" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <ellipse cx="132" cy="224" rx="8" ry="6" fill="url(#wart-body)" stroke="#080810" stroke-width="2" opacity=".7"/>
+    <ellipse cx="188" cy="224" rx="8" ry="6" fill="url(#wart-body)" stroke="#080810" stroke-width="2" opacity=".7"/>
+    <ellipse cx="128" cy="204" rx="14" ry="13" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="128" cy="204" r="8" fill="#080810"/>
+    <circle cx="131" cy="201" r="3" fill="white" opacity=".9"/>
+    <ellipse cx="192" cy="204" rx="14" ry="13" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="192" cy="204" r="8" fill="#080810"/>
+    <circle cx="195" cy="201" r="3" fill="white" opacity=".9"/>
+    <path d="M110,190 L98,162 L124,178Z" fill="url(#wart-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M210,190 L222,162 L196,178Z" fill="url(#wart-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M112,188 L104,170 L122,180Z" fill="#8B7355" opacity=".4"/>
+    <path d="M208,188 L216,170 L198,180Z" fill="#8B7355" opacity=".4"/>
+  </g>
+</svg>`
+  },
+
+  // ── Hyena · ハイエナ ─ Rare ─ Golden ──────────────────────────────────────────
+  hyena: {
+    id: 'hyena',
+    name: 'Hyena · ハイエナ',
+    nameShort: 'ハイエナ',
+    subtitle: 'Night Sovereign · Laughing Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#C8A84B',
+    region: 'african',
+    lore: 'Not a scavenger but a sovereign, whose laugh echoes across the savanna like a declaration.',
+    haiku: '夜の笑い声<br>草原に響き渡る<br>王の宣言よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="hyen-body" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#f0d898"/>
+      <stop offset="100%" stop-color="#b08840"/>
+    </radialGradient>
+    <radialGradient id="hyen-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C8A84B" stop-opacity=".25"/>
+      <stop offset="100%" stop-color="#C8A84B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="155" cy="364" rx="64" ry="8" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura" cx="155" cy="260" rx="84" ry="88" fill="url(#hyen-aura)"/>
+  <g class="char-float">
+    <g class="cat-tail" style="transform-origin:200px 292px">
+      <path d="M200,292 C222,274 238,248 234,224 C230,200 214,192 202,202 C194,210 196,232 198,250 C200,268 202,280 200,292Z"
+        fill="url(#hyen-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="233" cy="222" rx="10" ry="8" fill="#080810" opacity=".55"/>
+    </g>
+    <path d="M98,280 C96,254 110,230 130,222 C150,214 172,218 188,232 C204,246 210,268 208,296 C206,322 194,348 166,352 C140,356 122,342 112,322 C102,306 100,294 98,280Z"
+      fill="url(#hyen-body)" stroke="#080810" stroke-width="4.5" stroke-linejoin="round"/>
+    <g class="spot-pulse">
+      <circle cx="130" cy="256" r="10" fill="#080810" opacity=".22"/>
+      <circle cx="156" cy="246" r="8" fill="#080810" opacity=".2"/>
+      <circle cx="180" cy="254" r="9" fill="#080810" opacity=".22"/>
+      <circle cx="144" cy="274" r="11" fill="#080810" opacity=".2"/>
+      <circle cx="170" cy="270" r="8" fill="#080810" opacity=".18"/>
+      <circle cx="120" cy="274" r="8" fill="#080810" opacity=".18"/>
+      <circle cx="194" cy="270" r="7" fill="#080810" opacity=".16"/>
+      <circle cx="138" cy="294" r="9" fill="#080810" opacity=".18"/>
+      <circle cx="165" cy="292" r="7" fill="#080810" opacity=".16"/>
+    </g>
+    <ellipse cx="118" cy="352" rx="24" ry="13" fill="url(#hyen-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M104,352 L98,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M116,356 L114,366" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M130,356 L132,366" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <ellipse cx="194" cy="340" rx="26" ry="14" fill="url(#hyen-body)" stroke="#080810" stroke-width="3"/>
+    <path d="M180,340 L174,354" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M192,344 L190,356" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M206,344 L208,356" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <g class="char-body">
+    <ellipse cx="154" cy="228" rx="36" ry="30" fill="url(#hyen-body)" stroke="#080810" stroke-width="3.5"/>
+    <ellipse cx="154" cy="192" rx="50" ry="44" fill="url(#hyen-body)" stroke="#080810" stroke-width="4.5"/>
+    <circle cx="134" cy="182" r="7" fill="#080810" opacity=".14"/>
+    <circle cx="174" cy="182" r="6" fill="#080810" opacity=".12"/>
+    <ellipse cx="154" cy="218" rx="36" ry="20" fill="#d0a850" stroke="#080810" stroke-width="3"/>
+    <path d="M124,218 C130,226 144,232 154,232 C164,232 178,226 184,218"
+      stroke="#080810" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="142" cy="214" rx="7" ry="5.5" fill="#080810" opacity=".6"/>
+    <ellipse cx="166" cy="214" rx="7" ry="5.5" fill="#080810" opacity=".6"/>
+    <ellipse cx="128" cy="190" rx="14" ry="13" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="128" cy="190" r="8" fill="#C8A84B"/>
+    <path d="M128,180 C129,185 129,195 128,200 C127,195 127,185 128,180Z" fill="#080810"/>
+    <circle cx="131" cy="185" r="2.8" fill="white" opacity=".9"/>
+    <ellipse cx="180" cy="190" rx="14" ry="13" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="180" cy="190" r="8" fill="#C8A84B"/>
+    <path d="M180,180 C181,185 181,195 180,200 C179,195 179,185 180,180Z" fill="#080810"/>
+    <circle cx="183" cy="185" r="2.8" fill="white" opacity=".9"/>
+    <ellipse cx="114" cy="162" rx="22" ry="20" fill="url(#hyen-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="114" cy="162" rx="13" ry="12" fill="#C8A84B" opacity=".3"/>
+    <ellipse cx="194" cy="162" rx="22" ry="20" fill="url(#hyen-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="194" cy="162" rx="13" ry="12" fill="#C8A84B" opacity=".3"/>
+  </g>
+</svg>`
+  },
+
+  // ── Okapi · オカピ ─ Rare ─ Reddish-Brown ────────────────────────────────────
+  okapi: {
+    id: 'okapi',
+    name: 'Okapi · オカピ',
+    nameShort: 'オカピ',
+    subtitle: 'Congo Ghost · Striped Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#7B4F2E',
+    region: 'african',
+    lore: 'The ghost of the Congo forest, with a giraffe\'s tongue and a zebra\'s legs, seen by few and doubted by many.',
+    haiku: '縞模様の足<br>密林の奥深く<br>幻の獣よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="okap-body" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#c08060"/>
+      <stop offset="100%" stop-color="#5a3018"/>
+    </radialGradient>
+    <radialGradient id="okap-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B4F2E" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#7B4F2E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="160" cy="364" rx="60" ry="8" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura" cx="160" cy="250" rx="80" ry="88" fill="url(#okap-aura)"/>
+  <g class="char-float">
+    <path d="M206,280 C220,270 226,255 222,242 C218,250 216,262 206,280Z"
+      fill="url(#okap-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <ellipse cx="221" cy="243" rx="8" ry="7" fill="#080810" opacity=".5"/>
+    <ellipse cx="158" cy="286" rx="72" ry="60" fill="url(#okap-body)" stroke="#080810" stroke-width="4.5"/>
+    <rect x="105" y="338" width="24" height="34" rx="10" fill="url(#okap-body)" stroke="#080810" stroke-width="3"/>
+    <rect x="103" y="348" width="28" height="5" rx="2" fill="#080810" opacity=".55"/>
+    <rect x="103" y="356" width="28" height="4" rx="2" fill="#080810" opacity=".5"/>
+    <rect x="103" y="364" width="28" height="3" rx="2" fill="white" opacity=".45"/>
+    <ellipse cx="117" cy="373" rx="13" ry="6" fill="#3a2010" stroke="#080810" stroke-width="2"/>
+    <rect x="187" y="338" width="24" height="34" rx="10" fill="url(#okap-body)" stroke="#080810" stroke-width="3"/>
+    <rect x="185" y="348" width="28" height="5" rx="2" fill="#080810" opacity=".55"/>
+    <rect x="185" y="356" width="28" height="4" rx="2" fill="#080810" opacity=".5"/>
+    <rect x="185" y="364" width="28" height="3" rx="2" fill="white" opacity=".45"/>
+    <ellipse cx="199" cy="373" rx="13" ry="6" fill="#3a2010" stroke="#080810" stroke-width="2"/>
+    <rect x="115" y="332" width="22" height="32" rx="9" fill="url(#okap-body)" stroke="#080810" stroke-width="2.5"/>
+    <rect x="113" y="342" width="26" height="4" rx="2" fill="#080810" opacity=".4"/>
+    <rect x="113" y="350" width="26" height="4" rx="2" fill="#080810" opacity=".38"/>
+    <ellipse cx="126" cy="365" rx="12" ry="5" fill="#3a2010" stroke="#080810" stroke-width="2"/>
+    <rect x="179" y="332" width="22" height="32" rx="9" fill="url(#okap-body)" stroke="#080810" stroke-width="2.5"/>
+    <rect x="177" y="342" width="26" height="4" rx="2" fill="#080810" opacity=".4"/>
+    <rect x="177" y="350" width="26" height="4" rx="2" fill="#080810" opacity=".38"/>
+    <ellipse cx="190" cy="365" rx="12" ry="5" fill="#3a2010" stroke="#080810" stroke-width="2"/>
+  </g>
+  <g class="neck-sway" style="transform-origin:156px 248px">
+    <rect x="136" y="188" width="40" height="72" rx="18" fill="url(#okap-body)" stroke="#080810" stroke-width="4"/>
+    <ellipse cx="156" cy="172" rx="36" ry="30" fill="url(#okap-body)" stroke="#080810" stroke-width="4"/>
+    <path d="M128,178 C120,184 116,196 118,206 C122,214 130,218 140,216 C148,214 156,208 156,200 C156,190 148,182 140,178Z"
+      fill="url(#okap-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="122" cy="203" rx="5" ry="4" fill="#080810" opacity=".65"/>
+    <path d="M132,218 C130,228 130,236 132,242" stroke="#7B4F2E" stroke-width="4" stroke-linecap="round" fill="none" opacity=".8"/>
+    <ellipse cx="138" cy="170" rx="14" ry="13" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="138" cy="170" r="8" fill="#080810"/>
+    <circle cx="141" cy="167" r="3" fill="white" opacity=".9"/>
+    <path d="M148,148 L144,130 C143,126 146,123 149,126 C151,122 154,124 153,128Z"
+      fill="url(#okap-body)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M168,146 L166,128 C165,124 168,121 171,124 C173,120 175,123 174,127Z"
+      fill="url(#okap-body)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M136,148 L126,118 L158,136Z" fill="url(#okap-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M140,145 L133,122 L154,136Z" fill="#7B4F2E" opacity=".4"/>
+    <path d="M176,148 L184,120 L156,136Z" fill="url(#okap-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M172,145 L178,122 L158,136Z" fill="#7B4F2E" opacity=".4"/>
+  </g>
+</svg>`
   }
 
 };
@@ -2872,8 +3360,8 @@ const CHARACTERS = {
 // ── RARITY ROLL ──────────────────────────────────────────────────────────────
 
 const RARITY_WEIGHTS = [
-  { rarity: 'common',    weight: 65, pool: ['shiro','tanuki','kappa','kodama','capybara','armadillo','llama','hedgehog','hare','wisp','meerkat','mongoose'] },
-  { rarity: 'rare',      weight: 28, pool: ['karasu','koi','oni','baku','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie'] },
+  { rarity: 'common',    weight: 65, pool: ['shiro','tanuki','kappa','kodama','capybara','armadillo','llama','hedgehog','hare','wisp','meerkat','mongoose','coati','tapir','pangolin','warthog'] },
+  { rarity: 'rare',      weight: 28, pool: ['karasu','koi','oni','baku','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','anaconda','hyena','okapi'] },
   { rarity: 'legendary', weight: 7,  pool: ['kyubi','raijin_wolf','chupacabra','unicorn','wyvern'] }
 ];
 

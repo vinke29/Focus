@@ -14,8 +14,42 @@
 </head>
 <body>
 
+<!-- ── AUTH VIEW ── -->
+<div id="view-auth" class="view active">
+  <div class="auth-logo">Focus · 集中</div>
+  <div class="auth-container">
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-signin">sign in</button>
+      <button class="auth-tab" id="tab-signup">sign up</button>
+    </div>
+
+    <!-- Sign in panel -->
+    <div id="panel-signin" class="auth-panel">
+      <input id="si-email"    type="email"    class="auth-input" placeholder="email"    autocomplete="email">
+      <input id="si-password" type="password" class="auth-input" placeholder="password" autocomplete="current-password">
+      <button id="btn-signin" class="auth-btn"><span>begin</span></button>
+      <p id="si-error" class="auth-error"></p>
+    </div>
+
+    <!-- Sign up panel -->
+    <div id="panel-signup" class="auth-panel" style="display:none">
+      <input id="su-name"     type="text"     class="auth-input" placeholder="your name" autocomplete="name" maxlength="24">
+      <input id="su-email"    type="email"    class="auth-input" placeholder="email"     autocomplete="email">
+      <input id="su-password" type="password" class="auth-input" placeholder="password"  autocomplete="new-password">
+      <button id="btn-signup" class="auth-btn"><span>create account</span></button>
+      <p id="su-error" class="auth-error"></p>
+    </div>
+
+    <!-- Email confirmation notice (shown when Supabase requires it) -->
+    <div id="auth-confirm" class="auth-panel" style="display:none">
+      <p class="auth-confirm-msg">check your email to confirm your account, then sign in.</p>
+      <button id="btn-goto-signin" class="auth-btn"><span>sign in</span></button>
+    </div>
+  </div>
+</div>
+
 <!-- ── ONBOARD VIEW ── -->
-<div id="view-onboard" class="view active">
+<div id="view-onboard" class="view">
   <div id="ob-slide-1" class="ob-slide">
     <div class="ob-logo">Focus · 集中</div>
     <p class="ob-prompt">what's your name?</p>
@@ -136,6 +170,7 @@
     </div>
 
     <div id="hatch-actions">
+      <button id="btn-share"><span>share</span></button>
       <button id="btn-see-collection"><span>collection</span></button>
       <button id="btn-focus-again"><span>focus again</span></button>
     </div>
@@ -148,6 +183,7 @@
     <div class="collection-top">
       <button id="btn-back-to-timer" class="nav-btn">←</button>
       <span class="collection-title" id="collection-title">collection</span>
+      <button id="btn-signout" class="nav-btn signout-btn" title="Sign out">→</button>
     </div>
     <div id="collection-stats"></div>
     <div class="region-tabs">
@@ -218,8 +254,10 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="characters.js"></script>
 <script src="sounds.js"></script>
+<script src="supabase.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

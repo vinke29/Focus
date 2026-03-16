@@ -126,6 +126,7 @@ function loadSessions() {
 function addSession(durationMinutes) {
   sessions.push({ timestamp: Date.now(), duration: durationMinutes });
   localStorage.setItem('focus-sessions', JSON.stringify(sessions));
+  DB.addSession(durationMinutes).catch(() => {});
 }
 
 function calcStreak() {
@@ -231,6 +232,9 @@ const state = {
 };
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
+// localStorage is used as a write-through cache for fast startup and offline.
+// Supabase is the primary store; writes are fire-and-forget.
+
 function loadCollection() {
   try {
     const saved = localStorage.getItem('focus-collection');
@@ -240,11 +244,14 @@ function loadCollection() {
 
 function saveCollection() {
   localStorage.setItem('focus-collection', JSON.stringify(state.collection));
+  DB.saveCollection(state.collection).catch(() => {});
 }
 
 function addToCollection(character, variant) {
-  state.collection.push({ id: character.id, variant: variant.id, timestamp: Date.now() });
-  saveCollection();
+  const entry = { id: character.id, variant: variant.id, timestamp: Date.now() };
+  state.collection.push(entry);
+  localStorage.setItem('focus-collection', JSON.stringify(state.collection));
+  DB.addCollectionEntry(character.id, variant.id).catch(() => {});
 }
 
 // ── NAVIGATION ───────────────────────────────────────────────────────────────
@@ -253,9 +260,9 @@ function navigateTo(viewId) {
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
-  // Hide mute button on collection (back button occupies that corner)
   const muteBtn = document.getElementById('btn-mute');
-  if (muteBtn) muteBtn.style.opacity = viewId === 'collection' ? '0' : '';
+  const noMute  = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard';
+  if (muteBtn) muteBtn.style.opacity = noMute ? '0' : '';
 }
 
 function loadMuteState() {
@@ -870,6 +877,7 @@ function startOnboarding() {
   addToCollection(character, variant);
 
   // Customise the hatch CTA for onboarding
+  document.getElementById('btn-share').style.display = 'none';
   document.getElementById('btn-focus-again').innerHTML  = '<span>begin your journey</span>';
   document.getElementById('btn-see-collection').innerHTML = '<span>see your collection</span>';
 
@@ -881,6 +889,7 @@ function startOnboarding() {
 function finishOnboarding() {
   state.onboarding = false;
   // Restore normal hatch button labels
+  document.getElementById('btn-share').style.display = '';
   document.getElementById('btn-focus-again').innerHTML  = '<span>focus again</span>';
   document.getElementById('btn-see-collection').innerHTML = '<span>collection</span>';
   resetTimerState();
@@ -913,6 +922,148 @@ function notifySessionComplete() {
   });
 }
 
+// ── SHARE CARD ────────────────────────────────────────────────────────────────
+const VARIANT_CANVAS_FILTER = {
+  gold:    'sepia(.48) saturate(2.6) hue-rotate(8deg) brightness(1.1)',
+  crimson: 'sepia(.52) saturate(3.2) hue-rotate(-22deg) brightness(1.04)',
+  void:    'hue-rotate(255deg) saturate(2.6) brightness(1.45) contrast(1.08)',
+};
+
+async function generateShareCard(char, variant) {
+  const W = 400, H = 520;
+  const canvas = document.createElement('canvas');
+  canvas.width  = W * 2; // 2× for retina
+  canvas.height = H * 2;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(2, 2);
+
+  // Background
+  ctx.fillStyle = '#080810';
+  ctx.fillRect(0, 0, W, H);
+
+  // Void nebula patch in art area
+  if (variant.id === 'void') {
+    const grad = ctx.createRadialGradient(W / 2, 195, 0, W / 2, 195, 180);
+    grad.addColorStop(0,    '#2a0a4e');
+    grad.addColorStop(0.45, '#0e0420');
+    grad.addColorStop(1,    '#080810');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 20, W, 340);
+  }
+
+  // Variant accent line at top
+  ctx.fillStyle = variant.color + 'bb';
+  ctx.fillRect(40, 12, W - 80, 2);
+
+  // Draw SVG creature
+  const svgBlob = new Blob([char.svg], { type: 'image/svg+xml;charset=utf-8' });
+  const svgUrl  = URL.createObjectURL(svgBlob);
+  await new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const filter = VARIANT_CANVAS_FILTER[variant.id];
+      if (filter) ctx.filter = filter;
+      // Center creature art in a 280×320 zone
+      const artW = 280, artH = 320;
+      const artX = (W - artW) / 2;
+      const artY = 28;
+      ctx.drawImage(img, artX, artY, artW, artH);
+      ctx.filter = 'none';
+      URL.revokeObjectURL(svgUrl);
+      resolve();
+    };
+    img.onerror = () => { URL.revokeObjectURL(svgUrl); resolve(); };
+    img.src = svgUrl;
+  });
+
+  // Character name
+  const nameEn = charNameEn(char);
+  ctx.fillStyle = '#f7f2e8';
+  ctx.font = `bold 26px 'Zen Antique Soft', serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText(nameEn, W / 2, 386);
+
+  // Subtitle
+  ctx.fillStyle = 'rgba(247,242,232,.42)';
+  ctx.font = `400 11px 'Noto Serif JP', serif`;
+  ctx.letterSpacing = '0.08em';
+  ctx.fillText(char.subtitle, W / 2, 404);
+
+  // Rarity badge
+  ctx.fillStyle = variant.color;
+  ctx.font = `400 12px 'Noto Serif JP', serif`;
+  ctx.fillText(char.rarityLabel + '  ·  ' + variant.label, W / 2, 432);
+
+  // Divider
+  ctx.strokeStyle = 'rgba(247,242,232,.12)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(80, 452); ctx.lineTo(W - 80, 452);
+  ctx.stroke();
+
+  // Branding
+  ctx.fillStyle = 'rgba(247,242,232,.28)';
+  ctx.font = `200 13px 'Noto Serif JP', serif`;
+  ctx.fillText('Focus  ·  集中', W / 2, 478);
+
+  // Outer border
+  ctx.strokeStyle = variant.color + '28';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(8, 8, W - 16, H - 16);
+
+  return canvas;
+}
+
+async function shareCreature() {
+  const { character: char, variant } = state.hatch;
+  if (!char || !variant) return;
+
+  const btn = document.getElementById('btn-share');
+  btn.disabled = true;
+  const origText = btn.querySelector('span').textContent;
+  btn.querySelector('span').textContent = '...';
+
+  try {
+    const canvas = await generateShareCard(char, variant);
+    const nameEn = charNameEn(char);
+    const fileName = `focus-${char.id}-${variant.id}.png`;
+
+    canvas.toBlob(async (blob) => {
+      const file = new File([blob], fileName, { type: 'image/png' });
+
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({
+            title: `I hatched ${nameEn}!`,
+            text:  `${char.rarityLabel} · ${variant.label} — Focus · 集中`,
+            files: [file],
+          });
+        } catch (e) {
+          if (e.name !== 'AbortError') downloadBlob(blob, fileName);
+        }
+      } else {
+        downloadBlob(blob, fileName);
+      }
+
+      btn.disabled = false;
+      btn.querySelector('span').textContent = origText;
+    }, 'image/png');
+  } catch (e) {
+    btn.disabled = false;
+    btn.querySelector('span').textContent = origText;
+  }
+}
+
+function downloadBlob(blob, fileName) {
+  const url = URL.createObjectURL(blob);
+  const a   = document.createElement('a');
+  a.href = url; a.download = fileName;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 // ── SERVICE WORKER ────────────────────────────────────────────────────────────
 function registerSW() {
   if ('serviceWorker' in navigator) {
@@ -920,12 +1071,120 @@ function registerSW() {
   }
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
-function init() {
+// ── AUTH FLOW ─────────────────────────────────────────────────────────────────
+
+function showAuthError(panel, msg) {
+  const el = document.getElementById(panel === 'signin' ? 'si-error' : 'su-error');
+  if (el) el.textContent = msg;
+}
+function clearAuthErrors() {
+  ['si-error','su-error'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '';
+  });
+}
+function setAuthLoading(btn, loading) {
+  btn.disabled = loading;
+  const span = btn.querySelector('span');
+  if (!span) return;
+  btn.dataset.origText = btn.dataset.origText || span.textContent;
+  span.textContent = loading ? '...' : btn.dataset.origText;
+}
+
+async function handleSignedIn(user) {
+  // Use localStorage cache immediately for fast render
   loadCollection();
   loadSessions();
-  loadMuteState();
   renderTimerStats();
+  navigateTo('timer');
+
+  // Sync from Supabase in background and update cache
+  Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadProfile()])
+    .then(([col, sess, profile]) => {
+      if (col   !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
+      if (sess  !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
+      if (profile?.name)  { localStorage.setItem('focus-name', profile.name); updateCollectionTitle(); }
+    })
+    .catch(() => {}); // offline — localStorage cache is sufficient
+}
+
+async function performSignIn() {
+  const email    = document.getElementById('si-email').value.trim();
+  const password = document.getElementById('si-password').value;
+  const btn      = document.getElementById('btn-signin');
+  clearAuthErrors();
+  if (!email || !password) { showAuthError('signin', 'email and password required'); return; }
+  setAuthLoading(btn, true);
+  try {
+    const data = await DB.signIn(email, password);
+    await handleSignedIn(data.user);
+  } catch(e) {
+    showAuthError('signin', e.message || 'sign in failed');
+    setAuthLoading(btn, false);
+  }
+}
+
+async function performSignUp() {
+  const name     = document.getElementById('su-name').value.trim();
+  const email    = document.getElementById('su-email').value.trim();
+  const password = document.getElementById('su-password').value;
+  const btn      = document.getElementById('btn-signup');
+  clearAuthErrors();
+  if (!name)     { showAuthError('signup', 'name is required'); return; }
+  if (!email)    { showAuthError('signup', 'email is required'); return; }
+  if (password.length < 6) { showAuthError('signup', 'password must be at least 6 characters'); return; }
+  setAuthLoading(btn, true);
+  try {
+    const data = await DB.signUp(name, email, password);
+    if (!data.session) {
+      // Email confirmation required — show notice
+      document.getElementById('panel-signup').style.display  = 'none';
+      document.getElementById('auth-confirm').style.display  = 'flex';
+      return;
+    }
+    // Auto-confirmed: store name locally and show onboarding egg
+    localStorage.setItem('focus-name', name);
+    state.collection = [];
+    sessions = [];
+    showOnboardingEgg(name);
+  } catch(e) {
+    showAuthError('signup', e.message || 'sign up failed');
+    setAuthLoading(btn, false);
+  }
+}
+
+async function performSignOut() {
+  try { await DB.signOut(); } catch(e) {}
+  // Clear local state
+  state.collection = [];
+  sessions = [];
+  localStorage.removeItem('focus-collection');
+  localStorage.removeItem('focus-sessions');
+  localStorage.removeItem('focus-name');
+  // Reset auth form
+  clearAuthErrors();
+  document.getElementById('si-email').value    = '';
+  document.getElementById('si-password').value = '';
+  document.getElementById('panel-signin').style.display = 'flex';
+  document.getElementById('panel-signup').style.display = 'none';
+  document.getElementById('auth-confirm').style.display = 'none';
+  document.getElementById('tab-signin').classList.add('active');
+  document.getElementById('tab-signup').classList.remove('active');
+  navigateTo('auth');
+}
+
+// Show the egg-tap slide directly (used after sign-up)
+function showOnboardingEgg(name) {
+  document.getElementById('ob-greeting').textContent = `welcome, ${name}`;
+  document.getElementById('ob-egg-wrap').innerHTML   = EGG_SVG_SMALL;
+  navigateTo('onboard');
+  document.getElementById('ob-slide-1').classList.remove('active');
+  document.getElementById('ob-slide-2').classList.add('active');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function init() {
+  loadMuteState();
   registerSW();
 
   // Particle canvas
@@ -938,16 +1197,10 @@ function init() {
     particleCanvas.height = window.innerHeight;
   });
 
-  // Inject small egg into timer view
   document.getElementById('timer-egg').innerHTML = EGG_SVG_SMALL;
   updateTimerDisplay();
 
-  // Route: first visit → onboarding, returning user → timer
-  if (!getUserName()) {
-    showOnboarding();
-  } else {
-    navigateTo('timer');
-  }
+  // ── Event listeners ──────────────────────────────────────────────────────
 
   // Fusion overlay
   document.getElementById('btn-fusion-ok').addEventListener('click', closeFusionScreen);
@@ -975,7 +1228,7 @@ function init() {
   // Mute toggle
   document.getElementById('btn-mute').addEventListener('click', toggleMute);
 
-  // Start/pause button — also unlocks AudioContext and requests notification permission on first gesture
+  // Start/pause button
   document.getElementById('btn-start-focus').addEventListener('click', () => {
     SFX.unlock();
     requestNotificationPermission();
@@ -989,7 +1242,11 @@ function init() {
     navigateTo('timer');
   });
 
+  // Sign out
+  document.getElementById('btn-signout').addEventListener('click', performSignOut);
+
   // Hatch actions
+  document.getElementById('btn-share').addEventListener('click', shareCreature);
   document.getElementById('btn-see-collection').addEventListener('click', () => {
     if (state.onboarding) finishOnboarding();
     navigateTo('collection');
@@ -1000,30 +1257,47 @@ function init() {
     navigateTo('timer');
   });
 
-  // Onboarding: name slide → welcome slide
-  const obNext = document.getElementById('ob-next');
-  const obName = document.getElementById('ob-name');
-  function submitName() {
-    const val = obName.value.trim();
-    if (!val) { obName.focus(); return; }
-    saveName(val);
-    SFX.unlock();
-    // Transition slide 1 → slide 2
-    const s1 = document.getElementById('ob-slide-1');
-    const s2 = document.getElementById('ob-slide-2');
-    s1.classList.remove('active');
-    document.getElementById('ob-greeting').textContent = `welcome, ${val}`;
-    setTimeout(() => s2.classList.add('active'), 200);
-  }
-  obNext.addEventListener('click', submitName);
-  obName.addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
-
-  // Onboarding: begin button → 30s focus countdown
-  // Onboarding: tap egg → welcome hatch
+  // Onboarding egg tap → welcome hatch
   document.getElementById('ob-egg-wrap').addEventListener('click', () => {
     SFX.unlock();
     SFX.crack(0.7);
     startOnboarding();
+  });
+
+  // Auth: tab switching
+  document.getElementById('tab-signin').addEventListener('click', () => {
+    document.getElementById('tab-signin').classList.add('active');
+    document.getElementById('tab-signup').classList.remove('active');
+    document.getElementById('panel-signin').style.display = 'flex';
+    document.getElementById('panel-signup').style.display = 'none';
+    document.getElementById('auth-confirm').style.display = 'none';
+    clearAuthErrors();
+  });
+  document.getElementById('tab-signup').addEventListener('click', () => {
+    document.getElementById('tab-signup').classList.add('active');
+    document.getElementById('tab-signin').classList.remove('active');
+    document.getElementById('panel-signup').style.display = 'flex';
+    document.getElementById('panel-signin').style.display = 'none';
+    document.getElementById('auth-confirm').style.display = 'none';
+    clearAuthErrors();
+    setTimeout(() => document.getElementById('su-name').focus(), 60);
+  });
+
+  // Auth: form submission
+  document.getElementById('btn-signin').addEventListener('click', performSignIn);
+  document.getElementById('btn-signup').addEventListener('click', performSignUp);
+  document.getElementById('btn-goto-signin').addEventListener('click', () => {
+    document.getElementById('auth-confirm').style.display = 'none';
+    document.getElementById('panel-signin').style.display = 'flex';
+    document.getElementById('tab-signin').classList.add('active');
+    document.getElementById('tab-signup').classList.remove('active');
+  });
+  // Allow Enter key in auth inputs
+  ['si-email','si-password'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') performSignIn(); });
+  });
+  ['su-name','su-email','su-password'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') performSignUp(); });
   });
 
   // Region filter tabs
@@ -1091,7 +1365,7 @@ function init() {
       saveCollection();
       navigateTo('collection');
     }
-    // X — wipe collection + sessions (Shift+X)
+    // X — wipe collection + sessions + sign out (Shift+X)
     if (e.key === 'x' || e.key === 'X') {
       if (e.shiftKey) {
         state.collection = [];
@@ -1100,7 +1374,7 @@ function init() {
         localStorage.removeItem('focus-sessions');
         localStorage.removeItem('focus-name');
         renderTimerStats();
-        showOnboarding();
+        performSignOut();
       }
     }
     // S — seed fake session history for testing stats (Shift+S)
@@ -1155,6 +1429,16 @@ function init() {
       }
     }
   });
+
+  // ── Auth routing ──────────────────────────────────────────────────────────
+  const { data: { session } } = await DB.getSession();
+  if (session) {
+    await handleSignedIn(session.user);
+  } else {
+    navigateTo('auth');
+    // Auto-focus sign-in email field
+    setTimeout(() => document.getElementById('si-email').focus(), 100);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);
