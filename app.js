@@ -98,8 +98,8 @@ function showFusionScreen(char, fromVariant, toVariant) {
     });
   }, 1500);
 
-  setTimeout(() => { core.classList.add('burst'); SFX.fusionBurst(); }, 1960);
-  setTimeout(() => { result.classList.add('reveal'); SFX.fusionReveal(toVariant.id); }, 2200);
+  setTimeout(() => { core.classList.add('burst'); SFX.fusionBurst(); navigator.vibrate?.([220]); }, 1960);
+  setTimeout(() => { result.classList.add('reveal'); SFX.fusionReveal(toVariant.id); navigator.vibrate?.([30, 80, 60]); }, 2200);
   setTimeout(() => btn.classList.add('show'), 2950);
 }
 
@@ -454,16 +454,18 @@ function runHatchSequence() {
     cracks.style.transition = 'opacity .1s';
     animateCracks();
     SFX.crack();
+    navigator.vibrate?.([18]);
   }, 1600);
 
-  setTimeout(() => SFX.crack(0.55), 1920);
+  setTimeout(() => { SFX.crack(0.55); navigator.vibrate?.([10]); }, 1920);
 
   // 2. Shake at 2.2s
-  setTimeout(() => { shakeEgg(egg); SFX.rumble(); }, 2200);
+  setTimeout(() => { shakeEgg(egg); SFX.rumble(); navigator.vibrate?.([8, 60, 8, 60, 8]); }, 2200);
 
   // 3. BURST at 3.0s
   setTimeout(() => {
     SFX.burst(state.hatch.character.rarity);
+    navigator.vibrate?.([180]);
     // Flash
     flash.style.opacity = '1';
     setTimeout(() => {
