@@ -1140,15 +1140,24 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   #hatch-actions button { text-align: center; }
 
   /* Collection header */
-  .collection-top   { padding: 1rem 1.2rem .7rem; }
-  #collection-stats { padding: .1rem 1.2rem .5rem; }
-  .region-tabs      { padding: 0 1rem .75rem; gap: .2rem; }
-  .region-btn       { padding: .28rem .65rem; font-size: .55rem; }
+  .collection-top   { padding: .75rem 1rem .5rem; gap: .5rem; }
+  .collection-title {
+    font-size: .72rem; letter-spacing: .12em;
+    flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #btn-signout      { font-size: .48rem; letter-spacing: .15em; white-space: nowrap; }
+  #collection-stats { padding: .1rem 1rem .4rem; font-size: .44rem; }
 
-  /* Collection grid: 3 columns on mobile */
+  /* Tabs: tighter + hidden scrollbar */
+  .region-tabs      { padding: 0 .8rem .6rem; gap: .2rem; scrollbar-width: none; }
+  .region-tabs::-webkit-scrollbar { display: none; }
+  .region-btn       { padding: .22rem .5rem; font-size: .5rem; letter-spacing: .1em; }
+
+  /* Collection grid: 2 columns on mobile for bigger, readable cards */
   #collection-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: .7rem; padding: .9rem 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .8rem; padding: .8rem 1rem;
   }
 
   /* Fusion */
@@ -1169,9 +1178,8 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   #char-wrap      { width: 230px; height: 280px; }
   #hatch-cracks   { top: 0; left: 5px; }
 
-  /* Collection grid: 2 columns on very small */
+  /* Collection grid: tighter on very small */
   #collection-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: .5rem; padding: .7rem .8rem;
+    gap: .5rem; padding: .6rem .7rem;
   }
 }
