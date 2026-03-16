@@ -1,8 +1,3 @@
-// Capture at script-parse time — before DOMContentLoaded and before Supabase's
-// async initialize() can clear the URL hash. Used to detect OAuth redirects.
-const _isOAuthRedirect = window.location.hash.includes('access_token=') ||
-                         window.location.search.includes('code=');
-
 // ── FUSION ────────────────────────────────────────────────────────────────────
 const VARIANT_NEXT = { standard: 'gold', gold: 'crimson', crimson: 'void' };
 
@@ -1668,39 +1663,12 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  // Event ordering for OAuth redirects (implicit flow):
-  //   INITIAL_SESSION → sess=null  (no stored session yet, tokens still processing)
-  //   SIGNED_IN       → sess=valid (OAuth complete)
-  // For normal page load with stored session:
-  //   INITIAL_SESSION → sess=valid
-  // For no session at all:
-  //   INITIAL_SESSION → sess=null  (and no SIGNED_IN follows)
-  //
-  // So: if INITIAL_SESSION fires with null AND isOAuthRedirect, keep waiting.
-  const session = await new Promise(resolve => {
-    let resolved = false;
-    const done = (sess) => { if (!resolved) { resolved = true; resolve(sess); } };
-
-    const { data: { subscription } } = DB.onAuthStateChange((event, sess) => {
-      if (event === 'SIGNED_IN' && sess) {
-        subscription.unsubscribe(); done(sess);         // OAuth tokens processed
-      } else if (event === 'INITIAL_SESSION') {
-        if (sess) {
-          subscription.unsubscribe(); done(sess);       // returning user
-        } else if (!_isOAuthRedirect) {
-          subscription.unsubscribe(); done(null);       // no session, no OAuth
-        }
-        // null + isOAuthRedirect → stay subscribed, wait for SIGNED_IN
-      }
-    });
-
-    // Hard fallback: 6s covers slow OAuth token exchange
-    setTimeout(async () => {
-      const { data } = await DB.getSession();
-      subscription.unsubscribe();
-      done(data.session);
-    }, 6000);
-  });
+  // getSession() internally awaits Supabase's initializePromise, which means
+  // it blocks until initialize() has fully run — including extracting any
+  // OAuth access_token from the URL hash and storing the session. This is
+  // the only reliable signal regardless of when scripts execute.
+  const { data } = await DB.getSession().catch(() => ({ data: { session: null } }));
+  const session = data.session;
 
   if (session) {
     await handleSignedIn(session.user);
