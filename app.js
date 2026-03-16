@@ -874,39 +874,7 @@ function showOnboarding() {
   document.getElementById('ob-slide-1').classList.add('active');
   document.getElementById('ob-slide-2').classList.remove('active');
   document.getElementById('ob-egg-wrap').innerHTML = EGG_SVG_SMALL;
-  // Reset ring + begin button for re-entry (e.g. after Shift+X)
-  document.getElementById('ob-ring-fill').style.strokeDashoffset = '741.12';
-  document.getElementById('ob-begin').style.opacity = '1';
-  document.getElementById('ob-begin').style.pointerEvents = 'auto';
-  document.getElementById('ob-egg-wrap').style.filter = '';
-  // Auto-focus name input after view fades in
   setTimeout(() => document.getElementById('ob-name').focus(), 500);
-}
-
-function runObTimer() {
-  const ringFill    = document.getElementById('ob-ring-fill');
-  const eggWrap     = document.getElementById('ob-egg-wrap');
-  const circumference = 741.12;
-  const duration    = 30;
-  let elapsed       = 0;
-
-  const tick = setInterval(() => {
-    elapsed++;
-    const progress = elapsed / duration;
-    ringFill.style.transition     = 'stroke-dashoffset .8s linear';
-    ringFill.style.strokeDashoffset = circumference * (1 - progress);
-
-    // Egg glow builds toward full intensity
-    const glow = Math.round(progress * 22);
-    const alpha = (progress * 0.55).toFixed(2);
-    const svg   = eggWrap.querySelector('svg');
-    if (svg) svg.style.filter = `drop-shadow(0 0 ${glow}px rgba(0,71,255,${alpha}))`;
-
-    if (elapsed >= duration) {
-      clearInterval(tick);
-      startOnboarding();
-    }
-  }, 1000);
 }
 
 // ── NOTIFICATIONS ─────────────────────────────────────────────────────────────
@@ -1029,12 +997,11 @@ function init() {
   obName.addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
 
   // Onboarding: begin button → 30s focus countdown
-  document.getElementById('ob-begin').addEventListener('click', () => {
+  // Onboarding: tap egg → welcome hatch
+  document.getElementById('ob-egg-wrap').addEventListener('click', () => {
     SFX.unlock();
-    const btn = document.getElementById('ob-begin');
-    btn.style.opacity = '0';
-    btn.style.pointerEvents = 'none';
-    runObTimer();
+    SFX.crack(0.7);
+    startOnboarding();
   });
 
   // Region filter tabs

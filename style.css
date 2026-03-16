@@ -78,21 +78,11 @@ body::after {
   font-size: 1rem; letter-spacing: .06em; opacity: .6;
 }
 
-#ob-egg-stage {
-  position: relative;
-  width: 260px; height: 260px;
-  display: flex; align-items: center; justify-content: center;
-}
-#ob-ring {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  transform: rotate(-90deg);
-}
 #ob-egg-wrap {
-  position: relative; z-index: 1;
-  display: flex; align-items: center; justify-content: center;
-  transition: filter .8s ease;
+  cursor: pointer;
+  transition: transform .15s ease;
 }
+#ob-egg-wrap:hover { transform: scale(1.05); }
 #ob-egg-wrap svg { width: 130px; height: auto; animation: eggPulse 2s ease-in-out infinite; }
 
 .ob-hint {
@@ -971,7 +961,6 @@ body::after {
   #btn-start-focus { margin-top: 1.4rem; padding: .68rem 2rem; }
 
   /* Onboarding */
-  #ob-egg-stage   { width: 220px; height: 220px; }
   #ob-egg-wrap svg{ width: 108px; }
   .ob-input       { width: 12rem; font-size: 1.25rem; }
 
@@ -1005,7 +994,7 @@ body::after {
 @media (max-width: 390px) {
 
   /* Very small phones */
-  #egg-stage, #ob-egg-stage { width: 195px; height: 195px; }
+  #egg-stage { width: 195px; height: 195px; }
   #timer-egg svg, #ob-egg-wrap svg { width: 95px; }
   #time-display { font-size: 2.8rem; }
 
