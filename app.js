@@ -1673,9 +1673,23 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  // With implicit flow, tokens land in the URL hash immediately — no async
-  // code exchange, no sessionStorage dependency (which iOS Safari clears).
-  const { data: { session } } = await DB.getSession();
+  // onAuthStateChange fires after Supabase finishes initializing (including
+  // processing OAuth tokens from the URL hash). Using it as a Promise avoids
+  // the race where getSession() is called before init completes.
+  const session = await new Promise(resolve => {
+    let resolved = false;
+    const { data: { subscription } } = DB.onAuthStateChange((event, sess) => {
+      if (resolved) return;
+      resolved = true;
+      subscription.unsubscribe();
+      resolve(sess);
+    });
+    // Fallback: if no event in 5s (offline/error), proceed with null
+    setTimeout(() => {
+      if (!resolved) { resolved = true; subscription.unsubscribe(); resolve(null); }
+    }, 5000);
+  });
+
   if (session) {
     await handleSignedIn(session.user);
   } else {
