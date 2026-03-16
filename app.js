@@ -66,7 +66,9 @@ function showFusionScreen(char, fromVariant, toVariant) {
   btn.classList.remove('show');
 
   // Populate result
-  document.getElementById('fusion-result-art').innerHTML = char.svg;
+  const resultArt = document.getElementById('fusion-result-art');
+  resultArt.innerHTML = char.svg;
+  applyVariantFilter(resultArt, toVariant.id);
   document.getElementById('fusion-result-name').textContent = charNameEn(char);
   const badge = document.getElementById('fusion-result-badge');
   badge.textContent    = char.rarityLabel + ' · ' + toVariant.label;
@@ -99,6 +101,12 @@ function showFusionScreen(char, fromVariant, toVariant) {
 
 function closeFusionScreen() {
   document.getElementById('fusion-overlay').classList.remove('open');
+}
+
+// Apply colour-filter class matching a variant to any art container element
+function applyVariantFilter(el, variantId) {
+  el.classList.remove('vf-gold', 'vf-crimson', 'vf-void');
+  if (variantId !== 'standard') el.classList.add(`vf-${variantId}`);
 }
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
@@ -259,6 +267,7 @@ function prepareHatchView(character, variant) {
   wrap.innerHTML = character.svg;
   wrap.style.opacity = '0';
   wrap.style.transition = 'none';
+  applyVariantFilter(wrap, variant.id);
 
   // Character info
   document.getElementById('char-name').textContent   = character.name;
@@ -550,10 +559,12 @@ function renderCollection() {
     if (state.previewAll && count === 0) card.style.opacity = '.55';
 
     if (unlocked) {
-      // Art
+      // Art — colour-filtered by the rarest variant owned
+      const rarestOwned = [...VARIANTS].reverse().find(v => (vc[v.id] || 0) > 0) || VARIANTS[0];
       const art = document.createElement('div');
       art.className = 'card-art';
       art.innerHTML = char.svg;
+      applyVariantFilter(art, rarestOwned.id);
       card.appendChild(art);
 
       // Count badge (only for real earned dupes)
@@ -639,7 +650,7 @@ function openCardModal(charId, vc) {
   // Reset flip state
   document.getElementById('modal-card').classList.remove('flipped');
 
-  // Front: art
+  // Front: art (filter applied in renderModalVariantNav after variant is known)
   document.getElementById('modal-art').innerHTML = char.svg;
 
   // Back: lore + haiku
@@ -658,6 +669,7 @@ function openCardModal(charId, vc) {
 function renderModalVariantNav() {
   const variant = modalOwnedVariants[modalVariantIndex] || VARIANTS[0];
   updateModalRarity(modalChar, variant);
+  applyVariantFilter(document.getElementById('modal-art'), variant.id);
 
   const nav = document.getElementById('modal-var-nav');
   if (modalOwnedVariants.length < 2) { nav.style.display = 'none'; return; }

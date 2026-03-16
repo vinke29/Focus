@@ -728,6 +728,12 @@ body::after {
 .baku-drift{ animation: dreamDrift 5s ease-in-out infinite; transform-origin: center center; }
 .selkie-eye{ animation: selkieGaze 6s ease-in-out infinite; transform-origin: center center; }
 
+/* ── VARIANT COLOUR FILTERS ── */
+/* Applied to art containers so the full character palette shifts per tier  */
+.vf-gold    { filter: sepia(.48) saturate(2.6) hue-rotate(8deg)    brightness(1.1);  }
+.vf-crimson { filter: sepia(.52) saturate(3.2) hue-rotate(-22deg)  brightness(1.04); }
+.vf-void    { filter: saturate(.22) brightness(.62) hue-rotate(222deg) contrast(1.12); }
+
 /* ── FUSION OVERLAY ── */
 #fusion-overlay {
   position: fixed; inset: 0;
