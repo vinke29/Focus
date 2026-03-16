@@ -202,7 +202,7 @@ body.dark .char-card.locked:hover   { box-shadow: 0 1px 4px rgba(0,0,0,.2); }
 body.dark .card-info                { background: #14141f; border-top-color: rgba(221,215,200,.1); }
 body.dark .card-art                 { background: rgba(255,255,255,.015); }
 body.dark .card-tooltip             { background: rgba(20,20,31,.96); }
-body.dark .collection-header        { border-bottom-color: rgba(221,215,200,.1); }
+body.dark .collection-header        { border-bottom-color: rgba(221,215,200,.1); background: #0f0f1a; }
 body.dark .region-btn               { border-color: rgba(221,215,200,.18); }
 body.dark .region-btn.active,
 body.dark .region-btn:hover         { border-color: var(--ink); }
@@ -478,7 +478,9 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #view-collection { justify-content: flex-start; overflow-y: auto; }
 
 .collection-header {
+  position: sticky; top: 0; z-index: 10;
   width: 100%; flex-shrink: 0;
+  background: var(--paper);
   border-bottom: 1px solid rgba(8,8,16,.08);
 }
 .collection-top {
