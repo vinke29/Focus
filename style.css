@@ -181,14 +181,15 @@ body::after {
 }
 .view.active { opacity: 1; pointer-events: all; }
 
-/* ── DARK MODE TOGGLE ── */
-.dark-btn {
-  position: fixed; top: 1.4rem; left: 4.2rem; z-index: 50;
+/* ── DARK MODE TOGGLE (inline in collection header) ── */
+.dark-btn-inline {
+  opacity: .5; padding: .3rem; margin-left: .3rem;
   transition: opacity .2s;
 }
-.dark-btn .icon-sun { display: none; }
-body.dark .dark-btn .icon-moon { display: none; }
-body.dark .dark-btn .icon-sun  { display: block; }
+.dark-btn-inline:hover { opacity: 1; }
+.dark-btn-inline .icon-sun { display: none; }
+body.dark .dark-btn-inline .icon-moon { display: none; }
+body.dark .dark-btn-inline .icon-sun  { display: block; }
 
 /* ── DARK MODE THEME ── */
 body.dark {
@@ -567,9 +568,6 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   font-size: .5rem; letter-spacing: .2em;
   text-transform: uppercase; opacity: .35;
   user-select: none;
-}
-.locked-art {
-  border-bottom: none;
 }
 
 .card-info {

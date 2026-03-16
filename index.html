@@ -65,24 +65,6 @@
   </div>
 </div>
 
-<!-- ── GLOBAL DARK MODE TOGGLE ── -->
-<button id="btn-dark" class="nav-btn dark-btn" title="Toggle dark mode">
-  <svg class="icon-dark" viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path class="icon-moon" d="M13.5 10a5 5 0 1 1-5.5-5.5 3.8 3.8 0 0 0 5.5 5.5z"/>
-    <g class="icon-sun">
-      <circle cx="9" cy="9" r="3"/>
-      <line x1="9" y1="1.5" x2="9" y2="3"/>
-      <line x1="9" y1="15" x2="9" y2="16.5"/>
-      <line x1="1.5" y1="9" x2="3" y2="9"/>
-      <line x1="15" y1="9" x2="16.5" y2="9"/>
-      <line x1="4" y1="4" x2="5.1" y2="5.1"/>
-      <line x1="12.9" y1="12.9" x2="14" y2="14"/>
-      <line x1="14" y1="4" x2="12.9" y2="5.1"/>
-      <line x1="5.1" y1="12.9" x2="4" y2="14"/>
-    </g>
-  </svg>
-</button>
-
 <!-- ── GLOBAL MUTE BUTTON ── -->
 <button id="btn-mute" class="nav-btn mute-btn" title="Toggle sound">
   <svg class="icon-sound" viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -202,6 +184,18 @@
       <button id="btn-back-to-timer" class="nav-btn">←</button>
       <span class="collection-title" id="collection-title">collection</span>
       <button id="btn-signout" class="nav-btn signout-btn" title="Sign out">sign out</button>
+      <button id="btn-dark" class="nav-btn dark-btn-inline" title="Toggle dark mode">
+        <svg class="icon-dark" viewBox="0 0 18 18" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path class="icon-moon" d="M13.5 10a5 5 0 1 1-5.5-5.5 3.8 3.8 0 0 0 5.5 5.5z"/>
+          <g class="icon-sun">
+            <circle cx="9" cy="9" r="3"/>
+            <line x1="9" y1="1.5" x2="9" y2="3"/><line x1="9" y1="15" x2="9" y2="16.5"/>
+            <line x1="1.5" y1="9" x2="3" y2="9"/><line x1="15" y1="9" x2="16.5" y2="9"/>
+            <line x1="4" y1="4" x2="5.1" y2="5.1"/><line x1="12.9" y1="12.9" x2="14" y2="14"/>
+            <line x1="14" y1="4" x2="12.9" y2="5.1"/><line x1="5.1" y1="12.9" x2="4" y2="14"/>
+          </g>
+        </svg>
+      </button>
     </div>
     <div id="collection-stats"></div>
     <div class="region-tabs">

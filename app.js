@@ -261,11 +261,8 @@ function navigateTo(viewId) {
   state.view = viewId;
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard';
-  const noDark = viewId === 'auth' || viewId === 'onboard';
   const muteBtn = document.getElementById('btn-mute');
-  const darkBtn = document.getElementById('btn-dark');
   if (muteBtn) muteBtn.style.opacity = noMute ? '0' : '';
-  if (darkBtn) darkBtn.style.opacity = noDark ? '0' : '';
 }
 
 function loadMuteState() {
@@ -764,14 +761,7 @@ function renderCollection() {
     } else {
       // Locked
       const art = document.createElement('div');
-      art.className = 'card-art locked-art';
-      art.innerHTML = `
-        <svg viewBox="0 0 120 150" width="72" height="90" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.18">
-          <path d="M60,6 C86,6 108,36 108,82 C108,122 88,146 60,146 C32,146 12,122 12,82 C12,36 34,6 60,6 Z"
-            stroke="currentColor" stroke-width="3" fill="none"/>
-          <path d="M42,28 C47,20 54,15 59,14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".6"/>
-          <text x="60" y="88" text-anchor="middle" font-size="28" fill="currentColor" font-family="serif" opacity=".5">?</text>
-        </svg>`;
+      art.className = 'card-art';
       card.appendChild(art);
       const info = document.createElement('div');
       info.className = 'card-info';

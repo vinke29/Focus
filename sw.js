@@ -1,5 +1,5 @@
 // ── Focus Service Worker ───────────────────────────────────────────────────────
-const CACHE = 'focus-v1';
+const CACHE = 'focus-v5';
 const ASSETS = [
   '/',
   '/index.html',
