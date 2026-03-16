@@ -100,12 +100,12 @@ body::after {
 }
 
 /* Sign-out button in collection header */
-.signout-btn {
+#btn-signout {
   font-size: .85rem; letter-spacing: .25em;
   opacity: .65;
   transition: opacity .2s;
 }
-.signout-btn:hover { opacity: 1; }
+#btn-signout:hover { opacity: 1; }
 
 /* ── ONBOARDING ── */
 #view-onboard { gap: 0; }
@@ -206,7 +206,7 @@ body.dark .collection-header        { border-bottom-color: rgba(221,215,200,.1);
 body.dark .region-btn               { border-color: rgba(221,215,200,.18); }
 body.dark .region-btn.active,
 body.dark .region-btn:hover         { border-color: var(--ink); }
-body.dark .signout-btn              { color: var(--ink); }
+body.dark #btn-signout              { color: var(--ink); }
 body.dark .auth-tabs                { border-bottom-color: rgba(221,215,200,.25); }
 body.dark .auth-input               { border-bottom-color: rgba(221,215,200,.2); }
 body.dark .auth-input:focus         { border-bottom-color: var(--ink); }
