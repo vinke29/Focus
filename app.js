@@ -923,14 +923,6 @@ function finishOnboarding() {
   navigateTo('timer');
 }
 
-function showOnboarding() {
-  navigateTo('onboard');
-  document.getElementById('ob-slide-1').classList.add('active');
-  document.getElementById('ob-slide-2').classList.remove('active');
-  document.getElementById('ob-egg-wrap').innerHTML = EGG_SVG_SMALL;
-  setTimeout(() => document.getElementById('ob-name').focus(), 500);
-}
-
 // ── NOTIFICATIONS ─────────────────────────────────────────────────────────────
 function requestNotificationPermission() {
   if (!('Notification' in window) || Notification.permission !== 'default') return;
@@ -1215,11 +1207,21 @@ async function performSignOut() {
 
 // Show the egg-tap slide directly (used after sign-up)
 function showOnboardingEgg(name) {
-  document.getElementById('ob-greeting').textContent = `welcome, ${name}`;
-  document.getElementById('ob-egg-wrap').innerHTML   = EGG_SVG_SMALL;
+  // Slide 1: intro
+  document.getElementById('ob-intro-name').textContent = `welcome, ${name}`;
+  // Slide 2: egg
+  document.getElementById('ob-greeting').textContent = `ready, ${name}?`;
+  document.getElementById('ob-egg-wrap').innerHTML = EGG_SVG_SMALL;
+  // Show slide 1 first
   navigateTo('onboard');
-  document.getElementById('ob-slide-1').classList.remove('active');
-  document.getElementById('ob-slide-2').classList.add('active');
+  document.getElementById('ob-slide-1').classList.add('active');
+  document.getElementById('ob-slide-2').classList.remove('active');
+  // → button advances to egg slide
+  const nextBtn = document.getElementById('ob-next');
+  nextBtn.onclick = () => {
+    document.getElementById('ob-slide-1').classList.remove('active');
+    document.getElementById('ob-slide-2').classList.add('active');
+  };
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
