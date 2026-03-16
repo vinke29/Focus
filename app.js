@@ -1377,13 +1377,13 @@ async function handleSignedIn(user) {
   loadSessions();
   renderTimerStats();
 
-  // Profile is the source of truth for new vs returning user.
-  // Await it before deciding — avoids heuristic races.
-  const profile = await DB.loadProfile().catch(() => null);
+  // fast-path: if this device has already completed onboarding, skip profile fetch
+  const hasOnboarded = localStorage.getItem('focus-onboarded') === 'true';
+  const profile = hasOnboarded ? null : await DB.loadProfile().catch(() => null);
 
-  if (profile?.name) {
+  if (hasOnboarded || profile?.name) {
     // ── Returning user ──────────────────────────────────────────────────────
-    localStorage.setItem('focus-name', profile.name);
+    if (profile?.name) localStorage.setItem('focus-name', profile.name);
     updateCollectionTitle();
     navigateTo('timer');
     // Sync collection + sessions in background
@@ -1397,7 +1397,6 @@ async function handleSignedIn(user) {
   }
 
   // ── New user ──────────────────────────────────────────────────────────────
-  // No profile means they've never completed onboarding.
   const isEmailNew = localStorage.getItem('focus-new-user') === 'true';
   if (isEmailNew) localStorage.removeItem('focus-new-user');
 
@@ -1406,6 +1405,7 @@ async function handleSignedIn(user) {
                user.user_metadata?.name || 'there';
 
   localStorage.setItem('focus-name', name);
+  localStorage.setItem('focus-onboarded', 'true'); // set before onboarding in case of crash
   state.collection = [];
   sessions = [];
   await DB.saveProfile(name).catch(() => {});
@@ -1503,6 +1503,10 @@ function showOnboardingEgg(name) {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
+  // Must capture BEFORE any awaits — Supabase's async initialize() clears the hash
+  const isOAuthRedirect = window.location.hash.includes('access_token=') ||
+                          window.location.search.includes('code=');
+
   loadMuteState();
   initDarkMode();
   initReminder();
@@ -1656,26 +1660,38 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  // onAuthStateChange fires after Supabase's async initialize() completes
-  // (including processing OAuth tokens). Use it as the primary signal with
-  // a getSession() fallback after 1s for versions that don't fire INITIAL_SESSION.
+  // Event ordering for OAuth redirects (implicit flow):
+  //   INITIAL_SESSION → sess=null  (no stored session yet, tokens still processing)
+  //   SIGNED_IN       → sess=valid (OAuth complete)
+  // For normal page load with stored session:
+  //   INITIAL_SESSION → sess=valid
+  // For no session at all:
+  //   INITIAL_SESSION → sess=null  (and no SIGNED_IN follows)
+  //
+  // So: if INITIAL_SESSION fires with null AND isOAuthRedirect, keep waiting.
   const session = await new Promise(resolve => {
     let resolved = false;
     const done = (sess) => { if (!resolved) { resolved = true; resolve(sess); } };
 
     const { data: { subscription } } = DB.onAuthStateChange((event, sess) => {
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN') {
-        subscription.unsubscribe();
-        done(sess);
+      if (event === 'SIGNED_IN' && sess) {
+        subscription.unsubscribe(); done(sess);         // OAuth tokens processed
+      } else if (event === 'INITIAL_SESSION') {
+        if (sess) {
+          subscription.unsubscribe(); done(sess);       // returning user
+        } else if (!isOAuthRedirect) {
+          subscription.unsubscribe(); done(null);       // no session, no OAuth
+        }
+        // null + isOAuthRedirect → stay subscribed, wait for SIGNED_IN
       }
     });
 
-    // Fallback: if INITIAL_SESSION never fires, read from localStorage directly
+    // Hard fallback: 6s covers slow OAuth token exchange
     setTimeout(async () => {
       const { data } = await DB.getSession();
       subscription.unsubscribe();
       done(data.session);
-    }, 1000);
+    }, 6000);
   });
 
   if (session) {
