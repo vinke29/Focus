@@ -262,7 +262,7 @@ function navigateTo(viewId) {
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard';
   const muteBtn = document.getElementById('btn-mute');
-  if (muteBtn) muteBtn.style.opacity = noMute ? '0' : '';
+  if (muteBtn) { muteBtn.style.opacity = noMute ? '0' : ''; muteBtn.style.pointerEvents = noMute ? 'none' : ''; }
 }
 
 function loadMuteState() {
