@@ -100,8 +100,8 @@ body::after {
 }
 
 /* Sign-out button in collection header */
-.signout-btn { opacity: .3; font-size: .8rem; }
-.signout-btn:hover { opacity: .8; }
+.signout-btn { opacity: .6; font-size: .8rem; border: 1.5px solid rgba(8,8,16,.25); padding: .3rem .7rem; border-radius: 1px; }
+.signout-btn:hover { opacity: 1; border-color: var(--ink); }
 
 /* ── ONBOARDING ── */
 #view-onboard { gap: 0; }
@@ -480,10 +480,10 @@ body::after {
 #collection-grid {
   width: 100%; max-width: 760px;
   display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: .9rem; padding: 1.2rem 1.8rem;
+  gap: 1rem; padding: 1.2rem 1.8rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 116px);
+  max-height: calc(100vh - 130px);
 }
 
 .char-card {
@@ -492,49 +492,52 @@ body::after {
   display: flex; flex-direction: column;
   align-items: center;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(8,8,16,.10), 0 1px 2px rgba(8,8,16,.06);
   transition: transform .2s ease, box-shadow .2s ease;
   background: var(--paper);
   overflow: visible;
 }
-.char-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(8,8,16,.08); }
+.char-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(8,8,16,.14), 0 2px 6px rgba(8,8,16,.08); }
 
 .char-card.locked {
-  border: 2px dashed rgba(8,8,16,.2);
-  opacity: .45; cursor: default; overflow: hidden;
+  border: 2px dashed rgba(8,8,16,.28);
+  opacity: .6; cursor: default; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(8,8,16,.06);
 }
-.char-card.locked:hover { transform: none; box-shadow: none; }
+.char-card.locked:hover { transform: none; box-shadow: 0 1px 4px rgba(8,8,16,.06); }
 
 .card-art {
   width: 100%; overflow: hidden;
-  aspect-ratio: 1 / 1.1;
+  aspect-ratio: 3 / 4;
   display: flex; align-items: center; justify-content: center;
+  background: rgba(8,8,16,.025);
 }
-.card-art svg { width: 110%; height: 110%; }
+.card-art svg { width: 115%; height: 115%; }
 
 /* Pause animations in grid, play on hover */
 .char-card .card-art svg * { animation-play-state: paused; }
 .char-card:hover .card-art svg * { animation-play-state: running; }
 
 .locked-icon {
-  font-size: .55rem; letter-spacing: .18em;
-  text-transform: uppercase; opacity: .18;
+  font-size: .5rem; letter-spacing: .2em;
+  text-transform: uppercase; opacity: .35;
   user-select: none;
 }
 
 .card-info {
-  width: 100%; padding: .45rem .35rem .5rem;
-  border-top: 1px solid rgba(8,8,16,.1);
+  width: 100%; padding: .5rem .4rem .55rem;
+  border-top: 1.5px solid rgba(8,8,16,.12);
   text-align: center; background: var(--paper);
   position: relative; z-index: 2;
 }
 .card-name {
-  font-size: .62rem; letter-spacing: .1em;
+  font-size: .68rem; letter-spacing: .1em;
   text-transform: uppercase; color: var(--ink);
 }
 .card-rarity {
-  font-size: .42rem; letter-spacing: .2em;
-  text-transform: uppercase; margin-top: .08rem;
-  opacity: .55;
+  font-size: .45rem; letter-spacing: .2em;
+  text-transform: uppercase; margin-top: .1rem;
+  opacity: .6;
 }
 .card-variants {
   display: flex; justify-content: center; gap: .22rem;
@@ -1086,8 +1089,8 @@ body::after {
   /* Collection grid: 3 columns on mobile */
   #collection-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: .6rem; padding: .9rem 1rem;
-    max-height: calc(100vh - 110px);
+    gap: .7rem; padding: .9rem 1rem;
+    max-height: calc(100vh - 120px);
   }
 
   /* Fusion */
