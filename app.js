@@ -1310,6 +1310,10 @@ async function init() {
 
   // DEV shortcuts
   document.addEventListener('keydown', e => {
+    // Never fire shortcuts while typing in an input field
+    const tag = document.activeElement?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
     // H — instant hatch (from timer view); Shift+H cycles through all rarity/variant combos for badge preview
     if (e.key === 'h' || e.key === 'H') {
       if (state.view === 'timer' || state.view === 'hatch') {
