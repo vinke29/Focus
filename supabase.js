@@ -71,7 +71,8 @@ const DB = {
 
   async loadProfile() {
     if (!_sb) return null;
-    const { data } = await _sb.from('profiles').select('name').maybeSingle();
+    const { data, error } = await _sb.from('profiles').select('name').maybeSingle();
+    console.log('[profile] data:', JSON.stringify(data), 'error:', error?.message);
     return data; // { name } or null
   },
 
