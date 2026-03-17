@@ -71,7 +71,9 @@ const DB = {
 
   async loadProfile() {
     if (!_sb) return null;
-    const { data } = await _sb.from('profiles').select('name').maybeSingle();
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return null;
+    const { data } = await _sb.from('profiles').select('name').eq('id', user.id).maybeSingle();
     return data; // { name } or null
   },
 
