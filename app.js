@@ -1516,28 +1516,39 @@ async function generateShareCard(char, variant) {
 }
 
 async function shareCollection() {
-  const btn = document.getElementById('btn-share-collection');
+  const btn  = document.getElementById('btn-share-collection');
   const name = getUserName();
-  btn.textContent = '...';
+  btn.style.opacity = '.4';
   btn.disabled = true;
 
   try {
     const slug = await DB.getOrCreateSlug(name);
-    if (!slug) { btn.textContent = 'share'; btn.disabled = false; return; }
+    if (!slug) { btn.style.opacity = ''; btn.disabled = false; return; }
 
     const url = `${window.location.origin}?profile=${slug}`;
 
+    // Always copy to clipboard first — reliable on all platforms
+    await navigator.clipboard.writeText(url);
+
+    // Show "copied" tooltip
+    let tooltip = document.getElementById('share-copied-tip');
+    if (!tooltip) {
+      tooltip = document.createElement('div');
+      tooltip.id = 'share-copied-tip';
+      tooltip.className = 'share-copied-tip';
+      document.body.appendChild(tooltip);
+    }
+    tooltip.textContent = 'link copied';
+    tooltip.classList.add('show');
+    setTimeout(() => tooltip.classList.remove('show'), 2200);
+
+    // Also offer native share on mobile if available
     if (navigator.share) {
-      await navigator.share({ title: `${name}'s Focus collection`, url }).catch(() => {});
-    } else {
-      await navigator.clipboard.writeText(url);
-      btn.textContent = 'copied ✓';
-      setTimeout(() => { btn.textContent = 'share'; btn.disabled = false; }, 2000);
-      return;
+      navigator.share({ title: `${name}'s Focus collection`, url }).catch(() => {});
     }
   } catch(e) {}
 
-  btn.textContent = 'share';
+  btn.style.opacity = '';
   btn.disabled = false;
 }
 
