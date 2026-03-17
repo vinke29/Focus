@@ -958,6 +958,7 @@ async function showPublicProfile(slug) {
   // Hide mute button — no sound on public profile
   const muteBtn = document.getElementById('btn-mute');
   if (muteBtn) { muteBtn.style.opacity = '0'; muteBtn.style.pointerEvents = 'none'; }
+  initModalListeners();
   document.body.style.opacity = '1';
 
   const profile = await DB.loadPublicProfile(slug);
@@ -1324,6 +1325,16 @@ function updateModalRarity(char, variant) {
   el.textContent       = char.rarityLabel + ' · ' + variant.label;
   el.style.color       = variant.color;
   el.style.borderColor = variant.color;
+}
+
+function initModalListeners() {
+  document.getElementById('modal-close').addEventListener('click', closeCardModal);
+  document.getElementById('card-modal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeCardModal();
+  });
+  document.getElementById('modal-card').addEventListener('click', () => {
+    document.getElementById('modal-card').classList.toggle('flipped');
+  });
 }
 
 function closeCardModal() {
@@ -1837,13 +1848,7 @@ async function init() {
   document.getElementById('btn-fusion-ok').addEventListener('click', closeFusionScreen);
 
   // Card modal
-  document.getElementById('modal-close').addEventListener('click', closeCardModal);
-  document.getElementById('card-modal').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeCardModal();
-  });
-  document.getElementById('modal-card').addEventListener('click', () => {
-    document.getElementById('modal-card').classList.toggle('flipped');
-  });
+  initModalListeners();
   document.getElementById('modal-prev').addEventListener('click', e => {
     e.stopPropagation(); stepModalVariant(-1);
   });
