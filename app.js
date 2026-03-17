@@ -465,9 +465,21 @@ function setDuration(minutes) {
   updateProgressRing(0);
 }
 
+function saveTimerState() {
+  localStorage.setItem('focus-timer', JSON.stringify({
+    endTime:  state.timer.endTime,
+    duration: state.timer.duration,
+  }));
+}
+
+function clearTimerState() {
+  localStorage.removeItem('focus-timer');
+}
+
 function startTimer() {
   state.timer.running = true;
   state.timer.endTime = Date.now() + state.timer.remaining * 1000;
+  saveTimerState();
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
   document.getElementById('view-timer').classList.add('running');
 
@@ -482,6 +494,7 @@ function startTimer() {
       clearInterval(state.timer.interval);
       state.timer.running = false;
       state.timer.endTime = null;
+      clearTimerState();
       onTimerComplete();
     }
   }, 1000);
@@ -490,6 +503,7 @@ function startTimer() {
 function pauseTimer() {
   state.timer.running = false;
   state.timer.endTime = null;
+  clearTimerState();
   clearInterval(state.timer.interval);
   document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
 }
@@ -501,6 +515,7 @@ function toggleTimer() {
 
 function resetTimerState() {
   clearInterval(state.timer.interval);
+  clearTimerState();
   state.timer.running   = false;
   state.timer.remaining = state.timer.duration;
   updateTimerDisplay();
@@ -1662,6 +1677,18 @@ async function init() {
 
   if (session) {
     await handleSignedIn(session.user);
+    // Restore a running timer that survived a page reload or context switch
+    try {
+      const saved = JSON.parse(localStorage.getItem('focus-timer') || 'null');
+      if (saved?.endTime && saved.endTime > Date.now()) {
+        state.timer.duration  = saved.duration;
+        state.timer.remaining = Math.round((saved.endTime - Date.now()) / 1000);
+        state.timer.endTime   = saved.endTime;
+        startTimer();
+      } else {
+        clearTimerState();
+      }
+    } catch(e) { clearTimerState(); }
   } else {
     navigateTo('auth');
     setTimeout(() => document.getElementById('si-email').focus(), 100);
