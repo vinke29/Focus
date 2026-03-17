@@ -572,13 +572,15 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 
 /* ── PROFILE VIEW ── */
 #view-profile { justify-content: flex-start; overflow-y: auto; }
-.profile-header-bar .collection-top { justify-content: center; }
-.profile-stats {
+.collection-stats-strip {
   padding: .1rem 2rem .65rem;
   font-size: .5rem; letter-spacing: .2em;
   text-transform: uppercase; color: var(--ink);
-  opacity: .38; text-align: center;
+  opacity: .38; display: flex; align-items: center; gap: .6rem;
 }
+.collection-stats-strip .cs-frac  { }
+.collection-stats-strip .cs-total { opacity: .55; }
+.collection-stats-strip .cs-sep   { opacity: .35; }
 .profile-cta {
   text-align: center;
   padding: 2.4rem 1rem 3rem;
@@ -726,7 +728,7 @@ body.dark #milestone-toast.region-complete #milestone-num { color: #d4ad3a; }
 }
 body.dark #milestone-toast.region-unlock #milestone-num { color: #6fa3e0; }
 
-#collection-grid {
+#collection-grid, #profile-grid {
   width: 100%; max-width: 760px;
   display: grid; grid-template-columns: repeat(4, 1fr);
   align-content: start;
@@ -1384,7 +1386,7 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   .region-btn.complete { color: #8c6d10; border-color: #8c6d10; } /* darker gold for cream bg */
 
   /* Collection grid: 2 columns on mobile for bigger, readable cards */
-  #collection-grid {
+  #collection-grid, #profile-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: .8rem; padding: .8rem 1rem;
   }
@@ -1429,7 +1431,7 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   #hatch-cracks   { top: 0; left: 5px; }
 
   /* Collection grid: tighter on very small */
-  #collection-grid {
+  #collection-grid, #profile-grid {
     gap: .5rem; padding: .6rem .7rem;
   }
 }

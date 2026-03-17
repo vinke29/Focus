@@ -461,7 +461,7 @@ function navigateTo(viewId) {
   state.view = viewId;
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
   if (viewId === 'timer') { updateStreakWarning(); updateReminderBtn(); }
-  const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard';
+  const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard' || viewId === 'profile';
   const muteBtn = document.getElementById('btn-mute');
   if (muteBtn) { muteBtn.style.opacity = noMute ? '0' : ''; muteBtn.style.pointerEvents = noMute ? 'none' : ''; }
 }
@@ -971,10 +971,15 @@ async function showPublicProfile(slug) {
 
   // Stats
   const statsEl = document.getElementById('profile-stats');
-  if (statsEl && (profile.session_count || profile.total_minutes)) {
-    const mins = profile.total_minutes || 0;
-    statsEl.textContent =
-      `${profile.session_count || 0} sessions · ${formatHours(mins)} focused`;
+  if (statsEl) {
+    const owned = new Set(collection.map(e => e.id)).size;
+    const mins  = profile.total_minutes || 0;
+    statsEl.innerHTML =
+      `<span><span class="cs-frac">${owned}</span><span class="cs-total"> characters</span></span>` +
+      `<span class="cs-sep">·</span>` +
+      `<span>${profile.session_count || 0} sessions</span>` +
+      `<span class="cs-sep">·</span>` +
+      `<span>${formatHours(mins)} focused</span>`;
   }
 
   renderProfileGrid(collection, 'all');
@@ -1045,45 +1050,33 @@ function renderProfileGrid(collection, filter) {
     const char = CHARACTERS[id];
     if (!char) return;
     if (filter !== 'all' && char.region !== filter) return;
+    if (!ownedIds.has(id)) return; // profile only shows what's actually collected
 
-    const vc       = variantCounts[id] || {};
-    const isOwned  = ownedIds.has(id);
+    const vc = variantCounts[id] || {};
+    const rarestOwned = [...VARIANTS].reverse().find(v => (vc[v.id] || 0) > 0) || VARIANTS[0];
 
     const card = document.createElement('div');
-    card.className = isOwned ? 'char-card' : 'char-card locked';
+    card.className = 'char-card';
 
-    if (isOwned) {
-      const rarestOwned = [...VARIANTS].reverse().find(v => (vc[v.id] || 0) > 0) || VARIANTS[0];
-      const art = document.createElement('div');
-      art.className = 'card-art';
-      art.innerHTML = char.svg;
-      applyVariantFilter(art, rarestOwned.id);
-      card.appendChild(art);
+    const art = document.createElement('div');
+    art.className = 'card-art';
+    art.innerHTML = char.svg;
+    applyVariantFilter(art, rarestOwned.id);
+    card.appendChild(art);
 
-      const variantDots = VARIANTS.map(v => {
-        const owned = (vc[v.id] || 0) > 0;
-        return `<span class="var-dot ${owned ? 'owned' : ''}" style="background:${v.color}"></span>`;
-      }).join('');
+    const variantDots = VARIANTS.map(v => {
+      const owned = (vc[v.id] || 0) > 0;
+      return `<span class="var-dot ${owned ? 'owned' : ''}" style="background:${v.color}"></span>`;
+    }).join('');
 
-      const info = document.createElement('div');
-      info.className = 'card-info';
-      info.innerHTML = `
-        <div class="card-name">${charNameEn(char)}</div>
-        <div class="card-rarity">${char.rarity}</div>
-        <div class="card-variants">${variantDots}</div>
-      `;
-      card.appendChild(info);
-    } else {
-      const art = document.createElement('div');
-      art.className = 'card-art';
-      art.innerHTML = char.svg;
-      card.appendChild(art);
-      const info = document.createElement('div');
-      info.className = 'card-info';
-      info.innerHTML = `<div class="card-name" style="opacity:.22">???</div>`;
-      card.appendChild(info);
-    }
-
+    const info = document.createElement('div');
+    info.className = 'card-info';
+    info.innerHTML = `
+      <div class="card-name">${charNameEn(char)}</div>
+      <div class="card-rarity">${char.rarity}</div>
+      <div class="card-variants">${variantDots}</div>
+    `;
+    card.appendChild(info);
     grid.appendChild(card);
   });
 }
