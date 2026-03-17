@@ -1632,7 +1632,6 @@ async function shareFromModal() {
   if (!char || !variant) return;
 
   btn.disabled = true;
-  btn.querySelector('span').textContent = '...';
 
   try {
     const canvas   = await generateShareCard(char, variant);
@@ -1655,11 +1654,9 @@ async function shareFromModal() {
         downloadBlob(blob, fileName);
       }
       btn.disabled = false;
-      btn.querySelector('span').textContent = 'share';
     }, 'image/png');
   } catch(e) {
     btn.disabled = false;
-    btn.querySelector('span').textContent = 'share';
   }
 }
 
