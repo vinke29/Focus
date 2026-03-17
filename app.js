@@ -61,7 +61,10 @@ const REGION_UNLOCK_MSGS  = {
 
 function getUnlockedRegions() {
   const n = sessions.length;
-  return new Set(REGION_UNLOCK_ORDER.filter(r => n >= REGION_UNLOCKS[r]));
+  // A region is also unlocked if the user already owns a character from it —
+  // you can't un-discover something you've already collected.
+  const ownedRegions = new Set(state.collection.map(e => CHARACTERS[e.id]?.region).filter(Boolean));
+  return new Set(REGION_UNLOCK_ORDER.filter(r => n >= REGION_UNLOCKS[r] || ownedRegions.has(r)));
 }
 
 function getNextUnlock() {
