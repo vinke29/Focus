@@ -230,38 +230,46 @@ function formatHours(totalMinutes) {
 function renderTimerStats() {
   const el = document.getElementById('timer-stats');
   if (!el) return;
-  if (!sessions.length) { el.classList.remove('has-data'); updateStreakWarning(); return; }
+  if (!sessions.length) { el.classList.remove('has-data'); renderNudge(); return; }
 
   const streak    = calcStreak();
   const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
+  const streakPart = streak > 0 ? `🔥 ${streak} day${streak !== 1 ? 's' : ''} · ` : '';
 
-  const streakLine = streak > 0
-    ? `<span class="stat-streak">🔥 ${streak} day streak</span>`
-    : '';
-  const totalsLine = `<span class="stat-totals">${sessions.length} session${sessions.length !== 1 ? 's' : ''}<span class="stat-sep"> · </span>${formatHours(totalMins)} focused</span>`;
-
-  const nextUnlock  = getNextUnlock();
-  const unlockLine  = nextUnlock
-    ? `<span class="stat-unlock-hint">${REGION_LABELS[nextUnlock.region]} unlocks in ${nextUnlock.sessionsAway} session${nextUnlock.sessionsAway !== 1 ? 's' : ''}</span>`
-    : '';
-
-  el.innerHTML = streakLine + totalsLine + unlockLine;
+  el.innerHTML = `<span class="stat-line">${streakPart}${sessions.length} session${sessions.length !== 1 ? 's' : ''} · ${formatHours(totalMins)}</span>`;
   el.classList.add('has-data');
-  updateStreakWarning();
+  renderNudge();
 }
 
-function updateStreakWarning() {
-  const el = document.getElementById('streak-warning');
+function renderNudge() {
+  const el = document.getElementById('timer-nudge');
   if (!el) return;
-  const hour = new Date().getHours();
-  if (hour < 17) { el.classList.remove('show'); return; }
-  const dayKey = ts => { const d = new Date(ts); return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate(); };
-  const todayKey = dayKey(Date.now());
-  const todayHasSessions = sessions.some(s => dayKey(s.timestamp) === todayKey);
-  if (todayHasSessions) { el.classList.remove('show'); return; }
-  if (calcStreak() === 0) { el.classList.remove('show'); return; }
-  el.textContent = '🔥 focus tonight to keep your streak';
-  el.classList.add('show');
+
+  // Priority 1: streak at risk (after 5pm, has a streak, no session today)
+  const streak = calcStreak();
+  if (streak > 0) {
+    const hour = new Date().getHours();
+    if (hour >= 17) {
+      const dayKey = ts => { const d = new Date(ts); return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate(); };
+      const todayHasSessions = sessions.some(s => dayKey(s.timestamp) === dayKey(Date.now()));
+      if (!todayHasSessions) {
+        el.textContent = 'focus tonight to keep your streak';
+        el.classList.add('show');
+        return;
+      }
+    }
+  }
+
+  // Priority 2: next region unlock
+  const next = getNextUnlock();
+  if (next) {
+    el.textContent = `${REGION_LABELS[next.region]} unlocks in ${next.sessionsAway} session${next.sessionsAway !== 1 ? 's' : ''}`;
+    el.classList.add('show');
+    return;
+  }
+
+  el.textContent = '';
+  el.classList.remove('show');
 }
 
 // ── DAILY REMINDER ────────────────────────────────────────────────────────────
@@ -277,13 +285,41 @@ function reminderEnabled() {
   return localStorage.getItem('focus-reminder') === 'on';
 }
 
-function updateReminderBtn() {
-  const btn = document.getElementById('reminder-btn');
-  if (!btn) return;
-  const on = reminderEnabled();
-  btn.textContent = on ? '🔔 remind me at 8pm — on' : '🔔 remind me at 8pm';
-  btn.classList.toggle('on', on);
-  btn.classList.add('visible');
+function showReminderPrompt() {
+  const el = document.getElementById('reminder-prompt');
+  if (!el || localStorage.getItem('focus-reminder-asked')) return;
+  if (!('Notification' in window)) return;
+
+  el.innerHTML = `
+    <span class="rp-text">want a daily reminder at 8pm?</span>
+    <button class="rp-btn" id="rp-yes">yes please</button>
+    <button class="rp-btn rp-no" id="rp-no">no thanks</button>
+  `;
+  el.classList.add('show');
+
+  document.getElementById('rp-yes').addEventListener('click', async () => {
+    localStorage.setItem('focus-reminder-asked', 'true');
+    el.classList.remove('show');
+    let perm = Notification.permission;
+    if (perm === 'default') perm = await Notification.requestPermission();
+    if (perm === 'granted') {
+      localStorage.setItem('focus-reminder', 'on');
+      checkReminderNotification();
+    }
+  });
+  document.getElementById('rp-no').addEventListener('click', () => {
+    localStorage.setItem('focus-reminder-asked', 'true');
+    el.classList.remove('show');
+  });
+}
+
+async function toggleReminder() {
+  // Kept for potential settings use
+  if (!('Notification' in window)) return;
+  if (reminderEnabled()) { localStorage.setItem('focus-reminder', 'off'); return; }
+  let perm = Notification.permission;
+  if (perm === 'default') perm = await Notification.requestPermission();
+  if (perm === 'granted') { localStorage.setItem('focus-reminder', 'on'); checkReminderNotification(); }
 }
 
 function checkReminderNotification() {
@@ -304,24 +340,8 @@ function checkReminderNotification() {
   n.onclick = () => { window.focus(); n.close(); };
 }
 
-async function toggleReminder() {
-  if (!('Notification' in window)) return;
-  if (reminderEnabled()) {
-    localStorage.setItem('focus-reminder', 'off');
-    updateReminderBtn();
-    return;
-  }
-  let perm = Notification.permission;
-  if (perm === 'default') perm = await Notification.requestPermission();
-  if (perm !== 'granted') return; // user denied — silently do nothing
-  localStorage.setItem('focus-reminder', 'on');
-  updateReminderBtn();
-  checkReminderNotification();
-}
-
 function initReminder() {
   if (!('Notification' in window)) return;
-  updateReminderBtn();
   checkReminderNotification();
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
@@ -460,7 +480,7 @@ function navigateTo(viewId) {
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
   if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
-  if (viewId === 'timer') { updateStreakWarning(); updateReminderBtn(); }
+  if (viewId === 'timer') { renderTimerStats(); }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard' || viewId === 'profile';
   const muteBtn = document.getElementById('btn-mute');
   if (muteBtn) { muteBtn.style.opacity = noMute ? '0' : ''; muteBtn.style.pointerEvents = noMute ? 'none' : ''; }
@@ -609,6 +629,11 @@ function onTimerComplete() {
 
   // Region unlock takes priority over milestone toast (they share sessions 10/25/50/100)
   if (state.pendingRegionUnlock) state.pendingMilestone = null;
+
+  // One-time reminder prompt: fires after completing a second consecutive day (first real streak)
+  if (calcStreak() === 2 && !localStorage.getItem('focus-reminder-asked')) {
+    setTimeout(showReminderPrompt, 1000);
+  }
 
   const { character, variant } = rollCharacterInUnlockedRegions();
   state.hatch.character = character;
@@ -1827,7 +1852,7 @@ async function init() {
   initDarkMode();
   initReminder();
   registerSW();
-  setInterval(updateStreakWarning, 5 * 60 * 1000); // re-check every 5 min
+  setInterval(renderNudge, 5 * 60 * 1000); // re-check nudge every 5 min
 
   // Particle canvas
   particleCanvas = document.getElementById('particles');
@@ -1877,9 +1902,6 @@ async function init() {
   document.getElementById('btn-back-to-timer').addEventListener('click', () => {
     navigateTo('timer');
   });
-
-  // Daily reminder toggle
-  document.getElementById('reminder-btn').addEventListener('click', toggleReminder);
 
   // Sign out
   document.getElementById('btn-signout').addEventListener('click', performSignOut);
