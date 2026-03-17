@@ -955,6 +955,9 @@ async function showPublicProfile(slug) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-profile').classList.add('active');
   document.getElementById('profile-title').textContent = 'loading...';
+  // Hide mute button — no sound on public profile
+  const muteBtn = document.getElementById('btn-mute');
+  if (muteBtn) { muteBtn.style.opacity = '0'; muteBtn.style.pointerEvents = 'none'; }
   document.body.style.opacity = '1';
 
   const profile = await DB.loadPublicProfile(slug);
@@ -1077,6 +1080,7 @@ function renderProfileGrid(collection, filter) {
       <div class="card-variants">${variantDots}</div>
     `;
     card.appendChild(info);
+    card.addEventListener('click', () => openCardModal(id, vc));
     grid.appendChild(card);
   });
 }
