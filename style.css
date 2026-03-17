@@ -570,6 +570,35 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 /* ── COLLECTION VIEW ── */
 #view-collection { justify-content: flex-start; overflow-y: auto; }
 
+/* ── PROFILE VIEW ── */
+#view-profile { justify-content: flex-start; overflow-y: auto; }
+.profile-header-bar .collection-top { justify-content: center; }
+.profile-stats {
+  padding: .1rem 2rem .65rem;
+  font-size: .5rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink);
+  opacity: .38; text-align: center;
+}
+.profile-cta {
+  text-align: center;
+  padding: 2.4rem 1rem 3rem;
+}
+.profile-cta-link {
+  font-family: 'Noto Serif JP', serif;
+  font-size: .52rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink);
+  opacity: .28; text-decoration: none;
+  transition: opacity .2s;
+}
+.profile-cta-link:hover { opacity: .6; }
+
+/* Share collection button in collection header */
+.share-collection-btn {
+  font-size: .55rem; letter-spacing: .14em;
+  opacity: .4;
+}
+.share-collection-btn:hover { opacity: 1; }
+
 .collection-header {
   position: sticky; top: 0; z-index: 10;
   width: 100%; flex-shrink: 0;

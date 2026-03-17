@@ -948,6 +948,146 @@ function tickParticles() {
   else px.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
 }
 
+// ── PUBLIC PROFILE ────────────────────────────────────────────────────────────
+let profileFilter = 'all';
+
+async function showPublicProfile(slug) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-profile').classList.add('active');
+  document.getElementById('profile-title').textContent = 'loading...';
+  document.body.style.opacity = '1';
+
+  const profile = await DB.loadPublicProfile(slug);
+  if (!profile) {
+    document.getElementById('profile-title').textContent = 'profile not found';
+    return;
+  }
+
+  const collection = await DB.loadPublicCollection(profile.id) || [];
+
+  // Header
+  document.getElementById('profile-title').textContent =
+    profile.name ? `${profile.name}'s collection` : 'collection';
+
+  // Stats
+  const statsEl = document.getElementById('profile-stats');
+  if (statsEl && (profile.session_count || profile.total_minutes)) {
+    const mins = profile.total_minutes || 0;
+    statsEl.textContent =
+      `${profile.session_count || 0} sessions · ${formatHours(mins)} focused`;
+  }
+
+  renderProfileGrid(collection, 'all');
+  renderProfileTabs(collection);
+}
+
+function renderProfileTabs(collection) {
+  const tabsEl = document.getElementById('profile-tabs');
+  if (!tabsEl) return;
+
+  // Show tabs for regions the owner has at least one character from
+  const ownedRegions = new Set(collection.map(e => CHARACTERS[e.id]?.region).filter(Boolean));
+  const tabs = ['all', ...REGION_UNLOCK_ORDER.filter(r => ownedRegions.has(r))];
+
+  tabsEl.innerHTML = '';
+  tabs.forEach(region => {
+    const btn = document.createElement('button');
+    btn.className = 'region-btn' + (region === profileFilter ? ' active' : '');
+    btn.dataset.region = region;
+    const label = region === 'all' ? 'all' : REGION_LABELS[region];
+    btn.textContent = label;
+    btn.addEventListener('click', () => {
+      profileFilter = region;
+      tabsEl.querySelectorAll('.region-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.region === region)
+      );
+      renderProfileGrid(collection, region);
+    });
+    tabsEl.appendChild(btn);
+  });
+}
+
+function renderProfileGrid(collection, filter) {
+  const grid = document.getElementById('profile-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  // Build variant counts
+  const variantCounts = {};
+  collection.forEach(e => {
+    if (!variantCounts[e.id]) variantCounts[e.id] = { standard: 0, gold: 0, crimson: 0, void: 0 };
+    const v = e.variant || 'standard';
+    variantCounts[e.id][v] = (variantCounts[e.id][v] || 0) + 1;
+  });
+
+  const ownedIds = new Set(collection.map(e => e.id));
+
+  // Only show characters from regions the owner has discovered (owns ≥1 char from)
+  const ownedRegions = new Set(collection.map(e => CHARACTERS[e.id]?.region).filter(Boolean));
+
+  // Sort: owned newest-first, locked at end
+  const latestTs = {};
+  collection.forEach(e => {
+    if (!latestTs[e.id] || e.timestamp > latestTs[e.id]) latestTs[e.id] = e.timestamp;
+  });
+
+  const allIds = Object.keys(CHARACTERS)
+    .filter(id => ownedRegions.has(CHARACTERS[id]?.region))
+    .sort((a, b) => {
+      const tsA = latestTs[a] || 0, tsB = latestTs[b] || 0;
+      if (tsA && tsB) return tsB - tsA;
+      if (tsA) return -1;
+      if (tsB) return 1;
+      return 0;
+    });
+
+  allIds.forEach(id => {
+    const char = CHARACTERS[id];
+    if (!char) return;
+    if (filter !== 'all' && char.region !== filter) return;
+
+    const vc       = variantCounts[id] || {};
+    const isOwned  = ownedIds.has(id);
+
+    const card = document.createElement('div');
+    card.className = isOwned ? 'char-card' : 'char-card locked';
+
+    if (isOwned) {
+      const rarestOwned = [...VARIANTS].reverse().find(v => (vc[v.id] || 0) > 0) || VARIANTS[0];
+      const art = document.createElement('div');
+      art.className = 'card-art';
+      art.innerHTML = char.svg;
+      applyVariantFilter(art, rarestOwned.id);
+      card.appendChild(art);
+
+      const variantDots = VARIANTS.map(v => {
+        const owned = (vc[v.id] || 0) > 0;
+        return `<span class="var-dot ${owned ? 'owned' : ''}" style="background:${v.color}"></span>`;
+      }).join('');
+
+      const info = document.createElement('div');
+      info.className = 'card-info';
+      info.innerHTML = `
+        <div class="card-name">${charNameEn(char)}</div>
+        <div class="card-rarity">${char.rarity}</div>
+        <div class="card-variants">${variantDots}</div>
+      `;
+      card.appendChild(info);
+    } else {
+      const art = document.createElement('div');
+      art.className = 'card-art';
+      art.innerHTML = char.svg;
+      card.appendChild(art);
+      const info = document.createElement('div');
+      info.className = 'card-info';
+      info.innerHTML = `<div class="card-name" style="opacity:.22">???</div>`;
+      card.appendChild(info);
+    }
+
+    grid.appendChild(card);
+  });
+}
+
 // ── COLLECTION ────────────────────────────────────────────────────────────────
 function renderCollection() {
   const grid = document.getElementById('collection-grid');
@@ -1375,6 +1515,32 @@ async function generateShareCard(char, variant) {
   return canvas;
 }
 
+async function shareCollection() {
+  const btn = document.getElementById('btn-share-collection');
+  const name = getUserName();
+  btn.textContent = '...';
+  btn.disabled = true;
+
+  try {
+    const slug = await DB.getOrCreateSlug(name);
+    if (!slug) { btn.textContent = 'share'; btn.disabled = false; return; }
+
+    const url = `${window.location.origin}?profile=${slug}`;
+
+    if (navigator.share) {
+      await navigator.share({ title: `${name}'s Focus collection`, url }).catch(() => {});
+    } else {
+      await navigator.clipboard.writeText(url);
+      btn.textContent = 'copied ✓';
+      setTimeout(() => { btn.textContent = 'share'; btn.disabled = false; }, 2000);
+      return;
+    }
+  } catch(e) {}
+
+  btn.textContent = 'share';
+  btn.disabled = false;
+}
+
 async function shareCreature() {
   const { character: char, variant } = state.hatch;
   if (!char || !variant) return;
@@ -1630,6 +1796,14 @@ function showOnboardingEgg(name) {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function init() {
+  // Public profile route — skip auth entirely
+  const profileSlug = new URLSearchParams(window.location.search).get('profile');
+  if (profileSlug) {
+    initDarkMode();
+    await showPublicProfile(profileSlug);
+    return;
+  }
+
   loadMuteState();
   initDarkMode();
   initReminder();
@@ -1696,6 +1870,9 @@ async function init() {
 
   // Sign out
   document.getElementById('btn-signout').addEventListener('click', performSignOut);
+
+  // Share collection button
+  document.getElementById('btn-share-collection').addEventListener('click', shareCollection);
 
   // Hatch actions
   document.getElementById('btn-share').addEventListener('click', shareCreature);

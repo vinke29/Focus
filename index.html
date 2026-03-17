@@ -220,6 +220,7 @@
           </g>
         </svg>
       </button>
+      <button id="btn-share-collection" class="nav-btn share-collection-btn" title="Share collection">share</button>
       <button id="btn-signout" class="nav-btn signout-btn" title="Sign out">sign out</button>
     </div>
     <div id="collection-stats"></div>
@@ -234,6 +235,21 @@
   </header>
   <div id="collection-grid">
     <!-- cards injected by JS -->
+  </div>
+</div>
+
+<!-- ── PROFILE VIEW (public, no auth) ── -->
+<div id="view-profile" class="view">
+  <header class="collection-header profile-header-bar">
+    <div class="collection-top">
+      <span class="collection-title" id="profile-title">collection</span>
+    </div>
+    <div id="profile-stats" class="profile-stats"></div>
+    <div class="region-tabs" id="profile-tabs"></div>
+  </header>
+  <div id="profile-grid"></div>
+  <div class="profile-cta">
+    <a href="/" class="profile-cta-link">start your own · focus · 集中</a>
   </div>
 </div>
 

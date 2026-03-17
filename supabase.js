@@ -152,6 +152,48 @@ const DB = {
     return _sb.functions.invoke(name, { body });
   },
 
+  // ── PUBLIC PROFILES ───────────────────────────────────────────────────────
+
+  async getOrCreateSlug(name) {
+    if (!_sb) return null;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return null;
+    const { data: profile } = await _sb.from('profiles').select('slug').eq('id', user.id).maybeSingle();
+    if (profile?.slug) return profile.slug;
+    // Generate slug: name + 6 random alphanumeric chars
+    const base   = (name || 'focus').toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '').slice(0, 12) || 'focus';
+    const suffix = Math.random().toString(36).slice(2, 8);
+    const slug   = `${base}-${suffix}`;
+    await _sb.from('profiles').update({ slug }).eq('id', user.id);
+    return slug;
+  },
+
+  async loadPublicProfile(slug) {
+    if (!_sb) return null;
+    const { data, error } = await _sb
+      .from('profiles')
+      .select('id, name, session_count, total_minutes')
+      .eq('slug', slug)
+      .maybeSingle();
+    if (error || !data) return null;
+    return data;
+  },
+
+  async loadPublicCollection(userId) {
+    if (!_sb) return null;
+    const { data, error } = await _sb
+      .from('collection')
+      .select('char_id, variant, hatched_at')
+      .eq('user_id', userId)
+      .order('hatched_at', { ascending: true });
+    if (error) return null;
+    return (data || []).map(r => ({
+      id:        r.char_id,
+      variant:   r.variant,
+      timestamp: new Date(r.hatched_at).getTime(),
+    }));
+  },
+
   onAuthStateChange(callback) {
     if (!_sb) return { data: { subscription: { unsubscribe: () => {} } } };
     return _sb.auth.onAuthStateChange(callback);
