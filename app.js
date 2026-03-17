@@ -1663,11 +1663,10 @@ async function init() {
   });
 
   // ── Auth routing ──────────────────────────────────────────────────────────
-  console.log('[auth] hash:', window.location.hash.slice(0, 80));
-  console.log('[auth] sb available:', DB.available);
-  const _gs = await DB.getSession().catch(e => { console.error('[auth] getSession threw:', e); return { data: { session: null } }; });
-  console.log('[auth] getSession result:', _gs?.data?.session ? 'session' : 'null', _gs?.error || '');
-  const { data } = _gs;
+  // getSession() internally awaits Supabase's initializePromise, which means
+  // it blocks until initialize() has fully run — including extracting any
+  // OAuth access_token from the URL hash and storing the session.
+  const { data } = await DB.getSession().catch(() => ({ data: { session: null } }));
   const session = data.session;
 
   if (session) {
