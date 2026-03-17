@@ -1377,20 +1377,12 @@ async function handleSignedIn(user) {
   loadSessions();
   renderTimerStats();
 
-  // fast-path: per-user flag avoids a profile fetch on every login
-  // Also checks legacy global flag (migration for accounts from before per-user key)
-  const onboardedKey = `focus-onboarded-${user.id}`;
-  const legacyOnboarded = localStorage.getItem('focus-onboarded') === 'true';
-  const hasOnboarded = localStorage.getItem(onboardedKey) === 'true' || legacyOnboarded;
-  if (legacyOnboarded) {
-    localStorage.setItem(onboardedKey, 'true');
-    localStorage.removeItem('focus-onboarded');
-  }
-  const profile = hasOnboarded ? null : await DB.loadProfile().catch(() => null);
+  // Profile is the single source of truth for new vs returning user
+  const profile = await DB.loadProfile().catch(() => null);
 
-  if (hasOnboarded || profile?.name) {
+  if (profile?.name) {
     // ── Returning user ──────────────────────────────────────────────────────
-    if (profile?.name) localStorage.setItem('focus-name', profile.name);
+    localStorage.setItem('focus-name', profile.name);
     updateCollectionTitle();
     navigateTo('timer');
     // Sync collection + sessions in background
@@ -1412,7 +1404,6 @@ async function handleSignedIn(user) {
                user.user_metadata?.name || 'there';
 
   localStorage.setItem('focus-name', name);
-  localStorage.setItem(onboardedKey, 'true'); // set before onboarding in case of crash
   state.collection = [];
   sessions = [];
   await DB.saveProfile(name).catch(() => {});
