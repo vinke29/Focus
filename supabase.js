@@ -88,9 +88,12 @@ const DB = {
 
   async loadCollection() {
     if (!_sb) return null;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return null;
     const { data, error } = await _sb
       .from('collection')
       .select('char_id, variant, hatched_at')
+      .eq('user_id', user.id)
       .order('hatched_at', { ascending: true });
     if (error) throw error;
     return (data || []).map(r => ({
@@ -131,9 +134,12 @@ const DB = {
 
   async loadSessions() {
     if (!_sb) return null;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return null;
     const { data, error } = await _sb
       .from('sessions')
       .select('duration, completed_at')
+      .eq('user_id', user.id)
       .order('completed_at', { ascending: true });
     if (error) throw error;
     return (data || []).map(r => ({
