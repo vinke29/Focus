@@ -404,6 +404,11 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   text-transform: uppercase; color: var(--ink); opacity: .28;
 }
 .stat-sep { opacity: .5; }
+.stat-unlock-hint {
+  font-size: .48rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink); opacity: .32;
+  margin-top: .05rem;
+}
 
 /* ── HATCH VIEW ── */
 #flash {
@@ -619,6 +624,27 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 }
 body.dark .region-btn.complete { border-color: #d4ad3a; color: #d4ad3a; }
 
+/* ── LOCKED REGION TABS ── */
+.region-btn.locked {
+  opacity: .22;
+  border-style: dashed;
+  cursor: default;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .06rem;
+  pointer-events: none;
+}
+/* Re-enable pointer-events so the click handler can catch and ignore it */
+.region-btn.locked { pointer-events: auto; }
+.region-btn.locked:hover { opacity: .22; border-color: rgba(8,8,16,.2); }
+body.dark .region-btn.locked:hover { border-color: rgba(221,215,200,.18); }
+.tab-unlock {
+  font-size: .4rem; letter-spacing: .12em;
+  text-transform: uppercase; opacity: .8;
+  line-height: 1;
+}
+
 /* ── REGION COMPLETE BANNER ── */
 .region-complete-banner {
   grid-column: 1 / -1;
@@ -641,6 +667,14 @@ body.dark .region-complete-banner {
   font-size: 1.3rem;
 }
 body.dark #milestone-toast.region-complete #milestone-num { color: #d4ad3a; }
+
+/* Region unlock (discovery) toast */
+#milestone-toast.region-unlock #milestone-num {
+  color: #4a7fc1;
+  font-size: 1.3rem;
+  letter-spacing: .06em;
+}
+body.dark #milestone-toast.region-unlock #milestone-num { color: #6fa3e0; }
 
 #collection-grid {
   width: 100%; max-width: 760px;

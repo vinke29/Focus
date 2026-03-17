@@ -43,6 +43,37 @@ const REGION_LABELS = {
   african: 'africa', fantasy: 'fantasy'
 };
 
+// Session thresholds at which each region becomes discoverable
+const REGION_UNLOCKS = {
+  japanese: 0,
+  americas: 10,
+  european: 25,
+  african:  50,
+  fantasy:  100,
+};
+const REGION_UNLOCK_ORDER = ['japanese', 'americas', 'european', 'african', 'fantasy'];
+const REGION_UNLOCK_MSGS  = {
+  americas: 'a new world awaits',
+  european: 'the old world opens',
+  african:  'ancient lands revealed',
+  fantasy:  'beyond the edge of maps',
+};
+
+function getUnlockedRegions() {
+  const n = sessions.length;
+  return new Set(REGION_UNLOCK_ORDER.filter(r => n >= REGION_UNLOCKS[r]));
+}
+
+function getNextUnlock() {
+  const n = sessions.length;
+  for (const region of REGION_UNLOCK_ORDER) {
+    if (REGION_UNLOCKS[region] > n) {
+      return { region, sessionsAway: REGION_UNLOCKS[region] - n };
+    }
+  }
+  return null; // all regions unlocked
+}
+
 function getCompletedRegions(ownedIds) {
   const regionTotal = {}, regionOwned = {};
   Object.values(CHARACTERS).forEach(c => {
@@ -206,7 +237,12 @@ function renderTimerStats() {
     : '';
   const totalsLine = `<span class="stat-totals">${sessions.length} session${sessions.length !== 1 ? 's' : ''}<span class="stat-sep"> · </span>${formatHours(totalMins)} focused</span>`;
 
-  el.innerHTML = streakLine + totalsLine;
+  const nextUnlock  = getNextUnlock();
+  const unlockLine  = nextUnlock
+    ? `<span class="stat-unlock-hint">${REGION_LABELS[nextUnlock.region]} unlocks in ${nextUnlock.sessionsAway} session${nextUnlock.sessionsAway !== 1 ? 's' : ''}</span>`
+    : '';
+
+  el.innerHTML = streakLine + totalsLine + unlockLine;
   el.classList.add('has-data');
   updateStreakWarning();
 }
@@ -311,8 +347,6 @@ function initReminder() {
 
 function renderCollectionStats() {
   const ownedIds   = new Set(state.collection.map(e => e.id));
-  const totalChars = Object.keys(CHARACTERS).length;
-  const unlocked   = ownedIds.size;
   const totalCards = state.collection.length;
 
   // Per-region totals and owned counts
@@ -325,24 +359,47 @@ function renderCollectionStats() {
     if (r) regionOwned[r] = (regionOwned[r] || 0) + 1;
   });
 
+  // Only count characters/owned within unlocked regions for the stats strip + "all" tab
+  const unlockedRegions = getUnlockedRegions();
+  const unlockedTotal   = Object.values(CHARACTERS).filter(c => unlockedRegions.has(c.region)).length;
+  const unlockedOwned   = [...ownedIds].filter(id => unlockedRegions.has(CHARACTERS[id]?.region)).length;
+
   // Stats strip
   const statsEl = document.getElementById('collection-stats');
   if (statsEl) {
     statsEl.innerHTML =
-      `<span><span class="cs-frac">${unlocked}</span>` +
-      `<span class="cs-total"> / ${totalChars} characters</span></span>` +
+      `<span><span class="cs-frac">${unlockedOwned}</span>` +
+      `<span class="cs-total"> / ${unlockedTotal} characters</span></span>` +
       `<span class="cs-sep">·</span>` +
       `<span>${totalCards} cards</span>`;
   }
 
-  // Region tab counts
+  // Region tab counts + locked state
   document.querySelectorAll('.region-btn').forEach(btn => {
     const region = btn.dataset.region;
     const span   = btn.querySelector('.tab-count');
     if (!span) return;
+
     if (region === 'all') {
-      span.textContent = `${unlocked}/${totalChars}`;
+      span.textContent = `${unlockedOwned}/${unlockedTotal}`;
+      btn.classList.remove('locked');
+    } else if (!unlockedRegions.has(region)) {
+      // Locked region — fog it out, show unlock threshold
+      btn.classList.add('locked');
+      btn.classList.remove('complete');
+      span.textContent = '';
+      let sublabel = btn.querySelector('.tab-unlock');
+      if (!sublabel) {
+        sublabel = document.createElement('span');
+        sublabel.className = 'tab-unlock';
+        btn.appendChild(sublabel);
+      }
+      sublabel.textContent = `session ${REGION_UNLOCKS[region]}`;
     } else {
+      // Unlocked region — normal behavior
+      btn.classList.remove('locked');
+      const sublabel = btn.querySelector('.tab-unlock');
+      if (sublabel) sublabel.remove();
       const o = regionOwned[region] || 0;
       const t = regionTotal[region] || 0;
       span.textContent = `${o}/${t}`;
@@ -367,7 +424,8 @@ const state = {
   previewAll: false,
   onboarding: false,    // true during the welcome hatch
   pendingMilestone: null,
-  pendingRegionComplete: null
+  pendingRegionComplete: null,
+  pendingRegionUnlock: null,
 };
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -526,9 +584,16 @@ function resetTimerState() {
 }
 
 function onTimerComplete() {
+  const prevSessionCount = sessions.length;
   addSession(state.timer.duration / 60);
   renderTimerStats();
   notifySessionComplete();
+
+  // Detect a newly-unlocked region (session count just crossed a threshold)
+  state.pendingRegionUnlock = REGION_UNLOCK_ORDER.find(r => {
+    const t = REGION_UNLOCKS[r];
+    return t > 0 && sessions.length >= t && prevSessionCount < t;
+  }) || null;
 
   // Check for first-time milestone
   const n = sessions.length;
@@ -539,7 +604,10 @@ function onTimerComplete() {
     state.pendingMilestone = null;
   }
 
-  const { character, variant } = rollCharacter();
+  // Region unlock takes priority over milestone toast (they share sessions 10/25/50/100)
+  if (state.pendingRegionUnlock) state.pendingMilestone = null;
+
+  const { character, variant } = rollCharacterInUnlockedRegions();
   state.hatch.character = character;
   state.hatch.variant   = variant;
 
@@ -549,8 +617,8 @@ function onTimerComplete() {
   const completedAfter  = getCompletedRegions(new Set(state.collection.map(e => e.id)));
   const newRegion = [...completedAfter].find(r => !completedBefore.has(r));
   state.pendingRegionComplete = newRegion || null;
-  // Region completion takes priority — suppress milestone toast if both fire
-  if (newRegion) state.pendingMilestone = null;
+  // Region completion takes priority — suppress milestone and region-unlock toasts
+  if (newRegion) { state.pendingMilestone = null; state.pendingRegionUnlock = null; }
 
   // Check if this hatch triggered a fusion
   if (checkFusion(character.id, variant.id)) {
@@ -630,7 +698,7 @@ function prepareHatchView(character, variant) {
   // Reset UI
   document.getElementById('hatch-header').classList.remove('show');
   document.getElementById('hatch-actions').classList.remove('show');
-  document.getElementById('milestone-toast').classList.remove('show');
+  document.getElementById('milestone-toast').classList.remove('show', 'region-complete', 'region-unlock');
 
   // Resize particle canvas
   particleCanvas.width  = window.innerWidth;
@@ -723,6 +791,18 @@ function runHatchSequence() {
       toast.classList.add('show', 'region-complete');
       setTimeout(() => toast.classList.remove('show', 'region-complete'), 5000);
       state.pendingRegionComplete = null;
+    }, 5000);
+  } else if (state.pendingRegionUnlock) {
+    const region = state.pendingRegionUnlock;
+    const label  = REGION_LABELS[region] || region;
+    const msg    = REGION_UNLOCK_MSGS[region] || '';
+    setTimeout(() => {
+      document.getElementById('milestone-num').textContent = `✦ ${label} discovered ✦`;
+      document.getElementById('milestone-msg').textContent = msg;
+      const toast = document.getElementById('milestone-toast');
+      toast.classList.add('show', 'region-unlock');
+      setTimeout(() => toast.classList.remove('show', 'region-unlock'), 5500);
+      state.pendingRegionUnlock = null;
     }, 5000);
   } else if (state.pendingMilestone) {
     const m = state.pendingMilestone;
@@ -891,6 +971,15 @@ function renderCollection() {
     if (indicator) indicator.remove();
   }
 
+  // Guard: if the current filter is a locked region, reset to 'all'
+  const unlockedRegions = getUnlockedRegions();
+  if (state.filter !== 'all' && !unlockedRegions.has(state.filter)) {
+    state.filter = 'all';
+    document.querySelectorAll('.region-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.region === 'all')
+    );
+  }
+
   // Count per character, broken down by variant
   const variantCounts = {}; // { id: { standard: N, gold: N, crimson: N, void: N } }
   state.collection.forEach(e => {
@@ -933,6 +1022,8 @@ function renderCollection() {
 
     // Region filter
     if (state.filter !== 'all' && char.region !== state.filter) return;
+    // Hide locked-region characters from the "all" tab entirely (world hasn't been discovered yet)
+    if (state.filter === 'all' && !unlockedRegions.has(char.region)) return;
 
     const vc      = variantCounts[id] || {};
     const count   = Object.values(vc).reduce((s, n) => s + n, 0);
@@ -1117,9 +1208,29 @@ function updateCollectionTitle() {
 }
 
 function rollWelcomeCharacter() {
-  const pool = RARITY_WEIGHTS.find(t => t.rarity === 'common').pool;
-  const id   = pool[Math.floor(Math.random() * pool.length)];
+  // First session is always a Japanese common character (Japan is the starting region)
+  const pool = RARITY_WEIGHTS.find(t => t.rarity === 'common').pool
+    .filter(id => CHARACTERS[id]?.region === 'japanese');
+  const id = pool[Math.floor(Math.random() * pool.length)];
   return { character: CHARACTERS[id], variant: VARIANTS[0] }; // always standard
+}
+
+function rollCharacterInUnlockedRegions() {
+  const unlocked = getUnlockedRegions();
+  const roll = Math.random() * 100;
+  let cumulative = 0;
+  for (const tier of RARITY_WEIGHTS) {
+    cumulative += tier.weight;
+    if (roll < cumulative) {
+      const pool = tier.pool.filter(id => unlocked.has(CHARACTERS[id]?.region));
+      if (pool.length) {
+        return { character: CHARACTERS[pool[Math.floor(Math.random() * pool.length)]], variant: rollVariant() };
+      }
+    }
+  }
+  // Fallback: any character from any unlocked region
+  const all = Object.values(CHARACTERS).filter(c => unlocked.has(c.region));
+  return { character: all[Math.floor(Math.random() * all.length)], variant: rollVariant() };
 }
 
 function startOnboarding() {
@@ -1645,6 +1756,7 @@ async function init() {
   // Region filter tabs
   document.querySelectorAll('.region-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      if (btn.classList.contains('locked')) return;
       state.filter = btn.dataset.region;
       renderCollection();
     });
