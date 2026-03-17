@@ -1527,10 +1527,15 @@ async function shareCollection() {
 
     const url = `${window.location.origin}?profile=${slug}`;
 
-    // Always copy to clipboard first — reliable on all platforms
-    await navigator.clipboard.writeText(url);
+    // On mobile use native share sheet (has Copy Link); on desktop copy to clipboard
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+    if (isMobile && navigator.share) {
+      await navigator.share({ title: `${name}'s Focus collection`, url }).catch(() => {});
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
 
-    // Show "copied" tooltip
+    // Always show the "link copied" toast as confirmation
     let tooltip = document.getElementById('share-copied-tip');
     if (!tooltip) {
       tooltip = document.createElement('div');
@@ -1538,14 +1543,9 @@ async function shareCollection() {
       tooltip.className = 'share-copied-tip';
       document.body.appendChild(tooltip);
     }
-    tooltip.textContent = 'link copied';
+    tooltip.textContent = isMobile ? 'shared' : 'link copied';
     tooltip.classList.add('show');
     setTimeout(() => tooltip.classList.remove('show'), 2200);
-
-    // Also offer native share on mobile if available
-    if (navigator.share) {
-      navigator.share({ title: `${name}'s Focus collection`, url }).catch(() => {});
-    }
   } catch(e) {}
 
   btn.style.opacity = '';
