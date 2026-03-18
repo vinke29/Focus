@@ -21,9 +21,9 @@ serve(async (req) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Focus <onboarding@resend.dev>',
+      from: 'Kokoon <onboarding@resend.dev>',
       to: [email],
-      subject: 'welcome to focus',
+      subject: 'welcome to kokoon',
       html: welcomeHtml(displayName),
     }),
   });
@@ -49,7 +49,7 @@ function welcomeHtml(name: string): string {
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;">
           <tr>
             <td style="padding-bottom:40px;">
-              <p style="margin:0;font-size:10px;letter-spacing:.38em;text-transform:uppercase;opacity:.32;">Focus · 集中</p>
+              <p style="margin:0;font-size:10px;letter-spacing:.38em;text-transform:uppercase;opacity:.32;">Kokoon</p>
             </td>
           </tr>
           <tr>
@@ -81,16 +81,16 @@ function welcomeHtml(name: string): string {
           </tr>
           <tr>
             <td style="padding-bottom:48px;">
-              <a href="https://focus-mu-rosy.vercel.app"
+              <a href="https://kokoon.app/app"
                  style="display:inline-block;background:#080810;color:#f7f2e8;text-decoration:none;font-size:10px;letter-spacing:.28em;text-transform:uppercase;padding:14px 36px;">
-                open focus
+                open kokoon
               </a>
             </td>
           </tr>
           <tr>
             <td style="border-top:1px solid rgba(8,8,16,.1);padding-top:28px;">
               <p style="margin:0;font-size:10px;letter-spacing:.15em;text-transform:uppercase;opacity:.28;line-height:1.8;">
-                Focus · 集中 — ship your time into sessions
+                Kokoon — focus your time, hatch creatures
               </p>
             </td>
           </tr>
