@@ -2124,34 +2124,40 @@ async function handleSignedIn(user) {
   loadBadges();
   renderTimerStats();
 
-  // Profile is the single source of truth for new vs returning user
-  const profile = await DB.loadProfile().catch(() => null);
+  // Check new-user flag BEFORE profile — a DB trigger may have already
+  // created the profile row during sign-up, so profile existence alone
+  // is not a reliable indicator of "returning user".
+  const isNewUser = localStorage.getItem('focus-new-user') === 'true';
 
-  if (profile?.name) {
-    // ── Returning user ──────────────────────────────────────────────────────
-    localStorage.setItem('focus-name', profile.name);
-    updateCollectionTitle();
-    navigateTo('timer');
-    // Sync collection + sessions in background
-    Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadBadges()])
-      .then(([col, sess, badgeData]) => {
-        if (col  !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
-        if (sess !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
-        if (badgeData) {
-          if (badgeData.badges?.length) { state.badges = badgeData.badges; localStorage.setItem('focus-badges', JSON.stringify(state.badges)); }
-          if (badgeData.max_streak > state.maxStreak) { state.maxStreak = badgeData.max_streak; localStorage.setItem('focus-max-streak', String(state.maxStreak)); }
-        }
-        // Backfill: compute historical max streak if not yet set
-        if (state.maxStreak === 0 && sessions.length > 0) {
-          state.maxStreak = calcMaxStreakFromHistory();
-          localStorage.setItem('focus-max-streak', String(state.maxStreak));
-          DB.updateMaxStreak(state.maxStreak).catch(() => {});
-        }
-        // Retroactively award badges for existing progress
-        checkBadges();
-      })
-      .catch(() => {});
-    return;
+  if (!isNewUser) {
+    const profile = await DB.loadProfile().catch(() => null);
+
+    if (profile?.name) {
+      // ── Returning user ────────────────────────────────────────────────────
+      localStorage.setItem('focus-name', profile.name);
+      updateCollectionTitle();
+      navigateTo('timer');
+      // Sync collection + sessions in background
+      Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadBadges()])
+        .then(([col, sess, badgeData]) => {
+          if (col  !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
+          if (sess !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
+          if (badgeData) {
+            if (badgeData.badges?.length) { state.badges = badgeData.badges; localStorage.setItem('focus-badges', JSON.stringify(state.badges)); }
+            if (badgeData.max_streak > state.maxStreak) { state.maxStreak = badgeData.max_streak; localStorage.setItem('focus-max-streak', String(state.maxStreak)); }
+          }
+          // Backfill: compute historical max streak if not yet set
+          if (state.maxStreak === 0 && sessions.length > 0) {
+            state.maxStreak = calcMaxStreakFromHistory();
+            localStorage.setItem('focus-max-streak', String(state.maxStreak));
+            DB.updateMaxStreak(state.maxStreak).catch(() => {});
+          }
+          // Retroactively award badges for existing progress
+          checkBadges();
+        })
+        .catch(() => {});
+      return;
+    }
   }
 
   // ── New user ──────────────────────────────────────────────────────────────
@@ -2228,14 +2234,19 @@ async function performSignOut() {
   state.collection = [];
   state.badges = [];
   state.maxStreak = 0;
+  state.onboarding = false;
   sessions = [];
   localStorage.removeItem('focus-collection');
   localStorage.removeItem('focus-sessions');
   localStorage.removeItem('focus-name');
   localStorage.removeItem('focus-badges');
   localStorage.removeItem('focus-max-streak');
+  localStorage.removeItem('focus-new-user');
+  localStorage.removeItem('focus-timer');
   _badgeStatsCache = null;
   _playerCountCache = null;
+  // Strip stale auth tokens from URL so a refresh can't re-create the session
+  if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
   // Reset auth form
   clearAuthErrors();
   document.getElementById('si-email').value    = '';
@@ -2439,6 +2450,9 @@ async function init() {
   // OAuth access_token from the URL hash and storing the session.
   const { data } = await DB.getSession().catch(() => ({ data: { session: null } }));
   const session = data.session;
+
+  // Strip auth tokens from the URL hash so a later refresh can't replay them
+  if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
 
   if (session) {
     await handleSignedIn(session.user);
