@@ -759,8 +759,8 @@ body.dark .badge-card.unearned { border-bottom-color: rgba(221,215,200,.06); }
   text-transform: uppercase;
 }
 .badge-pct {
-  font-size: .5rem; letter-spacing: .04em;
-  opacity: .6; color: var(--blue);
+  font-size: .55rem; letter-spacing: .04em;
+  opacity: .8; color: var(--blue);
 }
 
 /* ── REGION COMPLETE BANNER ── */
