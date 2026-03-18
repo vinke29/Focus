@@ -276,6 +276,9 @@ function renderTopTab() {
   const regionTabs = document.querySelector('#view-collection .region-tabs');
   regionTabs.classList.toggle('hidden', tab !== 'collection');
 
+  const collStats = document.getElementById('collection-stats');
+  if (collStats) collStats.style.display = tab === 'collection' ? '' : 'none';
+
   const grid    = document.getElementById('collection-grid');
   const statsEl = document.getElementById('stats-content');
 
