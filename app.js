@@ -2155,8 +2155,7 @@ async function handleSignedIn(user) {
   }
 
   // ── New user ──────────────────────────────────────────────────────────────
-  const isEmailNew = localStorage.getItem('focus-new-user') === 'true';
-  if (isEmailNew) localStorage.removeItem('focus-new-user');
+  localStorage.removeItem('focus-new-user');
 
   const name = localStorage.getItem('focus-name') ||
                user.user_metadata?.full_name?.split(' ')[0] ||
@@ -2165,8 +2164,12 @@ async function handleSignedIn(user) {
   localStorage.setItem('focus-name', name);
   state.collection = [];
   sessions = [];
-  await DB.saveProfile(name).catch(() => {});
-  if (isEmailNew) DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
+  try {
+    await DB.saveProfile(name);
+  } catch(e) {
+    console.error('Failed to save profile:', e);
+  }
+  DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
   showOnboardingEgg(name);
 }
 
