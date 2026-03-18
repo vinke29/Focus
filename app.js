@@ -868,10 +868,6 @@ function prepareHatchView(character, variant) {
   const sessionNumEl = document.getElementById('hatch-session-num');
   if (sessionNumEl) sessionNumEl.textContent = sessions.length ? `session ${sessions.length}` : '';
 
-  // Character info
-  document.getElementById('char-name').textContent   = character.name;
-  document.getElementById('char-sub').textContent    = character.subtitle;
-
   // Rarity badge — styled by tier + variant
   const rarityEl = document.getElementById('char-rarity');
   rarityEl.textContent    = character.rarityLabel + ' · ' + variant.label;
@@ -900,10 +896,14 @@ function prepareHatchView(character, variant) {
     if (el) { el.style.transition = 'none'; el.style.strokeDashoffset = '1'; }
   });
 
-  // Reset UI
+  // Reset UI — hide header BEFORE setting character info to prevent name flash
   document.getElementById('hatch-header').classList.remove('show');
   document.getElementById('hatch-actions').classList.remove('show');
   document.getElementById('milestone-toast').classList.remove('show', 'region-complete', 'region-unlock');
+
+  // Character info (set after header is hidden)
+  document.getElementById('char-name').textContent   = character.name;
+  document.getElementById('char-sub').textContent    = character.subtitle;
 
   // Resize particle canvas
   particleCanvas.width  = window.innerWidth;
@@ -2139,6 +2139,7 @@ async function init() {
   // Collection button
   document.getElementById('btn-open-collection').addEventListener('click', () => navigateTo('collection'));
   document.getElementById('btn-back-to-timer').addEventListener('click', () => {
+    if (state.timer.remaining <= 0) resetTimerState();
     navigateTo('timer');
   });
 
@@ -2229,6 +2230,7 @@ async function init() {
     if (e.key === 'Escape') {
       if (document.getElementById('card-modal').classList.contains('open')) { closeCardModal(); return; }
       if (state.view === 'collection') {
+        if (state.timer.remaining <= 0) resetTimerState();
         navigateTo('timer');
       }
     }
