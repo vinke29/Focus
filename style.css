@@ -733,29 +733,29 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
 }
 .badge-card.unearned {
   border-style: dashed;
-  opacity: .35;
+  opacity: .5;
   border-color: rgba(8,8,16,.2);
 }
 body.dark .badge-card { background: #14141f; }
 body.dark .badge-card.unearned { border-color: rgba(221,215,200,.18); }
-.badge-icon { font-size: 1.6rem; margin-bottom: .15rem; }
+.badge-icon { font-size: 1.8rem; margin-bottom: .2rem; }
 .badge-card.unearned .badge-icon { filter: grayscale(1); }
 .badge-name {
-  font-size: .55rem; letter-spacing: .15em;
+  font-size: .62rem; letter-spacing: .14em;
   text-transform: uppercase; font-weight: 700;
 }
 .badge-desc {
-  font-size: .42rem; letter-spacing: .08em;
-  opacity: .5; line-height: 1.4;
+  font-size: .5rem; letter-spacing: .06em;
+  opacity: .55; line-height: 1.5;
 }
 .badge-date {
-  font-size: .38rem; letter-spacing: .1em;
-  opacity: .35; margin-top: .15rem;
+  font-size: .44rem; letter-spacing: .08em;
+  opacity: .4; margin-top: .15rem;
   text-transform: uppercase;
 }
 .badge-pct {
-  font-size: .38rem; letter-spacing: .08em;
-  opacity: .5; color: var(--blue);
+  font-size: .44rem; letter-spacing: .06em;
+  opacity: .55; color: var(--blue);
   margin-top: .1rem;
 }
 
