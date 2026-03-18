@@ -62,7 +62,7 @@ const DB = {
     if (!_sb) throw new Error('offline');
     const { error } = await _sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: window.location.origin }
+      options: { redirectTo: window.location.origin + '/app' }
     });
     if (error) throw error;
   },

@@ -2,339 +2,258 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Kokoon</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#080810">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Kokoon">
-<link rel="apple-touch-icon" href="icon.svg">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kokoon — Focus. Hatch rare creatures.</title>
+<meta name="description" content="A focus timer disguised as a creature-collecting game. Stay focused, hatch rare creatures, build your collection.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique+Soft&family=Noto+Serif+JP:wght@200;400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #080810;
+  --paper: #f7f2e8;
+  --blue: #0047ff;
+  --muted: rgba(8,8,16,.42);
+}
+
+html { height: 100%; }
+
+body {
+  min-height: 100%;
+  background: var(--paper);
+  font-family: 'Noto Serif JP', serif;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Paper grain */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 999; opacity: .6;
+}
+
+/* ── Hero ── */
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  gap: 1.8rem;
+}
+
+.hero-brand {
+  font-family: 'Zen Antique Soft', serif;
+  font-size: 2.4rem;
+  letter-spacing: .1em;
+  font-weight: 400;
+}
+
+.hero-tagline {
+  font-size: .95rem;
+  font-weight: 200;
+  letter-spacing: .06em;
+  color: var(--muted);
+  max-width: 320px;
+  line-height: 1.7;
+}
+
+.hero-illustration {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  position: relative;
+  margin: .5rem 0;
+}
+
+.hero-illustration .hero-egg {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-illustration .hero-creature {
+  position: relative;
+  z-index: 2;
+  margin-left: -24px;
+  margin-bottom: -4px;
+}
+
+.hero-cta {
+  display: inline-block;
+  font-family: 'Noto Serif JP', serif;
+  font-size: .72rem;
+  font-weight: 400;
+  letter-spacing: .18em;
+  text-transform: lowercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: none;
+  padding: .75rem 2.2rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+
+.hero-cta:hover { opacity: .78; }
+
+/* ── Footer ── */
+.site-footer {
+  border-top: 1px solid rgba(8,8,16,.08);
+  padding: 1.8rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem 1.6rem;
+}
+
+.site-footer a {
+  font-size: .62rem;
+  font-weight: 200;
+  letter-spacing: .14em;
+  text-transform: lowercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+
+.site-footer a:hover { color: var(--ink); }
+
+.site-footer .footer-app {
+  color: var(--ink);
+  font-weight: 400;
+}
+
+@media (max-width: 480px) {
+  .hero-brand { font-size: 1.8rem; }
+  .hero-tagline { font-size: .85rem; }
+  .hero { padding: 3rem 1.5rem 2rem; }
+}
+</style>
 </head>
-<body style="opacity:0">
+<body>
 
-<!-- ── AUTH VIEW ── -->
-<div id="view-auth" class="view active">
-  <div class="auth-logo">Kokoon</div>
-  <div class="auth-container">
-    <button id="btn-google" class="auth-btn-google">
-      <svg width="16" height="16" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908C16.658 14.251 17.64 11.943 17.64 9.2z" fill="#4285F4"/>
-        <path d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
-        <path d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.039l3.007-2.332z" fill="#FBBC05"/>
-        <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z" fill="#EA4335"/>
-      </svg>
-      <span>continue with google</span>
-    </button>
-    <p id="google-error" class="auth-error"></p>
+<section class="hero">
+  <h1 class="hero-brand">Kokoon</h1>
+  <p class="hero-tagline">A focus timer that hatches creatures.<br>Stay focused. Build your collection.</p>
 
-    <div class="auth-divider"><span>or</span></div>
-
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="tab-signin">sign in</button>
-      <button class="auth-tab" id="tab-signup">sign up</button>
-    </div>
-
-    <!-- Sign in panel -->
-    <div id="panel-signin" class="auth-panel">
-      <input id="si-email"    type="email"    class="auth-input" placeholder="email"    autocomplete="email">
-      <input id="si-password" type="password" class="auth-input" placeholder="password" autocomplete="current-password">
-      <button id="btn-signin" class="auth-btn"><span>begin</span></button>
-      <p id="si-error" class="auth-error"></p>
-    </div>
-
-    <!-- Sign up panel -->
-    <div id="panel-signup" class="auth-panel" style="display:none">
-      <input id="su-name"     type="text"     class="auth-input" placeholder="your name" autocomplete="name" maxlength="24">
-      <input id="su-email"    type="email"    class="auth-input" placeholder="email"     autocomplete="email">
-      <input id="su-password" type="password" class="auth-input" placeholder="password"  autocomplete="new-password">
-      <button id="btn-signup" class="auth-btn"><span>create account</span></button>
-      <p id="su-error" class="auth-error"></p>
-    </div>
-
-    <!-- Email confirmation notice (shown when Supabase requires it) -->
-    <div id="auth-confirm" class="auth-panel" style="display:none">
-      <p class="auth-confirm-msg">check your email to confirm your account, then sign in.</p>
-      <button id="btn-goto-signin" class="auth-btn"><span>sign in</span></button>
-    </div>
-  </div>
-</div>
-
-<!-- ── ONBOARD VIEW ── -->
-<div id="view-onboard" class="view">
-  <div id="ob-slide-1" class="ob-slide">
-    <div class="ob-logo">Kokoon</div>
-    <p id="ob-intro-name" class="ob-intro-name"></p>
-    <div class="ob-loop">
-      <span class="ob-loop-step">focus your time</span>
-      <span class="ob-loop-arrow">↓</span>
-      <span class="ob-loop-step">hatch rare creatures</span>
-      <span class="ob-loop-arrow">↓</span>
-      <span class="ob-loop-step">build your collection</span>
-    </div>
-    <button id="ob-next" class="ob-btn"><span>→</span></button>
-  </div>
-  <div id="ob-slide-2" class="ob-slide">
-    <p id="ob-greeting" class="ob-greeting"></p>
-    <div id="ob-egg-wrap"><!-- egg injected by JS --></div>
-    <p class="ob-hint">tap the egg to hatch your first creature</p>
-  </div>
-</div>
-
-<!-- ── GLOBAL MUTE BUTTON ── -->
-<button id="btn-mute" class="nav-btn mute-btn" title="Toggle sound">
-  <svg class="icon-sound" viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 6.5h3l4.5-3.5v10L6 9.5H3z" fill="currentColor" stroke="none" opacity=".7"/>
-    <path class="sv-waves" d="M12.5 6.8a3.2 3.2 0 0 1 0 4.4"/>
-    <line class="sv-x" x1="12" y1="6.5" x2="16.5" y2="11.5"/>
-    <line class="sv-x" x1="16.5" y1="6.5" x2="12" y2="11.5"/>
-  </svg>
-</button>
-
-<!-- ── TIMER VIEW ── -->
-<div id="view-timer" class="view">
-  <button id="btn-open-collection" class="nav-btn">集</button>
-
-  <main class="timer-main">
-    <div id="egg-stage">
-      <svg id="progress-ring" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle class="ring-track" cx="130" cy="130" r="118"/>
-        <circle id="ring-fill" class="ring-fill" cx="130" cy="130" r="118"/>
-      </svg>
-      <div id="timer-egg">
-        <!-- egg injected by JS -->
-      </div>
-    </div>
-
-    <div id="time-display">
-      <span id="time-minutes">25</span><span class="time-sep">:</span><span id="time-seconds">00</span>
-    </div>
-
-    <div id="duration-picker">
-      <button class="dur-btn active" data-min="25">25</button>
-      <span class="dur-sep">·</span>
-      <button class="dur-btn" data-min="45">45<span class="dur-boost">+rare</span></button>
-      <span class="dur-sep">·</span>
-      <button class="dur-btn" data-min="60">60<span class="dur-boost">++rare</span></button>
-      <span class="dur-unit">min</span>
-    </div>
-
-    <button id="btn-start-focus"><span>begin focus</span></button>
-    <div id="timer-stats"></div>
-    <div id="timer-nudge"></div>
-    <div id="reminder-prompt"></div>
-  </main>
-</div>
-
-<!-- ── HATCH VIEW ── -->
-<div id="view-hatch" class="view">
-  <div id="flash"></div>
-  <div id="speed-wrap">
-    <svg id="speed-svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice"></svg>
-  </div>
-  <canvas id="particles"></canvas>
-
-  <div id="hatch-stage">
-    <div id="hatch-header">
-      <div id="hatch-session-num"></div>
-      <div id="char-name"></div>
-      <div id="char-sub"></div>
-      <div id="char-rarity"></div>
-      <div id="char-lore"></div>
-      <div id="char-drop-hint"></div>
-    </div>
-
-    <div id="hatch-egg-wrap">
-      <!-- Egg -->
-      <svg id="hatch-egg" width="220" height="280" viewBox="0 0 220 280">
+  <div class="hero-illustration">
+    <!-- Egg -->
+    <div class="hero-egg">
+      <svg width="90" height="114" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="heggGrd" cx="40%" cy="35%" r="65%">
+          <radialGradient id="eggGrd" cx="40%" cy="35%" r="65%">
             <stop offset="0%" stop-color="#fefcf5"/>
             <stop offset="100%" stop-color="#ddd8ca"/>
           </radialGradient>
-          <radialGradient id="heggGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#0047ff" stop-opacity=".22"/>
+          <radialGradient id="eggGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#0047ff" stop-opacity=".18"/>
             <stop offset="100%" stop-color="#0047ff" stop-opacity="0"/>
           </radialGradient>
-          <filter id="heggBlur"><feGaussianBlur stdDeviation="1.2"/></filter>
         </defs>
-        <ellipse cx="110" cy="268" rx="55" ry="9" fill="rgba(0,0,0,.12)"/>
+        <ellipse cx="110" cy="268" rx="55" ry="9" fill="rgba(0,0,0,.1)"/>
         <path d="M110,8 C158,8 196,60 196,148 C196,222 158,272 110,272 C62,272 24,222 24,148 C24,60 62,8 110,8 Z"
-          fill="url(#heggGrd)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+          fill="url(#eggGrd)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
         <path d="M110,8 C158,8 196,60 196,148 C196,222 158,272 110,272 C62,272 24,222 24,148 C24,60 62,8 110,8 Z"
-          fill="url(#heggGlow)"/>
+          fill="url(#eggGlow)"/>
         <path d="M75,45 C82,32 96,24 105,22" stroke="white" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".7"/>
         <path d="M60,80 C64,68 70,58 76,52" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"/>
-        <g class="egg-rune" opacity=".5">
+        <g opacity=".45">
           <path d="M118,85 L102,118 L114,118 L98,155" stroke="#0047ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
           <path d="M118,85 L102,118 L114,118 L98,155" stroke="#00e5ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".6"/>
         </g>
       </svg>
+    </div>
 
-      <!-- Cracks -->
-      <svg id="hatch-cracks" width="220" height="280" viewBox="0 0 220 280">
-        <g stroke="#080810" stroke-linecap="round" stroke-linejoin="round" fill="none">
-          <path id="hc1" d="M110,80 L98,102 L107,108 L95,132" stroke-width="2.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-          <path id="hc2" d="M107,108 L120,122 L115,138" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-          <path id="hc3" d="M138,90 L128,115 L135,125 L122,148" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-          <path id="hc4" d="M82,105 L92,128 L85,140" stroke-width="1.8" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-          <path id="hc5" d="M115,140 L130,158 L125,170" stroke-width="1.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
-          <path id="hc1g" d="M110,80 L98,102 L107,108 L95,132" stroke="#00e5ff" stroke-width="1" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity=".7"/>
-          <path id="hc2g" d="M107,108 L120,122 L115,138" stroke="#00e5ff" stroke-width=".8" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity=".6"/>
-          <path id="hc3g" d="M138,90 L128,115 L135,125 L122,148" stroke="#00e5ff" stroke-width=".8" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" opacity=".6"/>
+    <!-- Shiro (creature) -->
+    <div class="hero-creature">
+      <svg width="120" height="142" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="h-shiro-body" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#e5e0d5"/>
+          </radialGradient>
+          <radialGradient id="h-shiro-eye" cx="35%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#ffc84a"/>
+            <stop offset="100%" stop-color="#c87000"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="160" cy="352" rx="66" ry="9" fill="rgba(0,0,0,.1)"/>
+        <g>
+          <!-- Tail -->
+          <path d="M218,292 C252,272 272,242 260,210 C248,178 218,177 202,196 C186,215 200,240 214,248 C221,252 223,270 218,292 Z"
+            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+          <!-- Body -->
+          <ellipse cx="160" cy="258" rx="66" ry="72"
+            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="4"/>
+          <ellipse cx="160" cy="263" rx="38" ry="52"
+            fill="white" stroke="#080810" stroke-width="2" opacity=".55"/>
+          <!-- Left paw -->
+          <ellipse cx="118" cy="324" rx="29" ry="15"
+            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3"/>
+          <path d="M96,323 L100,331" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+          <path d="M110,326 L112,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+          <path d="M124,326 L124,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+          <!-- Right paw -->
+          <ellipse cx="202" cy="324" rx="29" ry="15"
+            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3"/>
+          <path d="M224,323 L220,331" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+          <path d="M210,326 L208,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+          <path d="M196,326 L196,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+          <!-- Left ear -->
+          <path d="M108,114 L95,62 L152,100 Z"
+            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M112,109 L103,70 L146,98 Z" fill="#f0a500" opacity=".8"/>
+          <!-- Right ear -->
+          <path d="M212,114 L225,62 L168,100 Z"
+            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M208,109 L217,70 L174,98 Z" fill="#f0a500" opacity=".8"/>
+          <!-- Head -->
+          <circle cx="160" cy="146" r="62"
+            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="4"/>
+          <!-- Left eye -->
+          <ellipse cx="134" cy="143" rx="22" ry="20" fill="white" stroke="#080810" stroke-width="3"/>
+          <ellipse cx="134" cy="143" rx="15" ry="14" fill="url(#h-shiro-eye)"/>
+          <path d="M134,130 C136,135 136,151 134,156 C132,151 132,135 134,130Z" fill="#080810"/>
+          <circle cx="141" cy="137" r="4.5" fill="white" opacity=".9"/>
+          <circle cx="127" cy="151" r="2" fill="white" opacity=".5"/>
+          <!-- Right eye -->
+          <ellipse cx="186" cy="143" rx="22" ry="20" fill="white" stroke="#080810" stroke-width="3"/>
+          <ellipse cx="186" cy="143" rx="15" ry="14" fill="url(#h-shiro-eye)"/>
+          <path d="M186,130 C188,135 188,151 186,156 C184,151 184,135 186,130Z" fill="#080810"/>
+          <circle cx="193" cy="137" r="4.5" fill="white" opacity=".9"/>
+          <circle cx="179" cy="151" r="2" fill="white" opacity=".5"/>
+          <!-- Nose -->
+          <path d="M155,162 L165,162 L160,169 Z" fill="#f0a500" opacity=".85"/>
+          <!-- Mouth -->
+          <path d="M154,169 C157,175 163,175 166,169" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Whiskers -->
+          <line x1="100" y1="162" x2="146" y2="165" stroke="#080810" stroke-width="1.5" opacity=".4"/>
+          <line x1="96" y1="171" x2="144" y2="170" stroke="#080810" stroke-width="1.4" opacity=".3"/>
+          <line x1="220" y1="162" x2="174" y2="165" stroke="#080810" stroke-width="1.5" opacity=".4"/>
+          <line x1="224" y1="171" x2="176" y2="170" stroke="#080810" stroke-width="1.4" opacity=".3"/>
         </g>
       </svg>
-
-      <!-- Character revealed here -->
-      <div id="char-wrap"></div>
-    </div>
-
-    <div id="hatch-actions">
-      <button id="btn-share"><span>share</span></button>
-      <button id="btn-see-collection"><span>collection</span></button>
-      <button id="btn-focus-again"><span>focus again</span></button>
-    </div>
-
-    <div id="milestone-toast">
-      <div id="milestone-num"></div>
-      <div id="milestone-msg"></div>
     </div>
   </div>
-</div>
 
-<!-- ── COLLECTION VIEW ── -->
-<div id="view-collection" class="view">
-  <header class="collection-header">
-    <div class="collection-top">
-      <button id="btn-back-to-timer" class="nav-btn">←</button>
-      <div class="collection-title-group">
-        <span class="collection-title" id="collection-title">collection</span>
-        <button id="btn-share-collection" class="nav-btn share-collection-btn" title="Copy collection link">
-          <svg viewBox="0 0 18 18" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.5 3H15v4.5"/><path d="M15 3l-7 7"/><path d="M7.5 5H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3.5"/>
-          </svg>
-        </button>
-      </div>
-      <button id="btn-dark" class="nav-btn dark-btn-inline" title="Toggle dark mode">
-        <svg class="icon-dark" viewBox="0 0 18 18" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-          <path class="icon-moon" d="M13.5 10a5 5 0 1 1-5.5-5.5 3.8 3.8 0 0 0 5.5 5.5z"/>
-          <g class="icon-sun">
-            <circle cx="9" cy="9" r="3"/>
-            <line x1="9" y1="1.5" x2="9" y2="3"/><line x1="9" y1="15" x2="9" y2="16.5"/>
-            <line x1="1.5" y1="9" x2="3" y2="9"/><line x1="15" y1="9" x2="16.5" y2="9"/>
-            <line x1="4" y1="4" x2="5.1" y2="5.1"/><line x1="12.9" y1="12.9" x2="14" y2="14"/>
-            <line x1="14" y1="4" x2="12.9" y2="5.1"/><line x1="5.1" y1="12.9" x2="4" y2="14"/>
-          </g>
-        </svg>
-      </button>
-      <button id="btn-signout" class="nav-btn signout-btn" title="Sign out">sign out</button>
-    </div>
-    <div id="collection-stats"></div>
-    <div class="top-tabs">
-      <button class="top-tab" data-top="stats">stats</button>
-      <button class="top-tab active" data-top="collection">collection</button>
-      <button class="top-tab" data-top="achievements">achievements</button>
-    </div>
-    <div class="region-tabs">
-      <button class="region-btn active" data-region="all">all <span class="tab-count"></span></button>
-      <button class="region-btn" data-region="japanese">japan <span class="tab-count"></span></button>
-      <button class="region-btn" data-region="americas">americas <span class="tab-count"></span></button>
-      <button class="region-btn" data-region="european">europe <span class="tab-count"></span></button>
-      <button class="region-btn" data-region="african">africa <span class="tab-count"></span></button>
-      <button class="region-btn" data-region="fantasy">fantasy <span class="tab-count"></span></button>
-    </div>
-  </header>
-  <div id="stats-content"></div>
-  <div id="collection-grid">
-    <!-- cards injected by JS -->
-  </div>
-</div>
+  <a href="/app" class="hero-cta">open kokoon</a>
+</section>
 
-<!-- ── PROFILE VIEW (public, no auth) ── -->
-<div id="view-profile" class="view">
-  <header class="collection-header">
-    <div class="collection-top">
-      <span class="collection-title" id="profile-title">collection</span>
-    </div>
-    <div id="profile-stats" class="collection-stats-strip"></div>
-    <div id="profile-badges" class="profile-badges-strip"></div>
-    <div class="region-tabs" id="profile-tabs"></div>
-  </header>
-  <div id="profile-grid"></div>
-  <div class="profile-cta">
-    <a href="/" class="profile-cta-link">start your own · kokoon</a>
-  </div>
-</div>
+<footer class="site-footer">
+  <a href="/pricing">pricing</a>
+  <a href="/faq">faq</a>
+  <a href="/blog">blog</a>
+  <a href="/privacy">privacy</a>
+  <a href="/terms">terms</a>
+  <a href="/contact">contact</a>
+  <a href="/app" class="footer-app">open app &rarr;</a>
+</footer>
 
-<!-- ── CARD MODAL ── -->
-<div id="card-modal" class="modal-overlay">
-  <div id="card-modal-inner" class="modal-inner">
-    <button id="modal-close" class="modal-close">×</button>
-
-    <!-- Flippable card: click art to see lore/haiku on back -->
-    <div id="modal-card" class="modal-card">
-      <div class="modal-card-inner">
-        <div class="modal-card-front">
-          <div id="modal-art" class="modal-art"></div>
-        </div>
-        <div class="modal-card-back">
-          <div class="modal-back-top">
-            <div id="modal-back-name" class="modal-back-name"></div>
-            <div id="modal-back-lore" class="modal-back-lore"></div>
-            <div id="modal-back-haiku" class="modal-back-haiku"></div>
-          </div>
-          <div class="modal-back-meta">
-            <span id="modal-back-odds"></span>
-            <span id="modal-back-date"></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Info strip -->
-    <div class="modal-info">
-      <div class="modal-name-row">
-        <div id="modal-name" class="modal-name"></div>
-        <button id="btn-modal-share" class="modal-share-icon" title="Share">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-        </button>
-      </div>
-      <div id="modal-sub" class="modal-sub"></div>
-      <div id="modal-rarity" class="modal-rarity"></div>
-      <!-- Variant navigation (hidden when only 1 variant owned) -->
-      <div id="modal-var-nav" class="modal-var-nav">
-        <button id="modal-prev" class="modal-nav-arrow">←</button>
-        <span id="modal-var-label" class="modal-var-label"></span>
-        <button id="modal-next" class="modal-nav-arrow">→</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ── FUSION OVERLAY ── -->
-<div id="fusion-overlay">
-  <div id="fusion-stage">
-    <div id="fusion-title">triple fusion</div>
-    <div id="fusion-orbs-row">
-      <div class="fusion-orb" id="fo0"></div>
-      <div class="fusion-orb" id="fo1"></div>
-      <div class="fusion-orb" id="fo2"></div>
-      <div id="fusion-core"></div>
-    </div>
-    <div id="fusion-result">
-      <div id="fusion-result-art"></div>
-      <div id="fusion-result-name"></div>
-      <div id="fusion-result-badge"></div>
-    </div>
-    <button id="btn-fusion-ok"><span>amazing</span></button>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="characters.js"></script>
-<script src="sounds.js"></script>
-<script src="supabase.js"></script>
-<script src="app.js"></script>
 </body>
 </html>

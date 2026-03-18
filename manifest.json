@@ -2,7 +2,7 @@
   "name": "Kokoon",
   "short_name": "Kokoon",
   "description": "Retreat into your kokoon. Focus. Hatch rare creatures.",
-  "start_url": "/",
+  "start_url": "/app",
   "display": "standalone",
   "background_color": "#ede9df",
   "theme_color": "#080810",

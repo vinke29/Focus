@@ -1968,7 +1968,7 @@ async function shareCollection() {
     const slug = await DB.getOrCreateSlug(name);
     if (!slug) { btn.style.opacity = ''; btn.disabled = false; return; }
 
-    const url = `${window.location.origin}?profile=${slug}`;
+    const url = `${window.location.origin}/app?profile=${slug}`;
 
     // On mobile use native share sheet (has Copy Link); on desktop copy to clipboard
     const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
