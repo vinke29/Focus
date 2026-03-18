@@ -349,13 +349,19 @@ function renderStatsTab() {
   const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
   const totalSess = sessions.length;
 
-  // Headline message
+  // Headline message — layered: streak first, then session milestones, then fallback
   let headline = 'every journey starts with a single session.';
-  if (streak >= 30)       headline = 'extraordinary. you are building something lasting.';
-  else if (streak >= 14)  headline = 'two weeks strong. this is becoming who you are.';
-  else if (streak >= 7)   headline = 'a full week of focus. the rhythm is yours now.';
+  if (streak >= 100)      headline = `${streak} days. this is who you are now.`;
+  else if (streak >= 30)  headline = `${streak} days. extraordinary discipline.`;
+  else if (streak >= 14)  headline = `${streak} days strong. this is becoming part of you.`;
+  else if (streak === 7)  headline = 'one full week. you are proving something.';
+  else if (streak >= 7)   headline = `${streak} days. the rhythm is yours now.`;
   else if (streak >= 3)   headline = `${streak} days in. the habit is taking root.`;
+  else if (streak === 2)  headline = 'day two. keep going.';
+  else if (totalSess >= 100) headline = `${totalSess} sessions. a centurion of focus.`;
+  else if (totalSess >= 50)  headline = `${totalSess} sessions and counting.`;
   else if (todayMins > 0) headline = 'you showed up today. that is what matters.';
+  else if (totalSess === 1)  headline = 'the first step. welcome.';
   else if (totalSess > 0) headline = 'your next session is waiting.';
 
   // Delta text helpers
