@@ -21,7 +21,7 @@ serve(async (req) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Kokoon <onboarding@resend.dev>',
+      from: 'Kokoon <hello@kokoon.app>',
       to: [email],
       subject: 'welcome to kokoon',
       html: welcomeHtml(displayName),
