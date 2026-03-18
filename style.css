@@ -1475,6 +1475,15 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   .modal-back-lore { font-size: .73rem; line-height: 1.7; }
   .modal-back-haiku{ font-size: .66rem; line-height: 1.85; padding-top: .5rem; }
   .modal-back-meta { font-size: .6rem; letter-spacing: .12em; opacity: .6; padding-top: .5rem; }
+  /* Badges */
+  #collection-grid.badge-mode { grid-template-columns: repeat(2, 1fr); gap: .8rem; padding: .8rem 1rem; }
+  .badge-card { min-height: 140px; padding: 1rem .6rem; }
+  .badge-icon { font-size: 2rem; }
+  .badge-name { font-size: .72rem; letter-spacing: .1em; }
+  .badge-desc { font-size: .58rem; }
+  .badge-date { font-size: .5rem; }
+  .badge-pct  { font-size: .5rem; }
+
   /* Fusion */
   #fusion-stage       { gap: 1.4rem; }
   #fusion-result-art  { width: 128px; height: 154px; }
