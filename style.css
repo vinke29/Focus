@@ -342,7 +342,13 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
   opacity: .28; padding: .2rem .4rem;
   transition: opacity .2s;
 }
+.dur-btn { position: relative; }
 .dur-btn.active, .dur-btn:hover, .dur-btn:active { opacity: 1; }
+.dur-boost {
+  display: block;
+  font-size: .32rem; letter-spacing: .08em;
+  opacity: .45; margin-top: -.1rem;
+}
 .dur-sep { opacity: .18; font-size: .55rem; }
 .dur-unit { font-size: .6rem; opacity: .3; letter-spacing: .15em; margin-left: .2rem; }
 

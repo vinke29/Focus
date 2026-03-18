@@ -635,7 +635,7 @@ function onTimerComplete() {
     setTimeout(showReminderPrompt, 1000);
   }
 
-  const { character, variant } = rollCharacterInUnlockedRegions();
+  const { character, variant } = rollCharacterInUnlockedRegions(state.timer.duration);
   state.hatch.character = character;
   state.hatch.variant   = variant;
 
@@ -1391,22 +1391,54 @@ function rollWelcomeCharacter() {
   return { character: CHARACTERS[id], variant: VARIANTS[0] }; // always standard
 }
 
-function rollCharacterInUnlockedRegions() {
+// Duration-based rarity boost: longer sessions = better odds
+// 25 min: base (65/28/7), 45 min: (58/33/9), 60 min: (52/36/12)
+function getDurationBoost(durationSecs) {
+  const mins = durationSecs / 60;
+  if (mins >= 60) return { rarityShift: [-13, 8, 5], variantBoost: 2.0 };
+  if (mins >= 45) return { rarityShift: [-7, 5, 2],  variantBoost: 1.5 };
+  return { rarityShift: [0, 0, 0], variantBoost: 1.0 };
+}
+
+function rollBoostedVariant(boost) {
+  // Boost gold/crimson/void weights while keeping standard as the remainder
+  const boosted = VARIANTS.map((v, i) => ({
+    ...v,
+    weight: i === 0 ? v.weight : v.weight * boost,
+  }));
+  const total = boosted.reduce((s, v) => s + v.weight, 0);
+  const roll = Math.random() * total;
+  let cumulative = 0;
+  for (const v of boosted) {
+    cumulative += v.weight;
+    if (roll < cumulative) return VARIANTS.find(orig => orig.id === v.id);
+  }
+  return VARIANTS[0];
+}
+
+function rollCharacterInUnlockedRegions(durationSecs) {
   const unlocked = getUnlockedRegions();
+  const { rarityShift, variantBoost } = getDurationBoost(durationSecs || 25 * 60);
+
+  const weights = RARITY_WEIGHTS.map((t, i) => ({
+    ...t,
+    weight: t.weight + (rarityShift[i] || 0),
+  }));
+
   const roll = Math.random() * 100;
   let cumulative = 0;
-  for (const tier of RARITY_WEIGHTS) {
+  for (const tier of weights) {
     cumulative += tier.weight;
     if (roll < cumulative) {
       const pool = tier.pool.filter(id => unlocked.has(CHARACTERS[id]?.region));
       if (pool.length) {
-        return { character: CHARACTERS[pool[Math.floor(Math.random() * pool.length)]], variant: rollVariant() };
+        return { character: CHARACTERS[pool[Math.floor(Math.random() * pool.length)]], variant: rollBoostedVariant(variantBoost) };
       }
     }
   }
   // Fallback: any character from any unlocked region
   const all = Object.values(CHARACTERS).filter(c => unlocked.has(c.region));
-  return { character: all[Math.floor(Math.random() * all.length)], variant: rollVariant() };
+  return { character: all[Math.floor(Math.random() * all.length)], variant: rollBoostedVariant(variantBoost) };
 }
 
 function startOnboarding() {
