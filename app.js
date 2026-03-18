@@ -2171,6 +2171,7 @@ async function handleSignedIn(user) {
                user.user_metadata?.full_name?.split(' ')[0] ||
                user.user_metadata?.name || 'there';
 
+  console.log('[Kokoon] New user path — sending welcome email to:', user.email, 'name:', name);
   localStorage.setItem('focus-name', name);
   state.collection = [];
   sessions = [];
@@ -2180,8 +2181,8 @@ async function handleSignedIn(user) {
     console.error('Failed to save profile:', e);
   }
   DB.invokeFunction('send-welcome-email', { email: user.email, name })
-    .then(result => { if (result?.error) console.error('Welcome email failed:', result.error); })
-    .catch(err => console.error('Welcome email invocation failed:', err));
+    .then(result => { console.log('[Kokoon] Welcome email result:', JSON.stringify(result)); })
+    .catch(err => console.error('[Kokoon] Welcome email invocation failed:', err));
   showOnboardingEgg(name);
 }
 
