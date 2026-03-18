@@ -826,6 +826,10 @@ function navigateTo(viewId) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
+  // Deactivate onboard slides so their pointer-events:all can't bleed through
+  if (viewId !== 'onboard') {
+    document.querySelectorAll('.ob-slide').forEach(s => s.classList.remove('active'));
+  }
   if (viewId === 'collection') { updateCollectionTitle(); renderTopTab(); }
   if (viewId === 'timer') { renderTimerStats(); }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard' || viewId === 'profile';
@@ -2175,7 +2179,9 @@ async function handleSignedIn(user) {
   } catch(e) {
     console.error('Failed to save profile:', e);
   }
-  DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
+  DB.invokeFunction('send-welcome-email', { email: user.email, name })
+    .then(result => { if (result?.error) console.error('Welcome email failed:', result.error); })
+    .catch(err => console.error('Welcome email invocation failed:', err));
   showOnboardingEgg(name);
 }
 
@@ -2220,7 +2226,9 @@ async function performSignUp() {
     state.collection = [];
     sessions = [];
     localStorage.removeItem('focus-new-user');
-    DB.invokeFunction('send-welcome-email', { email, name }).catch(() => {});
+    DB.invokeFunction('send-welcome-email', { email, name })
+      .then(result => { if (result?.error) console.error('Welcome email failed:', result.error); })
+      .catch(err => console.error('Welcome email invocation failed:', err));
     showOnboardingEgg(name);
   } catch(e) {
     showAuthError('signup', e.message || 'sign up failed');
