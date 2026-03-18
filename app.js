@@ -627,10 +627,14 @@ async function renderBadges() {
 
     card.innerHTML = `
       <div class="badge-icon">${badge.icon}</div>
-      <div class="badge-name">${badge.name}</div>
-      <div class="badge-desc">${badge.desc}</div>
-      ${dateText ? `<div class="badge-date">${dateText}</div>` : ''}
-      ${pctText ? `<div class="badge-pct">${pctText}</div>` : ''}
+      <div class="badge-text">
+        <div class="badge-name">${badge.name}</div>
+        <div class="badge-desc">${badge.desc}</div>
+      </div>
+      <div class="badge-meta">
+        ${dateText ? `<div class="badge-date">${dateText}</div>` : ''}
+        ${pctText ? `<div class="badge-pct">${pctText}</div>` : ''}
+      </div>
     `;
     grid.appendChild(card);
   });
