@@ -283,7 +283,7 @@ function renderTopTab() {
   const titleEl = document.getElementById('collection-title');
   if (titleEl) {
     const name = getUserName();
-    if (tab === 'stats') titleEl.textContent = name ? `${name}'s focus` : 'focus';
+    if (tab === 'stats') titleEl.textContent = name ? `${name}'s kokoon` : 'kokoon';
     else if (tab === 'achievements') titleEl.textContent = name ? `${name}'s achievements` : 'achievements';
     else updateCollectionTitle();
   }
@@ -463,7 +463,7 @@ function renderNudge() {
       const dayKey = ts => { const d = new Date(ts); return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate(); };
       const todayHasSessions = sessions.some(s => dayKey(s.timestamp) === dayKey(Date.now()));
       if (!todayHasSessions) {
-        el.textContent = 'focus tonight to keep your streak';
+        el.textContent = 'return to kokoon tonight to keep your streak';
         el.classList.add('show');
         return;
       }
@@ -547,7 +547,7 @@ function checkReminderNotification() {
   if (sessions.some(s => dayKey(s.timestamp) === todayKey)) return; // already sessioned today
   if (localStorage.getItem('focus-reminded-date') === String(todayKey)) return; // already notified today
   localStorage.setItem('focus-reminded-date', String(todayKey));
-  const n = new Notification('Focus · 集中', {
+  const n = new Notification('Kokoon', {
     body: 'Time for your daily focus session 🔥',
     icon: '/icon.svg',
     tag:  'focus-daily-reminder',
@@ -1856,7 +1856,7 @@ function notifySessionComplete() {
   if (!('Notification' in window)) return;
   if (Notification.permission !== 'granted') return;
   if (!document.hidden) return; // tab is visible — no need
-  new Notification('Focus · 集中', {
+  new Notification('Kokoon', {
     body: 'Session complete — your creature is ready to hatch 🥚',
     icon: '/icon.svg',
     tag:  'focus-complete',
@@ -1948,7 +1948,7 @@ async function generateShareCard(char, variant) {
   // Branding
   ctx.fillStyle = 'rgba(247,242,232,.28)';
   ctx.font = `200 13px 'Noto Serif JP', serif`;
-  ctx.fillText('Focus  ·  集中', W / 2, 478);
+  ctx.fillText('kokoon', W / 2, 478);
 
   // Outer border
   ctx.strokeStyle = variant.color + '28';
@@ -2016,7 +2016,7 @@ async function shareCreature() {
         try {
           await navigator.share({
             title: `I hatched ${nameEn}!`,
-            text:  `${char.rarityLabel} · ${variant.label} — Focus · 集中`,
+            text:  `${char.rarityLabel} · ${variant.label} — Kokoon`,
             files: [file],
           });
         } catch (e) {
@@ -2054,7 +2054,7 @@ async function shareFromModal() {
         try {
           await navigator.share({
             title: `I collected ${nameEn}!`,
-            text:  `${char.rarityLabel} · ${variant.label} — Focus · 集中`,
+            text:  `${char.rarityLabel} · ${variant.label} — Kokoon`,
             files: [file],
           });
         } catch(e) {

@@ -1,7 +1,7 @@
 {
-  "name": "Focus · 集中",
-  "short_name": "Focus",
-  "description": "Complete focus sessions to hatch collectible creatures",
+  "name": "Kokoon",
+  "short_name": "Kokoon",
+  "description": "Retreat into your kokoon. Focus. Hatch rare creatures.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ede9df",

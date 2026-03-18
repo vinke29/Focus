@@ -1,6 +1,6 @@
-// ── Focus Service Worker ───────────────────────────────────────────────────────
+// ── Kokoon Service Worker ──────────────────────────────────────────────────────
 // Network-first: always fetch fresh app files; fall back to cache when offline.
-const CACHE = 'focus-v15';
+const CACHE = 'kokoon-v1';
 const STATIC = ['/icon.svg', '/manifest.json'];
 
 self.addEventListener('install', e => {
