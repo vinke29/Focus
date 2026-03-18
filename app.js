@@ -265,10 +265,41 @@ function formatHours(totalMinutes) {
   return h < 10 ? `${h.toFixed(1)} hrs` : `${Math.round(h)} hrs`;
 }
 
-function renderFocusStats() {
-  const el = document.getElementById('focus-stats');
+// ── TOP-LEVEL TABS (stats | collection | achievements) ───────────────────────
+function renderTopTab() {
+  const tab = state.topTab || 'collection';
+
+  document.querySelectorAll('.top-tab').forEach(b =>
+    b.classList.toggle('active', b.dataset.top === tab)
+  );
+
+  const regionTabs = document.querySelector('#view-collection .region-tabs');
+  regionTabs.classList.toggle('hidden', tab !== 'collection');
+
+  const grid    = document.getElementById('collection-grid');
+  const statsEl = document.getElementById('stats-content');
+
+  if (tab === 'stats') {
+    grid.style.display    = 'none';
+    statsEl.classList.add('active');
+    renderStatsTab();
+  } else if (tab === 'achievements') {
+    grid.style.display    = '';
+    statsEl.classList.remove('active');
+    renderCollectionStats();
+    state.filter = 'badges';
+    renderBadges();
+  } else {
+    grid.style.display    = '';
+    statsEl.classList.remove('active');
+    if (state.filter === 'badges') state.filter = 'all';
+    renderCollection();
+  }
+}
+
+function renderStatsTab() {
+  const el = document.getElementById('stats-content');
   if (!el) return;
-  if (!sessions.length) { el.innerHTML = ''; return; }
 
   const now = new Date();
   const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -289,7 +320,7 @@ function renderFocusStats() {
   const weekMins  = minsIn(weekStart, now);
   const monthMins = minsIn(monthStart, now);
 
-  // Previous periods for comparison
+  // Previous periods
   const yesterdayStart = new Date(todayStart); yesterdayStart.setDate(yesterdayStart.getDate() - 1);
   const lastWeekStart = new Date(weekStart); lastWeekStart.setDate(lastWeekStart.getDate() - 7);
   const lastMonthStart = new Date(monthStart); lastMonthStart.setMonth(lastMonthStart.getMonth() - 1);
@@ -298,21 +329,92 @@ function renderFocusStats() {
   const lastWeekMins   = minsIn(lastWeekStart, weekStart);
   const lastMonthMins  = minsIn(lastMonthStart, monthStart);
 
-  function delta(current, previous) {
+  function deltaHtml(current, previous) {
     const diff = current - previous;
-    if (diff === 0) return '';
+    if (diff === 0 || previous === 0) return '';
     const sign = diff > 0 ? '+' : '';
-    const cls  = diff > 0 ? 'fs-delta-up' : 'fs-delta-down';
-    return ` <span class="${cls}">(${sign}${formatHours(diff)})</span>`;
+    const cls  = diff > 0 ? 'up' : 'down';
+    return `<div class="stats-period-delta ${cls}">${sign}${formatHours(diff)} vs last</div>`;
   }
 
-  const parts = [];
-  parts.push(`<span>today ${formatHours(todayMins)}${delta(todayMins, yesterdayMins)}</span>`);
-  parts.push(`<span class="fs-sep">·</span>`);
-  parts.push(`<span>week ${formatHours(weekMins)}${delta(weekMins, lastWeekMins)}</span>`);
-  parts.push(`<span class="fs-sep">·</span>`);
-  parts.push(`<span>month ${formatHours(monthMins)}${delta(monthMins, lastMonthMins)}</span>`);
-  el.innerHTML = parts.join('');
+  // 7-day bar chart data
+  const dayNames = ['S','M','T','W','T','F','S'];
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(todayStart); d.setDate(d.getDate() - i);
+    const next = new Date(d); next.setDate(next.getDate() + 1);
+    days.push({ label: dayNames[d.getDay()], mins: minsIn(d, next), isToday: i === 0 });
+  }
+  const maxDay = Math.max(...days.map(d => d.mins), 1);
+
+  const barsHtml = days.map(d => {
+    const h = Math.max(d.mins > 0 ? 4 : 0, (d.mins / maxDay) * 100);
+    const cls = d.isToday ? 'today' : (d.mins > 0 ? 'has-data' : '');
+    return `<div class="stats-bar-col">
+      <div class="stats-bar ${cls}" style="height:${h}%"></div>
+      <div class="stats-bar-label ${d.isToday ? 'today' : ''}">${d.label}</div>
+    </div>`;
+  }).join('');
+
+  // KPIs
+  const streak     = calcStreak();
+  const totalMins  = sessions.reduce((s, x) => s + x.duration, 0);
+  const totalSess  = sessions.length;
+
+  // Uplifting message
+  let message = 'every journey starts with a single session';
+  if (streak >= 30)       message = 'extraordinary discipline. you are building something lasting.';
+  else if (streak >= 14)  message = 'two weeks strong. this is becoming who you are.';
+  else if (streak >= 7)   message = 'a full week of focus. the rhythm is yours now.';
+  else if (streak >= 3)   message = 'three days in. the habit is taking root.';
+  else if (todayMins > 0) message = 'you showed up today. that is what matters.';
+  else if (totalSess > 0) message = 'your next session is waiting.';
+
+  el.innerHTML = `
+    <div class="stats-period-row">
+      <div class="stats-period">
+        <div class="stats-period-label">today</div>
+        <div class="stats-period-value">${formatHours(todayMins)}</div>
+        ${deltaHtml(todayMins, yesterdayMins)}
+      </div>
+      <div class="stats-period">
+        <div class="stats-period-label">this week</div>
+        <div class="stats-period-value">${formatHours(weekMins)}</div>
+        ${deltaHtml(weekMins, lastWeekMins)}
+      </div>
+      <div class="stats-period">
+        <div class="stats-period-label">this month</div>
+        <div class="stats-period-value">${formatHours(monthMins)}</div>
+        ${deltaHtml(monthMins, lastMonthMins)}
+      </div>
+    </div>
+
+    <div class="stats-chart">
+      <div class="stats-chart-title">last 7 days</div>
+      <div class="stats-bars">${barsHtml}</div>
+    </div>
+
+    <div class="stats-kpi-row">
+      <div class="stats-kpi">
+        <div class="stats-kpi-value">${streak}</div>
+        <div class="stats-kpi-label">day streak</div>
+      </div>
+      <div class="stats-kpi">
+        <div class="stats-kpi-value">${state.maxStreak}</div>
+        <div class="stats-kpi-label">best streak</div>
+      </div>
+      <div class="stats-kpi">
+        <div class="stats-kpi-value">${totalSess}</div>
+        <div class="stats-kpi-label">sessions</div>
+      </div>
+      <div class="stats-kpi">
+        <div class="stats-kpi-value">${formatHours(totalMins)}</div>
+        <div class="stats-kpi-label">total focus</div>
+      </div>
+    </div>
+
+    <div class="stats-message">${message}</div>
+  `;
 }
 
 function renderTimerStats() {
@@ -491,11 +593,7 @@ function renderCollectionStats() {
     const span   = btn.querySelector('.tab-count');
     if (!span) return;
 
-    if (region === 'badges') {
-      const earned = state.badges.length;
-      span.textContent = `${earned}/${BADGES.length}`;
-      btn.classList.remove('locked');
-    } else if (region === 'all') {
+    if (region === 'all') {
       span.textContent = `${unlockedOwned}/${unlockedTotal}`;
       btn.classList.remove('locked');
     } else if (!unlockedRegions.has(region)) {
@@ -536,6 +634,7 @@ const state = {
   hatch: { character: null, variant: null },
   collection: [],  // [{ id, timestamp }]
   filter: 'all',
+  topTab: 'collection',
   previewAll: false,
   onboarding: false,    // true during the welcome hatch
   pendingMilestone: null,
@@ -702,7 +801,7 @@ function navigateTo(viewId) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(`view-${viewId}`).classList.add('active');
   state.view = viewId;
-  if (viewId === 'collection') { updateCollectionTitle(); renderCollection(); }
+  if (viewId === 'collection') { updateCollectionTitle(); renderTopTab(); }
   if (viewId === 'timer') { renderTimerStats(); }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard' || viewId === 'profile';
   const muteBtn = document.getElementById('btn-mute');
@@ -1371,15 +1470,11 @@ function renderCollection() {
   grid.classList.remove('badge-mode');
 
   renderCollectionStats();
-  renderFocusStats();
 
   // Update region tab active state
   document.querySelectorAll('.region-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.region === state.filter);
   });
-
-  // Badges tab — delegate to renderBadges
-  if (state.filter === 'badges') { renderBadges(); return; }
 
   // Preview mode indicator
   let indicator = document.getElementById('preview-indicator');
@@ -1397,7 +1492,7 @@ function renderCollection() {
 
   // Guard: if the current filter is a locked region, reset to 'all'
   const unlockedRegions = getUnlockedRegions();
-  if (state.filter !== 'all' && state.filter !== 'badges' && !unlockedRegions.has(state.filter)) {
+  if (state.filter !== 'all' && !unlockedRegions.has(state.filter)) {
     state.filter = 'all';
     document.querySelectorAll('.region-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.region === 'all')
@@ -2276,6 +2371,13 @@ async function init() {
   });
 
   // Region filter tabs (including badges tab)
+  document.querySelectorAll('.top-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.topTab = btn.dataset.top;
+      renderTopTab();
+    });
+  });
+
   document.querySelectorAll('.region-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.classList.contains('locked')) return;

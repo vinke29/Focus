@@ -657,15 +657,104 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #collection-stats .cs-total { opacity: .7; }
 #collection-stats .cs-sep   { opacity: .5; }
 
-#focus-stats {
-  padding: 0 2rem .65rem;
-  font-size: .5rem; letter-spacing: .2em;
-  text-transform: uppercase; color: var(--ink);
-  opacity: .55; display: flex; align-items: center; gap: .6rem;
+.top-tabs {
+  display: flex; justify-content: center; gap: 2rem;
+  padding: .3rem 2rem .7rem;
 }
-#focus-stats .fs-delta-up   { opacity: .7; }
-#focus-stats .fs-delta-down { opacity: .7; }
-#focus-stats .fs-sep        { opacity: .5; }
+.top-tab {
+  background: none; border: none; font-family: inherit;
+  font-size: .52rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink); opacity: .35; cursor: pointer;
+  padding: .3rem 0; border-bottom: 1.5px solid transparent;
+  transition: opacity .2s, border-color .2s;
+}
+.top-tab.active { opacity: .85; border-bottom-color: var(--ink); }
+.top-tab:hover { opacity: .6; }
+
+.region-tabs.hidden { display: none; }
+
+/* Stats tab */
+#stats-content {
+  display: none; padding: 2rem 2rem 3rem;
+  max-width: 480px; margin: 0 auto;
+}
+#stats-content.active { display: block; }
+
+.stats-period-row {
+  display: flex; justify-content: space-between; gap: 1rem;
+  margin-bottom: 2.2rem;
+}
+.stats-period {
+  flex: 1; text-align: center;
+}
+.stats-period-label {
+  font-size: .44rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink); opacity: .45; margin-bottom: .35rem;
+}
+.stats-period-value {
+  font-family: 'Zen Antique Soft', serif;
+  font-size: 1.4rem; color: var(--ink); line-height: 1;
+}
+.stats-period-delta {
+  font-size: .42rem; letter-spacing: .12em; text-transform: uppercase;
+  margin-top: .25rem; opacity: .5;
+}
+.stats-period-delta.up   { color: var(--ink); }
+.stats-period-delta.down { color: var(--ink); }
+
+/* 7-day bar chart */
+.stats-chart {
+  margin-bottom: 2.2rem;
+}
+.stats-chart-title {
+  font-size: .44rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ink); opacity: .45; margin-bottom: .8rem; text-align: center;
+}
+.stats-bars {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  height: 100px; gap: .5rem; padding: 0 .5rem;
+}
+.stats-bar-col {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: .35rem;
+}
+.stats-bar {
+  width: 100%; border-radius: 3px 3px 0 0;
+  background: var(--ink); opacity: .12;
+  transition: height .4s ease;
+  min-width: 8px;
+}
+.stats-bar.has-data { opacity: .25; }
+.stats-bar.today    { opacity: .45; }
+.stats-bar-label {
+  font-size: .38rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink); opacity: .4;
+}
+.stats-bar-label.today { opacity: .7; }
+
+/* KPI row */
+.stats-kpi-row {
+  display: flex; justify-content: space-between; gap: 1rem;
+  margin-bottom: 2.2rem;
+}
+.stats-kpi {
+  flex: 1; text-align: center;
+}
+.stats-kpi-value {
+  font-family: 'Zen Antique Soft', serif;
+  font-size: 1.6rem; color: var(--ink); line-height: 1;
+}
+.stats-kpi-label {
+  font-size: .42rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink); opacity: .4; margin-top: .3rem;
+}
+
+/* Uplifting message */
+.stats-message {
+  text-align: center; font-style: italic;
+  font-size: .6rem; color: var(--ink); opacity: .4;
+  letter-spacing: .06em; line-height: 1.6;
+  margin-top: .5rem;
+}
 
 .region-tabs {
   display: flex; gap: .3rem; padding: 0 1.6rem .9rem;
@@ -1464,7 +1553,12 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   .nav-btn          { font-size: 1rem; opacity: .7; }
   #btn-signout      { font-size: .72rem; letter-spacing: .12em; white-space: nowrap; opacity: .7; }
   #collection-stats { padding: .1rem 1.2rem .5rem; font-size: .68rem; opacity: .65; }
-  #focus-stats { padding: 0 1.2rem .5rem; font-size: .46rem; }
+  .top-tabs { gap: 1.4rem; padding: .2rem 1.2rem .5rem; }
+  .top-tab { font-size: .48rem; }
+  #stats-content { padding: 1.5rem 1.2rem 2rem; }
+  .stats-period-value { font-size: 1.1rem; }
+  .stats-kpi-value { font-size: 1.3rem; }
+  .stats-bars { height: 80px; }
 
   /* Tabs: tighter + hidden scrollbar */
   .region-tabs      { padding: 0 1rem .7rem; gap: .3rem; scrollbar-width: none; }
