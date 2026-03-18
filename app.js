@@ -282,8 +282,9 @@ function renderTopTab() {
   // Update title per tab
   const titleEl = document.getElementById('collection-title');
   if (titleEl) {
-    if (tab === 'stats') titleEl.textContent = 'your focus';
-    else if (tab === 'achievements') titleEl.textContent = 'achievements';
+    const name = getUserName();
+    if (tab === 'stats') titleEl.textContent = name ? `${name}'s focus` : 'focus';
+    else if (tab === 'achievements') titleEl.textContent = name ? `${name}'s achievements` : 'achievements';
     else updateCollectionTitle();
   }
 
@@ -344,15 +345,38 @@ function renderStatsTab() {
   const lastWeekMins   = minsIn(lastWeekStart, weekStart);
   const lastMonthMins  = minsIn(lastMonthStart, monthStart);
 
-  function deltaHtml(current, previous) {
+  const streak    = calcStreak();
+  const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
+  const totalSess = sessions.length;
+
+  // Headline message
+  let headline = 'every journey starts with a single session.';
+  if (streak >= 30)       headline = 'extraordinary. you are building something lasting.';
+  else if (streak >= 14)  headline = 'two weeks strong. this is becoming who you are.';
+  else if (streak >= 7)   headline = 'a full week of focus. the rhythm is yours now.';
+  else if (streak >= 3)   headline = `${streak} days in. the habit is taking root.`;
+  else if (todayMins > 0) headline = 'you showed up today. that is what matters.';
+  else if (totalSess > 0) headline = 'your next session is waiting.';
+
+  // Delta text helpers
+  function deltaText(current, previous, label) {
     const diff = current - previous;
     if (diff === 0 || previous === 0) return '';
-    const sign = diff > 0 ? '+' : '';
-    const cls  = diff > 0 ? 'up' : 'down';
-    return `<div class="stats-period-delta ${cls}">${sign}${formatHours(diff)} vs last</div>`;
+    const word = diff > 0 ? 'more' : 'less';
+    return `<span class="stats-delta">${formatHours(Math.abs(diff))} ${word} than last ${label}</span>`;
   }
 
-  // 7-day bar chart data
+  // Focus narrative
+  const todayDelta  = deltaText(todayMins, yesterdayMins, 'yesterday');
+  const weekDelta   = deltaText(weekMins, lastWeekMins, 'week');
+  const monthDelta  = deltaText(monthMins, lastMonthMins, 'month');
+
+  let focusLines = '';
+  focusLines += `<div class="stats-line"><span class="stats-value">${formatHours(todayMins)}</span> today${todayDelta ? ' · ' + todayDelta : ''}</div>`;
+  focusLines += `<div class="stats-line"><span class="stats-value">${formatHours(weekMins)}</span> this week${weekDelta ? ' · ' + weekDelta : ''}</div>`;
+  focusLines += `<div class="stats-line"><span class="stats-value">${formatHours(monthMins)}</span> this month${monthDelta ? ' · ' + monthDelta : ''}</div>`;
+
+  // 7-day bar chart
   const dayNames = ['S','M','T','W','T','F','S'];
   const days = [];
   for (let i = 6; i >= 0; i--) {
@@ -361,8 +385,8 @@ function renderStatsTab() {
     days.push({ label: dayNames[d.getDay()], mins: minsIn(d, next), isToday: i === 0 });
   }
   const maxDay = Math.max(...days.map(d => d.mins), 1);
+  const barMaxPx = 72;
 
-  const barMaxPx = 80;
   const barsHtml = days.map(d => {
     const h = d.mins > 0 ? Math.max(4, Math.round((d.mins / maxDay) * barMaxPx)) : 0;
     const cls = d.isToday ? 'today' : (d.mins > 0 ? 'has-data' : '');
@@ -374,64 +398,33 @@ function renderStatsTab() {
     </div>`;
   }).join('');
 
-  // KPIs
-  const streak     = calcStreak();
-  const totalMins  = sessions.reduce((s, x) => s + x.duration, 0);
-  const totalSess  = sessions.length;
-
-  // Uplifting message
-  let message = 'every journey starts with a single session';
-  if (streak >= 30)       message = 'extraordinary discipline. you are building something lasting.';
-  else if (streak >= 14)  message = 'two weeks strong. this is becoming who you are.';
-  else if (streak >= 7)   message = 'a full week of focus. the rhythm is yours now.';
-  else if (streak >= 3)   message = 'three days in. the habit is taking root.';
-  else if (todayMins > 0) message = 'you showed up today. that is what matters.';
-  else if (totalSess > 0) message = 'your next session is waiting.';
+  // Streak narrative
+  let streakNarrative = '';
+  if (streak > 0) {
+    streakNarrative += `<div class="stats-line"><span class="stats-value">${streak} day${streak !== 1 ? 's' : ''}</span> current streak</div>`;
+  }
+  if (state.maxStreak > streak) {
+    streakNarrative += `<div class="stats-line"><span class="stats-value">${state.maxStreak} day${state.maxStreak !== 1 ? 's' : ''}</span> longest streak</div>`;
+  }
+  streakNarrative += `<div class="stats-line"><span class="stats-value">${totalSess}</span> session${totalSess !== 1 ? 's' : ''} · <span class="stats-value">${formatHours(totalMins)}</span> total</div>`;
 
   el.innerHTML = `
-    <div class="stats-period-row">
-      <div class="stats-period">
-        <div class="stats-period-label">today</div>
-        <div class="stats-period-value">${formatHours(todayMins)}</div>
-        ${deltaHtml(todayMins, yesterdayMins)}
-      </div>
-      <div class="stats-period">
-        <div class="stats-period-label">this week</div>
-        <div class="stats-period-value">${formatHours(weekMins)}</div>
-        ${deltaHtml(weekMins, lastWeekMins)}
-      </div>
-      <div class="stats-period">
-        <div class="stats-period-label">this month</div>
-        <div class="stats-period-value">${formatHours(monthMins)}</div>
-        ${deltaHtml(monthMins, lastMonthMins)}
-      </div>
+    <div class="stats-headline">${headline}</div>
+
+    <div class="stats-section">
+      <div class="stats-section-label">you've focused</div>
+      ${focusLines}
     </div>
 
-    <div class="stats-chart">
-      <div class="stats-chart-title">last 7 days</div>
+    <div class="stats-section">
+      <div class="stats-section-label">last 7 days</div>
       <div class="stats-bars">${barsHtml}</div>
     </div>
 
-    <div class="stats-kpi-row">
-      <div class="stats-kpi">
-        <div class="stats-kpi-value">${streak}</div>
-        <div class="stats-kpi-label">day streak</div>
-      </div>
-      <div class="stats-kpi">
-        <div class="stats-kpi-value">${state.maxStreak}</div>
-        <div class="stats-kpi-label">best streak</div>
-      </div>
-      <div class="stats-kpi">
-        <div class="stats-kpi-value">${totalSess}</div>
-        <div class="stats-kpi-label">sessions</div>
-      </div>
-      <div class="stats-kpi">
-        <div class="stats-kpi-value">${formatHours(totalMins)}</div>
-        <div class="stats-kpi-label">total focus</div>
-      </div>
+    <div class="stats-section">
+      <div class="stats-section-label">your journey</div>
+      ${streakNarrative}
     </div>
-
-    <div class="stats-message">${message}</div>
   `;
 }
 
