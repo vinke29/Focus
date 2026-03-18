@@ -1,7 +1,7 @@
 // ── Kokoon Service Worker ──────────────────────────────────────────────────────
 // Network-first: always fetch fresh app files; fall back to cache when offline.
 const CACHE = 'kokoon-v2';
-const STATIC = ['/icon.svg', '/manifest.json'];
+const STATIC = ['/icon.svg', '/manifest.json', '/hero.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(STATIC)));
