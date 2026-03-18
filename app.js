@@ -265,6 +265,56 @@ function formatHours(totalMinutes) {
   return h < 10 ? `${h.toFixed(1)} hrs` : `${Math.round(h)} hrs`;
 }
 
+function renderFocusStats() {
+  const el = document.getElementById('focus-stats');
+  if (!el) return;
+  if (!sessions.length) { el.innerHTML = ''; return; }
+
+  const now = new Date();
+  const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const startOfWeek = d => { const s = startOfDay(d); s.setDate(s.getDate() - s.getDay()); return s; };
+  const startOfMonth = d => new Date(d.getFullYear(), d.getMonth(), 1);
+
+  const minsIn = (from, to) => sessions
+    .filter(s => s.timestamp >= from.getTime() && s.timestamp < to.getTime())
+    .reduce((sum, s) => sum + s.duration, 0);
+
+  // Current periods
+  const todayStart = startOfDay(now);
+  const weekStart  = startOfWeek(now);
+  const monthStart = startOfMonth(now);
+  const tomorrow   = new Date(todayStart); tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const todayMins = minsIn(todayStart, tomorrow);
+  const weekMins  = minsIn(weekStart, now);
+  const monthMins = minsIn(monthStart, now);
+
+  // Previous periods for comparison
+  const yesterdayStart = new Date(todayStart); yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+  const lastWeekStart = new Date(weekStart); lastWeekStart.setDate(lastWeekStart.getDate() - 7);
+  const lastMonthStart = new Date(monthStart); lastMonthStart.setMonth(lastMonthStart.getMonth() - 1);
+
+  const yesterdayMins  = minsIn(yesterdayStart, todayStart);
+  const lastWeekMins   = minsIn(lastWeekStart, weekStart);
+  const lastMonthMins  = minsIn(lastMonthStart, monthStart);
+
+  function delta(current, previous) {
+    const diff = current - previous;
+    if (diff === 0) return '';
+    const sign = diff > 0 ? '+' : '';
+    const cls  = diff > 0 ? 'fs-delta-up' : 'fs-delta-down';
+    return ` <span class="${cls}">(${sign}${formatHours(diff)})</span>`;
+  }
+
+  const parts = [];
+  parts.push(`<span>today ${formatHours(todayMins)}${delta(todayMins, yesterdayMins)}</span>`);
+  parts.push(`<span class="fs-sep">·</span>`);
+  parts.push(`<span>week ${formatHours(weekMins)}${delta(weekMins, lastWeekMins)}</span>`);
+  parts.push(`<span class="fs-sep">·</span>`);
+  parts.push(`<span>month ${formatHours(monthMins)}${delta(monthMins, lastMonthMins)}</span>`);
+  el.innerHTML = parts.join('');
+}
+
 function renderTimerStats() {
   const el = document.getElementById('timer-stats');
   if (!el) return;
@@ -1321,6 +1371,7 @@ function renderCollection() {
   grid.classList.remove('badge-mode');
 
   renderCollectionStats();
+  renderFocusStats();
 
   // Update region tab active state
   document.querySelectorAll('.region-btn').forEach(b => {

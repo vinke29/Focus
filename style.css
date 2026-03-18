@@ -657,6 +657,16 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #collection-stats .cs-total { opacity: .7; }
 #collection-stats .cs-sep   { opacity: .5; }
 
+#focus-stats {
+  padding: 0 2rem .65rem;
+  font-size: .5rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink);
+  opacity: .55; display: flex; align-items: center; gap: .6rem;
+}
+#focus-stats .fs-delta-up   { opacity: .7; }
+#focus-stats .fs-delta-down { opacity: .7; }
+#focus-stats .fs-sep        { opacity: .5; }
+
 .region-tabs {
   display: flex; gap: .3rem; padding: 0 1.6rem .9rem;
   overflow-x: auto;
@@ -1454,6 +1464,7 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   .nav-btn          { font-size: 1rem; opacity: .7; }
   #btn-signout      { font-size: .72rem; letter-spacing: .12em; white-space: nowrap; opacity: .7; }
   #collection-stats { padding: .1rem 1.2rem .5rem; font-size: .68rem; opacity: .65; }
+  #focus-stats { padding: 0 1.2rem .5rem; font-size: .46rem; }
 
   /* Tabs: tighter + hidden scrollbar */
   .region-tabs      { padding: 0 1rem .7rem; gap: .3rem; scrollbar-width: none; }
