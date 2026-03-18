@@ -470,10 +470,15 @@ function renderNudge() {
     }
   }
 
-  // Priority 2: next region unlock
+  // Priority 2: next region unlock with progress bar
   const next = getNextUnlock();
   if (next) {
-    el.textContent = `${REGION_LABELS[next.region]} unlocks in ${next.sessionsAway} session${next.sessionsAway !== 1 ? 's' : ''}`;
+    const threshold = REGION_UNLOCKS[next.region];
+    const progress  = sessions.length / threshold;
+    const pct       = Math.round(progress * 100);
+    el.innerHTML =
+      `${REGION_LABELS[next.region]} unlocks in ${next.sessionsAway} session${next.sessionsAway !== 1 ? 's' : ''}` +
+      `<div class="nudge-bar"><div class="nudge-bar-fill" style="width:${pct}%"></div></div>`;
     el.classList.add('show');
     return;
   }

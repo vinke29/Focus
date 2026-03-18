@@ -337,20 +337,20 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 .dur-btn {
   background: none; border: none;
   font-family: 'Noto Serif JP', serif;
-  font-size: .72rem; letter-spacing: .1em;
+  font-size: .78rem; letter-spacing: .1em;
   color: var(--ink); cursor: pointer;
-  opacity: .28; padding: .2rem .4rem;
+  opacity: .35; padding: .2rem .4rem;
   transition: opacity .2s;
 }
 .dur-btn { position: relative; }
 .dur-btn.active, .dur-btn:hover, .dur-btn:active { opacity: 1; }
 .dur-boost {
   display: block;
-  font-size: .32rem; letter-spacing: .08em;
-  opacity: .45; margin-top: -.1rem;
+  font-size: .38rem; letter-spacing: .08em;
+  opacity: .55; margin-top: -.1rem;
 }
-.dur-sep { opacity: .18; font-size: .55rem; }
-.dur-unit { font-size: .6rem; opacity: .3; letter-spacing: .15em; margin-left: .2rem; }
+.dur-sep { opacity: .22; font-size: .55rem; }
+.dur-unit { font-size: .62rem; opacity: .4; letter-spacing: .15em; margin-left: .2rem; }
 
 #btn-start-focus {
   margin-top: 1.8rem;
@@ -382,17 +382,29 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #view-timer.running #timer-stats { opacity: 0; pointer-events: none; }
 
 .stat-line {
-  font-size: .55rem; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--ink); opacity: .55;
+  font-size: .62rem; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink); opacity: .65;
 }
 
 #timer-nudge {
   margin-top: .35rem;
-  font-size: .48rem; letter-spacing: .16em; text-transform: uppercase;
+  font-size: .55rem; letter-spacing: .14em; text-transform: uppercase;
   color: var(--ink); opacity: 0; transition: opacity .6s ease;
   user-select: none; text-align: center;
 }
-#timer-nudge.show { opacity: .42; }
+#timer-nudge.show { opacity: .55; }
+.nudge-bar {
+  width: 120px; height: 3px; margin: .35rem auto 0;
+  background: rgba(8,8,16,.08); border-radius: 2px;
+  overflow: hidden;
+}
+body.dark .nudge-bar { background: rgba(221,215,200,.1); }
+.nudge-bar-fill {
+  height: 100%; border-radius: 2px;
+  background: var(--ink); opacity: .35;
+  transition: width .4s ease;
+}
+body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 #view-timer.running #timer-nudge { opacity: 0; pointer-events: none; }
 
 #reminder-prompt {
