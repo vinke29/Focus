@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kokoon — Focus. Hatch creatures. Build your collection.</title>
+<title>Kokoon — Focus your time. Hatch creatures. Build your collection.</title>
 <meta name="description" content="Every focus session hatches a new creature. How many will you collect?">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Antique+Soft&family=Noto+Serif+JP:wght@200;400;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 
 :root {
   --ink: #080810;
-  --paper: #f7f2e8;
+  --paper: #faf5ed;
   --blue: #0047ff;
   --muted: rgba(8,8,16,.42);
 }
@@ -44,8 +44,8 @@ body::after {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 4rem 1.5rem 3rem;
-  gap: 1.8rem;
+  padding: 2.5rem 1.5rem 1.5rem;
+  gap: 1rem;
 }
 
 .hero-brand {
@@ -67,10 +67,10 @@ body::after {
 .hero-illustration {
   width: 100%;
   max-width: 620px;
-  margin: .5rem 0;
+  margin: 0;
 }
 
-.hero-illustration img {
+.hero-illustration video {
   width: 100%;
   height: auto;
   border-radius: 12px;
@@ -124,7 +124,7 @@ body::after {
 @media (max-width: 480px) {
   .hero-brand { font-size: 1.8rem; }
   .hero-tagline { font-size: .85rem; }
-  .hero { padding: 3rem 1.5rem 2rem; }
+  .hero { padding: 2rem 1.5rem 1rem; }
 }
 </style>
 </head>
@@ -132,10 +132,10 @@ body::after {
 
 <section class="hero">
   <h1 class="hero-brand">Kokoon</h1>
-  <p class="hero-tagline">Focus. Hatch creatures. Build your collection.</p>
+  <p class="hero-tagline">Focus your time. Hatch creatures. Build your collection.</p>
 
   <div class="hero-illustration">
-    <img src="hero.png" alt="Kokoon creatures gathered around a glowing egg">
+    <video src="hero.mp4" autoplay loop muted playsinline aria-label="Kokoon creatures gathered around a glowing egg"></video>
   </div>
 
   <a href="/app" class="hero-cta">open kokoon</a>
