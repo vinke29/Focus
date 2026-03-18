@@ -279,6 +279,18 @@ function renderTopTab() {
   const collStats = document.getElementById('collection-stats');
   if (collStats) collStats.style.display = tab === 'collection' ? '' : 'none';
 
+  // Update title per tab
+  const titleEl = document.getElementById('collection-title');
+  if (titleEl) {
+    if (tab === 'stats') titleEl.textContent = 'your focus';
+    else if (tab === 'achievements') titleEl.textContent = 'achievements';
+    else updateCollectionTitle();
+  }
+
+  // Share button only on collection tab
+  const shareBtn = document.getElementById('btn-share-collection');
+  if (shareBtn) shareBtn.style.display = tab === 'collection' ? '' : 'none';
+
   const grid    = document.getElementById('collection-grid');
   const statsEl = document.getElementById('stats-content');
 
@@ -350,11 +362,14 @@ function renderStatsTab() {
   }
   const maxDay = Math.max(...days.map(d => d.mins), 1);
 
+  const barMaxPx = 80;
   const barsHtml = days.map(d => {
-    const h = Math.max(d.mins > 0 ? 4 : 0, (d.mins / maxDay) * 100);
+    const h = d.mins > 0 ? Math.max(4, Math.round((d.mins / maxDay) * barMaxPx)) : 0;
     const cls = d.isToday ? 'today' : (d.mins > 0 ? 'has-data' : '');
+    const minLabel = d.mins > 0 ? `<div class="stats-bar-mins">${d.mins}m</div>` : '';
     return `<div class="stats-bar-col">
-      <div class="stats-bar ${cls}" style="height:${h}%"></div>
+      ${minLabel}
+      <div class="stats-bar ${cls}" style="height:${h}px"></div>
       <div class="stats-bar-label ${d.isToday ? 'today' : ''}">${d.label}</div>
     </div>`;
   }).join('');
