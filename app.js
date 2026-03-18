@@ -864,9 +864,17 @@ function prepareHatchView(character, variant) {
   wrap.style.transition = 'none';
   applyVariantFilter(wrap, variant.id);
 
-  // Session number
+  // Session recap: session number + streak + duration
   const sessionNumEl = document.getElementById('hatch-session-num');
-  if (sessionNumEl) sessionNumEl.textContent = sessions.length ? `session ${sessions.length}` : '';
+  if (sessionNumEl) {
+    const parts = [];
+    if (sessions.length) parts.push(`session ${sessions.length}`);
+    const streak = calcStreak();
+    if (streak > 1) parts.push(`${streak}-day streak`);
+    const mins = Math.round(state.timer.duration / 60);
+    parts.push(`${mins} min focused`);
+    sessionNumEl.textContent = parts.join(' · ');
+  }
 
   // Rarity badge — styled by tier + variant
   const rarityEl = document.getElementById('char-rarity');
@@ -876,9 +884,16 @@ function prepareHatchView(character, variant) {
   rarityEl.style.background  = variant.id !== 'standard' ? variant.color + '18' : 'transparent';
   rarityEl.className = `tier-${character.rarity} variant-${variant.id}`;
 
-  // Drop hint (only for rarer finds)
+  // Drop hint — fusion progress or rarity hint
   const hintEl = document.getElementById('char-drop-hint');
-  hintEl.textContent = DROP_HINTS[`${character.rarity}-${variant.id}`] || '';
+  const dupeCount = state.collection.filter(
+    e => e.id === character.id && (e.variant || 'standard') === variant.id
+  ).length;
+  if (dupeCount === 2 && VARIANT_NEXT[variant.id]) {
+    hintEl.textContent = `2 of 3 — one more to fuse into ${VARIANT_NEXT[variant.id]}`;
+  } else {
+    hintEl.textContent = DROP_HINTS[`${character.rarity}-${variant.id}`] || '';
+  }
 
   // Reset egg
   const egg = document.getElementById('hatch-egg');
@@ -904,6 +919,7 @@ function prepareHatchView(character, variant) {
   // Character info (set after header is hidden)
   document.getElementById('char-name').textContent   = character.name;
   document.getElementById('char-sub').textContent    = character.subtitle;
+  document.getElementById('char-lore').textContent   = character.lore || '';
 
   // Resize particle canvas
   particleCanvas.width  = window.innerWidth;

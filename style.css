@@ -473,6 +473,13 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 }
 #char-rarity.variant-void  { text-shadow: 0 0 8px currentColor; }
 
+#char-lore {
+  font-size: .58rem; line-height: 1.6;
+  font-style: italic; color: #777;
+  max-width: 26rem; margin: .6rem auto 0;
+  letter-spacing: .02em;
+}
+
 #char-drop-hint {
   font-size: .48rem; letter-spacing: .22em;
   text-transform: uppercase; color: #999;
@@ -1432,6 +1439,7 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   #char-wrap      { width: 260px; height: 316px; }
   #hatch-cracks   { top: 28px; left: 28px; }
   #char-name      { font-size: 1.6rem; }
+  #char-lore      { font-size: .5rem; max-width: 20rem; }
   #hatch-actions  { flex-direction: column; align-items: stretch; gap: .65rem; }
   #hatch-actions button { text-align: center; }
 
