@@ -766,9 +766,10 @@ body.dark .badge-card.unearned { border-bottom-color: rgba(221,215,200,.06); }
   text-transform: uppercase;
 }
 .badge-pct {
-  font-size: .55rem; letter-spacing: .04em;
-  opacity: .8; color: var(--blue);
+  font-size: .65rem; letter-spacing: .04em;
+  opacity: .85; color: var(--blue);
 }
+body.dark .badge-pct { color: #6fa3ff; }
 
 /* ── REGION COMPLETE BANNER ── */
 .region-complete-banner {
@@ -1493,7 +1494,7 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   .badge-name { font-size: .68rem; }
   .badge-desc { font-size: .58rem; }
   .badge-date { font-size: .48rem; }
-  .badge-pct  { font-size: .48rem; }
+  .badge-pct  { font-size: .56rem; }
 
   /* Fusion */
   #fusion-stage       { gap: 1.4rem; }
