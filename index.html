@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kokoon — Focus. Hatch rare creatures.</title>
-<meta name="description" content="A focus timer disguised as a creature-collecting game. Stay focused, hatch rare creatures, build your collection.">
+<title>Kokoon — Focus. Hatch creatures. Build your collection.</title>
+<meta name="description" content="Every focus session hatches a new creature. How many will you collect?">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Antique+Soft&family=Noto+Serif+JP:wght@200;400;700&display=swap" rel="stylesheet">
 <style>
@@ -57,11 +57,21 @@ body::after {
 
 .hero-tagline {
   font-size: .95rem;
-  font-weight: 200;
+  font-weight: 400;
   letter-spacing: .06em;
-  color: var(--muted);
+  color: var(--ink);
   max-width: 320px;
   line-height: 1.7;
+}
+
+.hero-subtitle {
+  font-size: .78rem;
+  font-weight: 200;
+  letter-spacing: .04em;
+  color: var(--muted);
+  max-width: 320px;
+  line-height: 1.6;
+  margin-top: -.8rem;
 }
 
 .hero-illustration {
@@ -80,8 +90,8 @@ body::after {
 .hero-illustration .hero-creature {
   position: relative;
   z-index: 2;
-  margin-left: -24px;
-  margin-bottom: -4px;
+  margin-left: -20px;
+  margin-bottom: -8px;
 }
 
 .hero-cta {
@@ -140,7 +150,8 @@ body::after {
 
 <section class="hero">
   <h1 class="hero-brand">Kokoon</h1>
-  <p class="hero-tagline">A focus timer that hatches creatures.<br>Stay focused. Build your collection.</p>
+  <p class="hero-tagline">Focus. Hatch creatures. Build your collection.</p>
+  <p class="hero-subtitle">Every focus session hatches a new creature. How many will you collect?</p>
 
   <div class="hero-illustration">
     <!-- Egg -->
@@ -170,73 +181,101 @@ body::after {
       </svg>
     </div>
 
-    <!-- Shiro (creature) -->
+    <!-- Phoenix (creature) -->
     <div class="hero-creature">
-      <svg width="120" height="142" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+      <svg width="140" height="166" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="h-shiro-body" cx="35%" cy="30%" r="70%">
-            <stop offset="0%" stop-color="#ffffff"/>
-            <stop offset="100%" stop-color="#e5e0d5"/>
+          <radialGradient id="h-phx-body" cx="35%" cy="28%" r="72%">
+            <stop offset="0%" stop-color="#ffcc80"/>
+            <stop offset="100%" stop-color="#e65100"/>
           </radialGradient>
-          <radialGradient id="h-shiro-eye" cx="35%" cy="30%" r="65%">
-            <stop offset="0%" stop-color="#ffc84a"/>
-            <stop offset="100%" stop-color="#c87000"/>
+          <radialGradient id="h-phx-wing" cx="40%" cy="25%" r="68%">
+            <stop offset="0%" stop-color="#ffb74d"/>
+            <stop offset="100%" stop-color="#bf360c"/>
           </radialGradient>
+          <radialGradient id="h-phx-flame1" cx="30%" cy="20%" r="80%">
+            <stop offset="0%" stop-color="#fff176"/>
+            <stop offset="50%" stop-color="#ffb300"/>
+            <stop offset="100%" stop-color="#e65100"/>
+          </radialGradient>
+          <radialGradient id="h-phx-flame2" cx="30%" cy="20%" r="80%">
+            <stop offset="0%" stop-color="#ff8a65"/>
+            <stop offset="60%" stop-color="#e53935"/>
+            <stop offset="100%" stop-color="#880e4f"/>
+          </radialGradient>
+          <radialGradient id="h-phx-eye" cx="35%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#fff9c4"/>
+            <stop offset="100%" stop-color="#ffd600"/>
+          </radialGradient>
+          <filter id="h-phx-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
         </defs>
-        <ellipse cx="160" cy="352" rx="66" ry="9" fill="rgba(0,0,0,.1)"/>
+        <ellipse cx="160" cy="367" rx="58" ry="8" fill="rgba(0,0,0,.1)"/>
         <g>
-          <!-- Tail -->
-          <path d="M218,292 C252,272 272,242 260,210 C248,178 218,177 202,196 C186,215 200,240 214,248 C221,252 223,270 218,292 Z"
-            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+          <!-- Tail feathers -->
+          <path d="M138,272 C116,257 88,237 70,196 C80,212 88,232 86,252 C94,240 106,257 120,272Z"
+            fill="url(#h-phx-flame2)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M143,276 C126,257 113,230 116,196 C118,216 118,242 126,265Z"
+            fill="url(#h-phx-flame1)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M154,280 C147,257 147,227 154,192 C161,227 161,257 163,280Z"
+            fill="url(#h-phx-flame1)" stroke="#080810" stroke-width="2.8" stroke-linejoin="round"/>
+          <path d="M177,276 C194,257 207,230 204,196 C202,216 202,242 194,265Z"
+            fill="url(#h-phx-flame1)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M182,272 C204,257 232,237 250,196 C240,212 232,232 234,252 C226,240 214,257 200,272Z"
+            fill="url(#h-phx-flame2)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- Tail eyespots -->
+          <ellipse cx="79" cy="250" rx="8" ry="12" fill="#fff176" stroke="#080810" stroke-width="1.5" opacity=".75"/>
+          <ellipse cx="79" cy="250" rx="4" ry="6" fill="#e65100" opacity=".85"/>
+          <ellipse cx="234" cy="250" rx="8" ry="12" fill="#fff176" stroke="#080810" stroke-width="1.5" opacity=".75"/>
+          <ellipse cx="234" cy="250" rx="4" ry="6" fill="#e65100" opacity=".85"/>
+          <!-- Flame tips -->
+          <ellipse cx="154" cy="194" rx="10" ry="16" fill="#fff176" opacity=".85" filter="url(#h-phx-glow)"/>
+          <ellipse cx="117" cy="200" rx="8" ry="12" fill="#ffb300" opacity=".65" filter="url(#h-phx-glow)"/>
+          <ellipse cx="203" cy="200" rx="8" ry="12" fill="#ffb300" opacity=".65" filter="url(#h-phx-glow)"/>
+          <!-- Wings -->
+          <path d="M126,248 C103,230 88,216 83,198 C94,212 106,225 118,238 C106,225 104,210 108,198 C114,213 122,230 130,244Z"
+            fill="url(#h-phx-wing)" stroke="#080810" stroke-width="2.8" stroke-linejoin="round"/>
+          <path d="M194,248 C217,230 232,216 237,198 C226,212 214,225 202,238 C214,225 216,210 212,198 C206,213 198,230 190,244Z"
+            fill="url(#h-phx-wing)" stroke="#080810" stroke-width="2.8" stroke-linejoin="round"/>
           <!-- Body -->
-          <ellipse cx="160" cy="258" rx="66" ry="72"
-            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="4"/>
-          <ellipse cx="160" cy="263" rx="38" ry="52"
-            fill="white" stroke="#080810" stroke-width="2" opacity=".55"/>
-          <!-- Left paw -->
-          <ellipse cx="118" cy="324" rx="29" ry="15"
-            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3"/>
-          <path d="M96,323 L100,331" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-          <path d="M110,326 L112,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-          <path d="M124,326 L124,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-          <!-- Right paw -->
-          <ellipse cx="202" cy="324" rx="29" ry="15"
-            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3"/>
-          <path d="M224,323 L220,331" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-          <path d="M210,326 L208,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-          <path d="M196,326 L196,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-          <!-- Left ear -->
-          <path d="M108,114 L95,62 L152,100 Z"
-            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-          <path d="M112,109 L103,70 L146,98 Z" fill="#f0a500" opacity=".8"/>
-          <!-- Right ear -->
-          <path d="M212,114 L225,62 L168,100 Z"
-            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-          <path d="M208,109 L217,70 L174,98 Z" fill="#f0a500" opacity=".8"/>
+          <ellipse cx="160" cy="272" rx="66" ry="62" fill="url(#h-phx-body)" stroke="#080810" stroke-width="4"/>
+          <path d="M128,267 C138,260 152,258 160,262 C168,258 182,260 192,267" stroke="#080810" stroke-width="1.5" fill="none" opacity=".2"/>
+          <path d="M124,284 C135,276 152,274 160,278 C168,274 185,276 196,284" stroke="#080810" stroke-width="1.2" fill="none" opacity=".18"/>
+          <!-- Talons -->
+          <path d="M130,328 C124,340 120,347 116,352" stroke="#bf360c" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M116,352 L106,362" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M116,352 L116,364" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M116,352 L126,360" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M190,328 C196,340 200,347 204,352" stroke="#bf360c" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <path d="M204,352 L194,362" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M204,352 L204,364" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M204,352 L214,360" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
           <!-- Head -->
-          <circle cx="160" cy="146" r="62"
-            fill="url(#h-shiro-body)" stroke="#080810" stroke-width="4"/>
-          <!-- Left eye -->
-          <ellipse cx="134" cy="143" rx="22" ry="20" fill="white" stroke="#080810" stroke-width="3"/>
-          <ellipse cx="134" cy="143" rx="15" ry="14" fill="url(#h-shiro-eye)"/>
-          <path d="M134,130 C136,135 136,151 134,156 C132,151 132,135 134,130Z" fill="#080810"/>
-          <circle cx="141" cy="137" r="4.5" fill="white" opacity=".9"/>
-          <circle cx="127" cy="151" r="2" fill="white" opacity=".5"/>
-          <!-- Right eye -->
-          <ellipse cx="186" cy="143" rx="22" ry="20" fill="white" stroke="#080810" stroke-width="3"/>
-          <ellipse cx="186" cy="143" rx="15" ry="14" fill="url(#h-shiro-eye)"/>
-          <path d="M186,130 C188,135 188,151 186,156 C184,151 184,135 186,130Z" fill="#080810"/>
-          <circle cx="193" cy="137" r="4.5" fill="white" opacity=".9"/>
-          <circle cx="179" cy="151" r="2" fill="white" opacity=".5"/>
-          <!-- Nose -->
-          <path d="M155,162 L165,162 L160,169 Z" fill="#f0a500" opacity=".85"/>
-          <!-- Mouth -->
-          <path d="M154,169 C157,175 163,175 166,169" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Whiskers -->
-          <line x1="100" y1="162" x2="146" y2="165" stroke="#080810" stroke-width="1.5" opacity=".4"/>
-          <line x1="96" y1="171" x2="144" y2="170" stroke="#080810" stroke-width="1.4" opacity=".3"/>
-          <line x1="220" y1="162" x2="174" y2="165" stroke="#080810" stroke-width="1.5" opacity=".4"/>
-          <line x1="224" y1="171" x2="176" y2="170" stroke="#080810" stroke-width="1.4" opacity=".3"/>
+          <circle cx="160" cy="215" r="50" fill="url(#h-phx-body)" stroke="#080810" stroke-width="4"/>
+          <!-- Flame crest -->
+          <path d="M160,168 C154,148 150,128 158,108 C164,128 168,148 160,168Z"
+            fill="url(#h-phx-flame1)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M147,173 C137,152 131,130 138,111 C143,130 147,153 149,173Z"
+            fill="url(#h-phx-flame2)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M173,173 C183,152 189,130 182,111 C177,130 173,153 171,173Z"
+            fill="url(#h-phx-flame2)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M135,179 C127,162 123,144 130,130 C134,145 138,163 138,179Z"
+            fill="#ffb300" stroke="#080810" stroke-width="1.8" stroke-linejoin="round" opacity=".8"/>
+          <path d="M185,179 C193,162 197,144 190,130 C186,145 182,163 182,179Z"
+            fill="#ffb300" stroke="#080810" stroke-width="1.8" stroke-linejoin="round" opacity=".8"/>
+          <ellipse cx="160" cy="136" rx="18" ry="30" fill="#fff176" opacity=".5" filter="url(#h-phx-glow)"/>
+          <!-- Beak -->
+          <path d="M148,220 L160,230 L172,220 L160,225Z"
+            fill="#ffd600" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- Eyes -->
+          <ellipse cx="140" cy="211" rx="14" ry="13" fill="url(#h-phx-eye)" stroke="#080810" stroke-width="3"/>
+          <ellipse cx="140" cy="212" rx="7" ry="6" fill="#080810"/>
+          <circle cx="143" cy="208" r="3" fill="white" opacity=".85"/>
+          <ellipse cx="180" cy="211" rx="14" ry="13" fill="url(#h-phx-eye)" stroke="#080810" stroke-width="3"/>
+          <ellipse cx="180" cy="212" rx="7" ry="6" fill="#080810"/>
+          <circle cx="183" cy="208" r="3" fill="white" opacity=".85"/>
         </g>
       </svg>
     </div>
