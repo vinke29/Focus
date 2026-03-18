@@ -402,9 +402,12 @@ function renderStatsTab() {
   let streakNarrative = '';
   if (streak > 0) {
     streakNarrative += `<div class="stats-line"><span class="stats-value">${streak} day${streak !== 1 ? 's' : ''}</span> current streak</div>`;
-  }
-  if (state.maxStreak > streak) {
-    streakNarrative += `<div class="stats-line"><span class="stats-value">${state.maxStreak} day${state.maxStreak !== 1 ? 's' : ''}</span> longest streak</div>`;
+    if (streak >= state.maxStreak) {
+      streakNarrative += `<div class="stats-line stats-highlight">this is your best streak yet</div>`;
+    } else {
+      const gap = state.maxStreak - streak;
+      streakNarrative += `<div class="stats-line">${gap} day${gap !== 1 ? 's' : ''} away from your best streak of <span class="stats-value">${state.maxStreak}</span></div>`;
+    }
   }
   streakNarrative += `<div class="stats-line"><span class="stats-value">${totalSess}</span> session${totalSess !== 1 ? 's' : ''} · <span class="stats-value">${formatHours(totalMins)}</span> total</div>`;
 
