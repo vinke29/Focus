@@ -180,7 +180,7 @@ const DB = {
     if (!_sb) return null;
     const { data, error } = await _sb
       .from('profiles')
-      .select('id, name, session_count, total_minutes')
+      .select('id, name, session_count, total_minutes, badges, max_streak')
       .eq('slug', slug)
       .maybeSingle();
     if (error || !data) return null;
@@ -200,6 +200,51 @@ const DB = {
       variant:   r.variant,
       timestamp: new Date(r.hatched_at).getTime(),
     }));
+  },
+
+  // ── BADGES ───────────────────────────────────────────────────────────────
+
+  async loadBadges() {
+    if (!_sb) return null;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return null;
+    const { data } = await _sb.from('profiles').select('badges, max_streak').eq('id', user.id).maybeSingle();
+    return data; // { badges: [...], max_streak: N }
+  },
+
+  async saveBadges(badges) {
+    if (!_sb) return;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return;
+    await _sb.from('profiles').update({ badges }).eq('id', user.id);
+  },
+
+  async updateMaxStreak(streak) {
+    if (!_sb) return;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return;
+    await _sb.from('profiles').update({ max_streak: streak }).eq('id', user.id);
+  },
+
+  async loadBadgeStats() {
+    if (!_sb) return null;
+    const { data, error } = await _sb.from('badge_stats').select('badge_id, earned_count');
+    if (error) return null;
+    const map = {};
+    (data || []).forEach(r => { map[r.badge_id] = r.earned_count; });
+    return map;
+  },
+
+  async incrementBadgeStat(badgeId) {
+    if (!_sb) return;
+    await _sb.rpc('increment_badge_stat', { p_badge_id: badgeId });
+  },
+
+  async getPlayerCount() {
+    if (!_sb) return null;
+    const { data, error } = await _sb.rpc('get_player_count');
+    if (error) return null;
+    return data;
   },
 
   onAuthStateChange(callback) {

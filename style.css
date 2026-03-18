@@ -700,6 +700,65 @@ body.dark .region-btn.locked:hover { border-color: rgba(221,215,200,.18); }
   line-height: 1;
 }
 
+/* ── PROFILE BADGES ── */
+.profile-badges-strip {
+  display: flex; gap: .4rem; padding: .3rem 0;
+  overflow-x: auto; flex-wrap: wrap;
+  justify-content: center;
+}
+.profile-badges-strip:empty { display: none; }
+.profile-badge-chip {
+  font-size: .42rem; padding: .18rem .5rem;
+  border: 1px solid rgba(8,8,16,.18);
+  white-space: nowrap; letter-spacing: .08em;
+  text-transform: uppercase; opacity: .7;
+}
+body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
+
+/* ── BADGE TAB ── */
+.badge-tab { border-style: solid; }
+
+/* ── BADGE GRID ── */
+#collection-grid.badge-mode {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+.badge-card {
+  border: 1.5px solid var(--ink);
+  padding: 1.2rem .8rem;
+  text-align: center;
+  background: var(--paper);
+  display: flex; flex-direction: column;
+  align-items: center; gap: .25rem;
+}
+.badge-card.unearned {
+  border-style: dashed;
+  opacity: .35;
+  border-color: rgba(8,8,16,.2);
+}
+body.dark .badge-card { background: #14141f; }
+body.dark .badge-card.unearned { border-color: rgba(221,215,200,.18); }
+.badge-icon { font-size: 1.6rem; margin-bottom: .15rem; }
+.badge-card.unearned .badge-icon { filter: grayscale(1); }
+.badge-name {
+  font-size: .55rem; letter-spacing: .15em;
+  text-transform: uppercase; font-weight: 700;
+}
+.badge-desc {
+  font-size: .42rem; letter-spacing: .08em;
+  opacity: .5; line-height: 1.4;
+}
+.badge-date {
+  font-size: .38rem; letter-spacing: .1em;
+  opacity: .35; margin-top: .15rem;
+  text-transform: uppercase;
+}
+.badge-pct {
+  font-size: .38rem; letter-spacing: .08em;
+  opacity: .5; color: var(--blue);
+  margin-top: .1rem;
+}
+
 /* ── REGION COMPLETE BANNER ── */
 .region-complete-banner {
   grid-column: 1 / -1;

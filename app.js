@@ -38,6 +38,44 @@ function markMilestoneSeen(n) {
   localStorage.setItem('focus-milestones', JSON.stringify([...seen]));
 }
 
+// ── BADGES ───────────────────────────────────────────────────────────────────
+const BADGES = [
+  // Sessions
+  { id: 'first_session', name: 'First Light',       desc: 'Complete your first session',       category: 'sessions', icon: '🕯️', check: ctx => ctx.sessions >= 1 },
+  { id: 'sessions_10',   name: 'Kindling',          desc: 'Complete 10 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 10 },
+  { id: 'sessions_25',   name: 'Steady Flame',      desc: 'Complete 25 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 25 },
+  { id: 'sessions_50',   name: 'Burning Bright',    desc: 'Complete 50 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 50 },
+  { id: 'sessions_100',  name: 'Centennial',        desc: 'Complete 100 sessions',             category: 'sessions', icon: '💯', check: ctx => ctx.sessions >= 100 },
+  { id: 'sessions_200',  name: 'Eternal Focus',     desc: 'Complete 200 sessions',             category: 'sessions', icon: '✦',  check: ctx => ctx.sessions >= 200 },
+  { id: 'sessions_365',  name: 'Year of Focus',     desc: 'Complete 365 sessions',             category: 'sessions', icon: '🗓️', check: ctx => ctx.sessions >= 365 },
+  // Streaks
+  { id: 'streak_3',      name: 'Three Days',        desc: 'Reach a 3-day streak',              category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 3 },
+  { id: 'streak_7',      name: 'Full Week',         desc: 'Reach a 7-day streak',              category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 7 },
+  { id: 'streak_14',     name: 'Fortnight',         desc: 'Reach a 14-day streak',             category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 14 },
+  { id: 'streak_30',     name: 'Iron Will',         desc: 'Reach a 30-day streak',             category: 'streaks',  icon: '🛡️', check: ctx => ctx.maxStreak >= 30 },
+  // Collection
+  { id: 'collect_5',     name: 'Budding Collector',  desc: 'Own 5 unique characters',           category: 'collection', icon: '🌱', check: ctx => ctx.ownedIds.size >= 5 },
+  { id: 'collect_15',    name: 'Seasoned Collector', desc: 'Own 15 unique characters',          category: 'collection', icon: '🌿', check: ctx => ctx.ownedIds.size >= 15 },
+  { id: 'collect_all',   name: 'Master Collector',   desc: 'Own every character',               category: 'collection', icon: '👑', check: ctx => ctx.ownedIds.size >= Object.keys(CHARACTERS).length },
+  // Regions
+  { id: 'region_japan',    name: 'Spirit of Japan',       desc: 'Complete the Japan region',     category: 'regions', icon: '⛩️', check: ctx => ctx.completedRegions.has('japanese') },
+  { id: 'region_americas', name: 'Heart of the Americas', desc: 'Complete the Americas region',  category: 'regions', icon: '🌎', check: ctx => ctx.completedRegions.has('americas') },
+  { id: 'region_europe',   name: 'Lore of Europe',        desc: 'Complete the Europe region',    category: 'regions', icon: '🏰', check: ctx => ctx.completedRegions.has('european') },
+  { id: 'region_africa',   name: 'Soul of Africa',        desc: 'Complete the Africa region',    category: 'regions', icon: '🌍', check: ctx => ctx.completedRegions.has('african') },
+  { id: 'region_fantasy',  name: 'Beyond the Maps',       desc: 'Complete the Fantasy region',   category: 'regions', icon: '✨', check: ctx => ctx.completedRegions.has('fantasy') },
+  // Variants
+  { id: 'first_gold',    name: 'Golden Touch',   desc: 'Obtain a gold variant',     category: 'variants', icon: '🥇', check: ctx => ctx.variantSet.has('gold') },
+  { id: 'first_crimson', name: 'Crimson Flame',   desc: 'Obtain a crimson variant',  category: 'variants', icon: '🔴', check: ctx => ctx.variantSet.has('crimson') },
+  { id: 'first_void',    name: 'Into the Void',   desc: 'Obtain a void variant',     category: 'variants', icon: '🟣', check: ctx => ctx.variantSet.has('void') },
+  // Time
+  { id: 'hours_10',  name: 'Focused Mind',   desc: 'Accumulate 10 hours of focus',   category: 'time', icon: '⏳', check: ctx => ctx.totalMinutes >= 600 },
+  { id: 'hours_50',  name: 'Deep Focus',     desc: 'Accumulate 50 hours of focus',   category: 'time', icon: '⏳', check: ctx => ctx.totalMinutes >= 3000 },
+  { id: 'hours_100', name: 'Master of Time', desc: 'Accumulate 100 hours of focus',  category: 'time', icon: '⌛', check: ctx => ctx.totalMinutes >= 6000 },
+  // Rarity
+  { id: 'first_rare',      name: 'Something Special',  desc: 'Hatch a rare creature',      category: 'rarity', icon: '◆', check: ctx => [...ctx.ownedIds].some(id => CHARACTERS[id]?.rarity === 'rare') },
+  { id: 'first_legendary', name: 'Mythical Discovery', desc: 'Hatch a legendary creature',  category: 'rarity', icon: '★', check: ctx => [...ctx.ownedIds].some(id => CHARACTERS[id]?.rarity === 'legendary') },
+];
+
 const REGION_LABELS = {
   japanese: 'japan', americas: 'americas', european: 'europe',
   african: 'africa', fantasy: 'fantasy'
@@ -403,7 +441,11 @@ function renderCollectionStats() {
     const span   = btn.querySelector('.tab-count');
     if (!span) return;
 
-    if (region === 'all') {
+    if (region === 'badges') {
+      const earned = state.badges.length;
+      span.textContent = `${earned}/${BADGES.length}`;
+      btn.classList.remove('locked');
+    } else if (region === 'all') {
       span.textContent = `${unlockedOwned}/${unlockedTotal}`;
       btn.classList.remove('locked');
     } else if (!unlockedRegions.has(region)) {
@@ -449,6 +491,8 @@ const state = {
   pendingMilestone: null,
   pendingRegionComplete: null,
   pendingRegionUnlock: null,
+  badges: [],        // [{id, earned_at}]
+  maxStreak: 0,
 };
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -465,6 +509,131 @@ function loadCollection() {
 function saveCollection() {
   localStorage.setItem('focus-collection', JSON.stringify(state.collection));
   DB.saveCollection(state.collection).catch(() => {});
+}
+
+// ── BADGES ──────────────────────────────────────────────────────────────────
+function loadBadges() {
+  try {
+    const saved = localStorage.getItem('focus-badges');
+    if (saved) state.badges = JSON.parse(saved);
+    state.maxStreak = parseInt(localStorage.getItem('focus-max-streak') || '0') || 0;
+  } catch(e) {}
+}
+
+function calcMaxStreakFromHistory() {
+  if (!sessions.length) return 0;
+  const dayKey = ts => {
+    const d = new Date(ts);
+    return d.getFullYear() * 10000 + d.getMonth() * 100 + d.getDate();
+  };
+  const days = [...new Set(sessions.map(s => dayKey(s.timestamp)))].sort();
+  let max = 1, cur = 1;
+  for (let i = 1; i < days.length; i++) {
+    const prev = new Date(Math.floor(days[i-1] / 10000), Math.floor((days[i-1] % 10000) / 100), days[i-1] % 100);
+    const curr = new Date(Math.floor(days[i] / 10000), Math.floor((days[i] % 10000) / 100), days[i] % 100);
+    const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+    if (diff === 1) { cur++; max = Math.max(max, cur); }
+    else { cur = 1; }
+  }
+  return max;
+}
+
+function buildBadgeContext() {
+  const ownedIds = new Set(state.collection.map(e => e.id));
+  const variantSet = new Set(state.collection.map(e => e.variant || 'standard'));
+  const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
+  const completedRegions = getCompletedRegions(ownedIds);
+  return { sessions: sessions.length, streak: calcStreak(), maxStreak: state.maxStreak, ownedIds, variantSet, totalMinutes: totalMins, completedRegions };
+}
+
+function checkBadges() {
+  const ctx = buildBadgeContext();
+  const earnedIds = new Set(state.badges.map(b => b.id));
+  const newBadges = [];
+
+  for (const badge of BADGES) {
+    if (earnedIds.has(badge.id)) continue;
+    if (badge.check(ctx)) {
+      const entry = { id: badge.id, earned_at: new Date().toISOString() };
+      state.badges.push(entry);
+      newBadges.push(entry);
+    }
+  }
+
+  if (newBadges.length > 0) {
+    localStorage.setItem('focus-badges', JSON.stringify(state.badges));
+    DB.saveBadges(state.badges).catch(() => {});
+    newBadges.forEach(b => DB.incrementBadgeStat(b.id).catch(() => {}));
+  }
+
+  return newBadges;
+}
+
+function updateMaxStreak() {
+  const streak = calcStreak();
+  if (streak > state.maxStreak) {
+    state.maxStreak = streak;
+    localStorage.setItem('focus-max-streak', String(streak));
+    DB.updateMaxStreak(streak).catch(() => {});
+  }
+}
+
+// Badge stats cache
+let _badgeStatsCache = null;
+let _playerCountCache = null;
+
+async function loadBadgeStatsAndCount() {
+  if (_badgeStatsCache && _playerCountCache) return { stats: _badgeStatsCache, total: _playerCountCache };
+  const [stats, total] = await Promise.all([
+    DB.loadBadgeStats().catch(() => null),
+    DB.getPlayerCount().catch(() => null),
+  ]);
+  _badgeStatsCache = stats || {};
+  _playerCountCache = total || 1;
+  return { stats: _badgeStatsCache, total: _playerCountCache };
+}
+
+async function renderBadges() {
+  const grid = document.getElementById('collection-grid');
+  grid.innerHTML = '';
+  grid.classList.add('badge-mode');
+
+  const { stats, total } = await loadBadgeStatsAndCount();
+  const earnedIds = new Set(state.badges.map(b => b.id));
+  const earnedMap = {};
+  state.badges.forEach(b => { earnedMap[b.id] = b.earned_at; });
+
+  // Earned first, then unearned
+  const sorted = [...BADGES].sort((a, b) => {
+    const aE = earnedIds.has(a.id) ? 0 : 1;
+    const bE = earnedIds.has(b.id) ? 0 : 1;
+    return aE - bE;
+  });
+
+  sorted.forEach(badge => {
+    const earned = earnedIds.has(badge.id);
+    const card = document.createElement('div');
+    card.className = earned ? 'badge-card earned' : 'badge-card unearned';
+
+    const count = stats[badge.id] || 0;
+    const pct = total > 0 ? ((count / total) * 100) : 0;
+    const pctText = earned || count > 0
+      ? (pct < 1 ? '< 1' : Math.round(pct)) + '% of players'
+      : '';
+
+    const dateText = earned
+      ? new Date(earnedMap[badge.id]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      : '';
+
+    card.innerHTML = `
+      <div class="badge-icon">${badge.icon}</div>
+      <div class="badge-name">${badge.name}</div>
+      <div class="badge-desc">${badge.desc}</div>
+      ${dateText ? `<div class="badge-date">${dateText}</div>` : ''}
+      ${pctText ? `<div class="badge-pct">${pctText}</div>` : ''}
+    `;
+    grid.appendChild(card);
+  });
 }
 
 function addToCollection(character, variant) {
@@ -658,6 +827,10 @@ function onTimerComplete() {
   } else {
     pendingFusion = null;
   }
+
+  // Update max streak and check for new badges
+  updateMaxStreak();
+  checkBadges();
 
   prepareHatchView(character, variant);
   navigateTo('hatch');
@@ -1011,6 +1184,16 @@ async function showPublicProfile(slug) {
       `<span>${formatHours(mins)} focused</span>`;
   }
 
+  // Earned badges strip
+  const profileBadges = (profile.badges || []);
+  const badgesEl = document.getElementById('profile-badges');
+  if (badgesEl && profileBadges.length > 0) {
+    badgesEl.innerHTML = profileBadges.map(b => {
+      const def = BADGES.find(d => d.id === b.id);
+      return def ? `<span class="profile-badge-chip" title="${def.desc}">${def.icon} ${def.name}</span>` : '';
+    }).join('');
+  }
+
   renderProfileGrid(collection, 'all');
   renderProfileTabs(collection);
 }
@@ -1115,6 +1298,7 @@ function renderProfileGrid(collection, filter) {
 function renderCollection() {
   const grid = document.getElementById('collection-grid');
   grid.innerHTML = '';
+  grid.classList.remove('badge-mode');
 
   renderCollectionStats();
 
@@ -1122,6 +1306,9 @@ function renderCollection() {
   document.querySelectorAll('.region-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.region === state.filter);
   });
+
+  // Badges tab — delegate to renderBadges
+  if (state.filter === 'badges') { renderBadges(); return; }
 
   // Preview mode indicator
   let indicator = document.getElementById('preview-indicator');
@@ -1139,7 +1326,7 @@ function renderCollection() {
 
   // Guard: if the current filter is a locked region, reset to 'all'
   const unlockedRegions = getUnlockedRegions();
-  if (state.filter !== 'all' && !unlockedRegions.has(state.filter)) {
+  if (state.filter !== 'all' && state.filter !== 'badges' && !unlockedRegions.has(state.filter)) {
     state.filter = 'all';
     document.querySelectorAll('.region-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.region === 'all')
@@ -1743,6 +1930,7 @@ async function handleSignedIn(user) {
   // Load from localStorage immediately for fast render
   loadCollection();
   loadSessions();
+  loadBadges();
   renderTimerStats();
 
   // Profile is the single source of truth for new vs returning user
@@ -1754,10 +1942,22 @@ async function handleSignedIn(user) {
     updateCollectionTitle();
     navigateTo('timer');
     // Sync collection + sessions in background
-    Promise.all([DB.loadCollection(), DB.loadSessions()])
-      .then(([col, sess]) => {
+    Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadBadges()])
+      .then(([col, sess, badgeData]) => {
         if (col  !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
         if (sess !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
+        if (badgeData) {
+          if (badgeData.badges?.length) { state.badges = badgeData.badges; localStorage.setItem('focus-badges', JSON.stringify(state.badges)); }
+          if (badgeData.max_streak > state.maxStreak) { state.maxStreak = badgeData.max_streak; localStorage.setItem('focus-max-streak', String(state.maxStreak)); }
+        }
+        // Backfill: compute historical max streak if not yet set
+        if (state.maxStreak === 0 && sessions.length > 0) {
+          state.maxStreak = calcMaxStreakFromHistory();
+          localStorage.setItem('focus-max-streak', String(state.maxStreak));
+          DB.updateMaxStreak(state.maxStreak).catch(() => {});
+        }
+        // Retroactively award badges for existing progress
+        checkBadges();
       })
       .catch(() => {});
     return;
@@ -1832,10 +2032,16 @@ async function performSignOut() {
   try { await DB.signOut(); } catch(e) {}
   // Clear local state
   state.collection = [];
+  state.badges = [];
+  state.maxStreak = 0;
   sessions = [];
   localStorage.removeItem('focus-collection');
   localStorage.removeItem('focus-sessions');
   localStorage.removeItem('focus-name');
+  localStorage.removeItem('focus-badges');
+  localStorage.removeItem('focus-max-streak');
+  _badgeStatsCache = null;
+  _playerCountCache = null;
   // Reset auth form
   clearAuthErrors();
   document.getElementById('si-email').value    = '';
@@ -1997,7 +2203,7 @@ async function init() {
     document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') performSignUp(); });
   });
 
-  // Region filter tabs
+  // Region filter tabs (including badges tab)
   document.querySelectorAll('.region-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (btn.classList.contains('locked')) return;
