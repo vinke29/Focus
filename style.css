@@ -960,10 +960,11 @@ body.dark .badge-tile.unearned .badge-tile-icon {
 }
 
 .badge-tile-desc {
-  font-size: .6rem; opacity: .35;
-  margin-top: .3rem; line-height: 1.5;
+  font-size: .6rem; opacity: .45;
+  margin-top: .25rem; line-height: 1.5;
   letter-spacing: .02em;
 }
+.badge-tile.unearned .badge-tile-desc { opacity: .3; }
 
 /* Progress bar for unearned */
 .badge-tile-progress {
@@ -1674,20 +1675,20 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   #hatch-actions  { flex-direction: column; align-items: stretch; gap: .65rem; }
   #hatch-actions button { text-align: center; }
 
-  /* ── BOTTOM TAB BAR — distinct white surface ── */
+  /* ── BOTTOM TAB BAR — warm taupe surface ── */
   .bottom-tabs {
     display: flex;
     position: fixed; bottom: 0; left: 0; right: 0;
-    background: rgba(255,255,255,.92);
+    background: rgba(228,221,210,.95);
     -webkit-backdrop-filter: blur(24px) saturate(1.4);
     backdrop-filter: blur(24px) saturate(1.4);
-    border-top: .5px solid rgba(8,8,16,.1);
+    border-top: .5px solid rgba(8,8,16,.08);
     z-index: 100;
     padding: .5rem 0 calc(.5rem + env(safe-area-inset-bottom));
     justify-content: space-around;
   }
   body.dark .bottom-tabs {
-    background: rgba(10,10,18,.92);
+    background: rgba(10,10,18,.95);
     border-top-color: rgba(221,215,200,.1);
   }
   .bottom-tab {
