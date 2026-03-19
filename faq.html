@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ — Kokoon</title>
+<meta name="description" content="Frequently asked questions about Kokoon.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique+Soft&family=Noto+Serif+JP:wght@200;400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #080810; --paper: #fdf4e5; --muted: rgba(8,8,16,.42); }
+html { height: 100%; }
+body { min-height: 100%; background: var(--paper); font-family: 'Noto Serif JP', serif; color: var(--ink); display: flex; flex-direction: column; }
+.page-nav { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+.page-nav a { font-size: .65rem; letter-spacing: .12em; text-transform: lowercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.page-nav a:hover { color: var(--ink); }
+.page-nav .brand { font-family: 'Zen Antique Soft', serif; font-size: 1.2rem; letter-spacing: .1em; color: var(--ink); }
+.page { flex: 1; max-width: 640px; margin: 0 auto; padding: 2rem 1.5rem 4rem; width: 100%; }
+.page h1 { font-family: 'Zen Antique Soft', serif; font-size: 1.8rem; letter-spacing: .08em; font-weight: 400; margin-bottom: 2rem; }
+.page h2 { font-size: .88rem; font-weight: 700; margin: 2rem 0 .6rem; line-height: 1.5; }
+.page p { font-size: .88rem; line-height: 1.9; font-weight: 200; color: var(--ink); margin-bottom: 1rem; }
+.page a { color: var(--ink); }
+.faq-item { border-bottom: 1px solid rgba(8,8,16,.06); padding-bottom: 1.5rem; }
+.faq-item:last-child { border-bottom: none; }
+.site-footer { border-top: 1px solid rgba(8,8,16,.08); padding: 1.8rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.6rem; }
+.site-footer a { font-size: .62rem; font-weight: 200; letter-spacing: .14em; text-transform: lowercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.site-footer a:hover { color: var(--ink); }
+.site-footer .footer-app { color: var(--ink); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<nav class="page-nav">
+  <a href="/" class="brand">Kokoon</a>
+  <a href="/">&larr; home</a>
+</nav>
+
+<main class="page">
+  <h1>FAQ</h1>
+
+  <div class="faq-item">
+    <h2>What is Kokoon?</h2>
+    <p>Kokoon is a focus timer that turns your work sessions into a creature-collecting game. Complete a focus session, hatch a creature. Build your collection over time.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>How do I hatch creatures?</h2>
+    <p>Start a focus session (25, 45, or 60 minutes). When the timer completes, an egg hatches into a random creature. Longer sessions have better odds of hatching rare and legendary creatures.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>What are variants?</h2>
+    <p>Each creature can appear in four color variants: Standard, Gold, Crimson, and Void. Standard is the most common. Void is extremely rare — roughly 1 in 1,000 hatches.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>What is fusion?</h2>
+    <p>If you hatch a duplicate creature, you can fuse it with your existing one to upgrade its variant. Two Standards make a Gold, two Golds make a Crimson, and two Crimsons make a Void.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>How many creatures are there?</h2>
+    <p>There are 44 creatures across five regions: Japan, Americas, Europe, Africa, and Fantasy. New regions unlock as you complete more sessions.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>Do I need an account?</h2>
+    <p>You can use Kokoon without an account — your data saves locally. Creating an account lets you sync across devices and appear on the public profile page.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>Is Kokoon free?</h2>
+    <p>Kokoon is free to use. All creatures, features, and regions are available to everyone.</p>
+  </div>
+
+  <div class="faq-item">
+    <h2>Can I delete my account?</h2>
+    <p>Yes. You can delete your account and all associated data from the app settings at any time.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <a href="/pricing">pricing</a>
+  <a href="/faq">faq</a>
+  <a href="/privacy">privacy</a>
+  <a href="/terms">terms</a>
+  <a href="/contact">contact</a>
+  <a href="/app" class="footer-app">open app &rarr;</a>
+</footer>
+
+</body>
+</html>
