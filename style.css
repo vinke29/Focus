@@ -1823,7 +1823,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
     min-width: 64px;
     position: relative;
   }
-  body.dark .bottom-tab { color: var(--paper); }
+  body.dark .bottom-tab { color: var(--paper); opacity: .5; }
   .bottom-tab.active { opacity: 1; }
   .bottom-tab.active::after {
     content: '';
