@@ -1537,27 +1537,51 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   #hatch-actions  { flex-direction: column; align-items: stretch; gap: .65rem; }
   #hatch-actions button { text-align: center; }
 
-  /* Collection header */
-  .collection-top   { padding: .7rem 1.2rem .4rem; gap: .6rem; }
+  /* Collection header — clean mobile layout */
+  .collection-header { border-bottom: none; }
+  .collection-top   { padding: .65rem 1rem .3rem; gap: .5rem; }
   .collection-title {
-    font-size: .95rem; letter-spacing: .12em;
+    font-size: .82rem; letter-spacing: .1em;
     flex: 1; min-width: 0;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .nav-btn          { font-size: 1rem; opacity: .7; }
-  #btn-signout      { font-size: .72rem; letter-spacing: .12em; white-space: nowrap; opacity: .7; }
-  #collection-stats { padding: .1rem 1.2rem .5rem; font-size: .68rem; opacity: .65; }
-  .top-tabs { gap: 1.6rem; padding: .2rem 1.2rem .45rem; }
-  .top-tab { font-size: .58rem; letter-spacing: .18em; }
+  .nav-btn          { font-size: .9rem; opacity: .55; }
+  #btn-signout      { font-size: .6rem; letter-spacing: .1em; white-space: nowrap; opacity: .45; }
+  .share-collection-btn { opacity: .4; }
+  .dark-btn-inline  { opacity: .4; }
+  #collection-stats { padding: .1rem 1rem .3rem; font-size: .68rem; opacity: .65; }
+
+  /* Top tabs — prominent, generous tap targets */
+  .top-tabs { gap: 0; padding: 0; justify-content: stretch; }
+  .top-tab {
+    font-size: .52rem; letter-spacing: .16em;
+    flex: 1; text-align: center;
+    padding: .55rem .2rem;
+    border-bottom: 1.5px solid rgba(8,8,16,.08);
+  }
+  .top-tab.active { border-bottom-color: var(--ink); border-bottom-width: 2px; }
+
   #stats-content { padding: 1.5rem 1.2rem 2rem; }
 
-  /* Tabs: tighter + hidden scrollbar */
-  .region-tabs      { padding: 0 1rem .55rem; gap: .35rem; scrollbar-width: none; }
+  /* Region tabs — pill style, no borders, horizontal scroll */
+  .region-tabs      { padding: .5rem .8rem .4rem; gap: .3rem; scrollbar-width: none; }
   .region-tabs::-webkit-scrollbar { display: none; }
-  .region-btn       { padding: .32rem .7rem; font-size: .68rem; letter-spacing: .06em; opacity: .75; }
-  .region-btn.active, .region-btn:hover { opacity: 1; }
-  .region-btn.locked { opacity: .5; }
-  .region-btn.complete { color: #8c6d10; border-color: #8c6d10; } /* darker gold for cream bg */
+  .region-btn       {
+    padding: .35rem .65rem; font-size: .6rem; letter-spacing: .04em;
+    opacity: .55; border: none; border-radius: 1rem;
+    background: rgba(8,8,16,.06);
+  }
+  .region-btn.active, .region-btn:hover {
+    opacity: 1; background: var(--ink); color: var(--paper);
+  }
+  .region-btn.active .tab-count { opacity: .7; }
+  .region-btn.locked {
+    opacity: .35; background: none; border: 1px dashed rgba(8,8,16,.18);
+    border-radius: 1rem;
+  }
+  .region-btn.locked:hover { opacity: .35; }
+  .region-btn.complete { color: var(--paper); background: #8c6d10; border-color: transparent; }
+  .region-btn.complete .tab-count { opacity: .8; }
 
   /* Collection grid: 2 columns on mobile for bigger, readable cards */
   #collection-grid, #profile-grid {
