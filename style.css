@@ -516,8 +516,8 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
   display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem;
   width: 100%; max-width: 320px;
 }
-#btn-share { order: -1; }
-#btn-see-collection, #btn-focus-again { flex: 1; }
+#btn-see-collection { order: -1; flex: 0 0 100%; }
+#btn-share, #btn-focus-again { flex: 1; }
 
 /* ── MILESTONE TOAST ── */
 #milestone-toast {
@@ -557,15 +557,16 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 #hatch-actions button:hover, #hatch-actions button:active { color: var(--paper); }
 #hatch-actions button:hover::before, #hatch-actions button:active::before { transform: scaleX(1); }
 
-/* Share button — full-width accent row above the two main actions */
-#btn-share {
-  border-color: #0047ff !important;
-  color: #0047ff !important;
+/* Collection button — full-width primary action */
+#btn-see-collection {
+  border-color: var(--ink) !important;
+  color: var(--paper) !important;
+  background: var(--ink) !important;
   width: 100%;
   padding: .55rem 1.6rem !important;
 }
-#btn-share::before { background: #0047ff !important; }
-#btn-share:hover, #btn-share:active { color: #fff !important; }
+#btn-see-collection::before { background: var(--paper) !important; }
+#btn-see-collection:hover, #btn-see-collection:active { color: var(--ink) !important; }
 
 /* ── COLLECTION VIEW ── */
 #view-collection { justify-content: flex-start; overflow-y: auto; }

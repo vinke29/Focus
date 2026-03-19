@@ -2431,6 +2431,7 @@ async function init() {
   document.getElementById('btn-modal-share').addEventListener('click', shareFromModal);
   document.getElementById('btn-see-collection').addEventListener('click', () => {
     if (state.onboarding) finishOnboarding();
+    state.topTab = 'collection';
     navigateTo('collection');
   });
   document.getElementById('btn-focus-again').addEventListener('click', () => {
