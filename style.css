@@ -719,22 +719,22 @@ body.dark .stats-line { border-bottom-color: rgba(221,215,200,.08); }
   flex: 1; width: 100%; max-width: 32px;
   display: flex; align-items: flex-end;
   border-radius: 3px;
-  background: var(--ink); opacity: .06;
+  background: rgba(8,8,16,.06);
   overflow: hidden;
 }
 .activity-bar-fill {
   width: 100%; border-radius: 3px;
-  background: var(--ink); opacity: .55;
+  background: rgba(8,8,16,.45);
   transition: height .3s ease;
 }
-.activity-bar-current .activity-bar-fill { opacity: .8; }
+.activity-bar-current .activity-bar-fill { background: rgba(8,8,16,.65); }
 .activity-label {
   font-size: .42rem; letter-spacing: .05em;
   color: var(--ink); opacity: .45;
   white-space: nowrap;
 }
-body.dark .activity-bar-track { background: rgba(221,215,200,.08); opacity: 1; }
-body.dark .activity-bar-fill  { background: rgba(221,215,200,.45); opacity: 1; }
+body.dark .activity-bar-track { background: rgba(221,215,200,.08); }
+body.dark .activity-bar-fill  { background: rgba(221,215,200,.45); }
 body.dark .activity-bar-current .activity-bar-fill { background: rgba(221,215,200,.65); }
 
 /* Period toggle buttons */
