@@ -921,6 +921,7 @@ function openBadgeModal(badge, opts) {
   }
 
   nameEl.textContent = badge.name;
+  document.getElementById('badge-modal-front-name').textContent = badge.name;
   descEl.textContent = badge.desc;
 
   // Date (earned only)
