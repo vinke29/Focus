@@ -157,11 +157,12 @@ function renderLeaders(data) {
       <td>${esc(d.name)}</td>
       <td>${d.unique_chars}/${TOTAL_CHARS} <span class="completion-bar" style="width:${barW}px"></span></td>
       <td><span style="opacity:.7">${d.common || 0}</span><span style="opacity:.3">/19</span> · <span style="color:var(--blue)">${d.rare || 0}</span><span style="opacity:.3">/19</span> · <span style="color:var(--gold)">${d.legendary || 0}</span><span style="opacity:.3">/6</span></td>
+      <td>${variantBadges(d)}</td>
       <td>${d.total_animals}</td>
     </tr>`;
   }).join('');
   el.innerHTML = `<table class="admin-table">
-    <thead><tr><th>#</th><th>name</th><th>unique</th><th>C · R · L</th><th>total</th></tr></thead>
+    <thead><tr><th>#</th><th>name</th><th>unique</th><th>C · R · L</th><th>variants</th><th>total</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }
@@ -177,6 +178,14 @@ function formatDay(d) {
   if (!d) return '';
   const date = new Date(d);
   return `${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+function variantBadges(d) {
+  const parts = [];
+  if (d.gold)    parts.push(`<span style="color:#c9a227">${d.gold}G</span>`);
+  if (d.crimson) parts.push(`<span style="color:#c0392b">${d.crimson}C</span>`);
+  if (d.void)    parts.push(`<span style="color:#5b2d8e">${d.void}V</span>`);
+  return parts.length ? parts.join(' ') : '<span style="opacity:.25">—</span>';
 }
 
 function esc(s) {

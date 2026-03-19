@@ -102,6 +102,9 @@ BEGIN
            count(DISTINCT c.char_id) FILTER (WHERE c.char_id = ANY(common_ids)) as common,
            count(DISTINCT c.char_id) FILTER (WHERE c.char_id = ANY(rare_ids)) as rare,
            count(DISTINCT c.char_id) FILTER (WHERE c.char_id = ANY(legend_ids)) as legendary,
+           count(*) FILTER (WHERE c.variant = 'gold') as gold,
+           count(*) FILTER (WHERE c.variant = 'crimson') as crimson,
+           count(*) FILTER (WHERE c.variant = 'void') as void,
            count(*) as total_animals
     FROM public.collection c
     JOIN public.profiles p ON p.id = c.user_id
