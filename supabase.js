@@ -81,7 +81,9 @@ const DB = {
     if (!_sb) return;
     const { data: { user } } = await _sb.auth.getUser();
     if (!user) return;
-    await _sb.from('profiles').upsert({ id: user.id, name });
+    const row = { id: user.id, name };
+    if (user.email) row.email = user.email;
+    await _sb.from('profiles').upsert(row);
   },
 
   // ── COLLECTION ────────────────────────────────────────────────────────────

@@ -97,7 +97,7 @@ BEGIN
   PERFORM _assert_admin();
   SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
   FROM (
-    SELECT c.user_id, p.name,
+    SELECT c.user_id, p.name, p.email,
            count(DISTINCT c.char_id) as unique_chars,
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'standard') as std,
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'gold') as gold,
@@ -106,7 +106,7 @@ BEGIN
            count(*) as total_animals
     FROM public.collection c
     JOIN public.profiles p ON p.id = c.user_id
-    GROUP BY c.user_id, p.name
+    GROUP BY c.user_id, p.name, p.email
     ORDER BY unique_chars DESC, total_animals DESC
     LIMIT 25
   ) t;
@@ -218,6 +218,28 @@ BEGIN
     WHERE completed_at >= cutoff
     GROUP BY day
     ORDER BY day
+  ) t;
+  RETURN result;
+END;
+$$;
+
+
+-- H: Signup list (name, email, created_at) for a given period
+CREATE OR REPLACE FUNCTION admin_signup_list(p_period text DEFAULT 'all')
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER
+AS $$
+DECLARE
+  cutoff timestamptz := _period_cutoff(p_period);
+  result json;
+BEGIN
+  PERFORM _assert_admin();
+  SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
+  FROM (
+    SELECT name, email, created_at
+    FROM public.profiles
+    WHERE created_at >= cutoff
+    ORDER BY created_at DESC
   ) t;
   RETURN result;
 END;

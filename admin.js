@@ -1,29 +1,33 @@
 // ── KOKOON ADMIN DASHBOARD ───────────────────────────────────────────────────
 
 const ADMIN_EMAIL = 'ignaciovinke@gmail.com';
-const TOTAL_CHARS = 44;
+const TOTAL_CHARS = 60;
 
 // Character metadata for enriching the animal distribution chart
 const CHAR_META = {
   shiro:'Shiro',karasu:'Karasu',kyubi:'Kyubi',tanuki:'Tanuki',koi:'Koi',
   kappa:'Kappa',kodama:'Kodama',oni:'Oni',baku:'Baku',raijin_wolf:'Raijin Wolf',
+  tsuru:'Tsuru',jorogumo:'Jorogumo',
   capybara:'Capybara',axolotl:'Axolotl',quetzal:'Quetzal',condor:'Condor',
   jaguar:'Jaguar',armadillo:'Armadillo',llama:'Llama',chupacabra:'Chupacabra',
-  coati:'Coati',tapir:'Tapir',anaconda:'Anaconda',
+  coati:'Coati',tapir:'Tapir',anaconda:'Anaconda',colibri:'Colibri',
   hedgehog:'Hedgehog',hare:'Hare',stag:'Stag',gryphon:'Gryphon',
   unicorn:'Unicorn',selkie:'Selkie',wisp:'Wisp',wyvern:'Wyvern',
+  robin:'Robin',badger:'Badger',salamander:'Salamander',fenrir:'Fenrir',
   meerkat:'Meerkat',mongoose:'Mongoose',pangolin:'Pangolin',warthog:'Warthog',
-  hyena:'Hyena',okapi:'Okapi',
+  hyena:'Hyena',okapi:'Okapi',chameleon:'Chameleon',honey_badger:'Honey Badger',
+  hippo:'Hippo',serval:'Serval',tau:'Tau',gorilla:'Gorilla',
   sprite:'Sprite',imp:'Imp',golem:'Golem',djinn:'Djinn',basilisk:'Basilisk',
   fairy:'Fairy',chimera:'Chimera',kraken:'Kraken',phoenix:'Phoenix',
+  myconid:'Myconid',mimic:'Mimic',wyrm:'Wyrm',
 };
 
 const CHAR_RARITY = {};
-['shiro','tanuki','kappa','kodama','capybara','armadillo','llama','hedgehog','hare','wisp','meerkat','mongoose','coati','tapir','pangolin','warthog','sprite','imp','fairy']
+['shiro','tanuki','kappa','kodama','tsuru','capybara','armadillo','llama','colibri','hedgehog','hare','wisp','robin','badger','meerkat','mongoose','coati','tapir','pangolin','warthog','chameleon','sprite','imp','fairy','myconid','mimic']
   .forEach(id => CHAR_RARITY[id] = 'common');
-['karasu','koi','oni','baku','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','anaconda','hyena','okapi','golem','djinn','basilisk','chimera','kraken']
+['karasu','koi','oni','baku','jorogumo','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','salamander','fenrir','anaconda','hyena','okapi','honey_badger','hippo','serval','gorilla','golem','djinn','basilisk','chimera','kraken']
   .forEach(id => CHAR_RARITY[id] = 'rare');
-['kyubi','raijin_wolf','chupacabra','unicorn','wyvern','phoenix']
+['kyubi','raijin_wolf','chupacabra','unicorn','wyvern','phoenix','tau','wyrm']
   .forEach(id => CHAR_RARITY[id] = 'legendary');
 
 let currentPeriod = 'all';
@@ -59,7 +63,7 @@ async function init() {
 // ── Data loading ─────────────────────────────────────────────────────────────
 
 async function loadDashboard() {
-  const [overview, animals, leaders, splits, signups, streaks, dau] = await Promise.all([
+  const [overview, animals, leaders, splits, signups, streaks, dau, signupList] = await Promise.all([
     DB.rpc('admin_overview',            { p_period: currentPeriod }),
     DB.rpc('admin_animal_distribution', { p_period: currentPeriod }),
     DB.rpc('admin_collection_leaders',  { p_period: currentPeriod }),
@@ -67,6 +71,7 @@ async function loadDashboard() {
     DB.rpc('admin_signups_over_time',   { p_period: currentPeriod }),
     DB.rpc('admin_streak_distribution'),
     DB.rpc('admin_daily_active_users',  { p_period: currentPeriod }),
+    DB.rpc('admin_signup_list',         { p_period: currentPeriod }),
   ]);
 
   if (overview.error) { console.error('admin_overview:', overview.error); return; }
@@ -78,6 +83,7 @@ async function loadDashboard() {
   renderDAUChart(dau.data || []);
   renderStreaksChart(streaks.data || []);
   renderLeaders(leaders.data || []);
+  renderSignupList(signupList.data || []);
 }
 
 // ── Render: metric cards ─────────────────────────────────────────────────────
@@ -154,17 +160,38 @@ function renderLeaders(data) {
     const barW = Math.max(pct, 2);
     return `<tr>
       <td>${i + 1}</td>
-      <td>${esc(d.name)}</td>
+      <td>${esc(d.name)}${d.email ? `<br><span style="opacity:.4;font-size:.55rem">${esc(d.email)}</span>` : ''}</td>
       <td>${d.unique_chars}/${TOTAL_CHARS} <span class="completion-bar" style="width:${barW}px"></span></td>
-      <td>${d.std || 0}/44</td>
-      <td style="color:#c9a227">${d.gold || 0}/44</td>
-      <td style="color:#c0392b">${d.crimson || 0}/44</td>
-      <td style="color:#5b2d8e">${d.void || 0}/44</td>
+      <td>${d.std || 0}/${TOTAL_CHARS}</td>
+      <td style="color:#c9a227">${d.gold || 0}/${TOTAL_CHARS}</td>
+      <td style="color:#c0392b">${d.crimson || 0}/${TOTAL_CHARS}</td>
+      <td style="color:#5b2d8e">${d.void || 0}/${TOTAL_CHARS}</td>
       <td>${d.total_animals}</td>
     </tr>`;
   }).join('');
   el.innerHTML = `<table class="admin-table">
     <thead><tr><th>#</th><th>name</th><th>unique</th><th>standard</th><th style="color:#c9a227">gold</th><th style="color:#c0392b">crimson</th><th style="color:#5b2d8e">void</th><th>total</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+// ── Render: signup list table ─────────────────────────────────────────────
+
+function renderSignupList(data) {
+  const el = document.getElementById('panel-signups-list');
+  if (!data.length) { el.innerHTML = '<span style="opacity:.3;font-size:.6rem">no sign-ups</span>'; return; }
+  const rows = data.map((d, i) => {
+    const date = new Date(d.created_at);
+    const ts = `${date.getMonth()+1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2,'0')}`;
+    return `<tr>
+      <td>${i + 1}</td>
+      <td>${esc(d.name)}</td>
+      <td>${esc(d.email || '—')}</td>
+      <td>${ts}</td>
+    </tr>`;
+  }).join('');
+  el.innerHTML = `<table class="admin-table">
+    <thead><tr><th>#</th><th>name</th><th>email</th><th>signed up</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }

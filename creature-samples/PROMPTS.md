@@ -420,10 +420,10 @@ Composition: Centered, facing forward, full body visible, gentle idle pose. Soli
 
 ---
 
-### 56. simba (Legendary)
-A single character illustration of Simba, a lion cub of the sun: A golden cub born at the moment of sunrise, whose mane will one day hold the fire of the African sun itself. Fluffy and small with the beginnings of a golden mane, fierce amber eyes, and a regal stance far too big for its body.
+### 56. tau (Legendary)
+A single character illustration of Tau, a white lion spirit: A pale lion cub with fur the colour of dry bone, said to appear only once a generation on the plains. Born under a blood moon, it carries the silence of the savanna at midnight. Ghostly white fur with faint golden markings, pale amber eyes that glow faintly, and a calm, unblinking stare.
 
-Style: Studio Ghibli meets Hollow Knight. Hand-painted watercolor textures with soft grain. Thick confident ink outlines (varying line weight). Muted earthy palette with one signature accent color sunrise gold (#FF8F00). The character has large expressive eyes with visible highlights and subtle emotion. Chibi proportions (large head, small body) but with elegance — not overly cute or cartoonish. Subtle environmental detail (warm golden sun-glow particles and faint savanna horizon) that hints at the character's element/nature.
+Style: Studio Ghibli meets Hollow Knight. Hand-painted watercolor textures with soft grain. Thick confident ink outlines (varying line weight). Muted earthy palette with one signature accent color pale gold (#FFB300). The character has large expressive eyes with visible highlights and subtle emotion. Chibi proportions (large head, small body) but with elegance — not overly cute or cartoonish. Subtle environmental detail (faint moonlit dust and dry grass silhouettes) that hints at the character's element/nature.
 
 Composition: Centered, facing forward, full body visible, gentle idle pose. Solid flat background in warm cream (#f5f0e8). No text, no frame, no drop shadow. Character should feel like a collectible card illustration.
 
