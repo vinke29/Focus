@@ -882,7 +882,9 @@ body.dark .badge-tile.earned {
 /* Icon area — top portion of card */
 .badge-tile-art {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1;
+  max-height: 160px;
+  overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   background: rgba(8,8,16,.025);
 }
