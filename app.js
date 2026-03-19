@@ -314,6 +314,57 @@ function renderTopTab() {
   }
 }
 
+let _heatmapWeeks = 13;
+
+function buildHeatmap(minsIn, todayStart, now, numWeeks) {
+  const hmDayLabels = ['','M','','W','','F',''];
+  const todayDow = now.getDay();
+  const hmEnd = new Date(todayStart); hmEnd.setDate(hmEnd.getDate() + (6 - todayDow));
+  const hmStart = new Date(hmEnd); hmStart.setDate(hmStart.getDate() - (numWeeks * 7 - 1));
+
+  const dayMap = {};
+  let maxMins = 0;
+  for (let d = new Date(hmStart); d <= hmEnd; d.setDate(d.getDate() + 1)) {
+    const next = new Date(d); next.setDate(next.getDate() + 1);
+    const m = minsIn(d, next);
+    dayMap[d.toISOString().slice(0, 10)] = m;
+    if (m > maxMins) maxMins = m;
+  }
+
+  const hmMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let monthRow = '<div class="heatmap-day-label"></div>';
+  let lastMo = -1;
+  for (let w = 0; w < numWeeks; w++) {
+    const cd = new Date(hmStart); cd.setDate(cd.getDate() + w * 7);
+    const mo = cd.getMonth();
+    monthRow += `<div class="heatmap-month-label">${mo !== lastMo ? hmMonths[mo] : ''}</div>`;
+    lastMo = mo;
+  }
+
+  const rowOrder = [1, 2, 3, 4, 5, 6, 0];
+  let gridHtml = `<div class="heatmap-row">${monthRow}</div>`;
+  for (const dow of rowOrder) {
+    let row = `<div class="heatmap-day-label">${hmDayLabels[dow]}</div>`;
+    for (let w = 0; w < numWeeks; w++) {
+      const cd = new Date(hmStart);
+      cd.setDate(cd.getDate() + w * 7 + ((dow - hmStart.getDay() + 7) % 7));
+      if (cd < hmStart) { row += '<div class="heatmap-cell empty"></div>'; continue; }
+      const future = cd > now;
+      const key = cd.toISOString().slice(0, 10);
+      const mins = future ? 0 : (dayMap[key] || 0);
+      let level = 0;
+      if (mins > 0 && maxMins > 0) {
+        const ratio = mins / maxMins;
+        level = ratio <= 0.25 ? 1 : ratio <= 0.5 ? 2 : ratio <= 0.75 ? 3 : 4;
+      }
+      const isT = !future && cd.getTime() === todayStart.getTime();
+      row += `<div class="heatmap-cell level-${level}${isT ? ' today' : ''}${future ? ' future' : ''}" title="${future ? '' : key + ': ' + mins + 'm'}"></div>`;
+    }
+    gridHtml += `<div class="heatmap-row">${row}</div>`;
+  }
+  return `<div class="heatmap-grid">${gridHtml}</div>`;
+}
+
 function renderStatsTab() {
   const el = document.getElementById('stats-content');
   if (!el) return;
@@ -407,61 +458,8 @@ function renderStatsTab() {
     </div>`
   ).join('');
 
-  // Contribution heatmap — last 15 weeks
-  const NUM_WEEKS = 15;
-  const hmDayLabels = ['','M','','W','','F',''];
-
-  // End on this Saturday, start NUM_WEEKS back
-  const todayDow = now.getDay();
-  const hmEnd = new Date(todayStart); hmEnd.setDate(hmEnd.getDate() + (6 - todayDow));
-  const hmStart = new Date(hmEnd); hmStart.setDate(hmStart.getDate() - (NUM_WEEKS * 7 - 1));
-
-  // Build daily minutes map
-  const dayMap = {};
-  let maxMins = 0;
-  for (let d = new Date(hmStart); d <= hmEnd; d.setDate(d.getDate() + 1)) {
-    const next = new Date(d); next.setDate(next.getDate() + 1);
-    const m = minsIn(d, next);
-    dayMap[d.toISOString().slice(0, 10)] = m;
-    if (m > maxMins) maxMins = m;
-  }
-
-  // Month labels row
-  const hmMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  let monthRow = '<div class="heatmap-day-label"></div>';
-  let lastMo = -1;
-  for (let w = 0; w < NUM_WEEKS; w++) {
-    const cd = new Date(hmStart); cd.setDate(cd.getDate() + w * 7);
-    const mo = cd.getMonth();
-    monthRow += `<div class="heatmap-month-label">${mo !== lastMo ? hmMonths[mo] : ''}</div>`;
-    lastMo = mo;
-  }
-
-  // Grid rows: Mon–Sun order [1,2,3,4,5,6,0]
-  const rowOrder = [1, 2, 3, 4, 5, 6, 0];
-  let gridHtml = `<div class="heatmap-row">${monthRow}</div>`;
-  for (const dow of rowOrder) {
-    let row = `<div class="heatmap-day-label">${hmDayLabels[dow]}</div>`;
-    for (let w = 0; w < NUM_WEEKS; w++) {
-      const cd = new Date(hmStart);
-      cd.setDate(cd.getDate() + w * 7 + ((dow - hmStart.getDay() + 7) % 7));
-      if (cd > now || cd < hmStart) {
-        row += '<div class="heatmap-cell empty"></div>';
-        continue;
-      }
-      const key = cd.toISOString().slice(0, 10);
-      const mins = dayMap[key] || 0;
-      let level = 0;
-      if (mins > 0 && maxMins > 0) {
-        const ratio = mins / maxMins;
-        level = ratio <= 0.25 ? 1 : ratio <= 0.5 ? 2 : ratio <= 0.75 ? 3 : 4;
-      }
-      const isT = cd.getTime() === todayStart.getTime();
-      row += `<div class="heatmap-cell level-${level}${isT ? ' today' : ''}" title="${key}: ${mins}m"></div>`;
-    }
-    gridHtml += `<div class="heatmap-row">${row}</div>`;
-  }
-  const heatmapHtml = `<div class="heatmap-grid">${gridHtml}</div>`;
+  // Contribution heatmap
+  const heatmapHtml = buildHeatmap(minsIn, todayStart, now, _heatmapWeeks);
 
   // Streak + journey lines
   let journeyLines = '';
@@ -488,7 +486,14 @@ function renderStatsTab() {
     </div>
 
     <div class="stats-section">
-      <div class="stats-section-label">activity</div>
+      <div class="stats-section-label">
+        activity
+        <span class="heatmap-toggles">
+          <button class="heatmap-toggle${_heatmapWeeks === 13 ? ' active' : ''}" data-weeks="13">3mo</button>
+          <button class="heatmap-toggle${_heatmapWeeks === 26 ? ' active' : ''}" data-weeks="26">6mo</button>
+          <button class="heatmap-toggle${_heatmapWeeks === 52 ? ' active' : ''}" data-weeks="52">1yr</button>
+        </span>
+      </div>
       ${heatmapHtml}
     </div>
 
@@ -497,6 +502,14 @@ function renderStatsTab() {
       ${journeyLines}
     </div>
   `;
+
+  // Bind heatmap period toggles
+  el.querySelectorAll('.heatmap-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      _heatmapWeeks = parseInt(btn.dataset.weeks);
+      renderStatsTab();
+    });
+  });
 }
 
 function renderTimerStats() {
