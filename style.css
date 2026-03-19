@@ -700,50 +700,42 @@ body.dark .stats-line { border-bottom-color: rgba(221,215,200,.08); }
   font-style: italic; opacity: .5;
 }
 
-/* Contribution heatmap */
-.heatmap-grid {
-  display: flex; flex-direction: column; gap: 3px;
-  padding: .5rem 0;
-  overflow-x: auto;
+/* Activity bar chart */
+.activity-chart {
+  display: flex; gap: 2px; align-items: flex-end;
+  padding: .8rem 0 .2rem;
+  height: 140px;
 }
-.heatmap-row {
-  display: flex; gap: 3px; align-items: center;
+.activity-col {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 4px; height: 100%;
 }
-.heatmap-month-label {
-  width: 14px; height: 14px;
-  font-size: .42rem; letter-spacing: .05em;
+.activity-value {
+  font-size: .42rem; letter-spacing: .04em;
   color: var(--ink); opacity: .5;
-  display: flex; align-items: flex-end;
-  flex-shrink: 0;
+  white-space: nowrap; min-height: 1em;
 }
-.heatmap-day-label {
-  width: 14px; height: 14px;
+.activity-bar-track {
+  flex: 1; width: 100%; max-width: 32px;
+  display: flex; align-items: flex-end;
+  border-radius: 3px;
+  background: var(--ink); opacity: .06;
+  overflow: hidden;
+}
+.activity-bar-fill {
+  width: 100%; border-radius: 3px;
+  background: var(--ink); opacity: .55;
+  transition: height .3s ease;
+}
+.activity-bar-current .activity-bar-fill { opacity: .8; }
+.activity-label {
   font-size: .42rem; letter-spacing: .05em;
   color: var(--ink); opacity: .45;
-  display: flex; align-items: center; justify-content: flex-end;
-  padding-right: 3px; flex-shrink: 0;
+  white-space: nowrap;
 }
-.heatmap-cell {
-  width: 14px; height: 14px; border-radius: 2px;
-  flex-shrink: 0;
-  background: var(--ink); opacity: .06;
-}
-.heatmap-cell.empty { background: transparent; opacity: 0; }
-.heatmap-cell.level-1 { opacity: .15; }
-.heatmap-cell.level-2 { opacity: .28; }
-.heatmap-cell.level-3 { opacity: .42; }
-.heatmap-cell.level-4 { opacity: .6; }
-.heatmap-cell.today {
-  outline: 1.5px solid var(--ink); outline-offset: -0.5px;
-}
-.heatmap-cell.level-0.today { opacity: .12; }
-body.dark .heatmap-cell          { background: rgba(221,215,200,.06); opacity: 1; }
-body.dark .heatmap-cell.empty    { background: transparent; opacity: 0; }
-body.dark .heatmap-cell.level-1  { background: rgba(221,215,200,.14); }
-body.dark .heatmap-cell.level-2  { background: rgba(221,215,200,.24); }
-body.dark .heatmap-cell.level-3  { background: rgba(221,215,200,.36); }
-body.dark .heatmap-cell.level-4  { background: rgba(221,215,200,.52); }
-body.dark .heatmap-cell.today    { outline-color: rgba(221,215,200,.6); }
+body.dark .activity-bar-track { background: rgba(221,215,200,.08); opacity: 1; }
+body.dark .activity-bar-fill  { background: rgba(221,215,200,.45); opacity: 1; }
+body.dark .activity-bar-current .activity-bar-fill { background: rgba(221,215,200,.65); }
 
 /* Period toggle buttons */
 .heatmap-toggles {
@@ -1984,12 +1976,10 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   .stats-delta { font-size: .72rem; }
   .stats-highlight { font-size: .85rem; }
 
-  /* Heatmap */
-  .heatmap-cell, .heatmap-month-label, .heatmap-day-label { width: 11px; height: 11px; }
-  .heatmap-grid { gap: 2px; }
-  .heatmap-row { gap: 2px; }
-  .heatmap-month-label { font-size: .38rem; }
-  .heatmap-day-label { font-size: .38rem; }
+  /* Activity chart */
+  .activity-chart { height: 120px; }
+  .activity-value { font-size: .38rem; }
+  .activity-label { font-size: .38rem; }
 
   .stats-empty { min-height: 50vh; padding: 3rem 1.5rem; }
   .stats-empty-icon { font-size: 4rem; margin-bottom: 2rem; }

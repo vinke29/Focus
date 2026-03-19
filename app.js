@@ -314,54 +314,53 @@ function renderTopTab() {
   }
 }
 
-let _heatmapWeeks = 13;
+let _activityPeriod = 'W';
 
-function buildHeatmap(minsIn, todayStart, now, numWeeks) {
-  const hmDayLabels = ['','M','','W','','F',''];
-  const todayDow = now.getDay();
-  const hmEnd = new Date(todayStart); hmEnd.setDate(hmEnd.getDate() + (6 - todayDow));
-  const hmStart = new Date(hmEnd); hmStart.setDate(hmStart.getDate() - (numWeeks * 7 - 1));
+function buildActivityChart(minsIn, now) {
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const today = startOfDay(now);
+  let buckets = [];
 
-  const dayMap = {};
-  let maxMins = 0;
-  for (let d = new Date(hmStart); d <= hmEnd; d.setDate(d.getDate() + 1)) {
-    const next = new Date(d); next.setDate(next.getDate() + 1);
-    const m = minsIn(d, next);
-    dayMap[d.toISOString().slice(0, 10)] = m;
-    if (m > maxMins) maxMins = m;
-  }
-
-  const hmMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  let monthRow = '<div class="heatmap-day-label"></div>';
-  let lastMo = -1;
-  for (let w = 0; w < numWeeks; w++) {
-    const cd = new Date(hmStart); cd.setDate(cd.getDate() + w * 7);
-    const mo = cd.getMonth();
-    monthRow += `<div class="heatmap-month-label">${mo !== lastMo ? hmMonths[mo] : ''}</div>`;
-    lastMo = mo;
-  }
-
-  const rowOrder = [1, 2, 3, 4, 5, 6, 0];
-  let gridHtml = `<div class="heatmap-row">${monthRow}</div>`;
-  for (const dow of rowOrder) {
-    let row = `<div class="heatmap-day-label">${hmDayLabels[dow]}</div>`;
-    for (let w = 0; w < numWeeks; w++) {
-      const cd = new Date(hmStart);
-      cd.setDate(cd.getDate() + w * 7 + ((dow - hmStart.getDay() + 7) % 7));
-      if (cd < hmStart) { row += '<div class="heatmap-cell empty"></div>'; continue; }
-      const key = cd.toISOString().slice(0, 10);
-      const mins = cd > now ? 0 : (dayMap[key] || 0);
-      let level = 0;
-      if (mins > 0 && maxMins > 0) {
-        const ratio = mins / maxMins;
-        level = ratio <= 0.25 ? 1 : ratio <= 0.5 ? 2 : ratio <= 0.75 ? 3 : 4;
-      }
-      const isT = cd.getTime() === todayStart.getTime();
-      row += `<div class="heatmap-cell level-${level}${isT ? ' today' : ''}" title="${key}: ${mins}m"></div>`;
+  if (_activityPeriod === 'W') {
+    // 7 days: today and 6 days before
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today); d.setDate(d.getDate() - i);
+      const next = new Date(d); next.setDate(next.getDate() + 1);
+      buckets.push({ label: dayNames[d.getDay()], mins: minsIn(d, next), isCurrent: i === 0 });
     }
-    gridHtml += `<div class="heatmap-row">${row}</div>`;
+  } else if (_activityPeriod === 'M') {
+    // 12 weeks: current week and 11 before
+    const weekStart = new Date(today); weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+    for (let i = 11; i >= 0; i--) {
+      const ws = new Date(weekStart); ws.setDate(ws.getDate() - i * 7);
+      const we = new Date(ws); we.setDate(we.getDate() + 7);
+      const label = `${monthNames[ws.getMonth()]} ${ws.getDate()}`;
+      buckets.push({ label, mins: minsIn(ws, we), isCurrent: i === 0 });
+    }
+  } else {
+    // 12 months: current month and 11 before
+    for (let i = 11; i >= 0; i--) {
+      const ms = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const me = new Date(ms.getFullYear(), ms.getMonth() + 1, 1);
+      buckets.push({ label: monthNames[ms.getMonth()], mins: minsIn(ms, me), isCurrent: i === 0 });
+    }
   }
-  return `<div class="heatmap-grid">${gridHtml}</div>`;
+
+  const maxMins = Math.max(...buckets.map(b => b.mins), 1);
+
+  const bars = buckets.map(b => {
+    const pct = Math.max((b.mins / maxMins) * 100, b.mins > 0 ? 4 : 0);
+    const current = b.isCurrent ? ' activity-bar-current' : '';
+    return `<div class="activity-col${current}">
+      <div class="activity-value">${b.mins > 0 ? formatHours(b.mins) : ''}</div>
+      <div class="activity-bar-track"><div class="activity-bar-fill" style="height:${pct}%"></div></div>
+      <div class="activity-label">${b.label}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="activity-chart">${bars}</div>`;
 }
 
 function renderStatsTab() {
@@ -457,8 +456,8 @@ function renderStatsTab() {
     </div>`
   ).join('');
 
-  // Contribution heatmap
-  const heatmapHtml = buildHeatmap(minsIn, todayStart, now, _heatmapWeeks);
+  // Activity chart
+  const activityHtml = buildActivityChart(minsIn, now);
 
   // Streak + journey lines
   let journeyLines = '';
@@ -488,12 +487,12 @@ function renderStatsTab() {
       <div class="stats-section-label">
         activity
         <span class="heatmap-toggles">
-          <button class="heatmap-toggle${_heatmapWeeks === 13 ? ' active' : ''}" data-weeks="13">3mo</button>
-          <button class="heatmap-toggle${_heatmapWeeks === 26 ? ' active' : ''}" data-weeks="26">6mo</button>
-          <button class="heatmap-toggle${_heatmapWeeks === 52 ? ' active' : ''}" data-weeks="52">1yr</button>
+          <button class="heatmap-toggle${_activityPeriod === 'W' ? ' active' : ''}" data-period="W">W</button>
+          <button class="heatmap-toggle${_activityPeriod === 'M' ? ' active' : ''}" data-period="M">M</button>
+          <button class="heatmap-toggle${_activityPeriod === 'Y' ? ' active' : ''}" data-period="Y">Y</button>
         </span>
       </div>
-      ${heatmapHtml}
+      ${activityHtml}
     </div>
 
     <div class="stats-section">
@@ -502,10 +501,10 @@ function renderStatsTab() {
     </div>
   `;
 
-  // Bind heatmap period toggles
+  // Bind activity period toggles
   el.querySelectorAll('.heatmap-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
-      _heatmapWeeks = parseInt(btn.dataset.weeks);
+      _activityPeriod = btn.dataset.period;
       renderStatsTab();
     });
   });
