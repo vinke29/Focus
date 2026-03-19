@@ -717,6 +717,16 @@ function saveCollection() {
 }
 
 // ── BADGES ──────────────────────────────────────────────────────────────────
+
+const BADGE_IMAGE_IDS = new Set(['first_session','sessions_10','sessions_25','sessions_50','sessions_100','sessions_200','sessions_365','streak_3','streak_7','streak_14','streak_30','collect_5','collect_15','collect_all','region_japan']);
+
+function badgeArtHtml(badge) {
+  if (BADGE_IMAGE_IDS.has(badge.id)) {
+    return `<img class="badge-tile-img" src="badges/${badge.id}.png" alt="${badge.name}">`;
+  }
+  return `<div class="badge-tile-icon">${badge.icon}</div>`;
+}
+
 function loadBadges() {
   try {
     const saved = localStorage.getItem('focus-badges');
@@ -830,7 +840,7 @@ async function renderBadges() {
       const card = document.createElement('div');
       card.className = 'badge-tile earned';
       card.innerHTML = `
-        <div class="badge-tile-art"><div class="badge-tile-icon">${badge.icon}</div></div>
+        <div class="badge-tile-art">${badgeArtHtml(badge)}</div>
         <div class="badge-tile-info">
           <div class="badge-tile-name">${badge.name}</div>
           <div class="badge-tile-desc">${badge.desc}</div>
@@ -873,7 +883,7 @@ async function renderBadges() {
       }
 
       card.innerHTML = `
-        <div class="badge-tile-art"><div class="badge-tile-icon">${badge.icon}</div></div>
+        <div class="badge-tile-art">${badgeArtHtml(badge)}</div>
         <div class="badge-tile-info">
           <div class="badge-tile-name">${badge.name}</div>
           <div class="badge-tile-desc">${badge.desc}</div>
