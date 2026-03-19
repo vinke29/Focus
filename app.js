@@ -840,22 +840,12 @@ async function renderBadges() {
       const card = document.createElement('div');
       card.className = 'badge-tile earned';
       card.innerHTML = `
-        <div class="badge-tile-inner">
-          <div class="badge-tile-front">
-            <div class="badge-tile-art">${badgeArtHtml(badge)}</div>
-            <div class="badge-tile-info">
-              <div class="badge-tile-name">${badge.name}</div>
-            </div>
-          </div>
-          <div class="badge-tile-back">
-            <div class="badge-tile-name">${badge.name}</div>
-            <div class="badge-tile-desc">${badge.desc}</div>
-            <div class="badge-tile-date">${dateText}</div>
-            <div class="badge-tile-pct">${pctText}</div>
-          </div>
+        <div class="badge-tile-art">${badgeArtHtml(badge)}</div>
+        <div class="badge-tile-info">
+          <div class="badge-tile-name">${badge.name}</div>
         </div>
       `;
-      card.addEventListener('click', () => card.classList.toggle('flipped'));
+      card.addEventListener('click', () => openBadgeModal(badge, { earned: true, date: earnedMap[badge.id], pctText }));
       earnedGrid.appendChild(card);
     });
     grid.appendChild(earnedGrid);
@@ -891,22 +881,13 @@ async function renderBadges() {
       }
 
       card.innerHTML = `
-        <div class="badge-tile-inner">
-          <div class="badge-tile-front">
-            <div class="badge-tile-art">${badgeArtHtml(badge)}</div>
-            <div class="badge-tile-info">
-              <div class="badge-tile-name">${badge.name}</div>
-              ${progressHtml}
-            </div>
-          </div>
-          <div class="badge-tile-back">
-            <div class="badge-tile-name">${badge.name}</div>
-            <div class="badge-tile-desc">${badge.desc}</div>
-            ${rarePctText ? `<div class="badge-tile-pct">${rarePctText}</div>` : ''}
-          </div>
+        <div class="badge-tile-art">${badgeArtHtml(badge)}</div>
+        <div class="badge-tile-info">
+          <div class="badge-tile-name">${badge.name}</div>
+          ${progressHtml}
         </div>
       `;
-      card.addEventListener('click', () => card.classList.toggle('flipped'));
+      card.addEventListener('click', () => openBadgeModal(badge, { earned: false, pctText: rarePctText }));
       unearnedGrid.appendChild(card);
     });
     grid.appendChild(unearnedGrid);
@@ -915,6 +896,82 @@ async function renderBadges() {
   if (!earned.length && !unearned.length) {
     grid.innerHTML = '<div class="badge-section-header" style="text-align:center;padding:3rem 1rem;opacity:.4">Complete sessions to earn achievements</div>';
   }
+}
+
+// ── BADGE MODAL ─────────────────────────────────────────────────────────────
+
+function openBadgeModal(badge, opts) {
+  const artEl  = document.getElementById('badge-modal-art');
+  const nameEl = document.getElementById('badge-modal-name');
+  const descEl = document.getElementById('badge-modal-desc');
+  const dateEl = document.getElementById('badge-modal-date');
+  const pctEl  = document.getElementById('badge-modal-pct');
+  const progEl = document.getElementById('badge-modal-progress');
+  const card   = document.getElementById('badge-modal-card');
+
+  card.classList.remove('flipped');
+
+  // Art
+  if (BADGE_IMAGE_IDS.has(badge.id)) {
+    const img = `<img src="badges/${badge.id}.png" alt="${badge.name}"` +
+      (opts.earned ? '' : ' style="filter:grayscale(1);opacity:.4"') + '>';
+    artEl.innerHTML = img;
+  } else {
+    artEl.innerHTML = `<div class="badge-tile-icon">${badge.icon}</div>`;
+  }
+
+  nameEl.textContent = badge.name;
+  descEl.textContent = badge.desc;
+
+  // Date (earned only)
+  if (opts.earned && opts.date) {
+    dateEl.textContent = new Date(opts.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+    dateEl.style.display = '';
+  } else {
+    dateEl.style.display = 'none';
+  }
+
+  // Rarity pct
+  if (opts.pctText) {
+    pctEl.textContent = opts.pctText;
+    pctEl.style.display = '';
+  } else {
+    pctEl.style.display = 'none';
+  }
+
+  // Progress (unearned only)
+  if (!opts.earned && badge.progress) {
+    const ctx = buildBadgeContext();
+    const p = badge.progress(ctx);
+    const pct = Math.min((p.cur / p.max) * 100, 100);
+    const unit = p.unit || '';
+    progEl.innerHTML = `
+      <div class="badge-progress-bar"><div class="badge-progress-fill" style="width:${pct}%"></div></div>
+      <div class="badge-progress-text">${p.cur}${unit} / ${p.max}${unit}</div>`;
+    progEl.style.display = '';
+  } else {
+    progEl.innerHTML = '';
+    progEl.style.display = 'none';
+  }
+
+  document.getElementById('badge-modal').classList.add('open');
+}
+
+function closeBadgeModal() {
+  document.getElementById('badge-modal').classList.remove('open');
+  document.getElementById('badge-modal-card').classList.remove('flipped');
+  const view = document.querySelector('.view.active');
+  if (view) { view.style.overflow = 'hidden'; requestAnimationFrame(() => { view.style.overflow = ''; }); }
+}
+
+function initBadgeModalListeners() {
+  document.getElementById('badge-modal-close').addEventListener('click', closeBadgeModal);
+  document.getElementById('badge-modal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeBadgeModal();
+  });
+  document.getElementById('badge-modal-card').addEventListener('click', () => {
+    document.getElementById('badge-modal-card').classList.toggle('flipped');
+  });
 }
 
 function addToCollection(character, variant) {
@@ -2435,6 +2492,7 @@ async function init() {
 
   // Card modal
   initModalListeners();
+  initBadgeModalListeners();
 
   // Duration picker
   document.querySelectorAll('.dur-btn').forEach(btn => {
@@ -2552,6 +2610,7 @@ async function init() {
     }
     // Escape — close modal first, then back to timer from collection
     if (e.key === 'Escape') {
+      if (document.getElementById('badge-modal').classList.contains('open')) { closeBadgeModal(); return; }
       if (document.getElementById('card-modal').classList.contains('open')) { closeCardModal(); return; }
       if (state.view === 'collection') {
         if (state.timer.remaining <= 0) resetTimerState();
