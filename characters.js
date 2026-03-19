@@ -349,86 +349,11 @@ const CHARACTERS = {
     lore: 'The shadow lord of the rainforest, who steps so softly that even leaves refuse to stir.',
     haiku: '斑点の王よ<br>密林に溶け込む<br>足音なき夜',
     svg: `
-<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="jag-body" cx="35%" cy="28%" r="72%">
-      <stop offset="0%" stop-color="#e8c870"/>
-      <stop offset="100%" stop-color="#a87830"/>
-    </radialGradient>
-    <radialGradient id="jag-belly" cx="50%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="#fefcf5"/>
-      <stop offset="100%" stop-color="#e8d8b0"/>
-    </radialGradient>
-    <radialGradient id="jag-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#3a8c2f" stop-opacity=".22"/>
-      <stop offset="100%" stop-color="#3a8c2f" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <ellipse class="char-aura" cx="160" cy="220" rx="115" ry="105" fill="url(#jag-aura)"/>
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
-    <!-- Body -->
-    <ellipse cx="165" cy="255" rx="72" ry="48" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
-    <!-- Belly -->
-    <ellipse cx="158" cy="268" rx="42" ry="30" fill="url(#jag-belly)"/>
-    <!-- Body spots (rosettes) -->
-    <circle cx="138" cy="238" r="10" fill="none" stroke="#5a3010" stroke-width="3" opacity=".6"/>
-    <circle cx="138" cy="238" r="4" fill="#5a3010" opacity=".4"/>
-    <circle cx="178" cy="232" r="11" fill="none" stroke="#5a3010" stroke-width="3" opacity=".6"/>
-    <circle cx="178" cy="232" r="4.5" fill="#5a3010" opacity=".4"/>
-    <circle cx="210" cy="250" r="9" fill="none" stroke="#5a3010" stroke-width="3" opacity=".55"/>
-    <circle cx="210" cy="250" r="3.5" fill="#5a3010" opacity=".35"/>
-    <circle cx="124" cy="265" r="8" fill="none" stroke="#5a3010" stroke-width="2.5" opacity=".5"/>
-    <!-- Tail (long, curling) -->
-    <path d="M236,260 C258,245 278,230 285,210 C290,192 282,178 272,178 C262,178 256,188 258,198 C252,190 244,190 240,198 C236,208 242,225 236,260Z"
-      fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <circle cx="275" cy="182" r="7" fill="none" stroke="#5a3010" stroke-width="2.5" opacity=".6"/>
-    <!-- Neck -->
-    <ellipse cx="128" cy="218" rx="32" ry="26" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
-    <!-- Head (big round cat head) -->
-    <ellipse cx="115" cy="182" rx="52" ry="48" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
-    <!-- Ear spots -->
-    <circle cx="98" cy="175" r="6" fill="#5a3010" opacity=".4"/>
-    <circle cx="132" cy="170" r="6" fill="#5a3010" opacity=".4"/>
-    <!-- Belly white patch on face -->
-    <ellipse cx="112" cy="200" rx="28" ry="18" fill="url(#jag-belly)"/>
-    <!-- Ears -->
-    <path d="M76,152 L62,118 L104,142Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M79,150 L67,122 L100,143Z" fill="#c8682a" opacity=".5"/>
-    <path d="M148,148 L162,114 L172,143Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M150,147 L162,118 L168,143Z" fill="#c8682a" opacity=".5"/>
-    <!-- Eyes (green) -->
-    <ellipse cx="96" cy="178" rx="13" ry="11" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <ellipse cx="96" cy="178" rx="8" ry="8" fill="#3a8c2f"/>
-    <ellipse cx="96" cy="178" rx="3.5" ry="5" fill="#080810"/>
-    <circle cx="99" cy="175" r="2.5" fill="white" opacity=".9"/>
-    <ellipse cx="136" cy="175" rx="12" ry="10" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <ellipse cx="136" cy="175" rx="7.5" ry="7.5" fill="#3a8c2f"/>
-    <ellipse cx="136" cy="175" rx="3" ry="4.5" fill="#080810"/>
-    <circle cx="139" cy="172" r="2" fill="white" opacity=".9"/>
-    <!-- Nose -->
-    <ellipse cx="112" cy="196" rx="8" ry="5" fill="#c8682a" stroke="#080810" stroke-width="1.5"/>
-    <!-- Mouth -->
-    <path d="M104,202 Q112,208 120,202" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
-    <!-- Whiskers -->
-    <path d="M90,198 L60,194" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
-    <path d="M90,202 L62,202" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
-    <path d="M135,195 L162,190" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
-    <path d="M135,200 L163,200" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
-    <!-- Face spots -->
-    <circle cx="80" cy="183" r="5" fill="#5a3010" opacity=".35"/>
-    <circle cx="148" cy="180" r="4.5" fill="#5a3010" opacity=".35"/>
-    <!-- Legs -->
-    <rect x="95" y="292" width="24" height="55" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
-    <rect x="132" y="295" width="24" height="52" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
-    <rect x="172" y="292" width="24" height="55" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
-    <rect x="207" y="294" width="22" height="52" rx="11" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
-    <!-- Paws -->
-    <ellipse cx="107" cy="349" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
-    <ellipse cx="144" cy="348" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
-    <ellipse cx="184" cy="349" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
-    <ellipse cx="218" cy="347" rx="14" ry="8" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
-    <!-- Ground shadow -->
-    <ellipse cx="168" cy="360" rx="80" ry="8" fill="rgba(0,0,0,.08)"/>
+    <g class="char-body">
+      <image href="/chars/jaguar.png" x="10" y="0" width="300" height="380"/>
+    </g>
   </g>
 </svg>`
   },
@@ -446,86 +371,11 @@ const CHARACTERS = {
     lore: 'An ancient armored wanderer who curls into a perfect sphere when the world gets too loud.',
     haiku: '甲羅に包まれ<br>世界から離れ丸く<br>静けさの中に',
     svg: `
-<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="arma-shell" cx="35%" cy="28%" r="72%">
-      <stop offset="0%" stop-color="#d8c8a8"/>
-      <stop offset="100%" stop-color="#b8a880"/>
-    </radialGradient>
-    <radialGradient id="arma-skin" cx="40%" cy="35%" r="65%">
-      <stop offset="0%" stop-color="#f0e4cc"/>
-      <stop offset="100%" stop-color="#d4c4a0"/>
-    </radialGradient>
-    <radialGradient id="arma-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7C5C3A" stop-opacity=".2"/>
-      <stop offset="100%" stop-color="#7C5C3A" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-
-  <ellipse cx="160" cy="360" rx="66" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="250" rx="88" ry="72" fill="url(#arma-aura)"/>
-
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-
-      <!-- Tail (scaly) -->
-      <path d="M218,275 C240,265 258,248 256,228 C248,232 238,242 228,252 C240,240 244,224 236,212 C226,222 218,242 218,258Z"
-        fill="url(#arma-shell)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M228,240 L238,234" stroke="#080810" stroke-width="1.2" opacity=".35"/>
-      <path d="M232,252 L244,244" stroke="#080810" stroke-width="1.2" opacity=".3"/>
-
-      <!-- Main shell (domed) -->
-      <path d="M80,238 C80,188 112,158 160,158 C208,158 240,188 240,238 C240,280 212,308 160,308 C108,308 80,280 80,238Z"
-        fill="url(#arma-shell)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
-
-      <!-- Shell bands (horizontal) -->
-      <path d="M84,218 C104,212 136,208 160,208 C184,208 216,212 236,218" stroke="#080810" stroke-width="2" fill="none" opacity=".4"/>
-      <path d="M82,238 C102,230 136,226 160,226 C184,226 218,230 238,238" stroke="#080810" stroke-width="2" fill="none" opacity=".4"/>
-      <path d="M84,258 C104,252 136,248 160,248 C184,248 216,252 236,258" stroke="#080810" stroke-width="2" fill="none" opacity=".4"/>
-      <path d="M90,276 C108,272 136,268 160,268 C184,268 212,272 230,276" stroke="#080810" stroke-width="1.8" fill="none" opacity=".35"/>
-      <!-- Band accent color lines -->
-      <path d="M84,228 C104,222 136,218 160,218 C184,218 216,222 236,228" stroke="#7C5C3A" stroke-width="1" fill="none" opacity=".3"/>
-      <path d="M82,248 C102,240 136,236 160,236 C184,236 218,240 238,248" stroke="#7C5C3A" stroke-width="1" fill="none" opacity=".3"/>
-      <path d="M86,268 C106,262 136,258 160,258 C184,258 214,262 234,268" stroke="#7C5C3A" stroke-width="1" fill="none" opacity=".25"/>
-
-      <!-- Shell plate lines (vertical segments) -->
-      <path d="M108,172 L102,300" stroke="#080810" stroke-width="1" opacity=".2"/>
-      <path d="M130,162 L126,306" stroke="#080810" stroke-width="1" opacity=".18"/>
-      <path d="M160,158 L160,308" stroke="#080810" stroke-width="1" opacity=".18"/>
-      <path d="M190,162 L194,306" stroke="#080810" stroke-width="1" opacity=".18"/>
-      <path d="M212,172 L218,300" stroke="#080810" stroke-width="1" opacity=".2"/>
-
-      <!-- Legs (small, peeking out) -->
-      <path d="M100,288 L88,330 C84,336 78,336 76,330 C82,325 86,318 88,310Z"
-        fill="url(#arma-skin)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M220,288 L232,330 C236,336 242,336 244,330 C238,325 234,318 232,310Z"
-        fill="url(#arma-skin)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+      <image href="/chars/armadillo.png" x="10" y="0" width="300" height="380"/>
     </g>
-
-    <!-- Head shield + snout -->
-    <path d="M116,180 C116,158 136,144 160,144 C184,144 204,158 204,180 C204,195 194,205 176,210 C168,195 152,195 144,210 C126,205 116,195 116,180Z"
-      fill="url(#arma-shell)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-
-    <!-- Snout (pointed) -->
-    <path d="M144,210 C148,225 154,235 160,238 C166,235 172,225 176,210Z"
-      fill="url(#arma-skin)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-    <!-- Nostrils -->
-    <circle cx="154" cy="230" r="3.5" fill="#080810" opacity=".5"/>
-    <circle cx="166" cy="230" r="3.5" fill="#080810" opacity=".5"/>
-
-    <!-- Eyes (small, beady) -->
-    <circle cx="134" cy="175" r="10" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="134" cy="175" r="6" fill="#080810"/>
-    <circle cx="137" cy="172" r="2" fill="white" opacity=".9"/>
-
-    <circle cx="186" cy="175" r="10" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="186" cy="175" r="6" fill="#080810"/>
-    <circle cx="189" cy="172" r="2" fill="white" opacity=".9"/>
-
-    <!-- Small ears -->
-    <path d="M120,160 L110,136 L135,155Z" fill="url(#arma-shell)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M200,160 L210,136 L185,155Z" fill="url(#arma-shell)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-
   </g>
 </svg>`
   },
@@ -543,71 +393,11 @@ const CHARACTERS = {
     lore: 'A fluffy mountain companion who spits at problems and carries burdens without complaint.',
     haiku: '高地の道を<br>荷を担い歩む<br>リャマの誇り',
     svg: `
-<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="llama-body" cx="35%" cy="28%" r="72%">
-      <stop offset="0%" stop-color="#fefcf5"/>
-      <stop offset="100%" stop-color="#d4c8a8"/>
-    </radialGradient>
-    <radialGradient id="llama-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#e88c50" stop-opacity=".2"/>
-      <stop offset="100%" stop-color="#e88c50" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <ellipse class="char-aura" cx="160" cy="230" rx="108" ry="105" fill="url(#llama-aura)"/>
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
-    <!-- Fluffy rectangular body -->
-    <rect x="88" y="225" width="148" height="110" rx="32" fill="url(#llama-body)" stroke="#080810" stroke-width="4"/>
-    <!-- Fluffy texture bumps (wavy outline detail) -->
-    <path d="M90,240 C100,233 115,233 125,240 C135,233 150,233 160,240 C170,233 185,233 195,240 C205,233 220,233 230,240" stroke="#080810" stroke-width="1.2" fill="none" opacity=".18"/>
-    <path d="M90,255 C100,248 115,248 125,255 C135,248 150,248 160,255 C170,248 185,248 195,255 C205,248 218,248 228,255" stroke="#080810" stroke-width="1" fill="none" opacity=".14"/>
-    <!-- Legs (sturdy, not stick-thin) -->
-    <rect x="102" y="325" width="28" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
-    <rect x="142" y="325" width="28" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
-    <rect x="172" y="325" width="28" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
-    <rect x="208" y="325" width="26" height="45" rx="12" fill="url(#llama-body)" stroke="#080810" stroke-width="3.5"/>
-    <!-- Hooves (split) -->
-    <path d="M100,368 L100,375 M116,368 L116,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <path d="M140,368 L140,375 M156,368 L156,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <path d="M170,368 L170,375 M186,368 L186,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <path d="M206,368 L206,375 M220,368 L220,375" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <!-- Long proud neck (key feature) -->
-    <path d="M148,230 C148,195 150,162 152,140 C154,118 158,108 162,108 C166,108 170,118 172,140 C174,162 176,195 176,230Z"
-      fill="url(#llama-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
-    <!-- Head (small oval on top of neck) -->
-    <ellipse cx="162" cy="98" rx="32" ry="28" fill="url(#llama-body)" stroke="#080810" stroke-width="4"/>
-    <!-- Banana ears (llama's signature long curved ears) -->
-    <path d="M138,82 C130,68 128,48 132,36 C138,30 148,32 150,42 C152,52 148,68 144,80Z"
-      fill="url(#llama-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M140,80 C133,68 132,52 135,40 C138,34 145,34 146,42 C148,52 145,66 141,78Z"
-      fill="#e88c50" opacity=".45"/>
-    <path d="M186,82 C194,68 196,48 192,36 C186,30 176,32 174,42 C172,52 176,68 180,80Z"
-      fill="url(#llama-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
-    <path d="M184,80 C191,68 192,52 189,40 C186,34 179,34 178,42 C176,52 179,66 183,78Z"
-      fill="#e88c50" opacity=".45"/>
-    <!-- Pompom topknot (fluffy tuft) -->
-    <circle cx="148" cy="75" r="9" fill="url(#llama-body)" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="163" cy="68" r="10" fill="url(#llama-body)" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="178" cy="73" r="8" fill="url(#llama-body)" stroke="#080810" stroke-width="2.5"/>
-    <!-- Eyes (long-lashed, serene) -->
-    <ellipse cx="148" cy="96" rx="11" ry="9" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <ellipse cx="148" cy="97" rx="6" ry="6" fill="#4a3820"/>
-    <circle cx="148" cy="97" r="3" fill="#080810"/>
-    <circle cx="151" cy="94" r="2" fill="white" opacity=".9"/>
-    <!-- Eyelashes -->
-    <path d="M138,90 L135,85 M142,88 L140,83 M148,87 L148,82" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-    <ellipse cx="176" cy="96" rx="10" ry="9" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <ellipse cx="176" cy="97" rx="6" ry="6" fill="#4a3820"/>
-    <circle cx="176" cy="97" r="3" fill="#080810"/>
-    <circle cx="179" cy="94" r="2" fill="white" opacity=".9"/>
-    <path d="M167,90 L164,85 M172,88 L170,83 M177,87 L177,82" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-    <!-- Muzzle (boxy, llama-ish) -->
-    <rect x="148" y="105" width="28" height="18" rx="6" fill="#e8e0d0" stroke="#080810" stroke-width="2.5"/>
-    <!-- Nostrils -->
-    <ellipse cx="155" cy="116" rx="3.5" ry="2.5" fill="#080810" opacity=".5"/>
-    <ellipse cx="167" cy="116" rx="3.5" ry="2.5" fill="#080810" opacity=".5"/>
-    <!-- Ground shadow -->
-    <ellipse cx="165" cy="373" rx="70" ry="7" fill="rgba(0,0,0,.08)"/>
+    <g class="char-body">
+      <image href="/chars/llama.png" x="10" y="0" width="300" height="380"/>
+    </g>
   </g>
 </svg>`
   },
@@ -730,60 +520,11 @@ const CHARACTERS = {
     lore: 'A curious ring-tailed wanderer of the forest floor, always poking its long nose into tomorrow.',
     haiku: '縞の尾を振り<br>森の秘密を探す<br>鼻先の旅よ',
     svg: `
-<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="coat-body" cx="38%" cy="32%" r="68%">
-      <stop offset="0%" stop-color="#f5d8b0"/>
-      <stop offset="100%" stop-color="#c07a35"/>
-    </radialGradient>
-    <radialGradient id="coat-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#E8762A" stop-opacity=".22"/>
-      <stop offset="100%" stop-color="#E8762A" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <ellipse cx="155" cy="364" rx="62" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="155" cy="258" rx="82" ry="90" fill="url(#coat-aura)"/>
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
-    <g class="cat-tail" style="transform-origin:198px 300px">
-      <path d="M198,300 C220,278 244,250 248,218 C252,188 238,168 222,164 C206,160 193,174 192,194 C191,214 200,235 205,252 C210,270 208,288 198,300Z"
-        fill="url(#coat-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-      <path d="M220,172 C229,184 232,198 228,210" stroke="#080810" stroke-width="6.5" stroke-linecap="round" fill="none" opacity=".4"/>
-      <path d="M208,198 C216,210 218,224 215,236" stroke="#080810" stroke-width="5.5" stroke-linecap="round" fill="none" opacity=".38"/>
-      <path d="M200,226 C207,238 208,252 205,264" stroke="#080810" stroke-width="5" stroke-linecap="round" fill="none" opacity=".35"/>
+    <g class="char-body">
+      <image href="/chars/coati.png" x="10" y="0" width="300" height="380"/>
     </g>
-    <ellipse cx="152" cy="300" rx="60" ry="52" fill="url(#coat-body)" stroke="#080810" stroke-width="4"/>
-    <ellipse cx="148" cy="308" rx="36" ry="40" fill="#fef2e4" stroke="#080810" stroke-width="1.8" opacity=".5"/>
-    <ellipse cx="116" cy="348" rx="26" ry="14" fill="url(#coat-body)" stroke="#080810" stroke-width="3"/>
-    <path d="M102,349 L96,362" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M114,353 L112,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M128,353 L130,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
-    <ellipse cx="186" cy="348" rx="26" ry="14" fill="url(#coat-body)" stroke="#080810" stroke-width="3"/>
-    <path d="M200,349 L206,362" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M188,353 L190,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M174,353 L172,364" stroke="#080810" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M106,285 C93,290 84,302 86,318 C94,310 104,300 106,292Z"
-      fill="url(#coat-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M196,285 C210,290 218,302 216,318 C208,310 198,300 196,292Z"
-      fill="url(#coat-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-  </g>
-  <g class="head-scan">
-    <ellipse cx="148" cy="252" rx="26" ry="22" fill="url(#coat-body)" stroke="#080810" stroke-width="3"/>
-    <circle cx="148" cy="218" r="38" fill="url(#coat-body)" stroke="#080810" stroke-width="4"/>
-    <path d="M118,210 C124,202 140,198 152,200 C152,206 148,212 140,214 C132,216 122,214 118,210Z"
-      fill="#080810" opacity=".3"/>
-    <path d="M118,224 C106,228 92,225 84,216 C82,208 86,200 94,197 C106,193 120,202 124,214Z"
-      fill="#c07a35" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-    <ellipse cx="87" cy="212" rx="5" ry="4" fill="#080810" opacity=".65"/>
-    <ellipse cx="134" cy="208" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
-    <circle cx="134" cy="208" r="7" fill="#080810"/>
-    <circle cx="137" cy="205" r="2.5" fill="white" opacity=".9"/>
-    <ellipse cx="162" cy="208" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
-    <circle cx="162" cy="208" r="7" fill="#080810"/>
-    <circle cx="165" cy="205" r="2.5" fill="white" opacity=".9"/>
-    <ellipse cx="122" cy="190" rx="14" ry="13" fill="url(#coat-body)" stroke="#080810" stroke-width="2.5"/>
-    <ellipse cx="122" cy="190" rx="8" ry="7" fill="#E8762A" opacity=".42"/>
-    <ellipse cx="174" cy="190" rx="14" ry="13" fill="url(#coat-body)" stroke="#080810" stroke-width="2.5"/>
-    <ellipse cx="174" cy="190" rx="8" ry="7" fill="#E8762A" opacity=".42"/>
   </g>
 </svg>`
   },
@@ -801,50 +542,11 @@ const CHARACTERS = {
     lore: 'An ancient shape between pig and elephant, walking the same forest paths for sixty million years.',
     haiku: '億年の道<br>変わらぬ姿で歩く<br>太古の歩みよ',
     svg: `
-<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="tapir-body" cx="38%" cy="32%" r="70%">
-      <stop offset="0%" stop-color="#cfc2b0"/>
-      <stop offset="100%" stop-color="#7a6856"/>
-    </radialGradient>
-    <radialGradient id="tapir-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B6B5A" stop-opacity=".2"/>
-      <stop offset="100%" stop-color="#7B6B5A" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <ellipse cx="160" cy="364" rx="72" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="268" rx="92" ry="88" fill="url(#tapir-aura)"/>
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
-    <ellipse cx="228" cy="285" rx="13" ry="9" fill="url(#tapir-body)" stroke="#080810" stroke-width="2"/>
-    <ellipse cx="160" cy="300" rx="82" ry="68" fill="url(#tapir-body)" stroke="#080810" stroke-width="4.5"/>
-    <ellipse cx="108" cy="358" rx="26" ry="14" fill="url(#tapir-body)" stroke="#080810" stroke-width="3.5"/>
-    <path d="M90,358 L87,371" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <path d="M104,362 L102,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <path d="M122,362 L122,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <ellipse cx="212" cy="358" rx="26" ry="14" fill="url(#tapir-body)" stroke="#080810" stroke-width="3.5"/>
-    <path d="M230,358 L233,371" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <path d="M216,362 L218,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-    <path d="M198,362 L198,373" stroke="#080810" stroke-width="3" stroke-linecap="round"/>
-  </g>
-  <g class="char-body">
-    <ellipse cx="160" cy="240" rx="42" ry="30" fill="url(#tapir-body)" stroke="#080810" stroke-width="4"/>
-    <ellipse cx="160" cy="200" rx="52" ry="44" fill="url(#tapir-body)" stroke="#080810" stroke-width="4.5"/>
-    <g class="trunk-sway" style="transform-origin:160px 215px">
-      <path d="M140,220 C138,236 142,252 152,262 C158,268 164,268 170,262 C178,252 180,236 178,220Z"
-        fill="url(#tapir-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
-      <ellipse cx="153" cy="260" rx="5" ry="4" fill="#080810" opacity=".65"/>
-      <ellipse cx="167" cy="260" rx="5" ry="4" fill="#080810" opacity=".65"/>
+    <g class="char-body">
+      <image href="/chars/tapir.png" x="10" y="0" width="300" height="380"/>
     </g>
-    <ellipse cx="128" cy="192" rx="15" ry="14" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="128" cy="192" r="8.5" fill="#080810"/>
-    <circle cx="131" cy="189" r="3" fill="white" opacity=".9"/>
-    <ellipse cx="192" cy="192" rx="15" ry="14" fill="white" stroke="#080810" stroke-width="2.5"/>
-    <circle cx="192" cy="192" r="8.5" fill="#080810"/>
-    <circle cx="195" cy="189" r="3" fill="white" opacity=".9"/>
-    <ellipse cx="118" cy="166" rx="20" ry="17" fill="url(#tapir-body)" stroke="#080810" stroke-width="3"/>
-    <ellipse cx="118" cy="166" rx="12" ry="10" fill="#7B6B5A" opacity=".4"/>
-    <ellipse cx="202" cy="166" rx="20" ry="17" fill="url(#tapir-body)" stroke="#080810" stroke-width="3"/>
-    <ellipse cx="202" cy="166" rx="12" ry="10" fill="#7B6B5A" opacity=".4"/>
   </g>
 </svg>`
   },
@@ -862,50 +564,10 @@ const CHARACTERS = {
     lore: 'The river\'s own pulse, coiled and patient, who measures time in the slow drift of floodwaters.',
     haiku: '川の底から<br>静かに世界を巻く<br>水の支配者よ',
     svg: `
-<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="anac-body" cx="40%" cy="30%" r="68%">
-      <stop offset="0%" stop-color="#a8c880"/>
-      <stop offset="100%" stop-color="#2a5a28"/>
-    </radialGradient>
-    <radialGradient id="anac-belly" cx="50%" cy="50%" r="60%">
-      <stop offset="0%" stop-color="#e8d8b0"/>
-      <stop offset="100%" stop-color="#c0b080"/>
-    </radialGradient>
-    <radialGradient id="anac-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#2E7D32" stop-opacity=".25"/>
-      <stop offset="100%" stop-color="#2E7D32" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <ellipse cx="160" cy="364" rx="78" ry="9" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="295" rx="95" ry="72" fill="url(#anac-aura)"/>
-  <g class="anac-coil">
-    <ellipse cx="160" cy="324" rx="88" ry="40" fill="url(#anac-body)" stroke="#080810" stroke-width="5"/>
-    <path d="M80,310 C100,300 130,296 160,296 C190,296 220,300 240,310" stroke="#080810" stroke-width="1.8" fill="none" opacity=".18"/>
-    <path d="M75,322 C98,312 130,308 160,308 C190,308 222,312 245,322" stroke="#080810" stroke-width="1.8" fill="none" opacity=".16"/>
-    <ellipse cx="168" cy="314" rx="58" ry="28" fill="url(#anac-body)" stroke="#080810" stroke-width="4.5"/>
-    <ellipse cx="168" cy="318" rx="40" ry="20" fill="url(#anac-belly)" stroke="#080810" stroke-width="2" opacity=".6"/>
-  </g>
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
-    <path d="M148,282 C144,254 148,228 156,208 C162,190 170,186 178,195 C186,206 186,230 182,260 C178,280 172,290 162,290Z"
-      fill="url(#anac-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M156,282 C154,254 156,228 160,210 C164,194 170,193 170,202 C172,218 172,244 168,268 C166,280 162,288 158,288Z"
-      fill="url(#anac-belly)" opacity=".55"/>
-    <path d="M136,182 C138,158 150,142 164,138 C180,134 196,142 202,160 C208,178 198,196 180,198 C166,200 146,196 136,182Z"
-      fill="url(#anac-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
-    <ellipse cx="148" cy="168" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
-    <ellipse cx="148" cy="168" rx="8" ry="10" fill="#d4a800"/>
-    <path d="M148,158 C149,163 149,173 148,178 C147,173 147,163 148,158Z" fill="#080810"/>
-    <circle cx="151" cy="163" r="2.5" fill="white" opacity=".8"/>
-    <ellipse cx="192" cy="168" rx="12" ry="11" fill="white" stroke="#080810" stroke-width="2"/>
-    <ellipse cx="192" cy="168" rx="8" ry="10" fill="#d4a800"/>
-    <path d="M192,158 C193,163 193,173 192,178 C191,173 191,163 192,158Z" fill="#080810"/>
-    <circle cx="195" cy="163" r="2.5" fill="white" opacity=".8"/>
-    <ellipse cx="140" cy="178" rx="5" ry="3" fill="#080810" opacity=".35"/>
-    <ellipse cx="199" cy="178" rx="5" ry="3" fill="#080810" opacity=".35"/>
-    <g class="tongue-fork">
-      <path d="M168,198 L168,214" stroke="#c0392b" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M168,214 L160,224 M168,214 L176,224" stroke="#c0392b" stroke-width="2" stroke-linecap="round"/>
+    <g class="char-body">
+      <image href="/chars/anaconda.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
