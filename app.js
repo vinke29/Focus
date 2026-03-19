@@ -41,22 +41,22 @@ function markMilestoneSeen(n) {
 // ── BADGES ───────────────────────────────────────────────────────────────────
 const BADGES = [
   // Sessions
-  { id: 'first_session', name: 'First Light',       desc: 'Complete your first session',       category: 'sessions', icon: '🕯️', check: ctx => ctx.sessions >= 1 },
-  { id: 'sessions_10',   name: 'Kindling',          desc: 'Complete 10 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 10 },
-  { id: 'sessions_25',   name: 'Steady Flame',      desc: 'Complete 25 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 25 },
-  { id: 'sessions_50',   name: 'Burning Bright',    desc: 'Complete 50 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 50 },
-  { id: 'sessions_100',  name: 'Centennial',        desc: 'Complete 100 sessions',             category: 'sessions', icon: '💯', check: ctx => ctx.sessions >= 100 },
-  { id: 'sessions_200',  name: 'Eternal Focus',     desc: 'Complete 200 sessions',             category: 'sessions', icon: '✦',  check: ctx => ctx.sessions >= 200 },
-  { id: 'sessions_365',  name: 'Year of Focus',     desc: 'Complete 365 sessions',             category: 'sessions', icon: '🗓️', check: ctx => ctx.sessions >= 365 },
+  { id: 'first_session', name: 'First Light',       desc: 'Complete your first session',       category: 'sessions', icon: '🕯️', check: ctx => ctx.sessions >= 1,   progress: ctx => ({ cur: ctx.sessions, max: 1 }) },
+  { id: 'sessions_10',   name: 'Kindling',          desc: 'Complete 10 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 10,  progress: ctx => ({ cur: ctx.sessions, max: 10 }) },
+  { id: 'sessions_25',   name: 'Steady Flame',      desc: 'Complete 25 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 25,  progress: ctx => ({ cur: ctx.sessions, max: 25 }) },
+  { id: 'sessions_50',   name: 'Burning Bright',    desc: 'Complete 50 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 50,  progress: ctx => ({ cur: ctx.sessions, max: 50 }) },
+  { id: 'sessions_100',  name: 'Centennial',        desc: 'Complete 100 sessions',             category: 'sessions', icon: '💯', check: ctx => ctx.sessions >= 100, progress: ctx => ({ cur: ctx.sessions, max: 100 }) },
+  { id: 'sessions_200',  name: 'Eternal Focus',     desc: 'Complete 200 sessions',             category: 'sessions', icon: '✦',  check: ctx => ctx.sessions >= 200, progress: ctx => ({ cur: ctx.sessions, max: 200 }) },
+  { id: 'sessions_365',  name: 'Year of Focus',     desc: 'Complete 365 sessions',             category: 'sessions', icon: '🗓️', check: ctx => ctx.sessions >= 365, progress: ctx => ({ cur: ctx.sessions, max: 365 }) },
   // Streaks
-  { id: 'streak_3',      name: 'Three Days',        desc: 'Reach a 3-day streak',              category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 3 },
-  { id: 'streak_7',      name: 'Full Week',         desc: 'Reach a 7-day streak',              category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 7 },
-  { id: 'streak_14',     name: 'Fortnight',         desc: 'Reach a 14-day streak',             category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 14 },
-  { id: 'streak_30',     name: 'Iron Will',         desc: 'Reach a 30-day streak',             category: 'streaks',  icon: '🛡️', check: ctx => ctx.maxStreak >= 30 },
+  { id: 'streak_3',      name: 'Three Days',        desc: 'Reach a 3-day streak',              category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 3,  progress: ctx => ({ cur: ctx.maxStreak, max: 3 }) },
+  { id: 'streak_7',      name: 'Full Week',         desc: 'Reach a 7-day streak',              category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 7,  progress: ctx => ({ cur: ctx.maxStreak, max: 7 }) },
+  { id: 'streak_14',     name: 'Fortnight',         desc: 'Reach a 14-day streak',             category: 'streaks',  icon: '⚡', check: ctx => ctx.maxStreak >= 14, progress: ctx => ({ cur: ctx.maxStreak, max: 14 }) },
+  { id: 'streak_30',     name: 'Iron Will',         desc: 'Reach a 30-day streak',             category: 'streaks',  icon: '🛡️', check: ctx => ctx.maxStreak >= 30, progress: ctx => ({ cur: ctx.maxStreak, max: 30 }) },
   // Collection
-  { id: 'collect_5',     name: 'Budding Collector',  desc: 'Own 5 unique characters',           category: 'collection', icon: '🌱', check: ctx => ctx.ownedIds.size >= 5 },
-  { id: 'collect_15',    name: 'Seasoned Collector', desc: 'Own 15 unique characters',          category: 'collection', icon: '🌿', check: ctx => ctx.ownedIds.size >= 15 },
-  { id: 'collect_all',   name: 'Master Collector',   desc: 'Own every character',               category: 'collection', icon: '👑', check: ctx => ctx.ownedIds.size >= Object.keys(CHARACTERS).length },
+  { id: 'collect_5',     name: 'Budding Collector',  desc: 'Own 5 unique characters',           category: 'collection', icon: '🌱', check: ctx => ctx.ownedIds.size >= 5,  progress: ctx => ({ cur: ctx.ownedIds.size, max: 5 }) },
+  { id: 'collect_15',    name: 'Seasoned Collector', desc: 'Own 15 unique characters',          category: 'collection', icon: '🌿', check: ctx => ctx.ownedIds.size >= 15, progress: ctx => ({ cur: ctx.ownedIds.size, max: 15 }) },
+  { id: 'collect_all',   name: 'Master Collector',   desc: 'Own every character',               category: 'collection', icon: '👑', check: ctx => ctx.ownedIds.size >= Object.keys(CHARACTERS).length, progress: ctx => ({ cur: ctx.ownedIds.size, max: Object.keys(CHARACTERS).length }) },
   // Regions
   { id: 'region_japan',    name: 'Spirit of Japan',       desc: 'Complete the Japan region',     category: 'regions', icon: '⛩️', check: ctx => ctx.completedRegions.has('japanese') },
   { id: 'region_americas', name: 'Heart of the Americas', desc: 'Complete the Americas region',  category: 'regions', icon: '🌎', check: ctx => ctx.completedRegions.has('americas') },
@@ -68,9 +68,9 @@ const BADGES = [
   { id: 'first_crimson', name: 'Crimson Flame',   desc: 'Obtain a crimson variant',  category: 'variants', icon: '🔴', check: ctx => ctx.variantSet.has('crimson') },
   { id: 'first_void',    name: 'Into the Void',   desc: 'Obtain a void variant',     category: 'variants', icon: '🟣', check: ctx => ctx.variantSet.has('void') },
   // Time
-  { id: 'hours_10',  name: 'Focused Mind',   desc: 'Accumulate 10 hours of focus',   category: 'time', icon: '⏳', check: ctx => ctx.totalMinutes >= 600 },
-  { id: 'hours_50',  name: 'Deep Focus',     desc: 'Accumulate 50 hours of focus',   category: 'time', icon: '⏳', check: ctx => ctx.totalMinutes >= 3000 },
-  { id: 'hours_100', name: 'Master of Time', desc: 'Accumulate 100 hours of focus',  category: 'time', icon: '⌛', check: ctx => ctx.totalMinutes >= 6000 },
+  { id: 'hours_10',  name: 'Focused Mind',   desc: 'Accumulate 10 hours of focus',   category: 'time', icon: '⏳', check: ctx => ctx.totalMinutes >= 600,  progress: ctx => ({ cur: Math.floor(ctx.totalMinutes / 60), max: 10, unit: 'h' }) },
+  { id: 'hours_50',  name: 'Deep Focus',     desc: 'Accumulate 50 hours of focus',   category: 'time', icon: '⏳', check: ctx => ctx.totalMinutes >= 3000, progress: ctx => ({ cur: Math.floor(ctx.totalMinutes / 60), max: 50, unit: 'h' }) },
+  { id: 'hours_100', name: 'Master of Time', desc: 'Accumulate 100 hours of focus',  category: 'time', icon: '⌛', check: ctx => ctx.totalMinutes >= 6000, progress: ctx => ({ cur: Math.floor(ctx.totalMinutes / 60), max: 100, unit: 'h' }) },
   // Rarity
   { id: 'first_rare',      name: 'Something Special',  desc: 'Hatch a rare creature',      category: 'rarity', icon: '◆', check: ctx => [...ctx.ownedIds].some(id => CHARACTERS[id]?.rarity === 'rare') },
   { id: 'first_legendary', name: 'Mythical Discovery', desc: 'Hatch a legendary creature',  category: 'rarity', icon: '★', check: ctx => [...ctx.ownedIds].some(id => CHARACTERS[id]?.rarity === 'legendary') },
@@ -807,42 +807,78 @@ async function renderBadges() {
   const earnedIds = new Set(state.badges.map(b => b.id));
   const earnedMap = {};
   state.badges.forEach(b => { earnedMap[b.id] = b.earned_at; });
+  const ctx = buildBadgeContext();
 
-  // Earned first, then unearned
-  const sorted = [...BADGES].sort((a, b) => {
-    const aE = earnedIds.has(a.id) ? 0 : 1;
-    const bE = earnedIds.has(b.id) ? 0 : 1;
-    return aE - bE;
-  });
+  const earned = BADGES.filter(b => earnedIds.has(b.id));
+  const unearned = BADGES.filter(b => !earnedIds.has(b.id));
 
-  sorted.forEach(badge => {
-    const earned = earnedIds.has(badge.id);
-    const card = document.createElement('div');
-    card.className = earned ? 'badge-card earned' : 'badge-card unearned';
+  // Section: Earned
+  if (earned.length) {
+    const header = document.createElement('div');
+    header.className = 'badge-section-header';
+    header.textContent = `Earned · ${earned.length}`;
+    grid.appendChild(header);
 
-    const count = stats[badge.id] || 0;
-    const pct = total > 0 ? ((count / total) * 100) : 0;
-    const pctText = earned || count > 0
-      ? (pct < 1 ? '< 1' : Math.round(pct)) + '% of players'
-      : '';
+    const earnedGrid = document.createElement('div');
+    earnedGrid.className = 'badge-grid';
+    earned.forEach(badge => {
+      const dateText = new Date(earnedMap[badge.id]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
+      const count = stats[badge.id] || 0;
+      const pct = total > 0 ? ((count / total) * 100) : 0;
+      const pctText = (pct < 1 ? '<1' : Math.round(pct)) + '%';
 
-    const dateText = earned
-      ? new Date(earnedMap[badge.id]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-      : '';
+      const card = document.createElement('div');
+      card.className = 'badge-tile earned';
+      card.innerHTML = `
+        <div class="badge-tile-icon">${badge.icon}</div>
+        <div class="badge-tile-name">${badge.name}</div>
+        <div class="badge-tile-date">${dateText}</div>
+      `;
+      earnedGrid.appendChild(card);
+    });
+    grid.appendChild(earnedGrid);
+  }
 
-    card.innerHTML = `
-      <div class="badge-icon">${badge.icon}</div>
-      <div class="badge-text">
-        <div class="badge-name">${badge.name}</div>
-        <div class="badge-desc">${badge.desc}</div>
-      </div>
-      <div class="badge-meta">
-        ${dateText ? `<div class="badge-date">${dateText}</div>` : ''}
-        ${pctText ? `<div class="badge-pct">${pctText}</div>` : ''}
-      </div>
-    `;
-    grid.appendChild(card);
-  });
+  // Section: Unearned
+  if (unearned.length) {
+    const header = document.createElement('div');
+    header.className = 'badge-section-header';
+    header.textContent = `Unearned · ${unearned.length}`;
+    grid.appendChild(header);
+
+    const unearnedGrid = document.createElement('div');
+    unearnedGrid.className = 'badge-grid';
+    unearned.forEach(badge => {
+      const card = document.createElement('div');
+      card.className = 'badge-tile unearned';
+
+      let progressHtml = '';
+      if (badge.progress) {
+        const p = badge.progress(ctx);
+        const pct = Math.min((p.cur / p.max) * 100, 100);
+        const unit = p.unit || '';
+        progressHtml = `
+          <div class="badge-tile-progress">
+            <div class="badge-progress-bar"><div class="badge-progress-fill" style="width:${pct}%"></div></div>
+            <div class="badge-progress-text">${p.cur}${unit}/${p.max}${unit}</div>
+          </div>`;
+      } else {
+        progressHtml = `<div class="badge-tile-desc">${badge.desc}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="badge-tile-icon">${badge.icon}</div>
+        <div class="badge-tile-name">${badge.name}</div>
+        ${progressHtml}
+      `;
+      unearnedGrid.appendChild(card);
+    });
+    grid.appendChild(unearnedGrid);
+  }
+
+  if (!earned.length && !unearned.length) {
+    grid.innerHTML = '<div class="badge-section-header" style="text-align:center;padding:3rem 1rem;opacity:.4">Complete sessions to earn achievements</div>';
+  }
 }
 
 function addToCollection(character, variant) {
