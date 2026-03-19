@@ -1809,8 +1809,8 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
     justify-content: space-around;
   }
   body.dark .bottom-tabs {
-    background: rgba(10,10,18,.95);
-    border-top-color: rgba(221,215,200,.1);
+    background: rgba(18,18,28,.97);
+    border-top-color: rgba(221,215,200,.15);
   }
   .bottom-tab {
     display: flex; flex-direction: column; align-items: center;
@@ -1823,7 +1823,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
     min-width: 64px;
     position: relative;
   }
-  body.dark .bottom-tab { color: var(--paper); opacity: .5; }
+  body.dark .bottom-tab { color: rgba(221,215,200,.65); opacity: 1; }
   .bottom-tab.active { opacity: 1; }
   .bottom-tab.active::after {
     content: '';
@@ -1877,6 +1877,9 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   .region-btn.active {
     opacity: 1; background: var(--ink); color: var(--paper);
     box-shadow: 0 2px 8px rgba(8,8,16,.15);
+  }
+  body.dark .region-btn.active {
+    background: rgba(221,215,200,.2); color: rgba(221,215,200,.9);
   }
   .region-btn:hover { opacity: .75; }
   .region-btn.active .tab-count { opacity: .7; }
