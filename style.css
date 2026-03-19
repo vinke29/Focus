@@ -1538,7 +1538,7 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   #hatch-actions button { text-align: center; }
 
   /* Collection header */
-  .collection-top   { padding: .9rem 1.2rem .6rem; gap: .6rem; }
+  .collection-top   { padding: .7rem 1.2rem .4rem; gap: .6rem; }
   .collection-title {
     font-size: .95rem; letter-spacing: .12em;
     flex: 1; min-width: 0;
@@ -1547,15 +1547,16 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   .nav-btn          { font-size: 1rem; opacity: .7; }
   #btn-signout      { font-size: .72rem; letter-spacing: .12em; white-space: nowrap; opacity: .7; }
   #collection-stats { padding: .1rem 1.2rem .5rem; font-size: .68rem; opacity: .65; }
-  .top-tabs { gap: 1.4rem; padding: .2rem 1.2rem .5rem; }
-  .top-tab { font-size: .48rem; }
+  .top-tabs { gap: 1.6rem; padding: .2rem 1.2rem .45rem; }
+  .top-tab { font-size: .58rem; letter-spacing: .18em; }
   #stats-content { padding: 1.5rem 1.2rem 2rem; }
 
   /* Tabs: tighter + hidden scrollbar */
-  .region-tabs      { padding: 0 1rem .7rem; gap: .3rem; scrollbar-width: none; }
+  .region-tabs      { padding: 0 1rem .55rem; gap: .35rem; scrollbar-width: none; }
   .region-tabs::-webkit-scrollbar { display: none; }
-  .region-btn       { padding: .38rem .8rem; font-size: .72rem; letter-spacing: .08em; opacity: .75; }
+  .region-btn       { padding: .32rem .7rem; font-size: .68rem; letter-spacing: .06em; opacity: .75; }
   .region-btn.active, .region-btn:hover { opacity: 1; }
+  .region-btn.locked { opacity: .5; }
   .region-btn.complete { color: #8c6d10; border-color: #8c6d10; } /* darker gold for cream bg */
 
   /* Collection grid: 2 columns on mobile for bigger, readable cards */
