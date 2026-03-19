@@ -693,7 +693,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/kappa.png" x="0" y="0" width="320" height="380"/>
+      <image href="/chars/kappa.png" x="40" y="30" width="240" height="320"/>
     </g>
   </g>
 </svg>`
