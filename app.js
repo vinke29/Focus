@@ -1780,17 +1780,21 @@ function renderModalVariantNav() {
 
   const nav = document.getElementById('modal-var-nav');
   if (modalOwnedVariants.length < 2) { nav.style.display = 'none'; return; }
+
+  // Build dot indicators — one per owned variant
   nav.style.display = 'flex';
+  nav.innerHTML = modalOwnedVariants.map((v, i) => {
+    const active = i === modalVariantIndex ? ' active' : '';
+    const col = v.color;
+    return `<button class="modal-var-dot${active}" data-vi="${i}" style="border-color:${col};${active ? `background:${col};` : ''}" title="${v.label}"></button>`;
+  }).join('');
 
-  const label = document.getElementById('modal-var-label');
-  const n     = modalVc[variant.id] || 0;
-  label.textContent = n > 1 ? `${variant.label} ×${n}` : variant.label;
-  label.style.color = variant.color;
-
-  const prev = document.getElementById('modal-prev');
-  const next = document.getElementById('modal-next');
-  prev.disabled = modalVariantIndex === 0;
-  next.disabled = modalVariantIndex === modalOwnedVariants.length - 1;
+  nav.querySelectorAll('.modal-var-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      modalVariantIndex = parseInt(dot.dataset.vi, 10);
+      renderModalVariantNav();
+    });
+  });
 }
 
 function stepModalVariant(dir) {
@@ -1799,12 +1803,19 @@ function stepModalVariant(dir) {
   modalVariantIndex = newIdx;
   renderModalVariantNav();
 }
+// kept for keyboard/swipe support
 
 function updateModalRarity(char, variant) {
-  const el = document.getElementById('modal-rarity');
-  el.textContent       = char.rarityLabel + ' · ' + variant.label;
-  el.style.color       = variant.color;
-  el.style.borderColor = variant.color;
+  const rarityTag  = document.getElementById('modal-rarity-tag');
+  const variantTag = document.getElementById('modal-variant-tag');
+
+  rarityTag.textContent = char.rarityLabel;
+  rarityTag.style.color = char.rarity === 'legendary' ? '#b8860b'
+                        : char.rarity === 'rare'      ? '#6a7b8b'
+                        : 'inherit';
+
+  variantTag.textContent = variant.label;
+  variantTag.style.color = variant.color;
 }
 
 function initModalListeners() {
@@ -2396,12 +2407,6 @@ async function init() {
 
   // Card modal
   initModalListeners();
-  document.getElementById('modal-prev').addEventListener('click', e => {
-    e.stopPropagation(); stepModalVariant(-1);
-  });
-  document.getElementById('modal-next').addEventListener('click', e => {
-    e.stopPropagation(); stepModalVariant(1);
-  });
 
   // Duration picker
   document.querySelectorAll('.dur-btn').forEach(btn => {
