@@ -998,6 +998,182 @@ const CHARACTERS = {
     </g>
   </g>
 </svg>`
+  },
+
+  // ── 鶴 · Tsuru ─ Common ─ Crimson Red ─────────────────────────────────────
+  tsuru: {
+    id: 'tsuru',
+    name: '鶴 · Tsuru',
+    nameShort: '鶴',
+    region: 'japanese',
+    subtitle: 'Sacred Crane · Mist Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#C62828',
+    lore: 'A red-crowned crane who folds herself out of morning mist and grants a thousand years of patience to anyone who watches her dance.',
+    haiku: '朝霧の中<br>千年の忍耐を<br>舞いで授ける',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/tsuru.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── 絡新婦 · Jorogumo ─ Rare ─ Gold ──────────────────────────────────────
+  jorogumo: {
+    id: 'jorogumo',
+    name: '絡新婦 · Jorogumo',
+    nameShort: '絡新婦',
+    region: 'japanese',
+    subtitle: 'Spider Enchantress · Silk Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#B8860B',
+    lore: 'A silk-spinning spider spirit who weaves webs so beautiful that anyone who sees one forgets to look away.',
+    haiku: '金の糸を紡ぎ<br>美しき罠を張る<br>見れば忘れる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/jorogumo.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Colibri · コリブリ ─ Common ─ Teal ────────────────────────────────────
+  colibri: {
+    id: 'colibri',
+    name: 'Colibri · コリブリ',
+    nameShort: 'コリブリ',
+    region: 'americas',
+    subtitle: 'Jeweled Hummingbird · Hover Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#00BFA5',
+    lore: 'A hummingbird so fast it drinks from flowers that haven\'t bloomed yet, leaving a trail of impossible color.',
+    haiku: '咲く前の花<br>虹の尾を残して<br>宝石が飛ぶ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/colibri.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Robin · コマドリ ─ Common ─ Red-Orange ────────────────────────────────
+  robin: {
+    id: 'robin',
+    name: 'Robin · コマドリ',
+    nameShort: 'コマドリ',
+    region: 'european',
+    subtitle: 'Hearthfire Songbird · Ember Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#D84315',
+    lore: 'A plump little bird whose red breast holds a stolen ember from the first hearth fire, singing warmth into cold mornings.',
+    haiku: '赤い胸に<br>炉の火を隠して<br>冬に歌う鳥',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/robin.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Badger · アナグマ ─ Common ─ Charcoal ─────────────────────────────────
+  badger: {
+    id: 'badger',
+    name: 'Badger · アナグマ',
+    nameShort: 'アナグマ',
+    region: 'european',
+    subtitle: 'Earth Warden · Burrow Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#455A64',
+    lore: 'A tunnel-digger who never gives ground, never forgets a grudge, and never leaves a friend behind.',
+    haiku: '土を掘り進む<br>決して退かぬ意志<br>友を守る爪',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/badger.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Salamander · サラマンダー ─ Rare ─ Molten Orange ──────────────────────
+  salamander: {
+    id: 'salamander',
+    name: 'Salamander · サラマンダー',
+    nameShort: 'サラマンダー',
+    region: 'european',
+    subtitle: 'Fire Newt · Ember Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#E64A19',
+    lore: 'A creature born in the hottest forge flame, who sleeps in embers and leaves tiny charred footprints wherever it walks.',
+    haiku: '炉の炎から<br>生まれし小さき影<br>焦げた足跡',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/salamander.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Fenrir · フェンリル ─ Rare ─ Frost Blue ──────────────────────────────
+  fenrir: {
+    id: 'fenrir',
+    name: 'Fenrir · フェンリル',
+    nameShort: 'フェンリル',
+    region: 'european',
+    subtitle: 'Dire Wolf · Aurora Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#546E7A',
+    lore: 'A wolf cub born beneath the northern lights, whose howl shakes snow from every peak in the range.',
+    haiku: 'オーロラの下<br>雪を揺らす遠吠え<br>巨狼の子よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/fenrir.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Chameleon · カメレオン ─ Common ─ Leaf Green ──────────────────────────
+  chameleon: {
+    id: 'chameleon',
+    name: 'Chameleon · カメレオン',
+    nameShort: 'カメレオン',
+    region: 'african',
+    subtitle: 'Colour Thief · Shifting Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#43A047',
+    lore: 'A slow-moving sage who wears the world\'s palette on its skin, changing to match whatever truth surrounds it.',
+    haiku: '世界の色を<br>纏いて静かに行く<br>真実の肌よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/chameleon.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
   }
 
 };
@@ -1005,8 +1181,8 @@ const CHARACTERS = {
 // ── RARITY ROLL ──────────────────────────────────────────────────────────────
 
 const RARITY_WEIGHTS = [
-  { rarity: 'common',    weight: 65, pool: ['shiro','tanuki','kappa','kodama','capybara','armadillo','llama','hedgehog','hare','wisp','meerkat','mongoose','coati','tapir','pangolin','warthog','sprite','imp','fairy'] },
-  { rarity: 'rare',      weight: 28, pool: ['karasu','koi','oni','baku','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','anaconda','hyena','okapi','golem','djinn','basilisk','chimera','kraken'] },
+  { rarity: 'common',    weight: 65, pool: ['shiro','tanuki','kappa','kodama','tsuru','capybara','armadillo','llama','colibri','hedgehog','hare','wisp','robin','badger','meerkat','mongoose','coati','tapir','pangolin','warthog','chameleon','sprite','imp','fairy'] },
+  { rarity: 'rare',      weight: 28, pool: ['karasu','koi','oni','baku','jorogumo','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','salamander','fenrir','anaconda','hyena','okapi','golem','djinn','basilisk','chimera','kraken'] },
   { rarity: 'legendary', weight: 7,  pool: ['kyubi','raijin_wolf','chupacabra','unicorn','wyvern','phoenix'] }
 ];
 
