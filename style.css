@@ -216,7 +216,7 @@ body.dark .auth-btn-google:hover, body.dark .auth-btn-google:active { border-col
   opacity: 0; pointer-events: none;
   transition: opacity .45s ease;
 }
-.view.active { opacity: 1; pointer-events: all; }
+.view.active { opacity: 1; pointer-events: all; touch-action: pan-y; }
 
 /* ── DARK MODE TOGGLE (inline in collection header) ── */
 .dark-btn-inline {
@@ -569,10 +569,10 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 #btn-see-collection:hover, #btn-see-collection:active { color: var(--ink) !important; }
 
 /* ── COLLECTION VIEW ── */
-#view-collection { justify-content: flex-start; overflow-y: auto; }
+#view-collection { justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
 
 /* ── PROFILE VIEW ── */
-#view-profile { justify-content: flex-start; overflow-y: auto; }
+#view-profile { justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
 .collection-stats-strip {
   padding: .1rem 2rem .65rem;
   font-size: .5rem; letter-spacing: .2em;

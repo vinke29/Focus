@@ -927,11 +927,17 @@ function addToCollection(character, variant) {
 // ── NAVIGATION ───────────────────────────────────────────────────────────────
 function navigateTo(viewId) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(`view-${viewId}`).classList.add('active');
+  const el = document.getElementById(`view-${viewId}`);
+  el.classList.add('active');
   state.view = viewId;
   // Deactivate onboard slides so their pointer-events:all can't bleed through
   if (viewId !== 'onboard') {
     document.querySelectorAll('.ob-slide').forEach(s => s.classList.remove('active'));
+  }
+  // iOS PWA: kick the scroll container so WebKit doesn't freeze it
+  if (viewId === 'collection' || viewId === 'profile') {
+    el.style.overflow = 'hidden';
+    requestAnimationFrame(() => { el.style.overflow = ''; });
   }
   if (viewId === 'collection') { updateCollectionTitle(); renderTopTab(); }
   if (viewId === 'timer') { renderTimerStats(); }
@@ -1845,6 +1851,9 @@ function initModalListeners() {
 function closeCardModal() {
   document.getElementById('card-modal').classList.remove('open');
   document.getElementById('modal-card').classList.remove('flipped');
+  // iOS PWA: re-enable scroll on the view underneath after modal closes
+  const view = document.querySelector('.view.active');
+  if (view) { view.style.overflow = 'hidden'; requestAnimationFrame(() => { view.style.overflow = ''; }); }
 }
 
 // ── ONBOARDING ────────────────────────────────────────────────────────────────
