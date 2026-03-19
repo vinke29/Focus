@@ -959,7 +959,7 @@ body.dark .badge-tile-info { border-top-color: rgba(221,215,200,.1); }
   box-shadow: 0 1px 4px rgba(8,8,16,.06);
 }
 body.dark .badge-tile { background: #14141f; }
-body.dark .badge-tile-art { background: #1e1e2a; }
+body.dark .badge-tile-art { background: rgba(255,255,255,.015); }
 body.dark .badge-tile.unearned {
   border-color: rgba(221,215,200,.18);
 }
@@ -1072,7 +1072,7 @@ body.dark .badge-progress-fill { background: var(--paper); }
   color: var(--ink); opacity: .4;
   font-style: italic;
 }
-body.dark .badge-modal-front { border-bottom-color: rgba(221,215,200,.08); background: #1e1e2a; }
+body.dark .badge-modal-front { border-bottom-color: rgba(221,215,200,.08); background: #14141f; }
 body.dark .badge-modal-inner { background: #14141f; }
 body.dark .badge-modal-back { background: #14141f; }
 
