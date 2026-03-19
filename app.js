@@ -833,6 +833,7 @@ async function renderBadges() {
         <div class="badge-tile-icon">${badge.icon}</div>
         <div class="badge-tile-name">${badge.name}</div>
         <div class="badge-tile-date">${dateText}</div>
+        <div class="badge-tile-pct">${pctText}</div>
       `;
       earnedGrid.appendChild(card);
     });

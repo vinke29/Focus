@@ -921,6 +921,12 @@ body.dark .badge-tile.earned { background: rgba(221,215,200,.06); }
   margin-top: .25rem;
   text-transform: uppercase;
 }
+.badge-tile-pct {
+  font-size: .46rem; letter-spacing: .04em;
+  color: var(--blue); opacity: .75;
+  margin-top: .15rem;
+}
+body.dark .badge-tile-pct { color: #6fa3ff; }
 
 .badge-tile-desc {
   font-size: .5rem; opacity: .35;
