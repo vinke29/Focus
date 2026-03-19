@@ -911,6 +911,7 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
   width: 100%; height: 100%;
   object-fit: contain;
   display: block;
+  mix-blend-mode: multiply;
 }
 .badge-tile.unearned .badge-tile-img {
   filter: grayscale(1);

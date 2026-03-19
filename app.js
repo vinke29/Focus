@@ -718,7 +718,7 @@ function saveCollection() {
 
 // ── BADGES ──────────────────────────────────────────────────────────────────
 
-const BADGE_IMAGE_IDS = new Set(['first_session','sessions_10','sessions_25','sessions_50','sessions_100','sessions_200','sessions_365','streak_3','streak_7','streak_14','streak_30','collect_5','collect_15','collect_all','region_japan']);
+const BADGE_IMAGE_IDS = new Set(['first_session','sessions_10','sessions_25','sessions_50','sessions_100','sessions_200','sessions_365','streak_3','streak_7','streak_14','streak_30','collect_5','collect_15','collect_all','region_japan','region_americas','region_europe','region_africa','region_fantasy','first_gold','first_crimson','first_void','hours_10','hours_50','hours_100','first_rare','first_legendary']);
 
 function badgeArtHtml(badge) {
   if (BADGE_IMAGE_IDS.has(badge.id)) {
