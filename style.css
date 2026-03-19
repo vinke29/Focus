@@ -745,10 +745,6 @@ body.dark .heatmap-cell.level-3  { background: rgba(221,215,200,.36); }
 body.dark .heatmap-cell.level-4  { background: rgba(221,215,200,.52); }
 body.dark .heatmap-cell.today    { outline-color: rgba(221,215,200,.6); }
 
-/* Future cells — faint placeholder to keep grid rectangular */
-.heatmap-cell.future { opacity: .03; }
-body.dark .heatmap-cell.future { background: rgba(221,215,200,.03); }
-
 /* Period toggle buttons */
 .heatmap-toggles {
   display: inline-flex; gap: .3rem; margin-left: .6rem;

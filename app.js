@@ -349,16 +349,15 @@ function buildHeatmap(minsIn, todayStart, now, numWeeks) {
       const cd = new Date(hmStart);
       cd.setDate(cd.getDate() + w * 7 + ((dow - hmStart.getDay() + 7) % 7));
       if (cd < hmStart) { row += '<div class="heatmap-cell empty"></div>'; continue; }
-      const future = cd > now;
       const key = cd.toISOString().slice(0, 10);
-      const mins = future ? 0 : (dayMap[key] || 0);
+      const mins = cd > now ? 0 : (dayMap[key] || 0);
       let level = 0;
       if (mins > 0 && maxMins > 0) {
         const ratio = mins / maxMins;
         level = ratio <= 0.25 ? 1 : ratio <= 0.5 ? 2 : ratio <= 0.75 ? 3 : 4;
       }
-      const isT = !future && cd.getTime() === todayStart.getTime();
-      row += `<div class="heatmap-cell level-${level}${isT ? ' today' : ''}${future ? ' future' : ''}" title="${future ? '' : key + ': ' + mins + 'm'}"></div>`;
+      const isT = cd.getTime() === todayStart.getTime();
+      row += `<div class="heatmap-cell level-${level}${isT ? ' today' : ''}" title="${key}: ${mins}m"></div>`;
     }
     gridHtml += `<div class="heatmap-row">${row}</div>`;
   }
