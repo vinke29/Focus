@@ -1965,9 +1965,22 @@ function rollBoostedVariant(boost) {
   return VARIANTS[0];
 }
 
+function weightedPickFromPool(pool, lastCharId) {
+  // Reduce odds of getting the same character as last hatch
+  const weights = pool.map(id => id === lastCharId ? 0.25 : 1);
+  const total = weights.reduce((s, w) => s + w, 0);
+  let r = Math.random() * total;
+  for (let i = 0; i < pool.length; i++) {
+    r -= weights[i];
+    if (r <= 0) return pool[i];
+  }
+  return pool[pool.length - 1];
+}
+
 function rollCharacterInUnlockedRegions(durationSecs) {
   const unlocked = getUnlockedRegions();
   const { rarityShift, variantBoost } = getDurationBoost(durationSecs || 25 * 60);
+  const lastCharId = state.collection.length ? state.collection[state.collection.length - 1].id : null;
 
   const weights = RARITY_WEIGHTS.map((t, i) => ({
     ...t,
@@ -1981,13 +1994,13 @@ function rollCharacterInUnlockedRegions(durationSecs) {
     if (roll < cumulative) {
       const pool = tier.pool.filter(id => unlocked.has(CHARACTERS[id]?.region));
       if (pool.length) {
-        return { character: CHARACTERS[pool[Math.floor(Math.random() * pool.length)]], variant: rollBoostedVariant(variantBoost) };
+        return { character: CHARACTERS[weightedPickFromPool(pool, lastCharId)], variant: rollBoostedVariant(variantBoost) };
       }
     }
   }
   // Fallback: any character from any unlocked region
-  const all = Object.values(CHARACTERS).filter(c => unlocked.has(c.region));
-  return { character: all[Math.floor(Math.random() * all.length)], variant: rollBoostedVariant(variantBoost) };
+  const allIds = Object.values(CHARACTERS).filter(c => unlocked.has(c.region)).map(c => c.id);
+  return { character: CHARACTERS[weightedPickFromPool(allIds, lastCharId)], variant: rollBoostedVariant(variantBoost) };
 }
 
 function startOnboarding() {
