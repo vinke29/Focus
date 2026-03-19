@@ -44,7 +44,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/shiro.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/shiro.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -66,7 +66,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/karasu.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/karasu.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -88,7 +88,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/kyubi.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/kyubi.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -110,7 +110,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/tanuki.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/tanuki.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -132,7 +132,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/koi.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/koi.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -154,7 +154,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/kappa.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/kappa.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -176,7 +176,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/kodama.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/kodama.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -198,7 +198,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/oni.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/oni.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -220,7 +220,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/baku.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/baku.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
@@ -242,7 +242,7 @@ const CHARACTERS = {
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
     <g class="char-body">
-      <image href="/chars/raijin_wolf.png" x="40" y="30" width="240" height="320"/>
+      <image href="/chars/raijin_wolf.png" x="10" y="0" width="300" height="380"/>
     </g>
   </g>
 </svg>`
