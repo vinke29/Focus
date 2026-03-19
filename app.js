@@ -825,7 +825,7 @@ async function renderBadges() {
       const dateText = new Date(earnedMap[badge.id]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase();
       const count = stats[badge.id] || 0;
       const pct = total > 0 ? ((count / total) * 100) : 0;
-      const pctText = (pct < 1 ? '<1' : Math.round(pct)) + '%';
+      const pctText = 'earned by ' + (pct < 1 ? '<1' : Math.round(pct)) + '% of players';
 
       const card = document.createElement('div');
       card.className = 'badge-tile earned';
@@ -855,7 +855,7 @@ async function renderBadges() {
 
       const count = stats[badge.id] || 0;
       const rarePct = total > 0 ? ((count / total) * 100) : 0;
-      const rarePctText = count > 0 ? (rarePct < 1 ? '<1' : Math.round(rarePct)) + '% earned' : '';
+      const rarePctText = count > 0 ? 'earned by ' + (rarePct < 1 ? '<1' : Math.round(rarePct)) + '%' : '';
 
       let progressHtml = '';
       if (badge.progress) {
