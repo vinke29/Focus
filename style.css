@@ -860,30 +860,48 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
 }
 
 .badge-tile {
+  cursor: pointer;
+  perspective: 800px;
+  height: 220px;
+  background: transparent;
+  padding: 0;
+}
+.badge-tile-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .52s cubic-bezier(.4,0,.2,1);
+}
+.badge-tile.flipped .badge-tile-inner { transform: rotateY(180deg); }
+.badge-tile-front, .badge-tile-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   display: flex; flex-direction: column;
   align-items: center; text-align: center;
-  padding: 0;
-  background: var(--paper);
   overflow: hidden;
-  transition: transform .2s ease, box-shadow .2s ease;
+  background: var(--paper);
 }
-.badge-tile:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(8,8,16,.14), 0 2px 6px rgba(8,8,16,.08); }
-.badge-tile:active { transform: scale(.97); }
+.badge-tile-front { transform: translateZ(0); }
+.badge-tile-back {
+  transform: rotateY(180deg) translateZ(0);
+  justify-content: center;
+  gap: .35rem;
+  padding: .9rem .75rem;
+}
 
 /* Earned tiles — solid border like collection cards */
-.badge-tile.earned {
+.badge-tile.earned .badge-tile-front,
+.badge-tile.earned .badge-tile-back {
   border: 2px solid var(--ink);
   box-shadow: 0 2px 8px rgba(8,8,16,.10), 0 1px 2px rgba(8,8,16,.06);
-}
-body.dark .badge-tile.earned {
-  border-color: var(--ink);
 }
 
 /* Icon area — top portion of card */
 .badge-tile-art {
   width: 100%;
-  aspect-ratio: 1;
-  max-height: 160px;
+  height: 130px;
+  flex-shrink: 0;
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   background: rgba(8,8,16,.025);
@@ -908,22 +926,24 @@ body.dark .badge-tile.earned {
   box-shadow: 0 2px 10px rgba(201,162,39,.12);
 }
 
-/* Info area — bottom portion */
+/* Info area — front face bottom */
 .badge-tile-info {
-  flex-shrink: 0;
-  width: 100%; padding: .6rem .5rem .65rem;
+  flex: 1;
+  width: 100%; padding: .5rem .5rem .4rem;
   border-top: 1.5px solid rgba(8,8,16,.12);
   text-align: center; background: var(--paper);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 body.dark .badge-tile-info { border-top-color: rgba(221,215,200,.1); }
 
 /* Unearned tiles — dashed border like locked collection cards */
-.badge-tile.unearned {
+.badge-tile.unearned .badge-tile-front,
+.badge-tile.unearned .badge-tile-back {
   border: 2px dashed rgba(8,8,16,.28);
   box-shadow: 0 1px 4px rgba(8,8,16,.06);
 }
-.badge-tile.unearned:hover { transform: none; box-shadow: 0 1px 4px rgba(8,8,16,.06); }
-body.dark .badge-tile.unearned {
+body.dark .badge-tile.unearned .badge-tile-front,
+body.dark .badge-tile.unearned .badge-tile-back {
   border-color: rgba(221,215,200,.18);
 }
 .badge-tile.unearned .badge-tile-icon {
@@ -1913,8 +1933,9 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   /* ── BADGES ── */
   #collection-grid.badge-mode { padding: .3rem .8rem 2rem; }
   .badge-grid { grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+  .badge-tile { height: 190px; }
+  .badge-tile-art { height: 108px; }
   .badge-tile-icon { width: 56px; height: 56px; font-size: 1.6rem; }
-  .badge-tile.unearned .badge-tile-icon { width: 48px; height: 48px; font-size: 1.4rem; }
   .badge-tile-name { font-size: .7rem; }
   .badge-tile.unearned .badge-tile-name { font-size: .65rem; }
   .badge-tile-info { padding: .5rem .4rem .5rem; }
