@@ -41,7 +41,7 @@ function markMilestoneSeen(n) {
 // ── BADGES ───────────────────────────────────────────────────────────────────
 const BADGES = [
   // Sessions
-  { id: 'first_session', name: 'First Session',      desc: 'Complete your first focus session',  category: 'sessions', icon: '🕯️', check: ctx => ctx.sessions >= 1,   progress: ctx => ({ cur: ctx.sessions, max: 1 }) },
+  { id: 'first_session', name: 'First Session',      desc: 'Complete your first focus session',  category: 'sessions', icon: '🎯', check: ctx => ctx.sessions >= 1,   progress: ctx => ({ cur: ctx.sessions, max: 1 }) },
   { id: 'sessions_10',   name: 'Kindling',          desc: 'Complete 10 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 10,  progress: ctx => ({ cur: ctx.sessions, max: 10 }) },
   { id: 'sessions_25',   name: 'Steady Flame',      desc: 'Complete 25 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 25,  progress: ctx => ({ cur: ctx.sessions, max: 25 }) },
   { id: 'sessions_50',   name: 'Burning Bright',    desc: 'Complete 50 sessions',              category: 'sessions', icon: '🔥', check: ctx => ctx.sessions >= 50,  progress: ctx => ({ cur: ctx.sessions, max: 50 }) },
@@ -854,6 +854,10 @@ async function renderBadges() {
       const card = document.createElement('div');
       card.className = 'badge-tile unearned';
 
+      const count = stats[badge.id] || 0;
+      const rarePct = total > 0 ? ((count / total) * 100) : 0;
+      const rarePctText = count > 0 ? 'earned by ' + (rarePct < 1 ? '<1' : Math.round(rarePct)) + '%' : '';
+
       let progressHtml = '';
       if (badge.progress) {
         const p = badge.progress(ctx);
@@ -864,14 +868,14 @@ async function renderBadges() {
             <div class="badge-progress-bar"><div class="badge-progress-fill" style="width:${pct}%"></div></div>
             <div class="badge-progress-text">${p.cur}${unit}/${p.max}${unit}</div>
           </div>`;
-      } else {
-        progressHtml = `<div class="badge-tile-desc">${badge.desc}</div>`;
       }
 
       card.innerHTML = `
         <div class="badge-tile-icon">${badge.icon}</div>
         <div class="badge-tile-name">${badge.name}</div>
+        <div class="badge-tile-desc">${badge.desc}</div>
         ${progressHtml}
+        ${rarePctText ? `<div class="badge-tile-pct">${rarePctText}</div>` : ''}
       `;
       unearnedGrid.appendChild(card);
     });
