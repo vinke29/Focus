@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Kokoon</title>
+<meta name="description" content="Stories, tips, and ideas on staying focused — from the team behind Kokoon.">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique+Soft&family=Noto+Serif+JP:wght@200;400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #080810; --paper: #fdf4e5; --muted: rgba(8,8,16,.42); }
+html { height: 100%; }
+body { min-height: 100%; background: var(--paper); font-family: 'Noto Serif JP', serif; color: var(--ink); display: flex; flex-direction: column; }
+.page-nav { padding: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+.page-nav a { font-size: .65rem; letter-spacing: .12em; text-transform: lowercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.page-nav a:hover { color: var(--ink); }
+.page-nav .brand { font-family: 'Zen Antique Soft', serif; font-size: 1.2rem; letter-spacing: .1em; color: var(--ink); }
+.page { flex: 1; max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem 4rem; width: 100%; }
+.page h1 { font-family: 'Zen Antique Soft', serif; font-size: 1.8rem; letter-spacing: .08em; font-weight: 400; margin-bottom: 2.5rem; }
+.post-list { list-style: none; }
+.post-item { border-bottom: 1px solid rgba(8,8,16,.06); padding: 1.8rem 0; }
+.post-item:first-child { padding-top: 0; }
+.post-item:last-child { border-bottom: none; }
+.post-item a { text-decoration: none; color: var(--ink); display: block; }
+.post-item a:hover .post-title { opacity: .65; }
+.post-date { font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
+.post-title { font-size: 1.1rem; font-weight: 700; line-height: 1.5; margin-bottom: .5rem; transition: opacity .2s; }
+.post-excerpt { font-size: .82rem; line-height: 1.8; font-weight: 200; color: var(--ink); opacity: .65; }
+.site-footer { border-top: 1px solid rgba(8,8,16,.08); padding: 1.8rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.6rem; }
+.site-footer a { font-size: .62rem; font-weight: 200; letter-spacing: .14em; text-transform: lowercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.site-footer a:hover { color: var(--ink); }
+.site-footer .footer-app { color: var(--ink); font-weight: 400; }
+@media (max-width: 480px) {
+  .post-title { font-size: .95rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="page-nav">
+  <a href="/" class="brand">Kokoon</a>
+  <a href="/">&larr; home</a>
+</nav>
+
+<main class="page">
+  <h1>Blog</h1>
+
+  <ul class="post-list">
+    <li class="post-item">
+      <a href="/blog/homeschool-focus-timer">
+        <div class="post-date">March 19, 2026</div>
+        <div class="post-title">How a Homeschool Mom Uses a Focus Timer to Keep Her Kids on Track</div>
+        <div class="post-excerpt">When traditional timers felt like punishment, one family found that hatching creatures turned focus time into something the kids actually looked forward to.</div>
+      </a>
+    </li>
+    <li class="post-item">
+      <a href="/blog/pomodoro-with-rewards">
+        <div class="post-date">March 17, 2026</div>
+        <div class="post-title">Why I Replaced My Pomodoro App with a Creature Collector</div>
+        <div class="post-excerpt">After years of abandoned focus apps, a software engineer explains how adding a collecting mechanic finally made the Pomodoro technique stick.</div>
+      </a>
+    </li>
+    <li class="post-item">
+      <a href="/blog/best-focus-apps-2026">
+        <div class="post-date">March 15, 2026</div>
+        <div class="post-title">The 5 Best Focus Apps in 2026 (And Why Gamification Actually Works)</div>
+        <div class="post-excerpt">A look at the top focus and productivity apps this year — and the research behind why turning work into a game helps you do more of it.</div>
+      </a>
+    </li>
+    <li class="post-item">
+      <a href="/blog/deep-work-sprints">
+        <div class="post-date">March 12, 2026</div>
+        <div class="post-title">How Our Team Uses Focus Sprints for Deep Work</div>
+        <div class="post-excerpt">A small design studio shares how timed focus sessions and a shared creature collection transformed their afternoon productivity.</div>
+      </a>
+    </li>
+    <li class="post-item">
+      <a href="/blog/science-of-rewards-and-focus">
+        <div class="post-date">March 10, 2026</div>
+        <div class="post-title">The Science Behind Why Small Rewards Make You Focus Better</div>
+        <div class="post-excerpt">Dopamine, variable rewards, and the completion instinct — what psychology tells us about why a tiny reward at the end of a work session changes everything.</div>
+      </a>
+    </li>
+  </ul>
+</main>
+
+<footer class="site-footer">
+  <a href="/pricing">pricing</a>
+  <a href="/faq">faq</a>
+  <a href="/blog">blog</a>
+  <a href="/privacy">privacy</a>
+  <a href="/terms">terms</a>
+  <a href="/contact">contact</a>
+  <a href="/app" class="footer-app">open app &rarr;</a>
+</footer>
+
+</body>
+</html>
