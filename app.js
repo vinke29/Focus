@@ -333,6 +333,7 @@ function renderStatsTab() {
   const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const startOfWeek = d => { const s = startOfDay(d); s.setDate(s.getDate() - s.getDay()); return s; };
   const startOfMonth = d => new Date(d.getFullYear(), d.getMonth(), 1);
+  const startOfYear = d => new Date(d.getFullYear(), 0, 1);
 
   const minsIn = (from, to) => sessions
     .filter(s => s.timestamp >= from.getTime() && s.timestamp < to.getTime())
@@ -347,6 +348,8 @@ function renderStatsTab() {
   const todayMins = minsIn(todayStart, tomorrow);
   const weekMins  = minsIn(weekStart, now);
   const monthMins = minsIn(monthStart, now);
+  const yearStart = startOfYear(now);
+  const yearMins  = minsIn(yearStart, now);
 
   // Previous periods
   const yesterdayStart = new Date(todayStart); yesterdayStart.setDate(yesterdayStart.getDate() - 1);
@@ -356,6 +359,8 @@ function renderStatsTab() {
   const yesterdayMins  = minsIn(yesterdayStart, todayStart);
   const lastWeekMins   = minsIn(lastWeekStart, weekStart);
   const lastMonthMins  = minsIn(lastMonthStart, monthStart);
+  const lastYearStart  = new Date(yearStart); lastYearStart.setFullYear(lastYearStart.getFullYear() - 1);
+  const lastYearMins   = minsIn(lastYearStart, yearStart);
 
   const streak    = calcStreak();
   const totalMins = sessions.reduce((s, x) => s + x.duration, 0);
@@ -388,11 +393,13 @@ function renderStatsTab() {
   const todayDelta  = deltaText(todayMins, yesterdayMins, 'yesterday');
   const weekDelta   = deltaText(weekMins, lastWeekMins, 'week');
   const monthDelta  = deltaText(monthMins, lastMonthMins, 'month');
+  const yearDelta   = deltaText(yearMins, lastYearMins, 'year');
 
   const focusRows = [
     { value: formatHours(todayMins),  label: 'today',      delta: todayDelta },
     { value: formatHours(weekMins),   label: 'this week',  delta: weekDelta },
     { value: formatHours(monthMins),  label: 'this month', delta: monthDelta },
+    { value: formatHours(yearMins),   label: 'this year',  delta: yearDelta },
   ];
   const focusLines = focusRows.map(r =>
     `<div class="stats-line">
@@ -400,27 +407,61 @@ function renderStatsTab() {
     </div>`
   ).join('');
 
-  // 7-day bar chart
-  const dayNames = ['S','M','T','W','T','F','S'];
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(todayStart); d.setDate(d.getDate() - i);
-    const next = new Date(d); next.setDate(next.getDate() + 1);
-    days.push({ label: dayNames[d.getDay()], mins: minsIn(d, next), isToday: i === 0 });
-  }
-  const maxDay = Math.max(...days.map(d => d.mins), 1);
-  const barMaxPx = 72;
+  // Contribution heatmap — last 15 weeks
+  const NUM_WEEKS = 15;
+  const hmDayLabels = ['','M','','W','','F',''];
 
-  const barsHtml = days.map(d => {
-    const h = d.mins > 0 ? Math.max(4, Math.round((d.mins / maxDay) * barMaxPx)) : 0;
-    const cls = d.isToday ? 'today' : (d.mins > 0 ? 'has-data' : '');
-    const minLabel = d.mins > 0 ? `<div class="stats-bar-mins">${d.mins}m</div>` : '';
-    return `<div class="stats-bar-col">
-      ${minLabel}
-      <div class="stats-bar ${cls}" style="height:${h}px"></div>
-      <div class="stats-bar-label ${d.isToday ? 'today' : ''}">${d.label}</div>
-    </div>`;
-  }).join('');
+  // End on this Saturday, start NUM_WEEKS back
+  const todayDow = now.getDay();
+  const hmEnd = new Date(todayStart); hmEnd.setDate(hmEnd.getDate() + (6 - todayDow));
+  const hmStart = new Date(hmEnd); hmStart.setDate(hmStart.getDate() - (NUM_WEEKS * 7 - 1));
+
+  // Build daily minutes map
+  const dayMap = {};
+  let maxMins = 0;
+  for (let d = new Date(hmStart); d <= hmEnd; d.setDate(d.getDate() + 1)) {
+    const next = new Date(d); next.setDate(next.getDate() + 1);
+    const m = minsIn(d, next);
+    dayMap[d.toISOString().slice(0, 10)] = m;
+    if (m > maxMins) maxMins = m;
+  }
+
+  // Month labels row
+  const hmMonths = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let monthRow = '<div class="heatmap-day-label"></div>';
+  let lastMo = -1;
+  for (let w = 0; w < NUM_WEEKS; w++) {
+    const cd = new Date(hmStart); cd.setDate(cd.getDate() + w * 7);
+    const mo = cd.getMonth();
+    monthRow += `<div class="heatmap-month-label">${mo !== lastMo ? hmMonths[mo] : ''}</div>`;
+    lastMo = mo;
+  }
+
+  // Grid rows: Mon–Sun order [1,2,3,4,5,6,0]
+  const rowOrder = [1, 2, 3, 4, 5, 6, 0];
+  let gridHtml = `<div class="heatmap-row">${monthRow}</div>`;
+  for (const dow of rowOrder) {
+    let row = `<div class="heatmap-day-label">${hmDayLabels[dow]}</div>`;
+    for (let w = 0; w < NUM_WEEKS; w++) {
+      const cd = new Date(hmStart);
+      cd.setDate(cd.getDate() + w * 7 + ((dow - hmStart.getDay() + 7) % 7));
+      if (cd > now || cd < hmStart) {
+        row += '<div class="heatmap-cell empty"></div>';
+        continue;
+      }
+      const key = cd.toISOString().slice(0, 10);
+      const mins = dayMap[key] || 0;
+      let level = 0;
+      if (mins > 0 && maxMins > 0) {
+        const ratio = mins / maxMins;
+        level = ratio <= 0.25 ? 1 : ratio <= 0.5 ? 2 : ratio <= 0.75 ? 3 : 4;
+      }
+      const isT = cd.getTime() === todayStart.getTime();
+      row += `<div class="heatmap-cell level-${level}${isT ? ' today' : ''}" title="${key}: ${mins}m"></div>`;
+    }
+    gridHtml += `<div class="heatmap-row">${row}</div>`;
+  }
+  const heatmapHtml = `<div class="heatmap-grid">${gridHtml}</div>`;
 
   // Streak + journey lines
   let journeyLines = '';
@@ -447,8 +488,8 @@ function renderStatsTab() {
     </div>
 
     <div class="stats-section">
-      <div class="stats-section-label">last 7 days</div>
-      <div class="stats-bars">${barsHtml}</div>
+      <div class="stats-section-label">activity</div>
+      ${heatmapHtml}
     </div>
 
     <div class="stats-section">
