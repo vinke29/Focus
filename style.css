@@ -923,6 +923,8 @@ body.dark .badge-tile-info { border-top-color: rgba(221,215,200,.1); }
   box-shadow: 0 1px 4px rgba(8,8,16,.06);
 }
 body.dark .badge-tile { background: #14141f; }
+body.dark .badge-tile-art { background: #14141f; }
+body.dark .badge-tile-img { filter: invert(1) hue-rotate(180deg); opacity: .85; }
 body.dark .badge-tile.unearned {
   border-color: rgba(221,215,200,.18);
 }
@@ -976,14 +978,14 @@ body.dark .badge-progress-fill { background: var(--paper); }
 
 /* ── BADGE MODAL ── */
 .badge-modal-inner { width: min(300px, 88vw); }
-.badge-modal-card { aspect-ratio: 300 / 340; }
+.badge-modal-card { aspect-ratio: 1 / 1; }
 .badge-modal-front {
   display: flex; align-items: center; justify-content: center;
   background: var(--paper);
   border-bottom: 1px solid rgba(8,8,16,.08);
 }
 .badge-modal-art {
-  width: 75%; height: 75%;
+  width: 85%; height: 85%;
   display: flex; align-items: center; justify-content: center;
 }
 .badge-modal-art img {
@@ -1028,7 +1030,8 @@ body.dark .badge-progress-fill { background: var(--paper); }
   color: var(--ink); opacity: .4;
   font-style: italic;
 }
-body.dark .badge-modal-front { border-bottom-color: rgba(221,215,200,.08); }
+body.dark .badge-modal-front { border-bottom-color: rgba(221,215,200,.08); background: #14141f; }
+body.dark .badge-modal-art img { filter: invert(1) hue-rotate(180deg); opacity: .85; }
 body.dark .badge-modal-inner { background: #14141f; }
 body.dark .badge-modal-back { background: #14141f; }
 
