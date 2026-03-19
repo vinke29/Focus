@@ -1174,6 +1174,182 @@ const CHARACTERS = {
     </g>
   </g>
 </svg>`
+  },
+
+  // ── Honey Badger · ラーテル ─ Rare ─ Steel Silver ─────────────────────────
+  honey_badger: {
+    id: 'honey_badger',
+    name: 'Honey Badger · ラーテル',
+    nameShort: 'ラーテル',
+    region: 'african',
+    subtitle: 'Fearless One · Defiant Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#78909C',
+    lore: 'The creature that fears nothing — not cobra, not lion, not thunder. It simply does not care.',
+    haiku: '恐れを知らぬ<br>蛇も獅子も退ける<br>鋼の意志よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/honey_badger.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Hippo · カバ ─ Rare ─ Slate Blue ──────────────────────────────────────
+  hippo: {
+    id: 'hippo',
+    name: 'Hippo · カバ',
+    nameShort: 'カバ',
+    region: 'african',
+    subtitle: 'River Throne · Calm Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#607D8B',
+    lore: 'Looks peaceful floating in the shallows, but nothing in Africa is foolish enough to test that calm.',
+    haiku: '静かな水面<br>穏やかに見えるが<br>怒れば王よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/hippo.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Serval · サーバル ─ Rare ─ Golden Amber ───────────────────────────────
+  serval: {
+    id: 'serval',
+    name: 'Serval · サーバル',
+    nameShort: 'サーバル',
+    region: 'african',
+    subtitle: 'Grassland Shadow · Leap Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#F9A825',
+    lore: 'A wild cat who hears mice beneath the earth and leaps higher than any creature its size should.',
+    haiku: '草原の影<br>地の下の音を聞き<br>天へと跳ぶ猫',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/serval.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Tau · タウ ─ Legendary ─ Pale Gold ────────────────────────────────────
+  tau: {
+    id: 'tau',
+    name: 'Tau · タウ',
+    nameShort: 'タウ',
+    region: 'african',
+    subtitle: 'White Lion Spirit · Moonborn Form',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#FFB300',
+    lore: 'A pale lion cub with fur the colour of dry bone, said to appear only once a generation on the plains. Born under a blood moon, it carries the silence of the savanna at midnight.',
+    haiku: '白き毛並みに<br>血の月の光宿す<br>草原の沈黙',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/tau.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Gorilla · ゴリラ ─ Rare ─ Deep Charcoal ──────────────────────────────
+  gorilla: {
+    id: 'gorilla',
+    name: 'Gorilla · ゴリラ',
+    nameShort: 'ゴリラ',
+    region: 'african',
+    subtitle: 'Mountain Guardian · Stillness Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#37474F',
+    lore: 'A gentle giant who sits in stillness for hours, watching the mist roll through the volcanic peaks — moving only when something truly matters.',
+    haiku: '霧の山頂<br>静かに座る巨人<br>動くは真の時',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/gorilla.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Myconid · マイコニド ─ Common ─ Earthy Mauve ─────────────────────────
+  myconid: {
+    id: 'myconid',
+    name: 'Myconid · マイコニド',
+    nameShort: 'マイコニド',
+    region: 'fantasy',
+    subtitle: 'Mushroom Spirit · Spore Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#8E6B5E',
+    lore: 'A living mushroom who spreads calm through invisible spores, turning anxious rooms into peaceful groves.',
+    haiku: '胞子を撒いて<br>不安を静める茸<br>森の安らぎ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/myconid.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Mimic · ミミック ─ Common ─ Old Brass ─────────────────────────────────
+  mimic: {
+    id: 'mimic',
+    name: 'Mimic · ミミック',
+    nameShort: 'ミミック',
+    region: 'fantasy',
+    subtitle: 'Treasure Chest · Hoard Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#A1887F',
+    lore: 'A tiny chest with teeth and one big eye that hoards shiny distractions so you don\'t have to.',
+    haiku: '光る物を<br>隠す小さな箱よ<br>歯を見せ笑う',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/mimic.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Wyrm · ワーム ─ Legendary ─ Deep Amethyst ────────────────────────────
+  wyrm: {
+    id: 'wyrm',
+    name: 'Wyrm · ワーム',
+    nameShort: 'ワーム',
+    region: 'fantasy',
+    subtitle: 'Ancient Dragon · Hatchling Form',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#4A148C',
+    lore: 'The last egg of the oldest bloodline, cracked open after a thousand years of silence — small now, but the earth trembled when it yawned.',
+    haiku: '千年の卵<br>割れて目覚める古竜<br>大地が震える',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/wyrm.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
   }
 
 };
@@ -1181,9 +1357,9 @@ const CHARACTERS = {
 // ── RARITY ROLL ──────────────────────────────────────────────────────────────
 
 const RARITY_WEIGHTS = [
-  { rarity: 'common',    weight: 65, pool: ['shiro','tanuki','kappa','kodama','tsuru','capybara','armadillo','llama','colibri','hedgehog','hare','wisp','robin','badger','meerkat','mongoose','coati','tapir','pangolin','warthog','chameleon','sprite','imp','fairy'] },
-  { rarity: 'rare',      weight: 28, pool: ['karasu','koi','oni','baku','jorogumo','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','salamander','fenrir','anaconda','hyena','okapi','golem','djinn','basilisk','chimera','kraken'] },
-  { rarity: 'legendary', weight: 7,  pool: ['kyubi','raijin_wolf','chupacabra','unicorn','wyvern','phoenix'] }
+  { rarity: 'common',    weight: 65, pool: ['shiro','tanuki','kappa','kodama','tsuru','capybara','armadillo','llama','colibri','hedgehog','hare','wisp','robin','badger','meerkat','mongoose','coati','tapir','pangolin','warthog','chameleon','sprite','imp','fairy','myconid','mimic'] },
+  { rarity: 'rare',      weight: 28, pool: ['karasu','koi','oni','baku','jorogumo','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','salamander','fenrir','anaconda','hyena','okapi','honey_badger','hippo','serval','gorilla','golem','djinn','basilisk','chimera','kraken'] },
+  { rarity: 'legendary', weight: 7,  pool: ['kyubi','raijin_wolf','chupacabra','unicorn','wyvern','phoenix','tau','wyrm'] }
 ];
 
 // ── VARIANT ROLL ──────────────────────────────────────────────────────────────
