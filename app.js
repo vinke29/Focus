@@ -853,6 +853,10 @@ async function renderBadges() {
       const card = document.createElement('div');
       card.className = 'badge-tile unearned';
 
+      const count = stats[badge.id] || 0;
+      const rarePct = total > 0 ? ((count / total) * 100) : 0;
+      const rarePctText = count > 0 ? (rarePct < 1 ? '<1' : Math.round(rarePct)) + '% earned' : '';
+
       let progressHtml = '';
       if (badge.progress) {
         const p = badge.progress(ctx);
@@ -871,6 +875,7 @@ async function renderBadges() {
         <div class="badge-tile-icon">${badge.icon}</div>
         <div class="badge-tile-name">${badge.name}</div>
         ${progressHtml}
+        ${rarePctText ? `<div class="badge-tile-pct">${rarePctText}</div>` : ''}
       `;
       unearnedGrid.appendChild(card);
     });
