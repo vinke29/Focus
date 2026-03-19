@@ -131,17 +131,13 @@ function renderSplitsChart(data) {
 }
 
 function renderSignupsChart(data) {
-  renderBarChart('chart-signups', data,
-    d => formatDay(d.day),
-    d => d.signups
-  );
+  const label = currentPeriod === 'all' ? d => 'wk ' + formatDay(d.day) : d => formatDay(d.day);
+  renderBarChart('chart-signups', data, label, d => d.signups);
 }
 
 function renderDAUChart(data) {
-  renderBarChart('chart-dau', data,
-    d => formatDay(d.day),
-    d => d.active_users
-  );
+  const label = currentPeriod === 'all' ? d => 'wk ' + formatDay(d.day) : d => formatDay(d.day);
+  renderBarChart('chart-dau', data, label, d => d.active_users);
 }
 
 function renderStreaksChart(data) {
@@ -160,11 +156,12 @@ function renderLeaders(data) {
       <td>${i + 1}</td>
       <td>${esc(d.name)}</td>
       <td>${d.unique_chars}/${TOTAL_CHARS} <span class="completion-bar" style="width:${barW}px"></span></td>
+      <td><span style="opacity:.7">${d.common || 0}</span><span style="opacity:.3">/19</span> · <span style="color:var(--blue)">${d.rare || 0}</span><span style="opacity:.3">/19</span> · <span style="color:var(--gold)">${d.legendary || 0}</span><span style="opacity:.3">/6</span></td>
       <td>${d.total_animals}</td>
     </tr>`;
   }).join('');
   el.innerHTML = `<table class="admin-table">
-    <thead><tr><th>#</th><th>name</th><th>unique</th><th>total</th></tr></thead>
+    <thead><tr><th>#</th><th>name</th><th>unique</th><th>C · R · L</th><th>total</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }

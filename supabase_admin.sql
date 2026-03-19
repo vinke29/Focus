@@ -80,19 +80,28 @@ END;
 $$;
 
 
--- C: Top collectors (closest to full collection)
+-- C: Top collectors with rarity breakdown
+-- Common pool (19): shiro,tanuki,kappa,kodama,capybara,armadillo,llama,hedgehog,hare,wisp,meerkat,mongoose,coati,tapir,pangolin,warthog,sprite,imp,fairy
+-- Rare pool (19):   karasu,koi,oni,baku,axolotl,quetzal,condor,jaguar,stag,gryphon,selkie,anaconda,hyena,okapi,golem,djinn,basilisk,chimera,kraken
+-- Legendary pool (6): kyubi,raijin_wolf,chupacabra,unicorn,wyvern,phoenix
 CREATE OR REPLACE FUNCTION admin_collection_leaders(p_period text DEFAULT 'all')
 RETURNS json
 LANGUAGE plpgsql SECURITY DEFINER
 AS $$
 DECLARE
   result json;
+  common_ids text[] := ARRAY['shiro','tanuki','kappa','kodama','capybara','armadillo','llama','hedgehog','hare','wisp','meerkat','mongoose','coati','tapir','pangolin','warthog','sprite','imp','fairy'];
+  rare_ids text[]   := ARRAY['karasu','koi','oni','baku','axolotl','quetzal','condor','jaguar','stag','gryphon','selkie','anaconda','hyena','okapi','golem','djinn','basilisk','chimera','kraken'];
+  legend_ids text[] := ARRAY['kyubi','raijin_wolf','chupacabra','unicorn','wyvern','phoenix'];
 BEGIN
   PERFORM _assert_admin();
   SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
   FROM (
     SELECT c.user_id, p.name,
            count(DISTINCT c.char_id) as unique_chars,
+           count(DISTINCT c.char_id) FILTER (WHERE c.char_id = ANY(common_ids)) as common,
+           count(DISTINCT c.char_id) FILTER (WHERE c.char_id = ANY(rare_ids)) as rare,
+           count(DISTINCT c.char_id) FILTER (WHERE c.char_id = ANY(legend_ids)) as legendary,
            count(*) as total_animals
     FROM public.collection c
     JOIN public.profiles p ON p.id = c.user_id
@@ -135,19 +144,20 @@ END;
 $$;
 
 
--- E: Sign-ups over time (grouped by day)
+-- E: Sign-ups over time (grouped by day or week depending on period)
 CREATE OR REPLACE FUNCTION admin_signups_over_time(p_period text DEFAULT 'all')
 RETURNS json
 LANGUAGE plpgsql SECURITY DEFINER
 AS $$
 DECLARE
   cutoff timestamptz := _period_cutoff(p_period);
+  bucket text := CASE WHEN p_period = 'all' THEN 'week' ELSE 'day' END;
   result json;
 BEGIN
   PERFORM _assert_admin();
   SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
   FROM (
-    SELECT date_trunc('day', created_at)::date as day, count(*) as signups
+    SELECT date_trunc(bucket, created_at)::date as day, count(*) as signups
     FROM public.profiles
     WHERE created_at >= cutoff
     GROUP BY day
@@ -188,19 +198,20 @@ END;
 $$;
 
 
--- G: Daily active users trend
+-- G: Active users trend (grouped by day or week depending on period)
 CREATE OR REPLACE FUNCTION admin_daily_active_users(p_period text DEFAULT 'month')
 RETURNS json
 LANGUAGE plpgsql SECURITY DEFINER
 AS $$
 DECLARE
   cutoff timestamptz := _period_cutoff(p_period);
+  bucket text := CASE WHEN p_period = 'all' THEN 'week' ELSE 'day' END;
   result json;
 BEGIN
   PERFORM _assert_admin();
   SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
   FROM (
-    SELECT date_trunc('day', completed_at)::date as day,
+    SELECT date_trunc(bucket, completed_at)::date as day,
            count(DISTINCT user_id) as active_users
     FROM public.sessions
     WHERE completed_at >= cutoff
