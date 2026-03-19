@@ -4,6 +4,7 @@ const VARIANT_NEXT = { standard: 'gold', gold: 'crimson', crimson: 'void' };
 // Drop hint: per-character odds (rarity × variant ÷ pool size)
 // Pools: common 12 chars, rare 11, legendary 5. Variant weights: std 1000, gold 100, crimson 10, void 1 / 1111 total
 const DROP_HINTS = {
+  'common-standard':   '~1 in 19 sessions',
   'rare-standard':     '~1 in 44 sessions',
   'legendary-standard':'~1 in 80 sessions',
   'common-gold':       '~1 in 200 sessions',
@@ -1809,7 +1810,7 @@ function updateModalRarity(char, variant) {
   const rarityTag  = document.getElementById('modal-rarity-tag');
   const variantTag = document.getElementById('modal-variant-tag');
 
-  rarityTag.textContent = char.rarityLabel;
+  rarityTag.textContent = char.rarityLabel.replace(/[◇◈✦]\s*/g, '');
   rarityTag.style.color = char.rarity === 'legendary' ? '#b8860b'
                         : char.rarity === 'rare'      ? '#6a7b8b'
                         : 'inherit';
