@@ -269,7 +269,7 @@ function formatHours(totalMinutes) {
 function renderTopTab() {
   const tab = state.topTab || 'collection';
 
-  document.querySelectorAll('.top-tab').forEach(b =>
+  document.querySelectorAll('.top-tab, .bottom-tab').forEach(b =>
     b.classList.toggle('active', b.dataset.top === tab)
   );
 
@@ -380,7 +380,7 @@ function renderStatsTab() {
     const diff = current - previous;
     if (diff === 0 || previous === 0) return '';
     const word = diff > 0 ? 'more' : 'less';
-    return `<span class="stats-delta">${formatHours(Math.abs(diff))} ${word} than last ${label}</span>`;
+    return `${formatHours(Math.abs(diff))} ${word} than last ${label}`;
   }
 
   // Focus narrative
@@ -389,9 +389,21 @@ function renderStatsTab() {
   const monthDelta  = deltaText(monthMins, lastMonthMins, 'month');
 
   let focusLines = '';
-  focusLines += `<div class="stats-line"><span class="stats-value">${formatHours(todayMins)}</span> today${todayDelta ? ' · ' + todayDelta : ''}</div>`;
-  focusLines += `<div class="stats-line"><span class="stats-value">${formatHours(weekMins)}</span> this week${weekDelta ? ' · ' + weekDelta : ''}</div>`;
-  focusLines += `<div class="stats-line"><span class="stats-value">${formatHours(monthMins)}</span> this month${monthDelta ? ' · ' + monthDelta : ''}</div>`;
+  focusLines += `<div class="stats-card">
+    <div class="stats-card-value">${formatHours(todayMins)}</div>
+    <div class="stats-card-label">today</div>
+    ${todayDelta ? `<div class="stats-delta">${todayDelta}</div>` : ''}
+  </div>`;
+  focusLines += `<div class="stats-card">
+    <div class="stats-card-value">${formatHours(weekMins)}</div>
+    <div class="stats-card-label">this week</div>
+    ${weekDelta ? `<div class="stats-delta">${weekDelta}</div>` : ''}
+  </div>`;
+  focusLines += `<div class="stats-card">
+    <div class="stats-card-value">${formatHours(monthMins)}</div>
+    <div class="stats-card-label">this month</div>
+    ${monthDelta ? `<div class="stats-delta">${monthDelta}</div>` : ''}
+  </div>`;
 
   // 7-day bar chart
   const dayNames = ['S','M','T','W','T','F','S'];
@@ -415,25 +427,33 @@ function renderStatsTab() {
     </div>`;
   }).join('');
 
-  // Streak narrative
-  let streakNarrative = '';
+  // Streak + journey cards
+  let journeyCards = '';
   if (streak > 0) {
-    streakNarrative += `<div class="stats-line"><span class="stats-value">${streak} day${streak !== 1 ? 's' : ''}</span> current streak</div>`;
-    if (streak >= state.maxStreak) {
-      streakNarrative += `<div class="stats-line stats-highlight">this is your best streak yet</div>`;
-    } else {
-      const gap = state.maxStreak - streak;
-      streakNarrative += `<div class="stats-line">${gap} day${gap !== 1 ? 's' : ''} away from your best streak of <span class="stats-value">${state.maxStreak}</span></div>`;
-    }
+    let streakSub = 'current streak';
+    if (streak >= state.maxStreak) streakSub = 'your best streak';
+    else streakSub = `best: ${state.maxStreak} days`;
+    journeyCards += `<div class="stats-card">
+      <div class="stats-card-value">${streak}</div>
+      <div class="stats-card-label">day streak</div>
+      <div class="stats-delta">${streakSub}</div>
+    </div>`;
   }
-  streakNarrative += `<div class="stats-line"><span class="stats-value">${totalSess}</span> session${totalSess !== 1 ? 's' : ''} · <span class="stats-value">${formatHours(totalMins)}</span> total</div>`;
+  journeyCards += `<div class="stats-card">
+    <div class="stats-card-value">${totalSess}</div>
+    <div class="stats-card-label">session${totalSess !== 1 ? 's' : ''}</div>
+  </div>`;
+  journeyCards += `<div class="stats-card">
+    <div class="stats-card-value">${formatHours(totalMins)}</div>
+    <div class="stats-card-label">total focus</div>
+  </div>`;
 
   el.innerHTML = `
     <div class="stats-headline">${headline}</div>
 
     <div class="stats-section">
-      <div class="stats-section-label">you've focused</div>
-      ${focusLines}
+      <div class="stats-section-label">focus time</div>
+      <div class="stats-cards-row">${focusLines}</div>
     </div>
 
     <div class="stats-section">
@@ -443,7 +463,7 @@ function renderStatsTab() {
 
     <div class="stats-section">
       <div class="stats-section-label">your journey</div>
-      ${streakNarrative}
+      <div class="stats-cards-row">${journeyCards}</div>
     </div>
   `;
 }
@@ -2430,7 +2450,7 @@ async function init() {
   });
 
   // Region filter tabs (including badges tab)
-  document.querySelectorAll('.top-tab').forEach(btn => {
+  document.querySelectorAll('.top-tab, .bottom-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       state.topTab = btn.dataset.top;
       renderTopTab();
