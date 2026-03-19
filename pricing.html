@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pricing — Kokoon</title>
-<meta name="description" content="Kokoon pricing. Free for everyone.">
+<meta name="description" content="Kokoon pricing. One-time purchase, yours forever. No subscriptions.">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=Zen+Antique+Soft&family=Noto+Serif+JP:wght@200;400;700&display=swap" rel="stylesheet">
 <style>
@@ -17,12 +17,17 @@ body { min-height: 100%; background: var(--paper); font-family: 'Noto Serif JP',
 .page-nav a:hover { color: var(--ink); }
 .page-nav .brand { font-family: 'Zen Antique Soft', serif; font-size: 1.2rem; letter-spacing: .1em; color: var(--ink); }
 .page { flex: 1; max-width: 640px; margin: 0 auto; padding: 2rem 1.5rem 4rem; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.page h1 { font-family: 'Zen Antique Soft', serif; font-size: 1.8rem; letter-spacing: .08em; font-weight: 400; margin-bottom: 1.5rem; }
-.price-tag { font-family: 'Zen Antique Soft', serif; font-size: 3.5rem; letter-spacing: .04em; margin-bottom: .5rem; }
-.price-label { font-size: .75rem; letter-spacing: .1em; color: var(--muted); margin-bottom: 2.5rem; }
+.page h1 { font-family: 'Zen Antique Soft', serif; font-size: 1.8rem; letter-spacing: .08em; font-weight: 400; margin-bottom: 2rem; }
+.price-tag { font-family: 'Zen Antique Soft', serif; font-size: 3.5rem; letter-spacing: .04em; margin-bottom: .3rem; }
+.price-label { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 2.5rem; }
 .page p { font-size: .88rem; line-height: 1.9; font-weight: 200; color: var(--ink); margin-bottom: 1rem; max-width: 420px; }
-.page .cta { display: inline-block; font-family: 'Noto Serif JP', serif; font-size: .72rem; font-weight: 400; letter-spacing: .18em; text-transform: lowercase; color: var(--paper); background: var(--ink); padding: .75rem 2.2rem; text-decoration: none; transition: opacity .2s; margin-top: 1.5rem; }
+.includes { list-style: none; text-align: left; max-width: 320px; margin: .5rem 0 1.5rem; }
+.includes li { font-size: .82rem; font-weight: 200; line-height: 1.6; padding: .45rem 0; border-bottom: 1px solid rgba(8,8,16,.06); }
+.includes li:last-child { border-bottom: none; }
+.includes li::before { content: '\2713'; margin-right: .6rem; opacity: .35; font-size: .7rem; }
+.page .cta { display: inline-block; font-family: 'Noto Serif JP', serif; font-size: .72rem; font-weight: 400; letter-spacing: .18em; text-transform: lowercase; color: var(--paper); background: var(--ink); padding: .75rem 2.2rem; text-decoration: none; transition: opacity .2s; margin-top: 1rem; }
 .page .cta:hover { opacity: .78; }
+.no-sub { font-size: .68rem; opacity: .35; margin-top: 1rem; letter-spacing: .04em; }
 .site-footer { border-top: 1px solid rgba(8,8,16,.08); padding: 1.8rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.6rem; }
 .site-footer a { font-size: .62rem; font-weight: 200; letter-spacing: .14em; text-transform: lowercase; color: var(--muted); text-decoration: none; transition: color .2s; }
 .site-footer a:hover { color: var(--ink); }
@@ -38,11 +43,22 @@ body { min-height: 100%; background: var(--paper); font-family: 'Noto Serif JP',
 
 <main class="page">
   <h1>Pricing</h1>
-  <div class="price-tag">Free</div>
-  <p class="price-label">forever</p>
-  <p>Kokoon is completely free. All 44 creatures, all regions, all features — no paywalls, no ads, no premium tiers.</p>
-  <p>We built Kokoon because we wanted a focus tool that felt rewarding. We hope you enjoy it.</p>
-  <a href="/app" class="cta">start focusing &rarr;</a>
+  <div class="price-tag">$4.99</div>
+  <p class="price-label">one-time purchase &middot; yours forever</p>
+
+  <p>Pay once, keep everything. No subscriptions, no ads, no in-app purchases. Just a focus timer that rewards your work.</p>
+
+  <ul class="includes">
+    <li>44 creatures across 5 regions</li>
+    <li>4 color variants per creature</li>
+    <li>Fusion system for duplicates</li>
+    <li>Streaks, stats, and achievements</li>
+    <li>Sync across devices</li>
+    <li>All future updates included</li>
+  </ul>
+
+  <a href="/app" class="cta">get kokoon &rarr;</a>
+  <p class="no-sub">No subscription. No recurring charges. Ever.</p>
 </main>
 
 <footer class="site-footer">
