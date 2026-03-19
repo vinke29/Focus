@@ -851,107 +851,120 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
   padding: 1rem 0 .5rem;
   margin-bottom: .6rem;
 }
-body.dark .badge-section-header { }
 
 .badge-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: .7rem;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
   margin-bottom: .4rem;
 }
 
 .badge-tile {
   display: flex; flex-direction: column;
   align-items: center; text-align: center;
-  padding: 1.2rem .6rem 1rem;
-  border-radius: 16px;
-  transition: transform .15s;
+  padding: 0;
+  background: var(--paper);
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-.badge-tile:active { transform: scale(.96); }
+.badge-tile:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(8,8,16,.14), 0 2px 6px rgba(8,8,16,.08); }
+.badge-tile:active { transform: scale(.97); }
 
-/* Earned tiles — warm, golden */
+/* Earned tiles — solid border like collection cards */
 .badge-tile.earned {
-  background: linear-gradient(160deg, rgba(201,162,39,.12) 0%, rgba(201,162,39,.04) 100%);
-  border: 1.5px solid rgba(201,162,39,.18);
+  border: 2px solid var(--ink);
+  box-shadow: 0 2px 8px rgba(8,8,16,.10), 0 1px 2px rgba(8,8,16,.06);
 }
 body.dark .badge-tile.earned {
-  background: linear-gradient(160deg, rgba(212,173,58,.12) 0%, rgba(212,173,58,.04) 100%);
-  border-color: rgba(212,173,58,.18);
+  border-color: var(--ink);
 }
 
-/* Medallion icon container */
+/* Icon area — top portion of card */
+.badge-tile-art {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(8,8,16,.025);
+}
 .badge-tile-icon {
-  width: 56px; height: 56px;
+  width: 72px; height: 72px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: .6rem;
+  font-size: 2rem;
   line-height: 1;
-  background: rgba(201,162,39,.12);
-  border: 2px solid rgba(201,162,39,.2);
-}
-.badge-tile.earned .badge-tile-icon {
-  background: linear-gradient(145deg, rgba(201,162,39,.2), rgba(180,140,30,.08));
-  border-color: rgba(201,162,39,.35);
-  box-shadow: 0 2px 8px rgba(201,162,39,.15);
+  background: linear-gradient(145deg, rgba(201,162,39,.18), rgba(180,140,30,.06));
+  border: 2.5px solid rgba(201,162,39,.3);
+  box-shadow: 0 2px 10px rgba(201,162,39,.12);
 }
 
-/* Unearned tiles — empty slot */
-.badge-tile.unearned {
-  background: rgba(8,8,16,.02);
-  border: 1.5px dashed rgba(8,8,16,.1);
+/* Info area — bottom portion */
+.badge-tile-info {
+  flex-shrink: 0;
+  width: 100%; padding: .6rem .5rem .65rem;
+  border-top: 1.5px solid rgba(8,8,16,.12);
+  text-align: center; background: var(--paper);
 }
+body.dark .badge-tile-info { border-top-color: rgba(221,215,200,.1); }
+
+/* Unearned tiles — dashed border like locked collection cards */
+.badge-tile.unearned {
+  border: 2px dashed rgba(8,8,16,.28);
+  box-shadow: 0 1px 4px rgba(8,8,16,.06);
+}
+.badge-tile.unearned:hover { transform: none; box-shadow: 0 1px 4px rgba(8,8,16,.06); }
 body.dark .badge-tile.unearned {
-  background: rgba(221,215,200,.02);
-  border-color: rgba(221,215,200,.08);
+  border-color: rgba(221,215,200,.18);
 }
 .badge-tile.unearned .badge-tile-icon {
   background: rgba(8,8,16,.04);
-  border: 2px solid rgba(8,8,16,.08);
+  border: 2.5px solid rgba(8,8,16,.08);
   filter: grayscale(1);
-  opacity: .45;
-  width: 48px; height: 48px;
-  font-size: 1.3rem;
+  opacity: .4;
+  width: 64px; height: 64px;
+  font-size: 1.7rem;
 }
 body.dark .badge-tile.unearned .badge-tile-icon {
   background: rgba(221,215,200,.04);
   border-color: rgba(221,215,200,.08);
 }
+.badge-tile.unearned .badge-tile-art {
+  background: rgba(8,8,16,.015);
+}
 
 .badge-tile-name {
-  font-size: .78rem; letter-spacing: .04em;
+  font-size: .72rem; letter-spacing: .08em;
   text-transform: uppercase; font-weight: 700;
   color: var(--ink);
   line-height: 1.35;
 }
-.badge-tile.unearned .badge-tile-name { opacity: .4; font-size: .72rem; }
+.badge-tile.unearned .badge-tile-name { opacity: .4; font-size: .68rem; }
 
 .badge-tile-date {
-  font-size: .58rem; letter-spacing: .04em;
+  font-size: .55rem; letter-spacing: .04em;
   color: var(--ink); opacity: .4;
-  margin-top: .2rem;
+  margin-top: .15rem;
 }
 .badge-tile-pct {
-  font-size: .52rem; letter-spacing: .03em;
+  font-size: .5rem; letter-spacing: .03em;
   color: var(--ink); opacity: .35;
-  margin-top: .15rem;
+  margin-top: .1rem;
   font-style: italic;
 }
 
 .badge-tile-desc {
-  font-size: .6rem; opacity: .45;
-  margin-top: .25rem; line-height: 1.5;
+  font-size: .58rem; opacity: .45;
+  margin-top: .2rem; line-height: 1.4;
   letter-spacing: .02em;
 }
 .badge-tile.unearned .badge-tile-desc { opacity: .3; }
 
 /* Progress bar for unearned */
 .badge-tile-progress {
-  width: 100%; margin-top: .5rem;
+  width: 100%; margin-top: .4rem;
   display: flex; flex-direction: column;
-  align-items: center; gap: .25rem;
+  align-items: center; gap: .2rem;
 }
 .badge-progress-bar {
-  width: 75%; height: 5px;
+  width: 75%; height: 4px;
   background: rgba(8,8,16,.06);
   border-radius: 3px; overflow: hidden;
 }
@@ -963,7 +976,7 @@ body.dark .badge-progress-bar { background: rgba(221,215,200,.08); }
 }
 body.dark .badge-progress-fill { background: var(--paper); }
 .badge-progress-text {
-  font-size: .58rem; letter-spacing: .03em;
+  font-size: .55rem; letter-spacing: .03em;
   opacity: .35;
 }
 
@@ -1871,16 +1884,16 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 
   /* ── BADGES ── */
   #collection-grid.badge-mode { padding: .3rem .8rem 2rem; }
-  .badge-grid { gap: .6rem; }
-  .badge-tile { padding: 1.1rem .5rem .9rem; }
-  .badge-tile-icon { width: 52px; height: 52px; font-size: 1.4rem; }
-  .badge-tile.earned .badge-tile-icon { width: 56px; height: 56px; font-size: 1.5rem; }
-  .badge-tile-name { font-size: .78rem; }
-  .badge-tile.unearned .badge-tile-name { font-size: .72rem; }
-  .badge-tile-date { font-size: .58rem; }
-  .badge-tile-pct { font-size: .52rem; }
-  .badge-progress-text { font-size: .58rem; }
-  .badge-progress-bar { height: 5px; }
+  .badge-grid { grid-template-columns: repeat(2, 1fr); gap: .6rem; }
+  .badge-tile-icon { width: 56px; height: 56px; font-size: 1.6rem; }
+  .badge-tile.unearned .badge-tile-icon { width: 48px; height: 48px; font-size: 1.4rem; }
+  .badge-tile-name { font-size: .7rem; }
+  .badge-tile.unearned .badge-tile-name { font-size: .65rem; }
+  .badge-tile-info { padding: .5rem .4rem .5rem; }
+  .badge-tile-date { font-size: .55rem; }
+  .badge-tile-pct { font-size: .5rem; }
+  .badge-progress-text { font-size: .55rem; }
+  .badge-progress-bar { height: 4px; }
 
   /* ── FUSION ── */
   #fusion-stage       { gap: 1.4rem; }

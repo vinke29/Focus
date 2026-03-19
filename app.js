@@ -820,11 +820,13 @@ async function renderBadges() {
       const card = document.createElement('div');
       card.className = 'badge-tile earned';
       card.innerHTML = `
-        <div class="badge-tile-icon">${badge.icon}</div>
-        <div class="badge-tile-name">${badge.name}</div>
-        <div class="badge-tile-desc">${badge.desc}</div>
-        <div class="badge-tile-date">${dateText}</div>
-        <div class="badge-tile-pct">${pctText}</div>
+        <div class="badge-tile-art"><div class="badge-tile-icon">${badge.icon}</div></div>
+        <div class="badge-tile-info">
+          <div class="badge-tile-name">${badge.name}</div>
+          <div class="badge-tile-desc">${badge.desc}</div>
+          <div class="badge-tile-date">${dateText}</div>
+          <div class="badge-tile-pct">${pctText}</div>
+        </div>
       `;
       earnedGrid.appendChild(card);
     });
@@ -861,11 +863,13 @@ async function renderBadges() {
       }
 
       card.innerHTML = `
-        <div class="badge-tile-icon">${badge.icon}</div>
-        <div class="badge-tile-name">${badge.name}</div>
-        <div class="badge-tile-desc">${badge.desc}</div>
-        ${progressHtml}
-        ${rarePctText ? `<div class="badge-tile-pct">${rarePctText}</div>` : ''}
+        <div class="badge-tile-art"><div class="badge-tile-icon">${badge.icon}</div></div>
+        <div class="badge-tile-info">
+          <div class="badge-tile-name">${badge.name}</div>
+          <div class="badge-tile-desc">${badge.desc}</div>
+          ${progressHtml}
+          ${rarePctText ? `<div class="badge-tile-pct">${rarePctText}</div>` : ''}
+        </div>
       `;
       unearnedGrid.appendChild(card);
     });
