@@ -50,7 +50,7 @@ BEGIN
     'total_sessions',      (SELECT count(*) FROM public.sessions WHERE completed_at >= cutoff),
     'total_focus_minutes', (SELECT coalesce(sum(duration), 0) FROM public.sessions WHERE completed_at >= cutoff),
     'dau',                 (SELECT count(DISTINCT user_id) FROM public.sessions
-                            WHERE completed_at >= date_trunc('day', now()))
+                            WHERE completed_at >= now() - interval '24 hours')
   ) INTO result;
   RETURN result;
 END;
