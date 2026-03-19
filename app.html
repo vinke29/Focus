@@ -136,15 +136,7 @@
   <canvas id="particles"></canvas>
 
   <div id="hatch-stage">
-    <div id="hatch-header">
-      <div id="hatch-session-num"></div>
-      <div id="char-name"></div>
-      <div id="char-sub"></div>
-      <div id="char-rarity"></div>
-      <div id="char-lore"></div>
-      <div id="char-drop-hint"></div>
-    </div>
-
+    <!-- Character art takes center stage -->
     <div id="hatch-egg-wrap">
       <!-- Egg -->
       <svg id="hatch-egg" width="220" height="280" viewBox="0 0 220 280">
@@ -190,10 +182,17 @@
       <div id="char-wrap"></div>
     </div>
 
-    <div id="hatch-actions">
-      <button id="btn-share"><span>share</span></button>
-      <button id="btn-see-collection"><span>collection</span></button>
-      <button id="btn-focus-again"><span>focus again</span></button>
+    <!-- Info appears below the character, minimal and clean -->
+    <div id="hatch-footer">
+      <div id="char-name"></div>
+      <div id="char-sub"></div>
+      <div id="char-drop-hint"></div>
+
+      <div id="hatch-actions">
+        <button id="btn-share"><span>share</span></button>
+        <button id="btn-see-collection"><span>collection</span></button>
+        <button id="btn-focus-again"><span>focus again</span></button>
+      </div>
     </div>
 
     <div id="milestone-toast">

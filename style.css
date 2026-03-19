@@ -445,58 +445,38 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 #hatch-stage {
   position: relative; z-index: 10;
   display: flex; flex-direction: column;
-  align-items: center; gap: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; min-height: 100dvh;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
-#hatch-header {
+/* Footer: name + subtitle + actions, appears below character */
+#hatch-footer {
   opacity: 0; text-align: center;
-  margin-bottom: .5rem;
+  margin-top: 1.2rem;
   transition: opacity .8s ease;
 }
-#hatch-header.show { opacity: 1; }
-
-#hatch-session-num {
-  font-size: .48rem; letter-spacing: .28em; text-transform: uppercase;
-  color: var(--ink); opacity: .38; margin-bottom: .4rem;
-}
+#hatch-footer.show { opacity: 1; }
 
 #char-name {
   font-family: 'Zen Antique Soft', serif;
-  font-size: 2rem; letter-spacing: .12em; line-height: 1;
+  font-size: 2.2rem; letter-spacing: .1em; line-height: 1.1;
   color: var(--ink);
 }
 #char-sub {
-  font-size: .65rem; letter-spacing: .35em;
-  text-transform: uppercase; color: #888;
-  margin-top: .3rem;
-}
-#char-rarity {
-  display: inline-block; margin-top: .4rem;
-  border: 2px solid var(--ink); color: var(--ink);
-  font-size: .6rem; letter-spacing: .3em;
-  padding: .15rem .8rem; text-transform: uppercase;
-  transition: border-color .3s, color .3s, background .3s, box-shadow .3s;
-}
-#char-rarity.tier-rare     { letter-spacing: .32em; }
-#char-rarity.tier-legendary { animation: rarityPulse 2.2s ease-in-out infinite; }
-@keyframes rarityPulse {
-  0%, 100% { box-shadow: 0 0 0 transparent; }
-  50%       { box-shadow: 0 0 14px currentColor; }
-}
-#char-rarity.variant-void  { text-shadow: 0 0 8px currentColor; }
-
-#char-lore {
-  font-size: .58rem; line-height: 1.6;
-  font-style: italic; color: #777;
-  max-width: 26rem; margin: .6rem auto 0;
-  letter-spacing: .02em;
+  font-size: .58rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--ink); opacity: .4;
+  margin-top: .4rem;
 }
 
 #char-drop-hint {
-  font-size: .48rem; letter-spacing: .22em;
-  text-transform: uppercase; color: #999;
-  margin-top: .32rem;
-  transition: opacity .4s;
+  font-size: .5rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink); opacity: .45;
+  margin-top: .6rem;
+  font-style: italic;
+  min-height: 1em;
 }
 
 #hatch-egg-wrap {
@@ -533,13 +513,11 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 }
 
 #hatch-actions {
-  display: flex; flex-wrap: wrap; gap: .65rem; margin-top: .6rem;
-  width: 100%; max-width: 340px;
-  opacity: 0; transition: opacity .6s ease;
+  display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem;
+  width: 100%; max-width: 320px;
 }
 #btn-share { order: -1; }
 #btn-see-collection, #btn-focus-again { flex: 1; }
-#hatch-actions.show { opacity: 1; }
 
 /* ── MILESTONE TOAST ── */
 #milestone-toast {
@@ -1689,14 +1667,16 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   .ob-hint          { font-size: .68rem; letter-spacing: .14em; opacity: .45; }
   .ob-greeting      { font-size: 1.1rem; }
 
-  /* Hatch */
-  #hatch-egg-wrap { width: 260px; height: 316px; }
-  #char-wrap      { width: 260px; height: 316px; }
-  #hatch-cracks   { top: 28px; left: 28px; }
-  #char-name      { font-size: 1.6rem; }
-  #char-lore      { font-size: .5rem; max-width: 20rem; }
-  #hatch-actions  { flex-direction: column; align-items: stretch; gap: .65rem; }
-  #hatch-actions button { text-align: center; }
+  /* Hatch — character-first layout */
+  #hatch-egg-wrap { width: 280px; height: 340px; }
+  #char-wrap      { width: 280px; height: 340px; }
+  #hatch-cracks   { top: 28px; left: 30px; }
+  #char-name      { font-size: 1.6rem; letter-spacing: .06em; }
+  #char-sub       { font-size: .65rem; letter-spacing: .16em; margin-top: .35rem; }
+  #char-drop-hint { font-size: .6rem; }
+  #hatch-footer   { margin-top: 1rem; }
+  #hatch-actions  { flex-direction: column; align-items: stretch; gap: .55rem; margin-top: 1rem; }
+  #hatch-actions button { text-align: center; font-size: .75rem; padding: .7rem 1.4rem; }
 
   /* ── BOTTOM TAB BAR — warm taupe surface ── */
   .bottom-tabs {
@@ -1916,9 +1896,10 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   #timer-egg svg, #ob-egg-wrap svg { width: 95px; }
   #time-display { font-size: 2.8rem; }
 
-  #hatch-egg-wrap { width: 230px; height: 280px; }
-  #char-wrap      { width: 230px; height: 280px; }
-  #hatch-cracks   { top: 0; left: 5px; }
+  #hatch-egg-wrap { width: 240px; height: 290px; }
+  #char-wrap      { width: 240px; height: 290px; }
+  #hatch-cracks   { top: 0; left: 10px; }
+  #char-name      { font-size: 1.4rem; }
 
   #collection-grid, #profile-grid {
     gap: .7rem; padding: .6rem .8rem;

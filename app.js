@@ -1105,27 +1105,7 @@ function prepareHatchView(character, variant) {
   wrap.style.transition = 'none';
   applyVariantFilter(wrap, variant.id);
 
-  // Session recap: session number + streak + duration
-  const sessionNumEl = document.getElementById('hatch-session-num');
-  if (sessionNumEl) {
-    const parts = [];
-    if (sessions.length) parts.push(`session ${sessions.length}`);
-    const streak = calcStreak();
-    if (streak > 1) parts.push(`${streak}-day streak`);
-    const mins = Math.round(state.timer.duration / 60);
-    parts.push(`${mins} min focused`);
-    sessionNumEl.textContent = parts.join(' · ');
-  }
-
-  // Rarity badge — styled by tier + variant
-  const rarityEl = document.getElementById('char-rarity');
-  rarityEl.textContent    = character.rarityLabel + ' · ' + variant.label;
-  rarityEl.style.color    = variant.color;
-  rarityEl.style.borderColor = variant.color;
-  rarityEl.style.background  = variant.id !== 'standard' ? variant.color + '18' : 'transparent';
-  rarityEl.className = `tier-${character.rarity} variant-${variant.id}`;
-
-  // Drop hint — fusion progress or rarity hint
+  // Drop hint — fusion progress only (keep it minimal)
   const hintEl = document.getElementById('char-drop-hint');
   const dupeCount = state.collection.filter(
     e => e.id === character.id && (e.variant || 'standard') === variant.id
@@ -1133,7 +1113,7 @@ function prepareHatchView(character, variant) {
   if (dupeCount === 2 && VARIANT_NEXT[variant.id]) {
     hintEl.textContent = `2 of 3 — one more to fuse into ${VARIANT_NEXT[variant.id]}`;
   } else {
-    hintEl.textContent = DROP_HINTS[`${character.rarity}-${variant.id}`] || '';
+    hintEl.textContent = '';
   }
 
   // Reset egg
@@ -1152,15 +1132,13 @@ function prepareHatchView(character, variant) {
     if (el) { el.style.transition = 'none'; el.style.strokeDashoffset = '1'; }
   });
 
-  // Reset UI — hide header BEFORE setting character info to prevent name flash
-  document.getElementById('hatch-header').classList.remove('show');
-  document.getElementById('hatch-actions').classList.remove('show');
+  // Reset UI — hide footer BEFORE setting character info to prevent name flash
+  document.getElementById('hatch-footer').classList.remove('show');
   document.getElementById('milestone-toast').classList.remove('show', 'region-complete', 'region-unlock');
 
-  // Character info (set after header is hidden)
+  // Character info (set after footer is hidden)
   document.getElementById('char-name').textContent   = character.name;
   document.getElementById('char-sub').textContent    = character.subtitle;
-  document.getElementById('char-lore').textContent   = character.lore || '';
 
   // Resize particle canvas
   particleCanvas.width  = window.innerWidth;
@@ -1235,10 +1213,7 @@ function runHatchSequence() {
 
   // 4. Show UI at 3.6s
   setTimeout(() => {
-    document.getElementById('hatch-header').classList.add('show');
-    setTimeout(() => {
-      document.getElementById('hatch-actions').classList.add('show');
-    }, 600);
+    document.getElementById('hatch-footer').classList.add('show');
   }, 3600);
 
   // 5. Region complete or milestone toast — appears after actions settle
