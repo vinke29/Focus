@@ -39,6 +39,21 @@ serve(async (req) => {
     }),
   });
 
+  // Notify admin of new sign-up (fire and forget)
+  fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Kokoon <hello@kokoon.app>',
+      to: ['hello@kokoon.app'],
+      subject: `new sign-up: ${displayName}`,
+      html: `<p style="font-family:Georgia,serif;font-size:14px;color:#080810;">${displayName} (${email}) just joined Kokoon.</p>`,
+    }),
+  }).catch(() => {});
+
   const data = await res.json();
   return new Response(JSON.stringify(data), {
     status: res.ok ? 200 : 400,
