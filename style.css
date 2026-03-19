@@ -904,7 +904,7 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
   flex-shrink: 0;
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
-  background: #fdf5ee;
+  background: var(--paper);
   padding: 10px;
 }
 .badge-tile-img {
