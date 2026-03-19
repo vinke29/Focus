@@ -1167,7 +1167,22 @@ body.dark #milestone-toast.region-unlock #milestone-num { color: #6fa3e0; }
 }
 /* translateZ forces a GPU compositing layer on each face, making
    backface-visibility reliable on iOS Safari */
-.modal-card-front { overflow: hidden; transform: translateZ(0); }
+.modal-card-front { overflow: hidden; transform: translateZ(0); position: relative; }
+.flip-hint {
+  position: absolute; bottom: 10px; left: 0; right: 0;
+  text-align: center;
+  font-size: .65rem; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  pointer-events: none;
+  animation: flip-hint-pulse 2.5s ease-in-out infinite;
+  transition: opacity .3s;
+}
+.modal-card.flipped .flip-hint,
+.flip-hint.hidden { opacity: 0; }
+@keyframes flip-hint-pulse {
+  0%, 100% { opacity: .35; }
+  50%      { opacity: .15; }
+}
 .modal-card-back {
   transform: rotateY(180deg) translateZ(0);
   background: var(--paper);

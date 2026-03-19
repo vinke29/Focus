@@ -32,14 +32,14 @@ const CHARACTERS = {
   shiro: {
     id: 'shiro',
     name: '白猫 · Shiro',
-    nameShort: 'Shiro',
+    nameShort: '白猫',
     region: 'japanese',
     subtitle: 'White Cat Spirit · Baby Form',
     rarity: 'common',
     rarityLabel: '◇ Common',
     accentColor: '#f0a500',
     lore: 'A ghost-white cat spirit born from a moonbeam, who brings calm focus to those who welcome her into their study.',
-    haiku: 'Beneath the full moon<br>the white cat dreams in silence<br>still dawn holds her breath',
+    haiku: '満月の下で<br>白猫は夢を見る<br>夜明けの吐息',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
@@ -54,14 +54,14 @@ const CHARACTERS = {
   karasu: {
     id: 'karasu',
     name: '烏天狗 · Karasu',
-    nameShort: 'Karasu',
+    nameShort: '烏天狗',
     region: 'japanese',
     subtitle: 'Crow Tengu · Fledgling Form',
     rarity: 'rare',
     rarityLabel: '◈ Rare',
     accentColor: '#d40000',
     lore: 'A young crow tengu who memorises every secret spoken beneath the forest canopy and trades wisdom for focused silence.',
-    haiku: 'Red eyes cut the storm<br>the crow reads winds before dawn<br>wisdom needs no words',
+    haiku: '赤い目が嵐を<br>裂く夜明け前に読む<br>知恵は無言なり',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
@@ -76,14 +76,14 @@ const CHARACTERS = {
   kyubi: {
     id: 'kyubi',
     name: '九尾狐 · Kyūbi',
-    nameShort: 'Kyūbi',
+    nameShort: '九尾狐',
     region: 'japanese',
     subtitle: 'Nine-Tail Fox Spirit · Baby Form',
     rarity: 'legendary',
     rarityLabel: '✦ Legendary',
     accentColor: '#0047ff',
     lore: 'A legendary nine-tailed fox whose tails fan like starlight — each one earned through a century of perfect, unbroken focus.',
-    haiku: 'Nine tails arc like stars<br>the fox spirit wakes at dusk<br>focus lights the sky',
+    haiku: '九つの尾が<br>星のように弧を描く<br>集中の空',
     svg: `
 <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">

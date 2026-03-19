@@ -1729,6 +1729,8 @@ function openCardModal(charId, vc) {
 
   // Reset flip state
   document.getElementById('modal-card').classList.remove('flipped');
+  const hint = document.querySelector('.flip-hint');
+  if (hint) hint.classList.remove('hidden');
 
   // Front: art (filter applied in renderModalVariantNav after variant is known)
   document.getElementById('modal-art').innerHTML = char.svg;
@@ -1809,6 +1811,8 @@ function initModalListeners() {
   });
   document.getElementById('modal-card').addEventListener('click', () => {
     document.getElementById('modal-card').classList.toggle('flipped');
+    const hint = document.querySelector('.flip-hint');
+    if (hint) hint.classList.add('hidden');
   });
 }
 
