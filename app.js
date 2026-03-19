@@ -583,7 +583,7 @@ function initReminder() {
     if (!document.hidden) {
       checkReminderNotification();
       // Reconcile timer against wall clock after coming back from background
-      if (state.timer.running && state.timer.endTime) {
+      if (state.timer.running && state.timer.endTime && !_hatchInProgress) {
         const remaining = Math.round((state.timer.endTime - Date.now()) / 1000);
         if (remaining <= 0) {
           clearInterval(state.timer.interval);
@@ -1075,6 +1075,7 @@ function clearTimerState() {
 }
 
 function startTimer() {
+  _hatchInProgress = false;
   state.timer.running = true;
   state.timer.endTime = Date.now() + state.timer.remaining * 1000;
   saveTimerState();
@@ -1122,11 +1123,13 @@ function resetTimerState() {
   document.getElementById('view-timer').classList.remove('running');
 }
 
+let _hatchInProgress = false;
 function onTimerComplete() {
-  // Guard against duplicate completions (e.g. two tabs running the same timer).
-  // Only the first tab to clear the localStorage timer state gets to hatch.
+  // Guard against duplicate completions (e.g. two tabs, visibilitychange + interval race).
+  if (_hatchInProgress) return;
   const saved = localStorage.getItem('focus-timer');
   if (!saved) return;           // another tab already claimed this completion
+  _hatchInProgress = true;
   localStorage.removeItem('focus-timer');
 
   const prevSessionCount = sessions.length;
