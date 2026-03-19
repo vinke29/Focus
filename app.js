@@ -602,6 +602,16 @@ function initReminder() {
     }
   });
   setInterval(checkReminderNotification, 5 * 60 * 1000);
+
+  // If another tab completes (and clears) the timer, stop ours
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'focus-timer' && e.newValue === null && state.timer.running) {
+      clearInterval(state.timer.interval);
+      state.timer.running = false;
+      state.timer.endTime = null;
+      resetTimerState();
+    }
+  });
 }
 
 function renderCollectionStats() {
@@ -993,7 +1003,6 @@ function startTimer() {
       clearInterval(state.timer.interval);
       state.timer.running = false;
       state.timer.endTime = null;
-      clearTimerState();
       onTimerComplete();
     }
   }, 1000);
@@ -1025,6 +1034,12 @@ function resetTimerState() {
 }
 
 function onTimerComplete() {
+  // Guard against duplicate completions (e.g. two tabs running the same timer).
+  // Only the first tab to clear the localStorage timer state gets to hatch.
+  const saved = localStorage.getItem('focus-timer');
+  if (!saved) return;           // another tab already claimed this completion
+  localStorage.removeItem('focus-timer');
+
   const prevSessionCount = sessions.length;
   addSession(state.timer.duration / 60);
   renderTimerStats();
