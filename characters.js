@@ -690,93 +690,11 @@ const CHARACTERS = {
     lore: 'A polite river guardian who bows so deeply his dish-plate spills and he loses his power.',
     haiku: '礼儀正しく<br>皿の水こぼれる<br>夏の河童よ',
     svg: `
-<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="kappa-body" cx="38%" cy="32%" r="68%">
-      <stop offset="0%" stop-color="#d8f0d8"/>
-      <stop offset="100%" stop-color="#a8cca8"/>
-    </radialGradient>
-    <radialGradient id="kappa-shell" cx="35%" cy="28%" r="72%">
-      <stop offset="0%" stop-color="#c8e8c0"/>
-      <stop offset="100%" stop-color="#88b880"/>
-    </radialGradient>
-    <radialGradient id="kappa-aura" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#2E7D52" stop-opacity=".22"/>
-      <stop offset="100%" stop-color="#2E7D52" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-
-  <ellipse cx="160" cy="360" rx="62" ry="8" fill="rgba(0,0,0,.1)"/>
-  <ellipse class="char-aura" cx="160" cy="240" rx="86" ry="80" fill="url(#kappa-aura)"/>
-
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g class="char-float">
-
-    <!-- Turtle shell (visible as ring around body, from front) -->
-    <ellipse cx="160" cy="258" rx="74" ry="70" fill="url(#kappa-shell)" stroke="#080810" stroke-width="4"/>
-    <!-- Shell pattern -->
-    <ellipse cx="160" cy="258" rx="54" ry="52" fill="none" stroke="#2E7D52" stroke-width="1.8" opacity=".45"/>
-    <path d="M106,258 L214,258" stroke="#2E7D52" stroke-width="1.2" opacity=".35"/>
-    <path d="M160,204 L160,312" stroke="#2E7D52" stroke-width="1.2" opacity=".35"/>
-    <path d="M118,218 L202,298" stroke="#2E7D52" stroke-width="1" opacity=".25"/>
-    <path d="M202,218 L118,298" stroke="#2E7D52" stroke-width="1" opacity=".25"/>
-
-    <!-- Body (sits inside/in front of shell) -->
     <g class="char-body">
-      <ellipse cx="160" cy="252" rx="54" ry="62" fill="url(#kappa-body)" stroke="#080810" stroke-width="3.5"/>
-
-      <!-- Belly plate -->
-      <ellipse cx="160" cy="258" rx="34" ry="46" fill="#c8f0c0" stroke="#080810" stroke-width="2" opacity=".6"/>
-
-      <!-- Crossed legs (seated) -->
-      <path d="M106,300 C88,308 76,324 82,336 C90,326 100,316 108,312Z"
-        fill="url(#kappa-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <!-- Webbed foot left -->
-      <path d="M82,336 C74,342 72,350 78,354 C82,348 85,340 86,336Z" fill="url(#kappa-body)" stroke="#080810" stroke-width="2"/>
-      <path d="M86,336 C80,344 80,352 86,354 C88,347 88,340 88,336Z" fill="url(#kappa-body)" stroke="#080810" stroke-width="2"/>
-      <path d="M90,335 C86,344 87,352 93,353 C93,347 92,340 90,335Z" fill="url(#kappa-body)" stroke="#080810" stroke-width="1.8"/>
-
-      <path d="M214,300 C232,308 244,324 238,336 C230,326 220,316 212,312Z"
-        fill="url(#kappa-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <!-- Webbed foot right -->
-      <path d="M238,336 C246,342 248,350 242,354 C238,348 235,340 234,336Z" fill="url(#kappa-body)" stroke="#080810" stroke-width="2"/>
-      <path d="M234,336 C240,344 240,352 234,354 C232,347 232,340 232,336Z" fill="url(#kappa-body)" stroke="#080810" stroke-width="2"/>
-      <path d="M230,335 C234,344 233,352 227,353 C227,347 228,340 230,335Z" fill="url(#kappa-body)" stroke="#080810" stroke-width="1.8"/>
-
-      <!-- Webbed hands (open, spread) -->
-      <path d="M106,238 C88,228 76,234 74,248 C82,241 92,237 102,242Z"
-        fill="url(#kappa-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M74,248 L66,258 M78,252 L72,262 M84,255 L80,265" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
-      <path d="M214,238 C232,228 244,234 246,248 C238,241 228,237 218,242Z"
-        fill="url(#kappa-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
-      <path d="M246,248 L254,258 M242,252 L248,262 M236,255 L240,265" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+      <image href="/chars/kappa.png" x="0" y="0" width="320" height="380"/>
     </g>
-
-    <!-- Head -->
-    <circle cx="160" cy="178" r="52" fill="url(#kappa-body)" stroke="#080810" stroke-width="4"/>
-
-    <!-- Water dish on head -->
-    <ellipse cx="160" cy="134" rx="40" ry="14" fill="#2E7D52" opacity=".3" stroke="#080810" stroke-width="2.5"/>
-    <ellipse cx="160" cy="134" rx="28" ry="8" fill="#2E7D52" opacity=".4"/>
-    <!-- Water surface shimmer -->
-    <path d="M144,131 C150,128 170,128 176,131" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".7"/>
-    <path d="M148,135 C154,132 166,132 172,135" stroke="white" stroke-width="1" fill="none" stroke-linecap="round" opacity=".5"/>
-
-    <!-- Eyes (wide, expressive) -->
-    <ellipse cx="136" cy="172" rx="20" ry="18" fill="white" stroke="#080810" stroke-width="3"/>
-    <circle cx="136" cy="172" r="12" fill="#2E7D52"/>
-    <circle cx="140" cy="168" r="4.5" fill="white" opacity=".9"/>
-    <circle cx="132" cy="177" r="2" fill="white" opacity=".5"/>
-
-    <ellipse cx="184" cy="172" rx="20" ry="18" fill="white" stroke="#080810" stroke-width="3"/>
-    <circle cx="184" cy="172" r="12" fill="#2E7D52"/>
-    <circle cx="188" cy="168" r="4.5" fill="white" opacity=".9"/>
-    <circle cx="180" cy="177" r="2" fill="white" opacity=".5"/>
-
-    <!-- Beak (prominent, forward-pointing) -->
-    <path d="M144,192 C148,200 172,200 176,192 L178,212 C172,220 148,220 142,212Z"
-      fill="#2E7D52" stroke="#080810" stroke-width="2.5" stroke-linejoin="round" opacity=".9"/>
-    <path d="M144,194 L176,194" stroke="#080810" stroke-width="1.5" opacity=".4"/>
-
   </g>
 </svg>`
   },

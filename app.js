@@ -1977,25 +1977,30 @@ async function generateShareCard(char, variant) {
   ctx.fillStyle = variant.color + 'bb';
   ctx.fillRect(40, 12, W - 80, 2);
 
-  // Draw SVG creature
-  const svgBlob = new Blob([char.svg], { type: 'image/svg+xml;charset=utf-8' });
-  const svgUrl  = URL.createObjectURL(svgBlob);
+  // Draw creature art
+  // If SVG references an external image (PNG characters), load the image directly;
+  // otherwise render via SVG blob as before.
+  const pngMatch = char.svg.match(/href="([^"]+\.png)"/);
   await new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
       const filter = VARIANT_CANVAS_FILTER[variant.id];
       if (filter) ctx.filter = filter;
-      // Center creature art in a 280×320 zone
       const artW = 280, artH = 320;
       const artX = (W - artW) / 2;
       const artY = 28;
       ctx.drawImage(img, artX, artY, artW, artH);
       ctx.filter = 'none';
-      URL.revokeObjectURL(svgUrl);
+      if (!pngMatch) URL.revokeObjectURL(img.src);
       resolve();
     };
-    img.onerror = () => { URL.revokeObjectURL(svgUrl); resolve(); };
-    img.src = svgUrl;
+    img.onerror = () => { if (!pngMatch) URL.revokeObjectURL(img.src); resolve(); };
+    if (pngMatch) {
+      img.src = pngMatch[1];
+    } else {
+      const svgBlob = new Blob([char.svg], { type: 'image/svg+xml;charset=utf-8' });
+      img.src = URL.createObjectURL(svgBlob);
+    }
   });
 
   // Character name
