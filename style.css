@@ -904,11 +904,12 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
   flex-shrink: 0;
   overflow: hidden;
   display: flex; align-items: center; justify-content: center;
-  background: var(--paper);
+  background: #fdf5ee;
+  padding: 10px;
 }
 .badge-tile-img {
   width: 100%; height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 .badge-tile.unearned .badge-tile-img {
