@@ -750,6 +750,25 @@ body.dark .stats-bar.today    { background: rgba(221,215,200,.4); }
 }
 .stats-bar-label.today { opacity: .75; }
 
+/* Stats empty state */
+.stats-empty {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center;
+  padding: 3rem 2rem; min-height: 40vh;
+}
+.stats-empty-icon { font-size: 2.5rem; margin-bottom: 1.5rem; opacity: .6; }
+.stats-empty-title {
+  font-style: italic; font-size: 1.1rem;
+  color: var(--ink); opacity: .6;
+  letter-spacing: .04em; line-height: 1.5;
+  margin-bottom: .8rem;
+}
+.stats-empty-body {
+  font-size: .82rem; color: var(--ink); opacity: .45;
+  letter-spacing: .03em; line-height: 1.7;
+  max-width: 22rem;
+}
+
 .region-tabs {
   display: flex; gap: .3rem; padding: 0 1.6rem .9rem;
   overflow-x: auto;
@@ -1549,26 +1568,33 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   #btn-signout      { font-size: .6rem; letter-spacing: .1em; white-space: nowrap; opacity: .45; }
   .share-collection-btn { opacity: .4; }
   .dark-btn-inline  { opacity: .4; }
-  #collection-stats { padding: .1rem 1rem .3rem; font-size: .68rem; opacity: .65; }
+  #collection-stats { padding: .15rem 1rem .35rem; font-size: .78rem; opacity: .65; }
 
   /* Top tabs — prominent, generous tap targets */
   .top-tabs { gap: 0; padding: 0; justify-content: stretch; }
   .top-tab {
-    font-size: .52rem; letter-spacing: .16em;
+    font-size: .7rem; letter-spacing: .14em;
     flex: 1; text-align: center;
-    padding: .55rem .2rem;
+    padding: .7rem .2rem;
     border-bottom: 1.5px solid rgba(8,8,16,.08);
   }
   .top-tab.active { border-bottom-color: var(--ink); border-bottom-width: 2px; }
 
   #stats-content { padding: 1.5rem 1.2rem 2rem; }
+  .stats-headline { font-size: 1rem; margin-bottom: 2rem; }
+  .stats-section-label { font-size: .65rem; letter-spacing: .18em; }
+  .stats-line { font-size: .88rem; padding: .65rem 0; }
+  .stats-value { font-size: 1rem; }
+  .stats-delta { font-size: .7rem; }
+  .stats-bar-mins { font-size: .52rem; }
+  .stats-bar-label { font-size: .55rem; }
 
   /* Region tabs — pill style, no borders, horizontal scroll */
-  .region-tabs      { padding: .5rem .8rem .4rem; gap: .3rem; scrollbar-width: none; }
+  .region-tabs      { padding: .5rem .8rem .5rem; gap: .35rem; scrollbar-width: none; }
   .region-tabs::-webkit-scrollbar { display: none; }
   .region-btn       {
-    padding: .35rem .65rem; font-size: .6rem; letter-spacing: .04em;
-    opacity: .55; border: none; border-radius: 1rem;
+    padding: .45rem .75rem; font-size: .7rem; letter-spacing: .04em;
+    opacity: .6; border: none; border-radius: 1rem;
     background: rgba(8,8,16,.06);
   }
   .region-btn.active, .region-btn:hover {
@@ -1576,10 +1602,15 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   }
   .region-btn.active .tab-count { opacity: .7; }
   .region-btn.locked {
-    opacity: .35; background: none; border: 1px dashed rgba(8,8,16,.18);
-    border-radius: 1rem;
+    opacity: .45; background: rgba(8,8,16,.03); border: 1.5px dashed rgba(8,8,16,.22);
+    border-radius: 1rem; position: relative;
   }
-  .region-btn.locked:hover { opacity: .35; }
+  .region-btn.locked::before {
+    content: '🔒 '; font-size: .5rem;
+  }
+  .region-btn.locked:hover { opacity: .45; }
+  .tab-count { font-size: .58rem; }
+  .tab-unlock { font-size: .5rem; letter-spacing: .08em; }
   .region-btn.complete { color: var(--paper); background: #8c6d10; border-color: transparent; }
   .region-btn.complete .tab-count { opacity: .8; }
 
@@ -1590,32 +1621,32 @@ body.dark .modal-back-meta { border-top-color: rgba(221,215,200,.1); }
   }
 
   /* Card info strip */
-  .card-info   { padding: .6rem .5rem .65rem; }
-  .card-name   { font-size: .82rem; letter-spacing: .08em; }
-  .card-rarity { font-size: .6rem; letter-spacing: .15em; opacity: .7; margin-top: .15rem; }
+  .card-info   { padding: .65rem .55rem .7rem; }
+  .card-name   { font-size: .88rem; letter-spacing: .08em; }
+  .card-rarity { font-size: .65rem; letter-spacing: .12em; opacity: .7; margin-top: .15rem; }
 
   /* Card modal — info strip */
-  .modal-name      { font-size: .98rem; }
-  .modal-sub       { font-size: .68rem; letter-spacing: .1em; opacity: .55; margin-top: .25rem; }
-  .modal-rarity    { font-size: .62rem; letter-spacing: .15em; padding: .18rem .55rem; }
-  .modal-var-label  { font-size: .65rem; letter-spacing: .15em; }
+  .modal-name      { font-size: 1.05rem; }
+  .modal-sub       { font-size: .72rem; letter-spacing: .1em; opacity: .55; margin-top: .25rem; }
+  .modal-rarity    { font-size: .68rem; letter-spacing: .12em; padding: .2rem .6rem; }
+  .modal-var-label  { font-size: .7rem; letter-spacing: .12em; }
   .modal-nav-arrow  { font-size: 1.1rem; padding: .2rem .5rem; }
   .modal-share-icon svg { width: 16px; height: 16px; }
 
   /* Card modal — back face: reduce padding + gap so content breathes */
   .modal-card-back { padding: 1.2rem 1.2rem; gap: .5rem; }
-  .modal-back-name { font-size: .65rem; opacity: .55; }
-  .modal-back-lore { font-size: .73rem; line-height: 1.7; }
-  .modal-back-haiku{ font-size: .66rem; line-height: 1.85; padding-top: .5rem; }
-  .modal-back-meta { font-size: .6rem; letter-spacing: .12em; opacity: .6; padding-top: .5rem; }
+  .modal-back-name { font-size: .72rem; opacity: .55; }
+  .modal-back-lore { font-size: .82rem; line-height: 1.7; }
+  .modal-back-haiku{ font-size: .72rem; line-height: 1.85; padding-top: .5rem; }
+  .modal-back-meta { font-size: .65rem; letter-spacing: .1em; opacity: .6; padding-top: .5rem; }
   /* Badges */
   #collection-grid.badge-mode { grid-template-columns: 1fr; gap: 0; padding: .4rem 0; }
-  .badge-card { padding: .8rem 1rem; }
-  .badge-icon { font-size: 1.5rem; }
-  .badge-name { font-size: .68rem; }
-  .badge-desc { font-size: .58rem; }
-  .badge-date { font-size: .48rem; }
-  .badge-pct  { font-size: .56rem; }
+  .badge-card { padding: 1rem 1.2rem; gap: .8rem; }
+  .badge-icon { font-size: 1.8rem; width: 2.6rem; }
+  .badge-name { font-size: .82rem; }
+  .badge-desc { font-size: .72rem; line-height: 1.6; }
+  .badge-date { font-size: .6rem; }
+  .badge-pct  { font-size: .7rem; }
 
   /* Fusion */
   #fusion-stage       { gap: 1.4rem; }

@@ -317,6 +317,17 @@ function renderStatsTab() {
   const el = document.getElementById('stats-content');
   if (!el) return;
 
+  if (!sessions.length) {
+    el.innerHTML = `
+      <div class="stats-empty">
+        <div class="stats-empty-icon">🥚</div>
+        <div class="stats-empty-title">your story starts here</div>
+        <div class="stats-empty-body">Complete your first focus session to hatch a creature and start tracking your progress.</div>
+      </div>
+    `;
+    return;
+  }
+
   const now = new Date();
   const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const startOfWeek = d => { const s = startOfDay(d); s.setDate(s.getDate() - s.getDay()); return s; };
