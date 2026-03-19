@@ -1863,35 +1863,26 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   .modal-var-nav { gap: .55rem; margin-top: .7rem; }
   .modal-var-dot { width: 9px; height: 9px; }
 
-  /* ── STATS TAB — hero numbers, breathing room ── */
+  /* ── STATS TAB — readable narrative style ── */
   #stats-content { padding: 1.8rem 1.2rem 2.5rem; }
-  .stats-headline { font-size: 1.05rem; margin-bottom: 2rem; line-height: 1.7; }
-  .stats-section { margin-bottom: 2rem; }
-  .stats-section-label { font-size: .68rem; letter-spacing: .14em; margin-bottom: .8rem; }
+  .stats-headline { font-size: 1.1rem; margin-bottom: 2.2rem; line-height: 1.7; }
+  .stats-section { margin-bottom: 2.2rem; }
+  .stats-section-label { font-size: .7rem; letter-spacing: .14em; margin-bottom: .7rem; }
   .stats-line {
-    font-size: .9rem; padding: .7rem 0;
-    display: flex; align-items: baseline; gap: .4rem;
+    font-size: 1rem; padding: .7rem 0;
+    display: flex; align-items: baseline; gap: .35rem;
+    flex-wrap: wrap;
   }
-  .stats-value { font-size: 1.3rem; }
-  .stats-delta { font-size: .62rem; }
-
-  /* Hero cards — big numbers */
-  .stats-cards-row { gap: .6rem; }
-  .stats-card {
-    padding: 1rem .4rem;
-    border-radius: 14px;
-    background: rgba(8,8,16,.035);
-  }
-  .stats-card-value { font-size: 1.8rem; }
-  .stats-card-label { font-size: .55rem; letter-spacing: .14em; margin-top: .25rem; }
-  .stats-card .stats-delta { font-size: .5rem; margin-top: .25rem; }
+  .stats-value { font-size: 1.35rem; }
+  .stats-delta { font-size: .72rem; }
+  .stats-highlight { font-size: .85rem; }
 
   /* Bar chart */
   .stats-bars { gap: .5rem; padding: .8rem 0; }
   .stats-bar-col { max-width: 42px; gap: .4rem; }
   .stats-bar { border-radius: 6px 6px 0 0; min-width: 10px; }
-  .stats-bar-mins { font-size: .55rem; }
-  .stats-bar-label { font-size: .58rem; }
+  .stats-bar-mins { font-size: .58rem; }
+  .stats-bar-label { font-size: .62rem; }
 
   .stats-empty { min-height: 50vh; padding: 3rem 1.5rem; }
   .stats-empty-icon { font-size: 4rem; margin-bottom: 2rem; }

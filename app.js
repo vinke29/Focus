@@ -389,22 +389,16 @@ function renderStatsTab() {
   const weekDelta   = deltaText(weekMins, lastWeekMins, 'week');
   const monthDelta  = deltaText(monthMins, lastMonthMins, 'month');
 
-  let focusLines = '';
-  focusLines += `<div class="stats-card">
-    <div class="stats-card-value">${formatHours(todayMins)}</div>
-    <div class="stats-card-label">today</div>
-    ${todayDelta ? `<div class="stats-delta">${todayDelta}</div>` : ''}
-  </div>`;
-  focusLines += `<div class="stats-card">
-    <div class="stats-card-value">${formatHours(weekMins)}</div>
-    <div class="stats-card-label">this week</div>
-    ${weekDelta ? `<div class="stats-delta">${weekDelta}</div>` : ''}
-  </div>`;
-  focusLines += `<div class="stats-card">
-    <div class="stats-card-value">${formatHours(monthMins)}</div>
-    <div class="stats-card-label">this month</div>
-    ${monthDelta ? `<div class="stats-delta">${monthDelta}</div>` : ''}
-  </div>`;
+  const focusRows = [
+    { value: formatHours(todayMins),  label: 'today',      delta: todayDelta },
+    { value: formatHours(weekMins),   label: 'this week',  delta: weekDelta },
+    { value: formatHours(monthMins),  label: 'this month', delta: monthDelta },
+  ];
+  const focusLines = focusRows.map(r =>
+    `<div class="stats-line">
+      <span class="stats-value">${r.value}</span> ${r.label}${r.delta ? ` <span class="stats-delta">· ${r.delta}</span>` : ''}
+    </div>`
+  ).join('');
 
   // 7-day bar chart
   const dayNames = ['S','M','T','W','T','F','S'];
@@ -428,33 +422,28 @@ function renderStatsTab() {
     </div>`;
   }).join('');
 
-  // Streak + journey cards
-  let journeyCards = '';
+  // Streak + journey lines
+  let journeyLines = '';
   if (streak > 0) {
-    let streakSub = 'current streak';
-    if (streak >= state.maxStreak) streakSub = 'your best streak';
-    else streakSub = `best: ${state.maxStreak} days`;
-    journeyCards += `<div class="stats-card">
-      <div class="stats-card-value">${streak}</div>
-      <div class="stats-card-label">day streak</div>
-      <div class="stats-delta">${streakSub}</div>
+    journeyLines += `<div class="stats-line">
+      <span class="stats-value">${streak} day${streak !== 1 ? 's' : ''}</span> current streak
     </div>`;
+    if (streak >= state.maxStreak) {
+      journeyLines += `<div class="stats-line stats-highlight"><em>this is your best streak yet</em></div>`;
+    } else {
+      journeyLines += `<div class="stats-line stats-highlight"><em>best: ${state.maxStreak} days</em></div>`;
+    }
   }
-  journeyCards += `<div class="stats-card">
-    <div class="stats-card-value">${totalSess}</div>
-    <div class="stats-card-label">session${totalSess !== 1 ? 's' : ''}</div>
-  </div>`;
-  journeyCards += `<div class="stats-card">
-    <div class="stats-card-value">${formatHours(totalMins)}</div>
-    <div class="stats-card-label">total focus</div>
+  journeyLines += `<div class="stats-line">
+    <span class="stats-value">${totalSess}</span> session${totalSess !== 1 ? 's' : ''} · <span class="stats-value">${formatHours(totalMins)}</span> total
   </div>`;
 
   el.innerHTML = `
     <div class="stats-headline">${headline}</div>
 
     <div class="stats-section">
-      <div class="stats-section-label">focus time</div>
-      <div class="stats-cards-row">${focusLines}</div>
+      <div class="stats-section-label">you've focused</div>
+      ${focusLines}
     </div>
 
     <div class="stats-section">
@@ -464,7 +453,7 @@ function renderStatsTab() {
 
     <div class="stats-section">
       <div class="stats-section-label">your journey</div>
-      <div class="stats-cards-row">${journeyCards}</div>
+      ${journeyLines}
     </div>
   `;
 }
