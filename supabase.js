@@ -251,4 +251,9 @@ const DB = {
     if (!_sb) return { data: { subscription: { unsubscribe: () => {} } } };
     return _sb.auth.onAuthStateChange(callback);
   },
+
+  async rpc(name, params) {
+    if (!_sb) return { data: null, error: 'offline' };
+    return _sb.rpc(name, params);
+  },
 };

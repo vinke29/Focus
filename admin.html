@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kokoon · Admin</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;400;700&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:   #080810;
+  --paper: #f7f2e8;
+  --blue:  #0047ff;
+  --gold:  #f0a500;
+  --red:   #d40000;
+  --muted: rgba(8,8,16,.42);
+}
+
+html, body {
+  width: 100%; min-height: 100%;
+  background: var(--paper);
+  font-family: 'Noto Serif JP', serif;
+  color: var(--ink);
+}
+
+body { padding: 2rem; max-width: 960px; margin: 0 auto; }
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity: .5;
+}
+
+/* Loading / unauthorized */
+.admin-gate {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 60vh; font-size: .85rem; letter-spacing: .1em; opacity: .5;
+}
+
+/* Header */
+.admin-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(8,8,16,.1); padding-bottom: 1.2rem;
+}
+.admin-header h1 {
+  font-size: .65rem; font-weight: 400;
+  letter-spacing: .35em; text-transform: uppercase; opacity: .4;
+}
+.admin-period-toggle { display: flex; gap: 0; }
+.admin-period-toggle button {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: .6rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink); opacity: .35;
+  padding: .5rem .8rem; border-bottom: 2px solid transparent;
+  transition: opacity .2s, border-color .2s;
+}
+.admin-period-toggle button:hover { opacity: .6; }
+.admin-period-toggle button.active {
+  opacity: 1; border-bottom-color: var(--ink);
+}
+
+/* Metric cards */
+.admin-cards {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem; margin-bottom: 2.5rem;
+}
+.admin-card {
+  border: 1.5px solid rgba(8,8,16,.12); padding: 1.2rem 1rem;
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.admin-card .label {
+  font-size: .55rem; letter-spacing: .2em; text-transform: uppercase; opacity: .4;
+}
+.admin-card .value {
+  font-size: 1.6rem; font-weight: 200; letter-spacing: .04em;
+}
+.admin-card .sub {
+  font-size: .55rem; opacity: .35; letter-spacing: .08em;
+}
+
+/* Chart panels */
+.admin-charts {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.5rem; margin-bottom: 2rem;
+}
+.admin-chart-panel {
+  border: 1.5px solid rgba(8,8,16,.12); padding: 1.2rem;
+}
+.admin-chart-panel h2 {
+  font-size: .55rem; font-weight: 400;
+  letter-spacing: .22em; text-transform: uppercase; opacity: .4;
+  margin-bottom: 1rem;
+}
+
+/* Bar chart */
+.bar-row {
+  display: flex; align-items: center; gap: .5rem;
+  margin-bottom: .35rem; font-size: .6rem;
+}
+.bar-label {
+  width: 72px; text-align: right; letter-spacing: .06em;
+  opacity: .6; flex-shrink: 0; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+}
+.bar-track {
+  flex: 1; height: 14px; background: rgba(8,8,16,.04);
+  position: relative;
+}
+.bar-fill {
+  height: 100%; background: var(--ink); opacity: .7;
+  min-width: 2px; transition: width .4s ease;
+}
+.bar-fill.rare { background: var(--blue); }
+.bar-fill.legendary { background: var(--gold); }
+.bar-value {
+  width: 36px; text-align: left; opacity: .45;
+  font-size: .55rem; letter-spacing: .06em; flex-shrink: 0;
+}
+
+/* Leaders table */
+.admin-table {
+  width: 100%; border-collapse: collapse; font-size: .65rem;
+}
+.admin-table th {
+  text-align: left; font-weight: 400; font-size: .5rem;
+  letter-spacing: .18em; text-transform: uppercase; opacity: .35;
+  padding: .4rem 0; border-bottom: 1px solid rgba(8,8,16,.1);
+}
+.admin-table td {
+  padding: .5rem 0; border-bottom: 1px solid rgba(8,8,16,.06);
+  letter-spacing: .04em;
+}
+.admin-table td:last-child { opacity: .5; }
+.completion-bar {
+  display: inline-block; height: 6px; background: var(--ink); opacity: .5;
+  margin-left: .4rem; vertical-align: middle;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  body { padding: 1.2rem; }
+  .admin-charts { grid-template-columns: 1fr; }
+  .admin-cards { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div id="admin-loading" class="admin-gate">loading...</div>
+<div id="admin-unauthorized" class="admin-gate" style="display:none">unauthorized — redirecting</div>
+
+<div id="admin-dashboard" style="display:none">
+  <header class="admin-header">
+    <h1>Kokoon · Admin</h1>
+    <div class="admin-period-toggle">
+      <button data-period="day">day</button>
+      <button data-period="week">week</button>
+      <button data-period="month">month</button>
+      <button data-period="all" class="active">all time</button>
+    </div>
+  </header>
+
+  <section class="admin-cards">
+    <div class="admin-card"><span class="label">users</span><span class="value" id="m-users">—</span><span class="sub" id="m-new-users"></span></div>
+    <div class="admin-card"><span class="label">animals hatched</span><span class="value" id="m-animals">—</span></div>
+    <div class="admin-card"><span class="label">focus sessions</span><span class="value" id="m-sessions">—</span></div>
+    <div class="admin-card"><span class="label">focus time</span><span class="value" id="m-time">—</span></div>
+    <div class="admin-card"><span class="label">active today</span><span class="value" id="m-dau">—</span></div>
+  </section>
+
+  <section class="admin-charts">
+    <div class="admin-chart-panel">
+      <h2>Animal Distribution</h2>
+      <div id="chart-animals" style="max-height:320px;overflow-y:auto"></div>
+    </div>
+    <div class="admin-chart-panel">
+      <h2>Session Duration</h2>
+      <div id="chart-splits"></div>
+    </div>
+  </section>
+
+  <section class="admin-charts">
+    <div class="admin-chart-panel">
+      <h2>Sign-ups Over Time</h2>
+      <div id="chart-signups"></div>
+    </div>
+    <div class="admin-chart-panel">
+      <h2>Daily Active Users</h2>
+      <div id="chart-dau"></div>
+    </div>
+  </section>
+
+  <section class="admin-charts">
+    <div class="admin-chart-panel">
+      <h2>Streak Distribution</h2>
+      <div id="chart-streaks"></div>
+    </div>
+    <div class="admin-chart-panel">
+      <h2>Top Collectors</h2>
+      <div id="panel-leaders" style="max-height:320px;overflow-y:auto"></div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="supabase.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
