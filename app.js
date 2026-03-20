@@ -2422,7 +2422,33 @@ async function handleSignedIn(user) {
   const isNewUser = localStorage.getItem('focus-new-user') === 'true';
 
   if (!isNewUser) {
-    const profile = await DB.loadProfile().catch(() => null);
+    // Try loading profile, retry once on network failure
+    let profile = null;
+    let profileLoadFailed = false;
+    try {
+      profile = await DB.loadProfile();
+    } catch (_) {
+      // First attempt failed (network error) — retry once
+      try {
+        profile = await DB.loadProfile();
+      } catch (_2) {
+        profileLoadFailed = true;
+      }
+    }
+
+    // Network error: fall back to localStorage name rather than triggering new-user flow
+    if (profileLoadFailed) {
+      const cachedName = localStorage.getItem('focus-name');
+      if (cachedName) {
+        updateCollectionTitle();
+        navigateTo('timer');
+        return;
+      }
+      // No cached name and can't reach server — still don't create a new profile,
+      // just go to timer with a fallback name
+      navigateTo('timer');
+      return;
+    }
 
     if (profile?.name) {
       // ── Returning user ────────────────────────────────────────────────────
