@@ -69,14 +69,8 @@ body {
   width: 100%;
   height: auto;
   display: block;
-}
-
-.hero-illustration::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 40px 30px var(--paper);
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at center, black 40%, transparent 72%);
+  mask-image: radial-gradient(ellipse 70% 65% at center, black 40%, transparent 72%);
 }
 
 .hero-cta {
