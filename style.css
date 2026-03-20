@@ -262,7 +262,7 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 
 /* ── MUTE BUTTON ── */
 .mute-btn {
-  position: fixed; top: 1.4rem; left: 1.8rem; z-index: 50;
+  position: fixed; top: calc(1.4rem + env(safe-area-inset-top)); left: 1.8rem; z-index: 50;
   transition: opacity .2s;
 }
 .mute-btn .sv-x    { display: none; }
@@ -282,14 +282,14 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 
 /* ── MINI TIMER ── */
 .mini-timer-btn {
-  position: fixed; top: 1.4rem; left: 4.5rem; z-index: 50;
+  position: fixed; top: calc(1.4rem + env(safe-area-inset-top)); left: 4.5rem; z-index: 50;
   display: none;
 }
 #view-timer.running .mini-timer-btn { display: block; }
 
 /* ── TIMER VIEW ── */
 #btn-open-collection {
-  position: fixed; top: 1.5rem; right: 1.8rem;
+  position: fixed; top: calc(1.5rem + env(safe-area-inset-top)); right: 1.8rem;
 }
 
 .timer-main {

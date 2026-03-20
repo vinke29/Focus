@@ -12,6 +12,15 @@ const Haptic = {
   burst()  { this._cap ? this._cap.impact({ style: 'HEAVY' })  : navigator.vibrate?.([220]); },
 };
 
+// Dismiss keyboard on tap outside inputs (native iOS)
+if (IS_NATIVE) {
+  document.addEventListener('click', e => {
+    if (!e.target.closest('input, textarea, select')) {
+      document.activeElement?.blur();
+    }
+  });
+}
+
 // Wake lock — keep screen on during timer sessions
 let _wakeLock = null;
 async function requestWakeLock() {
