@@ -1,3 +1,28 @@
+// ── NATIVE (CAPACITOR) ───────────────────────────────────────────────────────
+const IS_NATIVE = typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform();
+
+// Haptics — uses Capacitor on native, falls back to navigator.vibrate on web
+const Haptic = {
+  _cap: IS_NATIVE && window.Capacitor.Plugins.Haptics,
+  light()  { this._cap ? this._cap.impact({ style: 'LIGHT' })  : navigator.vibrate?.([18]); },
+  medium() { this._cap ? this._cap.impact({ style: 'MEDIUM' }) : navigator.vibrate?.([30, 80, 60]); },
+  heavy()  { this._cap ? this._cap.impact({ style: 'HEAVY' })  : navigator.vibrate?.([180]); },
+  tap()    { this._cap ? this._cap.impact({ style: 'LIGHT' })  : navigator.vibrate?.([10]); },
+  rumble() { this._cap ? this._cap.notification({ type: 'WARNING' }) : navigator.vibrate?.([8, 60, 8, 60, 8]); },
+  burst()  { this._cap ? this._cap.impact({ style: 'HEAVY' })  : navigator.vibrate?.([220]); },
+};
+
+// Wake lock — keep screen on during timer sessions
+let _wakeLock = null;
+async function requestWakeLock() {
+  if (_wakeLock) return;
+  try { _wakeLock = await navigator.wakeLock.request('screen'); }
+  catch(e) { /* not supported or denied */ }
+}
+function releaseWakeLock() {
+  if (_wakeLock) { _wakeLock.release().catch(() => {}); _wakeLock = null; }
+}
+
 // ── FUSION ────────────────────────────────────────────────────────────────────
 const VARIANT_NEXT = { standard: 'gold', gold: 'crimson', crimson: 'void' };
 
@@ -209,8 +234,8 @@ function showFusionScreen(char, fromVariant, toVariant) {
     });
   }, 1500);
 
-  setTimeout(() => { core.classList.add('burst'); SFX.fusionBurst(); navigator.vibrate?.([220]); }, 1960);
-  setTimeout(() => { result.classList.add('reveal'); SFX.fusionReveal(toVariant.id); navigator.vibrate?.([30, 80, 60]); }, 2200);
+  setTimeout(() => { core.classList.add('burst'); SFX.fusionBurst(); Haptic.burst(); }, 1960);
+  setTimeout(() => { result.classList.add('reveal'); SFX.fusionReveal(toVariant.id); Haptic.medium(); }, 2200);
   setTimeout(() => btn.classList.add('show'), 2950);
 }
 
@@ -1179,6 +1204,7 @@ function startTimer() {
   state.timer.running = true;
   state.timer.endTime = Date.now() + state.timer.remaining * 1000;
   saveTimerState();
+  requestWakeLock();
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
   document.getElementById('view-timer').classList.add('running');
 
@@ -1202,6 +1228,7 @@ function pauseTimer() {
   state.timer.running = false;
   state.timer.endTime = null;
   clearTimerState();
+  releaseWakeLock();
   clearInterval(state.timer.interval);
   document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
 }
@@ -1231,6 +1258,7 @@ function onTimerComplete() {
   if (!saved) return;           // another tab already claimed this completion
   _hatchInProgress = true;
   localStorage.removeItem('focus-timer');
+  releaseWakeLock();
 
   const prevSessionCount = sessions.length;
   addSession(state.timer.duration / 60);
@@ -1376,18 +1404,18 @@ function runHatchSequence() {
     cracks.style.transition = 'opacity .1s';
     animateCracks();
     SFX.crack();
-    navigator.vibrate?.([18]);
+    Haptic.light();
   }, 1600);
 
-  setTimeout(() => { SFX.crack(0.55); navigator.vibrate?.([10]); }, 1920);
+  setTimeout(() => { SFX.crack(0.55); Haptic.tap(); }, 1920);
 
   // 2. Shake at 2.2s
-  setTimeout(() => { shakeEgg(egg); SFX.rumble(); navigator.vibrate?.([8, 60, 8, 60, 8]); }, 2200);
+  setTimeout(() => { shakeEgg(egg); SFX.rumble(); Haptic.rumble(); }, 2200);
 
   // 3. BURST at 3.0s
   setTimeout(() => {
     SFX.burst(state.hatch.character.rarity);
-    navigator.vibrate?.([180]);
+    Haptic.heavy();
     // Flash
     flash.style.opacity = '1';
     setTimeout(() => {
@@ -2614,7 +2642,33 @@ async function init() {
   loadMuteState();
   initDarkMode();
   initReminder();
-  registerSW();
+  if (!IS_NATIVE) registerSW();
+
+  // Native-only setup
+  if (IS_NATIVE) {
+    const { StatusBar } = window.Capacitor.Plugins;
+    StatusBar.setStyle({ style: 'DARK' }).catch(() => {});
+    // Hide mini timer — window.open not available in native webview
+    const miniBtn = document.getElementById('btn-mini-timer');
+    if (miniBtn) miniBtn.style.display = 'none';
+    // Handle OAuth deep link callback
+    window.Capacitor.Plugins.App?.addListener('appUrlOpen', async ({ url }) => {
+      if (!url) return;
+      // Extract tokens from URL fragment: app.kokoon.focus://callback#access_token=...
+      const hashIndex = url.indexOf('#');
+      if (hashIndex < 0) return;
+      const fragment = url.substring(hashIndex + 1);
+      const params = new URLSearchParams(fragment);
+      const accessToken = params.get('access_token');
+      const refreshToken = params.get('refresh_token');
+      if (accessToken) {
+        const { data, error } = await DB.setSession(accessToken, refreshToken);
+        if (!error && data?.session) {
+          await handleSignedIn(data.session.user);
+        }
+      }
+    });
+  }
   setInterval(renderNudge, 5 * 60 * 1000); // re-check nudge every 5 min
 
   // Particle canvas

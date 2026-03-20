@@ -52,6 +52,11 @@ const DB = {
     return data; // data.session is null when email confirmation is required
   },
 
+  async setSession(accessToken, refreshToken) {
+    if (!_sb) return { data: null, error: 'offline' };
+    return _sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
+  },
+
   async signOut() {
     if (!_sb) return;
     const { error } = await _sb.auth.signOut();
@@ -60,11 +65,25 @@ const DB = {
 
   async signInWithGoogle() {
     if (!_sb) throw new Error('offline');
-    const { error } = await _sb.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.origin + '/app' }
-    });
-    if (error) throw error;
+    const isNative = typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform();
+    if (isNative) {
+      // In native app, open OAuth in system browser, redirect back via URL scheme
+      const { data, error } = await _sb.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: 'app.kokoon.focus://callback',
+          skipBrowserRedirect: true,
+        }
+      });
+      if (error) throw error;
+      if (data?.url) window.Capacitor.Plugins.Browser?.open({ url: data.url }).catch(() => window.open(data.url, '_blank'));
+    } else {
+      const { error } = await _sb.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + '/app' }
+      });
+      if (error) throw error;
+    }
   },
 
   // ── PROFILE ───────────────────────────────────────────────────────────────
