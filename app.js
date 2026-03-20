@@ -1208,7 +1208,7 @@ function startTimer() {
   saveTimerState();
   requestWakeLock();
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
-  document.getElementById('btn-reset-timer').style.display = 'none';
+  document.getElementById('btn-reset-timer').classList.remove('visible');
   document.getElementById('view-timer').classList.add('running');
 
   state.timer.interval = setInterval(() => {
@@ -1234,7 +1234,7 @@ function pauseTimer() {
   releaseWakeLock();
   saveTimerState();
   document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
-  document.getElementById('btn-reset-timer').style.display = '';
+  document.getElementById('btn-reset-timer').classList.add('visible');
 }
 
 function toggleTimer() {
@@ -1252,7 +1252,7 @@ function resetTimerState() {
   updateProgressRing(0);
   updateEggGlow(0);
   document.getElementById('btn-start-focus').innerHTML = '<span>begin focus</span>';
-  document.getElementById('btn-reset-timer').style.display = 'none';
+  document.getElementById('btn-reset-timer').classList.remove('visible');
   document.getElementById('view-timer').classList.remove('running');
 }
 
@@ -2859,7 +2859,7 @@ async function init() {
         updateProgressRing(progress);
         updateEggGlow(progress);
         document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
-        document.getElementById('btn-reset-timer').style.display = '';
+        document.getElementById('btn-reset-timer').classList.add('visible');
         document.querySelectorAll('.dur-btn').forEach(b => {
           b.classList.toggle('active', parseInt(b.dataset.min) === saved.duration / 60);
         });
