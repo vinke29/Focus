@@ -836,6 +836,22 @@ function checkBadges() {
   return newBadges;
 }
 
+let _pendingBadgeToasts = [];
+
+function showNextBadgeToast() {
+  if (!_pendingBadgeToasts.length) return;
+  const badge = _pendingBadgeToasts.shift();
+  const toast = document.getElementById('badge-toast');
+  document.getElementById('badge-toast-art').innerHTML = badgeArtHtml(badge);
+  document.getElementById('badge-toast-name').textContent = badge.name;
+  toast.classList.add('show');
+  setTimeout(() => {
+    toast.classList.remove('show');
+    // Show next badge after fade out
+    if (_pendingBadgeToasts.length) setTimeout(showNextBadgeToast, 600);
+  }, 3500);
+}
+
 function updateMaxStreak() {
   const streak = calcStreak();
   if (streak > state.maxStreak) {
@@ -1050,7 +1066,10 @@ function navigateTo(viewId) {
     requestAnimationFrame(() => { el.style.overflow = ''; });
   }
   if (viewId === 'collection') { updateCollectionTitle(); renderTopTab(); }
-  if (viewId === 'timer') { renderTimerStats(); }
+  if (viewId === 'timer') {
+    renderTimerStats();
+    if (_pendingBadgeToasts.length) setTimeout(showNextBadgeToast, 800);
+  }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard' || viewId === 'profile';
   const muteBtn = document.getElementById('btn-mute');
   if (muteBtn) { muteBtn.style.opacity = noMute ? '0' : ''; muteBtn.style.pointerEvents = noMute ? 'none' : ''; }
@@ -1267,7 +1286,10 @@ function onTimerComplete() {
 
   // Update max streak and check for new badges
   updateMaxStreak();
-  checkBadges();
+  const newBadges = checkBadges();
+  if (newBadges.length) {
+    _pendingBadgeToasts = newBadges.map(b => BADGES.find(def => def.id === b.id)).filter(Boolean);
+  }
 
   prepareHatchView(character, variant);
   navigateTo('hatch');

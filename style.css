@@ -547,6 +547,50 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
   margin-top: .25rem;
 }
 
+/* ── BADGE TOAST ── */
+#badge-toast {
+  position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%) translateY(-100%);
+  z-index: 200;
+  display: flex; align-items: center; gap: .8rem;
+  background: var(--paper);
+  border: 1px solid rgba(8,8,16,.12);
+  border-radius: 12px;
+  padding: .6rem 1.2rem .6rem .6rem;
+  box-shadow: 0 4px 20px rgba(8,8,16,.12);
+  opacity: 0; pointer-events: none;
+  transition: transform .5s cubic-bezier(.4,0,.2,1), opacity .5s ease;
+  max-width: 320px;
+}
+#badge-toast.show {
+  opacity: 1; transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+#badge-toast-art {
+  width: 40px; height: 40px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+#badge-toast-art img {
+  width: 100%; height: 100%; object-fit: contain;
+}
+#badge-toast-art .badge-tile-icon {
+  font-size: 1.4rem;
+}
+.badge-toast-label {
+  font-size: .42rem; letter-spacing: .16em;
+  text-transform: uppercase; opacity: .45;
+  margin-bottom: .15rem;
+}
+#badge-toast-name {
+  font-size: .72rem; letter-spacing: .1em;
+  text-transform: uppercase; font-weight: 700;
+  color: var(--ink);
+}
+body.dark #badge-toast {
+  background: rgba(18,18,28,.95);
+  border-color: rgba(221,215,200,.12);
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+}
+
 #hatch-actions button {
   background: none; border: 2px solid var(--ink);
   font-family: 'Noto Serif JP', serif;
