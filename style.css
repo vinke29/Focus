@@ -278,6 +278,13 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 }
 .nav-btn:hover, .nav-btn:active { opacity: 1; }
 
+/* ── MINI TIMER ── */
+.mini-timer-btn {
+  position: fixed; top: 1.4rem; left: 4.5rem; z-index: 50;
+  display: none;
+}
+#view-timer.running .mini-timer-btn { display: block; }
+
 /* ── TIMER VIEW ── */
 #btn-open-collection {
   position: fixed; top: 1.5rem; right: 1.8rem;
@@ -2042,6 +2049,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   #timer-nudge, #reminder-prompt { display: none; }
   #btn-open-collection { top: .6rem; right: .8rem; font-size: .85rem; }
   .mute-btn { top: .6rem !important; left: .8rem !important; }
+  .mini-timer-btn { top: .6rem; left: 3rem; }
 }
 @media (max-height: 360px) {
   #egg-stage { width: 90px; height: 90px; }

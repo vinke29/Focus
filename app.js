@@ -1090,6 +1090,34 @@ function updateTimerDisplay() {
   const s = state.timer.remaining % 60;
   document.getElementById('time-minutes').textContent = String(m).padStart(2, '0');
   document.getElementById('time-seconds').textContent = String(s).padStart(2, '0');
+  // Update mini timer if open
+  if (_miniWin && !_miniWin.closed) {
+    const el = _miniWin.document.getElementById('mini-time');
+    if (el) el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+}
+
+let _miniWin = null;
+function openMiniTimer() {
+  if (_miniWin && !_miniWin.closed) { _miniWin.focus(); return; }
+  const dark = document.documentElement.classList.contains('dark');
+  const bg = dark ? '#0a0a12' : '#f0ebe0';
+  const fg = dark ? '#ddd7c8' : '#080810';
+  _miniWin = window.open('', 'minitimer', 'width=220,height=100,resizable=yes,scrollbars=no,toolbar=no,menubar=no,location=no,status=no');
+  if (!_miniWin) return;
+  const m = Math.floor(state.timer.remaining / 60);
+  const s = state.timer.remaining % 60;
+  _miniWin.document.write(`<!DOCTYPE html>
+<html><head><title>Focus</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: ${bg}; display: flex; align-items: center; justify-content: center;
+    height: 100vh; font-family: 'Helvetica Neue', sans-serif; user-select: none;
+    -webkit-app-region: drag; }
+  #mini-time { font-size: 3rem; font-weight: 200; letter-spacing: .04em; color: ${fg}; }
+</style></head>
+<body><div id="mini-time">${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}</div></body></html>`);
+  _miniWin.document.close();
 }
 
 function updateProgressRing(progress) {
@@ -2578,6 +2606,9 @@ async function init() {
     requestNotificationPermission();
     toggleTimer();
   });
+
+  // Mini timer button
+  document.getElementById('btn-mini-timer').addEventListener('click', openMiniTimer);
 
   // Collection button
   document.getElementById('btn-open-collection').addEventListener('click', () => navigateTo('collection'));
