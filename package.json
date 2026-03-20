@@ -4,7 +4,7 @@
   "description": "",
   "main": "admin.js",
   "scripts": {
-    "cap:build": "rsync -a --exclude=www --exclude=node_modules --exclude=ios --exclude=.git --exclude=creature-samples --exclude=supabase --exclude=emails . www/",
+    "cap:build": "rsync -a --exclude=www --exclude=node_modules --exclude=ios --exclude=.git --exclude=creature-samples --exclude=supabase --exclude=emails . www/ && cp www/app.html www/index.html",
     "cap:sync": "npm run cap:build && npx cap sync ios",
     "cap:open": "npx cap open ios",
     "test": "echo \"Error: no test specified\" && exit 1"
