@@ -64,13 +64,18 @@ body {
   position: relative;
 }
 
-.hero-illustration img,
-.hero-illustration video {
+.hero-illustration img {
   width: 100%;
   height: auto;
   display: block;
-  -webkit-mask-image: radial-gradient(ellipse 70% 65% at center, black 40%, transparent 72%);
-  mask-image: radial-gradient(ellipse 70% 65% at center, black 40%, transparent 72%);
+}
+
+.hero-illustration::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 40px 30px var(--paper);
 }
 
 .hero-cta {
@@ -132,7 +137,7 @@ body {
   <p class="hero-tagline">Focus your time. Hatch creatures. Build your collection.</p>
 
   <div class="hero-illustration">
-    <video src="hero-video.mp4" poster="hero.png" autoplay loop muted playsinline></video>
+    <img src="hero.png" alt="Kokoon creatures — a collection of mythical and real creatures from around the world" loading="eager">
   </div>
 
   <a href="/app" class="hero-cta">open kokoon</a>
