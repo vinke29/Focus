@@ -1190,8 +1190,10 @@ function setDuration(minutes) {
 
 function saveTimerState() {
   localStorage.setItem('focus-timer', JSON.stringify({
-    endTime:  state.timer.endTime,
-    duration: state.timer.duration,
+    endTime:   state.timer.endTime,
+    duration:  state.timer.duration,
+    remaining: state.timer.remaining,
+    running:   state.timer.running,
   }));
 }
 
@@ -1206,6 +1208,7 @@ function startTimer() {
   saveTimerState();
   requestWakeLock();
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
+  document.getElementById('btn-reset-timer').style.display = 'none';
   document.getElementById('view-timer').classList.add('running');
 
   state.timer.interval = setInterval(() => {
@@ -1227,10 +1230,11 @@ function startTimer() {
 function pauseTimer() {
   state.timer.running = false;
   state.timer.endTime = null;
-  clearTimerState();
-  releaseWakeLock();
   clearInterval(state.timer.interval);
+  releaseWakeLock();
+  saveTimerState();
   document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
+  document.getElementById('btn-reset-timer').style.display = '';
 }
 
 function toggleTimer() {
@@ -1241,12 +1245,14 @@ function toggleTimer() {
 function resetTimerState() {
   clearInterval(state.timer.interval);
   clearTimerState();
+  releaseWakeLock();
   state.timer.running   = false;
   state.timer.remaining = state.timer.duration;
   updateTimerDisplay();
   updateProgressRing(0);
   updateEggGlow(0);
   document.getElementById('btn-start-focus').innerHTML = '<span>begin focus</span>';
+  document.getElementById('btn-reset-timer').style.display = 'none';
   document.getElementById('view-timer').classList.remove('running');
 }
 
@@ -2709,6 +2715,8 @@ async function init() {
     toggleTimer();
   });
 
+  document.getElementById('btn-reset-timer').addEventListener('click', resetTimerState);
+
   // Mini timer button
   document.getElementById('btn-mini-timer').addEventListener('click', openMiniTimer);
 
@@ -2833,14 +2841,28 @@ async function init() {
 
   if (session) {
     await handleSignedIn(session.user);
-    // Restore a running timer that survived a page reload or context switch
+    // Restore a running or paused timer that survived a page reload
     try {
       const saved = JSON.parse(localStorage.getItem('focus-timer') || 'null');
-      if (saved?.endTime && saved.endTime > Date.now()) {
+      if (saved?.running && saved.endTime && saved.endTime > Date.now()) {
+        // Was running — resume from wall clock
         state.timer.duration  = saved.duration;
         state.timer.remaining = Math.round((saved.endTime - Date.now()) / 1000);
         state.timer.endTime   = saved.endTime;
         startTimer();
+      } else if (saved && !saved.running && saved.remaining > 0 && saved.remaining < saved.duration) {
+        // Was paused — restore paused position
+        state.timer.duration  = saved.duration;
+        state.timer.remaining = saved.remaining;
+        updateTimerDisplay();
+        const progress = 1 - state.timer.remaining / state.timer.duration;
+        updateProgressRing(progress);
+        updateEggGlow(progress);
+        document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
+        document.getElementById('btn-reset-timer').style.display = '';
+        document.querySelectorAll('.dur-btn').forEach(b => {
+          b.classList.toggle('active', parseInt(b.dataset.min) === saved.duration / 60);
+        });
       } else {
         clearTimerState();
       }

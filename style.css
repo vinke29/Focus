@@ -379,6 +379,18 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #btn-start-focus:hover, #btn-start-focus:active { color: var(--paper); }
 #btn-start-focus:hover::before, #btn-start-focus:active::before { transform: scaleX(1); }
 
+#btn-reset-timer {
+  display: none;
+  margin-top: .6rem;
+  background: none; border: none;
+  font-family: 'Noto Serif JP', serif;
+  font-size: .6rem; letter-spacing: .18em;
+  color: var(--ink); opacity: .45;
+  cursor: pointer; padding: .3rem 1rem;
+  transition: opacity .2s;
+}
+#btn-reset-timer:hover, #btn-reset-timer:active { opacity: .8; }
+
 #view-timer.running #duration-picker { opacity: 0; pointer-events: none; }
 
 #timer-stats {
