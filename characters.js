@@ -7,8 +7,8 @@ const EGG_SVG_SMALL = `
       <stop offset="100%" stop-color="#ddd8ca"/>
     </radialGradient>
     <radialGradient id="teggGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#0047ff" stop-opacity=".18"/>
-      <stop offset="100%" stop-color="#0047ff" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#f0a500" stop-opacity=".18"/>
+      <stop offset="100%" stop-color="#f0a500" stop-opacity="0"/>
     </radialGradient>
   </defs>
   <ellipse cx="110" cy="268" rx="55" ry="9" fill="rgba(0,0,0,.1)"/>
@@ -18,9 +18,9 @@ const EGG_SVG_SMALL = `
     fill="url(#teggGlow)"/>
   <path d="M75,45 C82,32 96,24 105,22" stroke="white" stroke-width="3.5" stroke-linecap="round" fill="none" opacity=".7"/>
   <path d="M60,80 C64,68 70,58 76,52" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"/>
-  <g class="egg-rune" opacity=".45">
-    <path d="M118,85 L102,118 L114,118 L98,155" stroke="#0047ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <path d="M118,85 L102,118 L114,118 L98,155" stroke="#00e5ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".6"/>
+  <g class="egg-rune" opacity=".35">
+    <ellipse cx="110" cy="120" rx="22" ry="28" stroke="#f0a500" stroke-width="2" fill="none" opacity=".5"/>
+    <ellipse cx="110" cy="120" rx="12" ry="16" stroke="#f5c842" stroke-width="1.5" fill="none" opacity=".4"/>
   </g>
 </svg>`;
 

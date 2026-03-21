@@ -48,9 +48,10 @@ class LiveActivityPlugin: CAPPlugin, CAPBridgedPlugin {
         )
 
         do {
+            let staleDate = Date().addingTimeInterval(Double(remainingSeconds))
             let activity = try Activity.request(
                 attributes: attributes,
-                content: .init(state: state, staleDate: nil)
+                content: .init(state: state, staleDate: staleDate)
             )
             currentActivity = activity
             call.resolve(["started": true])

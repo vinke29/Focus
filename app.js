@@ -1186,7 +1186,7 @@ function updateEggGlow(progress) {
   if (!el) return;
   const blur  = 6 + progress * 18;
   const alpha = 0.05 + progress * 0.35;
-  el.style.filter = `drop-shadow(0 0 ${blur}px rgba(0,71,255,${alpha.toFixed(2)}))`;
+  el.style.filter = `drop-shadow(0 0 ${blur}px rgba(240,165,0,${alpha.toFixed(2)}))`;
 }
 
 function setDuration(minutes) {
@@ -2572,9 +2572,19 @@ async function handleSignedIn(user) {
       updateCollectionTitle();
       navigateTo('timer');
       // Sync collection + sessions in background
+      const _syncStart = Date.now();
       Promise.all([DB.loadCollection(), DB.loadSessions(), DB.loadBadges()])
         .then(([col, sess, badgeData]) => {
-          if (col  !== null) { state.collection = col; localStorage.setItem('focus-collection', JSON.stringify(col)); }
+          if (col  !== null) {
+            // Merge: keep server entries + any local entries added during the async load
+            // (e.g. a hatch that fired while Supabase was still loading)
+            const serverKeys = new Set(col.map(e => `${e.id}:${e.variant}:${e.timestamp}`));
+            const localOnly = state.collection.filter(e =>
+              e.timestamp >= _syncStart && !serverKeys.has(`${e.id}:${e.variant}:${e.timestamp}`)
+            );
+            state.collection = [...col, ...localOnly];
+            localStorage.setItem('focus-collection', JSON.stringify(state.collection));
+          }
           if (sess !== null) { sessions = sess;         localStorage.setItem('focus-sessions',   JSON.stringify(sess)); renderTimerStats(); }
           if (badgeData) {
             if (badgeData.badges?.length) { state.badges = badgeData.badges; localStorage.setItem('focus-badges', JSON.stringify(state.badges)); }

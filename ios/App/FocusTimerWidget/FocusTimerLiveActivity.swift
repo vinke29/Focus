@@ -17,13 +17,14 @@ struct FocusTimerLiveActivity: Widget {
                     expandedView(context: context)
                 }
             } compactLeading: {
-                // Small bolt icon
-                Image(systemName: "bolt.fill")
-                    .foregroundColor(Color(red: 0, green: 0.28, blue: 1))
+                Text("🥚")
                     .font(.system(size: 14))
             } compactTrailing: {
-                // Countdown timer
-                if context.state.isPaused {
+                if !context.state.isPaused && context.state.endTime <= Date() {
+                    Text("✓")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(Color(red: 0.55, green: 0.85, blue: 0.45))
+                } else if context.state.isPaused {
                     Text(formatTime(context.state.pausedRemaining))
                         .font(.system(size: 14, weight: .medium, design: .monospaced))
                         .foregroundColor(.white.opacity(0.6))
@@ -35,8 +36,7 @@ struct FocusTimerLiveActivity: Widget {
                         .frame(width: 52)
                 }
             } minimal: {
-                Image(systemName: "bolt.fill")
-                    .foregroundColor(Color(red: 0, green: 0.28, blue: 1))
+                Text("🥚")
                     .font(.system(size: 12))
             }
         }
@@ -45,24 +45,28 @@ struct FocusTimerLiveActivity: Widget {
     // MARK: - Lock Screen View
     @ViewBuilder
     func lockScreenView(context: ActivityViewContext<FocusTimerAttributes>) -> some View {
+        let isComplete = !context.state.isPaused && context.state.endTime <= Date()
         HStack(spacing: 16) {
-            // Progress ring
+            // Egg icon
             ZStack {
                 Circle()
                     .stroke(Color.white.opacity(0.12), lineWidth: 4)
                     .frame(width: 50, height: 50)
 
-                Image(systemName: "bolt.fill")
-                    .foregroundColor(Color(red: 0, green: 0.28, blue: 1))
-                    .font(.system(size: 18))
+                Text("🥚")
+                    .font(.system(size: 22))
             }
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("Focus Session")
+                Text(isComplete ? "Focus Complete" : "Focus Session")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(.white.opacity(0.6))
 
-                if context.state.isPaused {
+                if isComplete {
+                    Text("00:00")
+                        .font(.system(size: 28, weight: .light, design: .monospaced))
+                        .foregroundColor(Color(red: 0.55, green: 0.85, blue: 0.45))
+                } else if context.state.isPaused {
                     Text(formatTime(context.state.pausedRemaining))
                         .font(.system(size: 28, weight: .light, design: .monospaced))
                         .foregroundColor(.white.opacity(0.5))
@@ -89,12 +93,17 @@ struct FocusTimerLiveActivity: Widget {
     // MARK: - Expanded Dynamic Island View
     @ViewBuilder
     func expandedView(context: ActivityViewContext<FocusTimerAttributes>) -> some View {
+        let isComplete = !context.state.isPaused && context.state.endTime <= Date()
         VStack(spacing: 6) {
-            Text("Focus Session")
+            Text(isComplete ? "Focus Complete" : "Focus Session")
                 .font(.system(size: 13, weight: .medium))
                 .foregroundColor(.white.opacity(0.6))
 
-            if context.state.isPaused {
+            if isComplete {
+                Text("00:00")
+                    .font(.system(size: 32, weight: .light, design: .monospaced))
+                    .foregroundColor(Color(red: 0.55, green: 0.85, blue: 0.45))
+            } else if context.state.isPaused {
                 Text(formatTime(context.state.pausedRemaining))
                     .font(.system(size: 32, weight: .light, design: .monospaced))
                     .foregroundColor(.white.opacity(0.5))
