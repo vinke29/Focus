@@ -12,6 +12,9 @@ const Haptic = {
   burst()  { this._cap ? this._cap.impact({ style: 'HEAVY' })  : navigator.vibrate?.([220]); },
 };
 
+// Live Activity bridge (iOS 16.1+ Lock Screen / Dynamic Island timer)
+const LiveActivity = IS_NATIVE && (window.Capacitor.Plugins?.LiveActivity || null);
+
 // Dismiss keyboard on tap outside inputs (native iOS)
 if (IS_NATIVE) {
   document.addEventListener('click', e => {
@@ -1216,6 +1219,12 @@ function startTimer() {
   state.timer.endTime = Date.now() + state.timer.remaining * 1000;
   saveTimerState();
   requestWakeLock();
+  if (LiveActivity) {
+    LiveActivity.startActivity({
+      totalSeconds: state.timer.duration,
+      remainingSeconds: state.timer.remaining,
+    }).catch(() => {});
+  }
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
   document.getElementById('btn-reset-timer').classList.remove('visible');
   document.getElementById('view-timer').classList.add('running');
@@ -1242,6 +1251,12 @@ function pauseTimer() {
   clearInterval(state.timer.interval);
   releaseWakeLock();
   saveTimerState();
+  if (LiveActivity) {
+    LiveActivity.updateActivity({
+      remainingSeconds: state.timer.remaining,
+      isPaused: true,
+    }).catch(() => {});
+  }
   document.getElementById('btn-start-focus').innerHTML = '<span>resume</span>';
   document.getElementById('btn-reset-timer').classList.add('visible');
 }
@@ -1255,6 +1270,7 @@ function resetTimerState() {
   clearInterval(state.timer.interval);
   clearTimerState();
   releaseWakeLock();
+  if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
   state.timer.running   = false;
   state.timer.remaining = state.timer.duration;
   updateTimerDisplay();
@@ -1274,6 +1290,7 @@ function onTimerComplete() {
   _hatchInProgress = true;
   localStorage.removeItem('focus-timer');
   releaseWakeLock();
+  if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
 
   const prevSessionCount = sessions.length;
   addSession(state.timer.duration / 60);
@@ -2859,6 +2876,14 @@ async function init() {
         state.timer.remaining = Math.round((saved.endTime - Date.now()) / 1000);
         state.timer.endTime   = saved.endTime;
         startTimer();
+      } else if (saved?.running && saved.endTime && saved.endTime <= Date.now()) {
+        // Timer completed while app was closed — trigger hatch
+        state.timer.duration  = saved.duration;
+        state.timer.remaining = 0;
+        state.timer.running   = false;
+        state.timer.endTime   = null;
+        updateTimerDisplay();
+        onTimerComplete();
       } else if (saved && !saved.running && saved.remaining > 0 && saved.remaining < saved.duration) {
         // Was paused — restore paused position
         state.timer.duration  = saved.duration;

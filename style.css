@@ -635,7 +635,7 @@ body.dark #badge-toast {
 #btn-see-collection:hover, #btn-see-collection:active { color: var(--ink) !important; }
 
 /* ── COLLECTION VIEW ── */
-#view-collection { justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
+#view-collection { justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; padding-top: 0; }
 
 /* ── PROFILE VIEW ── */
 #view-profile { justify-content: flex-start; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
@@ -694,6 +694,7 @@ body.dark #badge-toast {
   width: 100%; flex-shrink: 0;
   background: var(--paper);
   border-bottom: 1px solid rgba(8,8,16,.08);
+  padding-top: env(safe-area-inset-top);
 }
 .collection-top {
   display: flex; align-items: center; gap: 1rem;
