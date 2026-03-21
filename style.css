@@ -562,6 +562,42 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
   margin-top: .25rem;
 }
 
+/* ── REGION DISCOVER OVERLAY ── */
+#region-discover-overlay {
+  position: absolute; inset: 0; z-index: 60;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: var(--ink);
+  opacity: 0; pointer-events: none;
+  transition: opacity .6s ease;
+}
+#region-discover-overlay.show {
+  opacity: 1; pointer-events: all;
+}
+#region-discover-overlay.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+#region-discover-label {
+  font-family: 'Zen Antique Soft', serif;
+  font-size: 1.6rem; letter-spacing: .18em;
+  color: var(--paper);
+  opacity: 0; transform: translateY(1.5rem);
+  transition: opacity .8s ease, transform .8s ease;
+}
+#region-discover-msg {
+  font-size: .55rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--paper); opacity: 0;
+  margin-top: .6rem;
+  transition: opacity .8s ease .3s;
+}
+#region-discover-overlay.show #region-discover-label {
+  opacity: 1; transform: translateY(0);
+}
+#region-discover-overlay.show #region-discover-msg {
+  opacity: .5;
+}
+
 /* ── BADGE TOAST ── */
 #badge-toast {
   position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%) translateY(-100%);

@@ -1320,7 +1320,11 @@ function onTimerComplete() {
     setTimeout(showReminderPrompt, 1000);
   }
 
-  const { character, variant } = rollCharacterInUnlockedRegions(state.timer.duration);
+  // If a new region just unlocked, guarantee a creature from that region
+  const rollResult = state.pendingRegionUnlock
+    ? rollFromRegion(state.pendingRegionUnlock, state.timer.duration)
+    : rollCharacterInUnlockedRegions(state.timer.duration);
+  const { character, variant } = rollResult;
   state.hatch.character = character;
   state.hatch.variant   = variant;
 
@@ -1353,17 +1357,54 @@ function onTimerComplete() {
 
   prepareHatchView(character, variant);
   navigateTo('hatch');
-  setTimeout(runHatchSequence, 400);
 
-  // Auto-trigger fusion animation after the hatch sequence finishes
-  if (pendingFusion) {
+  if (state.pendingRegionUnlock) {
+    // Show region discovery overlay first, then hatch
+    const region = state.pendingRegionUnlock;
+    const label  = REGION_LABELS[region] || region;
+    const msg    = REGION_UNLOCK_MSGS[region] || '';
+    const overlay = document.getElementById('region-discover-overlay');
+    document.getElementById('region-discover-label').textContent = `✦ ${label} ✦`;
+    document.getElementById('region-discover-msg').textContent = msg;
+
     setTimeout(() => {
-      if (pendingFusion) {
-        const { char, fromVariant, toVariant } = pendingFusion;
-        pendingFusion = null;
-        showFusionScreen(char, fromVariant, toVariant);
-      }
-    }, 5600);
+      overlay.classList.add('show');
+      SFX.regionDiscover();
+      Haptic.medium();
+    }, 400);
+
+    // Fade out overlay and start hatch
+    setTimeout(() => {
+      overlay.classList.add('fade-out');
+      state.pendingRegionUnlock = null;
+    }, 2800);
+
+    // Start hatch after overlay fades
+    setTimeout(runHatchSequence, 3200);
+
+    // Fusion after hatch (with region overlay delay)
+    if (pendingFusion) {
+      setTimeout(() => {
+        if (pendingFusion) {
+          const { char, fromVariant, toVariant } = pendingFusion;
+          pendingFusion = null;
+          showFusionScreen(char, fromVariant, toVariant);
+        }
+      }, 3200 + 5600);
+    }
+  } else {
+    setTimeout(runHatchSequence, 400);
+
+    // Auto-trigger fusion animation after the hatch sequence finishes
+    if (pendingFusion) {
+      setTimeout(() => {
+        if (pendingFusion) {
+          const { char, fromVariant, toVariant } = pendingFusion;
+          pendingFusion = null;
+          showFusionScreen(char, fromVariant, toVariant);
+        }
+      }, 5600);
+    }
   }
 }
 
@@ -1409,6 +1450,11 @@ function prepareHatchView(character, variant) {
   // Reset UI — hide footer BEFORE setting character info to prevent name flash
   document.getElementById('hatch-footer').classList.remove('show');
   document.getElementById('milestone-toast').classList.remove('show', 'region-complete', 'region-unlock');
+
+  // Reset region discover overlay
+  const discoverOverlay = document.getElementById('region-discover-overlay');
+  discoverOverlay.classList.remove('show', 'fade-out');
+  discoverOverlay.style.transition = 'opacity .6s ease';
 
   // Character info (set after footer is hidden)
   document.getElementById('char-name').textContent   = character.name;
@@ -1502,18 +1548,6 @@ function runHatchSequence() {
       toast.classList.add('show', 'region-complete');
       setTimeout(() => toast.classList.remove('show', 'region-complete'), 5000);
       state.pendingRegionComplete = null;
-    }, 5000);
-  } else if (state.pendingRegionUnlock) {
-    const region = state.pendingRegionUnlock;
-    const label  = REGION_LABELS[region] || region;
-    const msg    = REGION_UNLOCK_MSGS[region] || '';
-    setTimeout(() => {
-      document.getElementById('milestone-num').textContent = `✦ ${label} discovered ✦`;
-      document.getElementById('milestone-msg').textContent = msg;
-      const toast = document.getElementById('milestone-toast');
-      toast.classList.add('show', 'region-unlock');
-      setTimeout(() => toast.classList.remove('show', 'region-unlock'), 5500);
-      state.pendingRegionUnlock = null;
     }, 5000);
   } else if (state.pendingMilestone) {
     const m = state.pendingMilestone;
@@ -2138,6 +2172,28 @@ function weightedPickFromPool(pool, lastCharId) {
     if (r <= 0) return pool[i];
   }
   return pool[pool.length - 1];
+}
+
+function rollFromRegion(region, durationSecs) {
+  const { rarityShift, variantBoost } = getDurationBoost(durationSecs || 25 * 60);
+  const lastCharId = state.collection.length ? state.collection[state.collection.length - 1].id : null;
+  const weights = RARITY_WEIGHTS.map((t, i) => ({
+    ...t,
+    weight: t.weight + (rarityShift[i] || 0),
+  }));
+  const roll = Math.random() * 100;
+  let cumulative = 0;
+  for (const tier of weights) {
+    cumulative += tier.weight;
+    if (roll < cumulative) {
+      const pool = tier.pool.filter(id => CHARACTERS[id]?.region === region);
+      if (pool.length) {
+        return { character: CHARACTERS[weightedPickFromPool(pool, lastCharId)], variant: rollBoostedVariant(variantBoost) };
+      }
+    }
+  }
+  const allIds = Object.values(CHARACTERS).filter(c => c.region === region).map(c => c.id);
+  return { character: CHARACTERS[weightedPickFromPool(allIds, lastCharId)], variant: rollBoostedVariant(variantBoost) };
 }
 
 function rollCharacterInUnlockedRegions(durationSecs) {

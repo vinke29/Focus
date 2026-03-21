@@ -164,5 +164,24 @@ const SFX = (() => {
     tone(c, freqs[freqs.length - 1] * 2, 'triangle', t + freqs.length * 0.09, 0.8, 0.09);
   }
 
-  return { unlock, setMuted, isMuted, crack, rumble, burst, fusionOrbPop, fusionConverge, fusionBurst, fusionReveal };
+  // ── Region discovery ─────────────────────────────────────────────────────────
+
+  // Deep, expansive reveal — a low swell rising into a bright open chord
+  function regionDiscover() {
+    if (muted) return;
+    const c = ac(), t = c.currentTime;
+    // Low swell
+    tone(c, 65, 'sine', t, 1.2, 0.35, 130);
+    noise(c, t, 0.6, 180, 1.2, 0.08);
+    // Rising chord — open fifth feeling
+    const sd = 0.3;
+    tone(c, 262, 'sine',     t+sd,      1.0, 0.12);  // C
+    tone(c, 392, 'sine',     t+sd+0.12, 0.9, 0.14);  // G
+    tone(c, 523, 'sine',     t+sd+0.25, 0.8, 0.12);  // C5
+    tone(c, 784, 'triangle', t+sd+0.4,  0.7, 0.08);  // G5
+    // Shimmer tail
+    tone(c, 1047, 'triangle', t+sd+0.55, 0.9, 0.06);
+  }
+
+  return { unlock, setMuted, isMuted, crack, rumble, burst, fusionOrbPop, fusionConverge, fusionBurst, fusionReveal, regionDiscover };
 })();
