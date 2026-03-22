@@ -34,6 +34,7 @@ body::after {
 /* ── AUTH VIEW ── */
 #view-auth {
   flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
 }
 
 .auth-logo {

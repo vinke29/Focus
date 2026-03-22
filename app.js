@@ -22,6 +22,24 @@ if (IS_NATIVE) {
       document.activeElement?.blur();
     }
   });
+
+  // Scroll focused input into view when keyboard appears
+  const { Keyboard } = window.Capacitor.Plugins;
+  if (Keyboard) {
+    Keyboard.addListener('keyboardWillShow', ({ keyboardHeight }) => {
+      const el = document.activeElement;
+      if (el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA')) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+      }
+      // Push auth view up so form stays visible
+      const authView = document.getElementById('view-auth');
+      if (authView) authView.style.paddingBottom = keyboardHeight + 'px';
+    });
+    Keyboard.addListener('keyboardWillHide', () => {
+      const authView = document.getElementById('view-auth');
+      if (authView) authView.style.paddingBottom = '';
+    });
+  }
 }
 
 // Wake lock — keep screen on during timer sessions
