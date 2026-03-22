@@ -2697,6 +2697,8 @@ async function performSignUp() {
 
 async function performSignOut() {
   try { await DB.signOut(); } catch(e) {}
+  resetTimerState();
+  _hatchInProgress = false;
   // Clear local state
   state.collection = [];
   state.badges = [];
