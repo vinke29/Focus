@@ -15,9 +15,6 @@ const Haptic = {
 // Live Activity bridge (iOS 16.1+ Lock Screen / Dynamic Island timer)
 const LiveActivity = IS_NATIVE && (window.Capacitor.Plugins?.LiveActivity || null);
 
-// Local notifications (timer completion alarm)
-const LocalNotifications = IS_NATIVE && (window.Capacitor.Plugins?.LocalNotifications || null);
-const TIMER_NOTIF_ID = 77;
 
 
 // Dismiss keyboard on tap outside inputs (native iOS)
@@ -1248,21 +1245,6 @@ function startTimer() {
       remainingSeconds: state.timer.remaining,
     }).catch(() => {});
   }
-  if (LocalNotifications) {
-    LocalNotifications.requestPermissions().then(({ display }) => {
-      if (display !== 'granted') return;
-      // Cancel any leftover notification first, then schedule at exact end time
-      LocalNotifications.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}).finally(() => {
-        LocalNotifications.schedule({ notifications: [{
-          id: TIMER_NOTIF_ID,
-          title: 'Your egg is hatching! 🥚',
-          body: 'Open Kokoon to reveal your creature.',
-          schedule: { at: new Date(state.timer.endTime), allowWhileIdle: true },
-          sound: 'default',
-        }]}).catch(() => {});
-      });
-    }).catch(() => {});
-  }
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
   document.getElementById('btn-reset-timer').classList.remove('visible');
   document.getElementById('view-timer').classList.add('running');
@@ -1289,7 +1271,6 @@ function pauseTimer() {
   clearInterval(state.timer.interval);
   releaseWakeLock();
   saveTimerState();
-  if (LocalNotifications) { LocalNotifications.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}); }
   if (LiveActivity) {
     LiveActivity.updateActivity({
       remainingSeconds: state.timer.remaining,
@@ -1309,7 +1290,6 @@ function resetTimerState() {
   clearInterval(state.timer.interval);
   clearTimerState();
   releaseWakeLock();
-  if (LocalNotifications) { LocalNotifications.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}); }
   if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
   state.timer.running   = false;
   state.timer.remaining = state.timer.duration;
@@ -1330,9 +1310,11 @@ function onTimerComplete() {
   _hatchInProgress = true;
   localStorage.removeItem('focus-timer');
   releaseWakeLock();
-  if (LiveActivity) { LiveActivity.stopActivity({ withAlert: true }).catch(() => {}); }
-  // Clear any delivered notification from the notification center once the user is back in app
-  if (LocalNotifications) { LocalNotifications.removeDeliveredNotifications({ notifications: [{ id: TIMER_NOTIF_ID, tag: null }] }).catch(() => {}); }
+  if (LiveActivity) {
+    LiveActivity.stopActivity({ withAlert: true }).catch(() => {});
+    // After the 4s Swift alert + buffer, dismiss the ended Live Activity from notification center
+    setTimeout(() => { LiveActivity.stopActivity({ dismissImmediately: true }).catch(() => {}); }, 6000);
+  }
 
   const prevSessionCount = sessions.length;
   addSession(state.timer.duration / 60);
