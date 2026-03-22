@@ -186,6 +186,19 @@ body.dark .auth-btn-google:hover, body.dark .auth-btn-google:active { border-col
 }
 #btn-account-delete:hover { opacity: .85; }
 
+.account-links {
+  display: flex; gap: 1.4rem;
+  padding-top: .2rem;
+}
+.account-links a {
+  font-family: 'Zen Antique Soft', serif;
+  font-size: .62rem; letter-spacing: .15em;
+  color: var(--ink); opacity: .35;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.account-links a:hover { opacity: .65; }
+
 body.dark #account-sheet { background: #0f0f1a; border-top-color: rgba(221,215,200,.1); }
 body.dark .account-sheet-divider { background: rgba(221,215,200,.1); }
 
