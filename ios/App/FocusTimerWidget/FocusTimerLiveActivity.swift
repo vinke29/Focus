@@ -58,14 +58,14 @@ struct FocusTimerLiveActivity: Widget {
             }
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(isComplete ? "Focus Complete" : "Focus Session")
+                Text(isComplete ? "Your egg is hatching! 🥚" : "Focus Session")
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(.white.opacity(0.6))
+                    .foregroundColor(isComplete ? Color(red: 0.55, green: 0.85, blue: 0.45) : .white.opacity(0.6))
 
                 if isComplete {
-                    Text("00:00")
-                        .font(.system(size: 28, weight: .light, design: .monospaced))
-                        .foregroundColor(Color(red: 0.55, green: 0.85, blue: 0.45))
+                    Text("tap to reveal →")
+                        .font(.system(size: 22, weight: .medium))
+                        .foregroundColor(.white)
                 } else if context.state.isPaused {
                     Text(formatTime(context.state.pausedRemaining))
                         .font(.system(size: 28, weight: .light, design: .monospaced))
@@ -95,14 +95,14 @@ struct FocusTimerLiveActivity: Widget {
     func expandedView(context: ActivityViewContext<FocusTimerAttributes>) -> some View {
         let isComplete = !context.state.isPaused && context.state.endTime <= Date()
         VStack(spacing: 6) {
-            Text(isComplete ? "Focus Complete" : "Focus Session")
+            Text(isComplete ? "Your egg is hatching! 🥚" : "Focus Session")
                 .font(.system(size: 13, weight: .medium))
-                .foregroundColor(.white.opacity(0.6))
+                .foregroundColor(isComplete ? Color(red: 0.55, green: 0.85, blue: 0.45) : .white.opacity(0.6))
 
             if isComplete {
-                Text("00:00")
-                    .font(.system(size: 32, weight: .light, design: .monospaced))
-                    .foregroundColor(Color(red: 0.55, green: 0.85, blue: 0.45))
+                Text("tap to reveal →")
+                    .font(.system(size: 26, weight: .medium))
+                    .foregroundColor(.white)
             } else if context.state.isPaused {
                 Text(formatTime(context.state.pausedRemaining))
                     .font(.system(size: 32, weight: .light, design: .monospaced))

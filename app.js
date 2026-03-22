@@ -15,6 +15,34 @@ const Haptic = {
 // Live Activity bridge (iOS 16.1+ Lock Screen / Dynamic Island timer)
 const LiveActivity = IS_NATIVE && (window.Capacitor.Plugins?.LiveActivity || null);
 
+// Local Notifications — timer completion sound/banner
+const LocalNotif = IS_NATIVE && (window.Capacitor.Plugins?.LocalNotifications || null);
+const TIMER_NOTIF_ID = 7001;
+
+async function scheduleTimerNotification(endTimeMs) {
+  if (!LocalNotif) return;
+  try {
+    const perm = await LocalNotif.requestPermissions();
+    if (perm.display !== 'granted') return;
+    await LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] });
+    await LocalNotif.schedule({
+      notifications: [{
+        id: TIMER_NOTIF_ID,
+        title: 'Your egg is hatching! 🥚',
+        body: 'Open Kokoon to reveal your creature.',
+        schedule: { at: new Date(endTimeMs) },
+        sound: 'default',
+        extra: { type: 'timer_complete' },
+      }]
+    });
+  } catch(e) { /* non-fatal */ }
+}
+
+async function cancelTimerNotification() {
+  if (!LocalNotif) return;
+  try { await LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }); } catch(e) {}
+}
+
 // Dismiss keyboard on tap outside inputs (native iOS)
 if (IS_NATIVE) {
   document.addEventListener('click', e => {
@@ -1243,6 +1271,7 @@ function startTimer() {
       remainingSeconds: state.timer.remaining,
     }).catch(() => {});
   }
+  scheduleTimerNotification(state.timer.endTime);
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
   document.getElementById('btn-reset-timer').classList.remove('visible');
   document.getElementById('view-timer').classList.add('running');
@@ -1267,6 +1296,7 @@ function pauseTimer() {
   state.timer.running = false;
   state.timer.endTime = null;
   clearInterval(state.timer.interval);
+  cancelTimerNotification();
   releaseWakeLock();
   saveTimerState();
   if (LiveActivity) {
@@ -1287,6 +1317,7 @@ function toggleTimer() {
 function resetTimerState() {
   clearInterval(state.timer.interval);
   clearTimerState();
+  cancelTimerNotification();
   releaseWakeLock();
   if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
   state.timer.running   = false;
@@ -1308,6 +1339,7 @@ function onTimerComplete() {
   _hatchInProgress = true;
   localStorage.removeItem('focus-timer');
   releaseWakeLock();
+  cancelTimerNotification();
   if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
 
   const prevSessionCount = sessions.length;
