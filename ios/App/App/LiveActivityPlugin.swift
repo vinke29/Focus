@@ -79,16 +79,33 @@ class LiveActivityPlugin: CAPPlugin, CAPBridgedPlugin {
 
     @objc func stopActivity(_ call: CAPPluginCall) {
         guard #available(iOS 16.2, *) else { call.resolve(); return }
-        let state = FocusTimerAttributes.ContentState(
+        let withAlert = call.getBool("withAlert") ?? false
+        let completedState = FocusTimerAttributes.ContentState(
             endTime: Date(),
             isPaused: false,
             pausedRemaining: 0
         )
         Task {
+            if withAlert, let activity = currentActivity {
+                // Fire sound + banner as part of the Live Activity update
+                let alert = AlertConfiguration(
+                    title: "Your egg is hatching! 🥚",
+                    body: "Open Kokoon to reveal your creature.",
+                    sound: .default
+                )
+                await activity.update(
+                    ActivityContent(state: completedState, staleDate: nil),
+                    alertConfiguration: alert
+                )
+                // Keep the completed state visible briefly before dismissing
+                try? await Task.sleep(nanoseconds: 4_000_000_000)
+            }
             // End all Focus activities to prevent orphans
             for activity in Activity<FocusTimerAttributes>.activities {
-                await activity.end(.init(state: state, staleDate: nil),
-                                   dismissalPolicy: .immediate)
+                await activity.end(
+                    ActivityContent(state: completedState, staleDate: nil),
+                    dismissalPolicy: .default
+                )
             }
             currentActivity = nil
             call.resolve()
