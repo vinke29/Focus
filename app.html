@@ -248,7 +248,12 @@
           </g>
         </svg>
       </button>
-      <button id="btn-signout" class="nav-btn signout-btn" title="Sign out">sign out</button>
+      <button id="btn-account" class="nav-btn account-btn" title="Account">
+        <svg viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="6.5" r="2.8"/>
+          <path d="M2.5 15.5c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6"/>
+        </svg>
+      </button>
     </div>
     <div id="collection-stats"></div>
     <div class="top-tabs" id="top-tabs-desktop">
@@ -395,6 +400,28 @@
       <div id="fusion-result-badge"></div>
     </div>
     <button id="btn-fusion-ok"><span>amazing</span></button>
+  </div>
+</div>
+
+<!-- ── ACCOUNT SHEET ── -->
+<div id="account-sheet">
+  <div id="account-sheet-inner">
+    <div id="account-avatar"></div>
+    <div id="account-name-display"></div>
+    <div id="account-email-display"></div>
+    <div class="account-sheet-divider"></div>
+    <button id="btn-account-signout">sign out</button>
+    <button id="btn-account-delete">delete account</button>
+  </div>
+</div>
+<div id="account-sheet-backdrop"></div>
+
+<!-- ── DELETE CONFIRM ── -->
+<div id="delete-confirm-overlay" class="modal-overlay">
+  <div class="modal-inner" style="padding: 2rem 1.8rem; gap: 1.2rem; text-align: center;">
+    <p style="font-size:.9rem;line-height:1.7;opacity:.7;margin:0;">This will permanently delete your account and all your creatures, sessions, and progress. This cannot be undone.</p>
+    <button id="btn-delete-confirm" class="auth-btn" style="background:#c0392b;border-color:#c0392b;color:#fff;width:100%;margin-top:.4rem;">delete my account</button>
+    <button id="btn-delete-cancel" class="nav-btn" style="opacity:.5;font-size:.8rem;letter-spacing:.15em;">cancel</button>
   </div>
 </div>
 

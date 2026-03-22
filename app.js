@@ -2708,6 +2708,47 @@ async function performSignOut() {
   navigateTo('auth');
 }
 
+function openAccountSheet() {
+  const name  = getUserName();
+  const initial = (name || '?')[0].toUpperCase();
+  document.getElementById('account-avatar').textContent       = initial;
+  document.getElementById('account-name-display').textContent = name || '—';
+  // Pull email from Supabase session if available
+  DB.getSession().then(({ data }) => {
+    document.getElementById('account-email-display').textContent = data?.session?.user?.email || '';
+  }).catch(() => {});
+  document.getElementById('account-sheet').classList.add('open');
+  document.getElementById('account-sheet-backdrop').classList.add('open');
+}
+
+function closeAccountSheet() {
+  document.getElementById('account-sheet').classList.remove('open');
+  document.getElementById('account-sheet-backdrop').classList.remove('open');
+}
+
+function openDeleteConfirm() {
+  document.getElementById('delete-confirm-overlay').classList.add('open');
+}
+
+function closeDeleteConfirm() {
+  document.getElementById('delete-confirm-overlay').classList.remove('open');
+}
+
+async function performDeleteAccount() {
+  const btn = document.getElementById('btn-delete-confirm');
+  btn.textContent = 'deleting…';
+  btn.disabled = true;
+  try {
+    await DB.deleteAccount();
+    await performSignOut();
+  } catch(e) {
+    btn.textContent = 'delete my account';
+    btn.disabled = false;
+    closeDeleteConfirm();
+    console.error('Delete account failed:', e);
+  }
+}
+
 // Show the egg-tap slide directly (used after sign-up)
 function showOnboardingEgg(name) {
   // Slide 1: intro
@@ -2820,7 +2861,13 @@ async function init() {
   });
 
   // Sign out
-  document.getElementById('btn-signout').addEventListener('click', performSignOut);
+  // Account sheet
+  document.getElementById('btn-account').addEventListener('click', openAccountSheet);
+  document.getElementById('account-sheet-backdrop').addEventListener('click', closeAccountSheet);
+  document.getElementById('btn-account-signout').addEventListener('click', () => { closeAccountSheet(); performSignOut(); });
+  document.getElementById('btn-account-delete').addEventListener('click', () => { closeAccountSheet(); openDeleteConfirm(); });
+  document.getElementById('btn-delete-cancel').addEventListener('click', closeDeleteConfirm);
+  document.getElementById('btn-delete-confirm').addEventListener('click', performDeleteAccount);
 
   // Share collection button
   document.getElementById('btn-share-collection').addEventListener('click', shareCollection);

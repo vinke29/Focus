@@ -181,6 +181,12 @@ const DB = {
     return _sb.functions.invoke(name, { body });
   },
 
+  async deleteAccount() {
+    if (!_sb) throw new Error('offline');
+    const { error } = await _sb.functions.invoke('delete-account', { body: {} });
+    if (error) throw error;
+  },
+
   // ── PUBLIC PROFILES ───────────────────────────────────────────────────────
 
   async getOrCreateSlug(name) {
