@@ -576,6 +576,7 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 }
 #region-discover-overlay.fade-out {
   opacity: 0;
+  pointer-events: none;
   transition: opacity 1s ease;
 }
 #region-discover-label {
