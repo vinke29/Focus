@@ -15,7 +15,11 @@ const Haptic = {
 // Live Activity bridge (iOS 16.1+ Lock Screen / Dynamic Island timer)
 const LiveActivity = IS_NATIVE && (window.Capacitor.Plugins?.LiveActivity || null);
 
-
+// LocalNotifications — needed for reliable ring/vibrate when the app is backgrounded.
+// The Live Activity AlertConfiguration only fires while the app is running in foreground;
+// when iOS suspends the WKWebView the JS timer stops and stopActivity is never called.
+const LocalNotif = IS_NATIVE && (window.Capacitor.Plugins?.LocalNotifications || null);
+const TIMER_NOTIF_ID = 77;
 
 // Dismiss keyboard on tap outside inputs (native iOS)
 if (IS_NATIVE) {
@@ -1245,6 +1249,22 @@ function startTimer() {
       remainingSeconds: state.timer.remaining,
     }).catch(() => {});
   }
+  // Schedule a LocalNotification at exact end time so the phone rings even when
+  // the app is backgrounded and JS is suspended (Live Activity alert needs foreground).
+  if (LocalNotif) {
+    LocalNotif.requestPermissions().then(({ display }) => {
+      if (display !== 'granted') return;
+      LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}).finally(() => {
+        LocalNotif.schedule({ notifications: [{
+          id: TIMER_NOTIF_ID,
+          title: 'Your egg is hatching! 🥚',
+          body: 'Tap to reveal your creature.',
+          schedule: { at: new Date(state.timer.endTime), allowWhileIdle: true },
+          sound: 'default',
+        }]}).catch(() => {});
+      });
+    }).catch(() => {});
+  }
   document.getElementById('btn-start-focus').innerHTML = '<span>pause</span>';
   document.getElementById('btn-reset-timer').classList.remove('visible');
   document.getElementById('view-timer').classList.add('running');
@@ -1271,6 +1291,7 @@ function pauseTimer() {
   clearInterval(state.timer.interval);
   releaseWakeLock();
   saveTimerState();
+  if (LocalNotif) { LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}); }
   if (LiveActivity) {
     LiveActivity.updateActivity({
       remainingSeconds: state.timer.remaining,
@@ -1290,6 +1311,7 @@ function resetTimerState() {
   clearInterval(state.timer.interval);
   clearTimerState();
   releaseWakeLock();
+  if (LocalNotif) { LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}); }
   if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
   state.timer.running   = false;
   state.timer.remaining = state.timer.duration;
@@ -1310,9 +1332,11 @@ function onTimerComplete() {
   _hatchInProgress = true;
   localStorage.removeItem('focus-timer');
   releaseWakeLock();
+  // Clear the LocalNotification from the notification centre now that the user is in-app
+  if (LocalNotif) { LocalNotif.removeAllDeliveredNotifications().catch(() => {}); }
   if (LiveActivity) {
     LiveActivity.stopActivity({ withAlert: true }).catch(() => {});
-    // After the 4s Swift alert + buffer, dismiss the ended Live Activity from notification center
+    // After the 4s Swift alert window + buffer, dismiss the ended Live Activity too
     setTimeout(() => { LiveActivity.stopActivity({ dismissImmediately: true }).catch(() => {}); }, 6000);
   }
 
