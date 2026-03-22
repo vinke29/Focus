@@ -57,6 +57,11 @@ const DB = {
     return _sb.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
   },
 
+  async exchangeCode(url) {
+    if (!_sb) return { data: null, error: 'offline' };
+    return _sb.auth.exchangeCodeForSession(url);
+  },
+
   async signOut() {
     if (!_sb) return;
     const { error } = await _sb.auth.signOut();
@@ -76,7 +81,8 @@ const DB = {
         }
       });
       if (error) throw error;
-      if (data?.url) window.Capacitor.Plugins.Browser?.open({ url: data.url }).catch(() => window.open(data.url, '_blank'));
+      if (!data?.url) throw new Error('no OAuth URL returned from Supabase');
+      window.open(data.url, '_system');
     } else {
       const { error } = await _sb.auth.signInWithOAuth({
         provider: 'google',

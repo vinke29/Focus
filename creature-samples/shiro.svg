@@ -1,0 +1,118 @@
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="380" fill="#f7f2e8"/>
+  <defs>
+    <radialGradient id="shiro-body" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e5e0d5"/>
+    </radialGradient>
+    <radialGradient id="shiro-eye" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#ffc84a"/>
+      <stop offset="100%" stop-color="#c87000"/>
+    </radialGradient>
+    <radialGradient id="shiro-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0a500" stop-opacity=".32"/>
+      <stop offset="100%" stop-color="#f0a500" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Shadow -->
+  <ellipse cx="160" cy="352" rx="66" ry="9" fill="rgba(0,0,0,.1)"/>
+
+  <!-- Aura -->
+  <ellipse class="cat-aura" cx="160" cy="235" rx="92" ry="82" fill="url(#shiro-aura)"/>
+
+  <!-- Float group -->
+  <g class="cat-float">
+
+    <!-- TAIL (behind body) -->
+    <g class="cat-tail" style="transform-origin:218px 292px">
+      <path d="M218,292 C252,272 272,242 260,210 C248,178 218,177 202,196 C186,215 200,240 214,248 C221,252 223,270 218,292 Z"
+        fill="url(#shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+      <!-- Tail fur strokes -->
+      <path d="M236,240 C246,226 252,208 244,194" stroke="#080810" stroke-width="1" fill="none" stroke-linecap="round" opacity=".14"/>
+      <path d="M228,254 C240,240 248,222 242,206" stroke="#080810" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".1"/>
+    </g>
+
+    <!-- BODY -->
+    <g class="cat-body">
+      <ellipse cx="160" cy="258" rx="66" ry="72"
+        fill="url(#shiro-body)" stroke="#080810" stroke-width="4"/>
+
+      <!-- Belly -->
+      <ellipse cx="160" cy="263" rx="38" ry="52"
+        fill="white" stroke="#080810" stroke-width="2" opacity=".55"/>
+
+      <!-- Fur texture lines -->
+      <path d="M150,238 C152,252 152,266 149,278" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".12"/>
+      <path d="M160,234 C162,249 162,265 159,278" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".12"/>
+      <path d="M170,238 C168,252 168,266 171,278" stroke="#080810" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".12"/>
+
+      <!-- LEFT PAW -->
+      <ellipse cx="118" cy="324" rx="29" ry="15"
+        fill="url(#shiro-body)" stroke="#080810" stroke-width="3"/>
+      <path d="M96,323 L100,331" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+      <path d="M110,326 L112,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+      <path d="M124,326 L124,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+
+      <!-- RIGHT PAW -->
+      <ellipse cx="202" cy="324" rx="29" ry="15"
+        fill="url(#shiro-body)" stroke="#080810" stroke-width="3"/>
+      <path d="M224,323 L220,331" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+      <path d="M210,326 L208,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+      <path d="M196,326 L196,334" stroke="#080810" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- LEFT EAR (behind head) -->
+    <path d="M108,114 L95,62 L152,100 Z"
+      fill="url(#shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M112,109 L103,70 L146,98 Z"
+      fill="#f0a500" opacity=".8"/>
+
+    <!-- RIGHT EAR (with twitch) -->
+    <g class="cat-ear-r">
+      <path d="M212,114 L225,62 L168,100 Z"
+        fill="url(#shiro-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M208,109 L217,70 L174,98 Z"
+        fill="#f0a500" opacity=".8"/>
+    </g>
+
+    <!-- HEAD -->
+    <circle cx="160" cy="146" r="62"
+      fill="url(#shiro-body)" stroke="#080810" stroke-width="4"/>
+
+    <!-- LEFT EYE -->
+    <g>
+      <ellipse cx="134" cy="143" rx="22" ry="20" fill="white" stroke="#080810" stroke-width="3"/>
+      <ellipse cx="134" cy="143" rx="15" ry="14" fill="url(#shiro-eye)"/>
+      <path d="M134,130 C136,135 136,151 134,156 C132,151 132,135 134,130Z" fill="#080810"/>
+      <circle cx="141" cy="137" r="4.5" fill="white" opacity=".9"/>
+      <circle cx="127" cy="151" r="2" fill="white" opacity=".5"/>
+    </g>
+
+    <!-- RIGHT EYE -->
+    <g>
+      <ellipse cx="186" cy="143" rx="22" ry="20" fill="white" stroke="#080810" stroke-width="3"/>
+      <ellipse cx="186" cy="143" rx="15" ry="14" fill="url(#shiro-eye)"/>
+      <path d="M186,130 C188,135 188,151 186,156 C184,151 184,135 186,130Z" fill="#080810"/>
+      <circle cx="193" cy="137" r="4.5" fill="white" opacity=".9"/>
+      <circle cx="179" cy="151" r="2" fill="white" opacity=".5"/>
+    </g>
+
+    <!-- Nose (small inverted triangle) -->
+    <path d="M155,162 L165,162 L160,169 Z" fill="#f0a500" opacity=".85"/>
+
+    <!-- Mouth -->
+    <path d="M154,169 C157,175 163,175 166,169" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+    <!-- Whiskers left -->
+    <line x1="100" y1="162" x2="146" y2="165" stroke="#080810" stroke-width="1.5" opacity=".4"/>
+    <line x1="96"  y1="171" x2="144" y2="170" stroke="#080810" stroke-width="1.4" opacity=".3"/>
+    <line x1="100" y1="180" x2="145" y2="175" stroke="#080810" stroke-width="1.2" opacity=".22"/>
+
+    <!-- Whiskers right -->
+    <line x1="220" y1="162" x2="174" y2="165" stroke="#080810" stroke-width="1.5" opacity=".4"/>
+    <line x1="224" y1="171" x2="176" y2="170" stroke="#080810" stroke-width="1.4" opacity=".3"/>
+    <line x1="220" y1="180" x2="175" y2="175" stroke="#080810" stroke-width="1.2" opacity=".22"/>
+
+  </g><!-- /cat-float -->
+</svg>

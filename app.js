@@ -2537,9 +2537,10 @@ async function performGoogleSignIn() {
   btn.disabled = true;
   document.getElementById('google-error').textContent = '';
   try {
-    await DB.signInWithGoogle(); // redirects; execution stops here
+    await DB.signInWithGoogle();
   } catch(e) {
-    document.getElementById('google-error').textContent = e.message || 'google sign-in failed';
+    const msg = e.message || 'google sign-in failed';
+    document.getElementById('google-error').textContent = msg;
     btn.disabled = false;
   }
 }
@@ -2812,9 +2813,24 @@ async function init() {
     const miniBtn = document.getElementById('btn-mini-timer');
     if (miniBtn) miniBtn.style.display = 'none';
     // Handle OAuth deep link callback
-    window.Capacitor.Plugins.App?.addListener('appUrlOpen', async ({ url }) => {
+    const AppPlugin = window.Capacitor.Plugins.App;
+    AppPlugin?.addListener('appUrlOpen', async ({ url }) => {
       if (!url) return;
-      // Extract tokens from URL fragment: app.kokoon.focus://callback#access_token=...
+      // PKCE flow: app.kokoon.focus://callback?code=XXX
+      const queryIndex = url.indexOf('?');
+      if (queryIndex >= 0) {
+        const params = new URLSearchParams(url.substring(queryIndex + 1));
+        const code = params.get('code');
+        if (code) {
+          const { data, error } = await DB.exchangeCode(url);
+          if (error) return;
+          if (!error && data?.session) {
+            await handleSignedIn(data.session.user);
+          }
+          return;
+        }
+      }
+      // Implicit flow fallback: app.kokoon.focus://callback#access_token=...
       const hashIndex = url.indexOf('#');
       if (hashIndex < 0) return;
       const fragment = url.substring(hashIndex + 1);

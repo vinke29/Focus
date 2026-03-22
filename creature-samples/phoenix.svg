@@ -1,0 +1,136 @@
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="380" fill="#f7f2e8"/>
+  <defs>
+    <radialGradient id="phx-body" cx="35%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#ffcc80"/>
+      <stop offset="100%" stop-color="#e65100"/>
+    </radialGradient>
+    <radialGradient id="phx-wing" cx="40%" cy="25%" r="68%">
+      <stop offset="0%" stop-color="#ffb74d"/>
+      <stop offset="100%" stop-color="#bf360c"/>
+    </radialGradient>
+    <radialGradient id="phx-flame1" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#fff176"/>
+      <stop offset="50%" stop-color="#ffb300"/>
+      <stop offset="100%" stop-color="#e65100"/>
+    </radialGradient>
+    <radialGradient id="phx-flame2" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#ff8a65"/>
+      <stop offset="60%" stop-color="#e53935"/>
+      <stop offset="100%" stop-color="#880e4f"/>
+    </radialGradient>
+    <radialGradient id="phx-eye" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#fff9c4"/>
+      <stop offset="100%" stop-color="#ffd600"/>
+    </radialGradient>
+    <radialGradient id="phx-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#e65100" stop-opacity=".45"/>
+      <stop offset="100%" stop-color="#e65100" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="phx-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <ellipse cx="160" cy="367" rx="58" ry="8" fill="rgba(0,0,0,.1)"/>
+  <ellipse class="char-aura ember-g" cx="160" cy="238" rx="108" ry="100" fill="url(#phx-aura)"/>
+
+  <g class="phoenix-rise">
+
+    <!-- Tail feathers (fan behind body) -->
+    <!-- Outer left -->
+    <path d="M138,272 C116,257 88,237 70,196 C80,212 88,232 86,252 C94,240 106,257 120,272Z"
+      fill="url(#phx-flame2)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Mid-left -->
+    <path d="M143,276 C126,257 113,230 116,196 C118,216 118,242 126,265Z"
+      fill="url(#phx-flame1)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Center (tallest) -->
+    <path d="M154,280 C147,257 147,227 154,192 C161,227 161,257 163,280Z"
+      fill="url(#phx-flame1)" stroke="#080810" stroke-width="2.8" stroke-linejoin="round"/>
+    <!-- Mid-right -->
+    <path d="M177,276 C194,257 207,230 204,196 C202,216 202,242 194,265Z"
+      fill="url(#phx-flame1)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- Outer right -->
+    <path d="M182,272 C204,257 232,237 250,196 C240,212 232,232 234,252 C226,240 214,257 200,272Z"
+      fill="url(#phx-flame2)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+
+    <!-- Tail eyespots -->
+    <ellipse cx="79" cy="250" rx="8" ry="12" fill="#fff176" stroke="#080810" stroke-width="1.5" opacity=".75"/>
+    <ellipse cx="79" cy="250" rx="4" ry="6" fill="#e65100" opacity=".85"/>
+    <ellipse cx="234" cy="250" rx="8" ry="12" fill="#fff176" stroke="#080810" stroke-width="1.5" opacity=".75"/>
+    <ellipse cx="234" cy="250" rx="4" ry="6" fill="#e65100" opacity=".85"/>
+
+    <!-- Flame tips on tail (glowing) -->
+    <ellipse cx="154" cy="194" rx="10" ry="16" fill="#fff176" opacity=".85" filter="url(#phx-glow)" class="ember-g"/>
+    <ellipse cx="117" cy="200" rx="8" ry="12" fill="#ffb300" opacity=".65" filter="url(#phx-glow)" class="ember-g"/>
+    <ellipse cx="203" cy="200" rx="8" ry="12" fill="#ffb300" opacity=".65" filter="url(#phx-glow)" class="ember-g"/>
+
+    <!-- Wings (swept back) -->
+    <path d="M126,248 C103,230 88,216 83,198 C94,212 106,225 118,238 C106,225 104,210 108,198 C114,213 122,230 130,244Z"
+      fill="url(#phx-wing)" stroke="#080810" stroke-width="2.8" stroke-linejoin="round"/>
+    <path d="M194,248 C217,230 232,216 237,198 C226,212 214,225 202,238 C214,225 216,210 212,198 C206,213 198,230 190,244Z"
+      fill="url(#phx-wing)" stroke="#080810" stroke-width="2.8" stroke-linejoin="round"/>
+    <!-- Wing quills -->
+    <path d="M102,214 C110,220 118,228 126,238" stroke="#080810" stroke-width="1.2" fill="none" opacity=".3"/>
+    <path d="M218,214 C210,220 202,228 194,238" stroke="#080810" stroke-width="1.2" fill="none" opacity=".3"/>
+
+    <!-- Body -->
+    <ellipse cx="160" cy="272" rx="66" ry="62" fill="url(#phx-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Breast feather texture -->
+    <path d="M128,267 C138,260 152,258 160,262 C168,258 182,260 192,267" stroke="#080810" stroke-width="1.5" fill="none" opacity=".2"/>
+    <path d="M124,284 C135,276 152,274 160,278 C168,274 185,276 196,284" stroke="#080810" stroke-width="1.2" fill="none" opacity=".18"/>
+    <path d="M127,300 C138,293 153,291 160,295 C167,291 182,293 193,300" stroke="#080810" stroke-width="1" fill="none" opacity=".15"/>
+
+    <!-- Talons -->
+    <path d="M130,328 C124,340 120,347 116,352" stroke="#bf360c" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M116,352 L106,362" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <path d="M116,352 L116,364" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <path d="M116,352 L126,360" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <path d="M190,328 C196,340 200,347 204,352" stroke="#bf360c" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M204,352 L194,362" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <path d="M204,352 L204,364" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <path d="M204,352 L214,360" stroke="#bf360c" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+
+    <!-- Head -->
+    <circle cx="160" cy="215" r="50" fill="url(#phx-body)" stroke="#080810" stroke-width="4"/>
+
+    <!-- Flame crest -->
+    <path d="M160,168 C154,148 150,128 158,108 C164,128 168,148 160,168Z"
+      fill="url(#phx-flame1)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M147,173 C137,152 131,130 138,111 C143,130 147,153 149,173Z"
+      fill="url(#phx-flame2)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M173,173 C183,152 189,130 182,111 C177,130 173,153 171,173Z"
+      fill="url(#phx-flame2)" stroke="#080810" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M135,179 C127,162 123,144 130,130 C134,145 138,163 138,179Z"
+      fill="#ffb300" stroke="#080810" stroke-width="1.8" stroke-linejoin="round" opacity=".8"/>
+    <path d="M185,179 C193,162 197,144 190,130 C186,145 182,163 182,179Z"
+      fill="#ffb300" stroke="#080810" stroke-width="1.8" stroke-linejoin="round" opacity=".8"/>
+    <!-- Crest glow -->
+    <ellipse cx="160" cy="136" rx="18" ry="30" fill="#fff176" opacity=".5" filter="url(#phx-glow)" class="ember-g"/>
+
+    <!-- Beak -->
+    <path d="M148,220 L160,230 L172,220 L160,225Z"
+      fill="#ffd600" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+
+    <!-- Eyes -->
+    <ellipse cx="140" cy="211" rx="14" ry="13" fill="url(#phx-eye)" stroke="#080810" stroke-width="3" class="eye-pulse"/>
+    <ellipse cx="140" cy="212" rx="7" ry="6" fill="#080810"/>
+    <circle cx="143" cy="208" r="3" fill="white" opacity=".85"/>
+    <path d="M130,203 C132,199 138,199 140,203" stroke="#e65100" stroke-width="1.5" fill="none" opacity=".5"/>
+
+    <ellipse cx="180" cy="211" rx="14" ry="13" fill="url(#phx-eye)" stroke="#080810" stroke-width="3" class="eye-pulse"/>
+    <ellipse cx="180" cy="212" rx="7" ry="6" fill="#080810"/>
+    <circle cx="183" cy="208" r="3" fill="white" opacity=".85"/>
+    <path d="M170,203 C172,199 178,199 180,203" stroke="#e65100" stroke-width="1.5" fill="none" opacity=".5"/>
+
+    <!-- Floating embers -->
+    <circle cx="93" cy="198" r="4" fill="#ffb300" opacity=".7" filter="url(#phx-glow)" class="ember-g"/>
+    <circle cx="227" cy="203" r="3.5" fill="#ff8a65" opacity=".6" filter="url(#phx-glow)" class="ember-g"/>
+    <circle cx="86" cy="242" r="3" fill="#ffcc80" opacity=".55" filter="url(#phx-glow)"/>
+    <circle cx="234" cy="250" r="4" fill="#ffcc80" opacity=".6" filter="url(#phx-glow)"/>
+    <circle cx="143" cy="178" r="2.5" fill="#fff176" opacity=".7" filter="url(#phx-glow)" class="ember-g"/>
+    <circle cx="177" cy="180" r="2.5" fill="#fff176" opacity=".65" filter="url(#phx-glow)" class="ember-g"/>
+
+  </g>
+</svg>

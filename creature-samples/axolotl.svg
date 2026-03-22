@@ -1,0 +1,75 @@
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="380" fill="#f7f2e8"/>
+  <defs>
+    <radialGradient id="axo-body" cx="38%" cy="32%" r="68%">
+      <stop offset="0%" stop-color="#fff0f5"/>
+      <stop offset="100%" stop-color="#f0d8e8"/>
+    </radialGradient>
+    <radialGradient id="axo-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF69B4" stop-opacity=".28"/>
+      <stop offset="100%" stop-color="#FF69B4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="160" cy="358" rx="65" ry="8" fill="rgba(0,0,0,.09)"/>
+  <ellipse class="char-aura" cx="160" cy="248" rx="90" ry="78" fill="url(#axo-aura)"/>
+
+  <g class="koi-swim">
+
+    <!-- Tail fin -->
+    <path d="M160,320 C140,342 118,358 108,348 C122,330 138,308 148,298 M160,320 C180,342 202,358 212,348 C198,330 182,308 172,298Z"
+      fill="#FF69B4" stroke="#080810" stroke-width="2.5" stroke-linejoin="round" opacity=".8"/>
+
+    <!-- Body -->
+    <path d="M160,118 C198,118 226,152 226,220 C226,280 198,325 160,325 C122,325 94,280 94,220 C94,152 122,118 160,118Z"
+      fill="url(#axo-body)" stroke="#080810" stroke-width="4" stroke-linejoin="round"/>
+
+    <!-- Belly (lighter) -->
+    <ellipse cx="160" cy="228" rx="44" ry="72" fill="white" stroke="#080810" stroke-width="1.5" opacity=".4"/>
+
+    <!-- Stubby legs -->
+    <path d="M108,238 C90,240 76,252 78,268 C88,258 100,250 108,250Z"
+      fill="url(#axo-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M108,278 C90,285 78,298 82,312 C92,302 102,290 108,282Z"
+      fill="url(#axo-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M212,238 C230,240 244,252 242,268 C232,258 220,250 212,250Z"
+      fill="url(#axo-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M212,278 C230,285 242,298 238,312 C228,302 218,290 212,282Z"
+      fill="url(#axo-body)" stroke="#080810" stroke-width="2.5" stroke-linejoin="round"/>
+
+    <!-- Gill stalks Left (3) -->
+    <g class="gill-l">
+      <path d="M118,148 C102,132 96,112 104,98 C108,112 110,132 118,148Z" fill="#FF69B4" stroke="#080810" stroke-width="2" opacity=".85"/>
+      <path d="M126,138 C108,125 102,104 110,90 C115,104 118,124 126,138Z" fill="#FF69B4" stroke="#080810" stroke-width="2" opacity=".75"/>
+      <path d="M134,132 C120,118 116,98 124,84 C128,98 132,118 134,132Z" fill="#FF69B4" stroke="#080810" stroke-width="1.8" opacity=".65"/>
+    </g>
+    <!-- Gill stalks Right (3) -->
+    <g class="gill-r">
+      <path d="M202,148 C218,132 224,112 216,98 C212,112 210,132 202,148Z" fill="#FF69B4" stroke="#080810" stroke-width="2" opacity=".85"/>
+      <path d="M194,138 C212,125 218,104 210,90 C205,104 202,124 194,138Z" fill="#FF69B4" stroke="#080810" stroke-width="2" opacity=".75"/>
+      <path d="M186,132 C200,118 204,98 196,84 C192,98 188,118 186,132Z" fill="#FF69B4" stroke="#080810" stroke-width="1.8" opacity=".65"/>
+    </g>
+
+    <!-- Head -->
+    <ellipse cx="160" cy="162" rx="52" ry="48" fill="url(#axo-body)" stroke="#080810" stroke-width="3.5"/>
+
+    <!-- Eyes (wide, cute) -->
+    <circle cx="134" cy="155" r="14" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="134" cy="155" r="8"  fill="#080810"/>
+    <circle cx="138" cy="151" r="3"  fill="white" opacity=".9"/>
+    <circle cx="130" cy="160" r="1.5" fill="white" opacity=".5"/>
+
+    <circle cx="186" cy="155" r="14" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <circle cx="186" cy="155" r="8"  fill="#080810"/>
+    <circle cx="190" cy="151" r="3"  fill="white" opacity=".9"/>
+    <circle cx="182" cy="160" r="1.5" fill="white" opacity=".5"/>
+
+    <!-- Perma-smile -->
+    <path d="M140,178 C148,186 172,186 180,178" stroke="#080810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+    <!-- Cheek blush spots -->
+    <ellipse cx="118" cy="172" rx="10" ry="7" fill="#FF69B4" opacity=".35"/>
+    <ellipse cx="202" cy="172" rx="10" ry="7" fill="#FF69B4" opacity=".35"/>
+
+  </g>
+</svg>

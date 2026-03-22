@@ -1,0 +1,83 @@
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="380" fill="#f7f2e8"/>
+  <defs>
+    <radialGradient id="jag-body" cx="35%" cy="28%" r="72%">
+      <stop offset="0%" stop-color="#e8c870"/>
+      <stop offset="100%" stop-color="#a87830"/>
+    </radialGradient>
+    <radialGradient id="jag-belly" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#fefcf5"/>
+      <stop offset="100%" stop-color="#e8d8b0"/>
+    </radialGradient>
+    <radialGradient id="jag-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3a8c2f" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#3a8c2f" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse class="char-aura" cx="160" cy="220" rx="115" ry="105" fill="url(#jag-aura)"/>
+  <g class="char-float">
+    <!-- Body -->
+    <ellipse cx="165" cy="255" rx="72" ry="48" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Belly -->
+    <ellipse cx="158" cy="268" rx="42" ry="30" fill="url(#jag-belly)"/>
+    <!-- Body spots (rosettes) -->
+    <circle cx="138" cy="238" r="10" fill="none" stroke="#5a3010" stroke-width="3" opacity=".6"/>
+    <circle cx="138" cy="238" r="4" fill="#5a3010" opacity=".4"/>
+    <circle cx="178" cy="232" r="11" fill="none" stroke="#5a3010" stroke-width="3" opacity=".6"/>
+    <circle cx="178" cy="232" r="4.5" fill="#5a3010" opacity=".4"/>
+    <circle cx="210" cy="250" r="9" fill="none" stroke="#5a3010" stroke-width="3" opacity=".55"/>
+    <circle cx="210" cy="250" r="3.5" fill="#5a3010" opacity=".35"/>
+    <circle cx="124" cy="265" r="8" fill="none" stroke="#5a3010" stroke-width="2.5" opacity=".5"/>
+    <!-- Tail (long, curling) -->
+    <path d="M236,260 C258,245 278,230 285,210 C290,192 282,178 272,178 C262,178 256,188 258,198 C252,190 244,190 240,198 C236,208 242,225 236,260Z"
+      fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <circle cx="275" cy="182" r="7" fill="none" stroke="#5a3010" stroke-width="2.5" opacity=".6"/>
+    <!-- Neck -->
+    <ellipse cx="128" cy="218" rx="32" ry="26" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Head (big round cat head) -->
+    <ellipse cx="115" cy="182" rx="52" ry="48" fill="url(#jag-body)" stroke="#080810" stroke-width="4"/>
+    <!-- Ear spots -->
+    <circle cx="98" cy="175" r="6" fill="#5a3010" opacity=".4"/>
+    <circle cx="132" cy="170" r="6" fill="#5a3010" opacity=".4"/>
+    <!-- Belly white patch on face -->
+    <ellipse cx="112" cy="200" rx="28" ry="18" fill="url(#jag-belly)"/>
+    <!-- Ears -->
+    <path d="M76,152 L62,118 L104,142Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M79,150 L67,122 L100,143Z" fill="#c8682a" opacity=".5"/>
+    <path d="M148,148 L162,114 L172,143Z" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M150,147 L162,118 L168,143Z" fill="#c8682a" opacity=".5"/>
+    <!-- Eyes (green) -->
+    <ellipse cx="96" cy="178" rx="13" ry="11" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="96" cy="178" rx="8" ry="8" fill="#3a8c2f"/>
+    <ellipse cx="96" cy="178" rx="3.5" ry="5" fill="#080810"/>
+    <circle cx="99" cy="175" r="2.5" fill="white" opacity=".9"/>
+    <ellipse cx="136" cy="175" rx="12" ry="10" fill="white" stroke="#080810" stroke-width="2.5"/>
+    <ellipse cx="136" cy="175" rx="7.5" ry="7.5" fill="#3a8c2f"/>
+    <ellipse cx="136" cy="175" rx="3" ry="4.5" fill="#080810"/>
+    <circle cx="139" cy="172" r="2" fill="white" opacity=".9"/>
+    <!-- Nose -->
+    <ellipse cx="112" cy="196" rx="8" ry="5" fill="#c8682a" stroke="#080810" stroke-width="1.5"/>
+    <!-- Mouth -->
+    <path d="M104,202 Q112,208 120,202" stroke="#080810" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- Whiskers -->
+    <path d="M90,198 L60,194" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+    <path d="M90,202 L62,202" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+    <path d="M135,195 L162,190" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+    <path d="M135,200 L163,200" stroke="#080810" stroke-width="1.5" stroke-linecap="round" opacity=".3"/>
+    <!-- Face spots -->
+    <circle cx="80" cy="183" r="5" fill="#5a3010" opacity=".35"/>
+    <circle cx="148" cy="180" r="4.5" fill="#5a3010" opacity=".35"/>
+    <!-- Legs -->
+    <rect x="95" y="292" width="24" height="55" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="132" y="295" width="24" height="52" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="172" y="292" width="24" height="55" rx="12" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <rect x="207" y="294" width="22" height="52" rx="11" fill="url(#jag-body)" stroke="#080810" stroke-width="3.5"/>
+    <!-- Paws -->
+    <ellipse cx="107" cy="349" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="144" cy="348" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="184" cy="349" rx="15" ry="9" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <ellipse cx="218" cy="347" rx="14" ry="8" fill="url(#jag-body)" stroke="#080810" stroke-width="3"/>
+    <!-- Ground shadow -->
+    <ellipse cx="168" cy="360" rx="80" ry="8" fill="rgba(0,0,0,.08)"/>
+  </g>
+</svg>

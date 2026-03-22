@@ -1,0 +1,91 @@
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="380" fill="#f7f2e8"/>
+  <defs>
+    <radialGradient id="djn-body" cx="35%" cy="28%" r="70%">
+      <stop offset="0%" stop-color="#80cbc4"/>
+      <stop offset="100%" stop-color="#006064"/>
+    </radialGradient>
+    <radialGradient id="djn-smoke" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#b2dfdb"/>
+      <stop offset="60%" stop-color="#80cbc4"/>
+      <stop offset="100%" stop-color="#006064" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="djn-eye" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#e0f7fa"/>
+      <stop offset="100%" stop-color="#b2dfdb"/>
+    </radialGradient>
+    <radialGradient id="djn-aura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0277bd" stop-opacity=".35"/>
+      <stop offset="100%" stop-color="#0277bd" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="djn-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <ellipse class="char-aura" cx="160" cy="235" rx="95" ry="88" fill="url(#djn-aura)"/>
+
+  <g class="wisp-bob">
+
+    <!-- Smoke tail (dissolving lower body) -->
+    <ellipse cx="160" cy="345" rx="72" ry="36" fill="url(#djn-smoke)" stroke="#080810" stroke-width="1.5" opacity=".45"/>
+    <ellipse cx="152" cy="322" rx="56" ry="30" fill="url(#djn-smoke)" stroke="#080810" stroke-width="1.8" opacity=".62"/>
+    <ellipse cx="162" cy="298" rx="48" ry="26" fill="url(#djn-smoke)" stroke="#080810" stroke-width="2" opacity=".75"/>
+    <path d="M122,342 C109,330 105,316 113,306" stroke="#080810" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".3"/>
+    <path d="M198,342 C211,330 215,316 207,306" stroke="#080810" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".3"/>
+
+    <!-- Torso -->
+    <path d="M118,265 C113,236 116,212 124,202 C136,190 184,190 196,202 C204,212 207,236 202,265 C190,278 175,284 160,284 C145,284 130,278 118,265Z"
+      fill="url(#djn-body)" stroke="#080810" stroke-width="3.5" stroke-linejoin="round"/>
+
+    <!-- Chest band (gold) -->
+    <path d="M122,236 C138,242 182,242 198,236" stroke="#f9a825" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <path d="M123,244 C138,249 182,249 197,244" stroke="#f9a825" stroke-width="2" fill="none" stroke-linecap="round" opacity=".55"/>
+    <!-- Center jewel -->
+    <circle cx="160" cy="244" r="7" fill="#f9a825" stroke="#080810" stroke-width="2" class="crystal-g"/>
+    <circle cx="160" cy="244" r="4" fill="#fff9c4" opacity=".85" filter="url(#djn-glow)"/>
+
+    <!-- Left arm -->
+    <path d="M124,208 C105,200 92,208 88,223 C98,212 112,210 122,216Z"
+      fill="url(#djn-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="84" cy="230" rx="16" ry="12" fill="url(#djn-body)" stroke="#080810" stroke-width="2.8"/>
+    <ellipse cx="84" cy="232" rx="16" ry="6" fill="none" stroke="#f9a825" stroke-width="3"/>
+
+    <!-- Right arm -->
+    <path d="M196,208 C215,200 228,208 232,223 C222,212 208,210 198,216Z"
+      fill="url(#djn-body)" stroke="#080810" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="236" cy="230" rx="16" ry="12" fill="url(#djn-body)" stroke="#080810" stroke-width="2.8"/>
+    <ellipse cx="236" cy="232" rx="16" ry="6" fill="none" stroke="#f9a825" stroke-width="3"/>
+
+    <!-- Head -->
+    <circle cx="160" cy="168" r="56" fill="url(#djn-body)" stroke="#080810" stroke-width="4"/>
+
+    <!-- Turban -->
+    <path d="M107,155 C112,128 138,116 160,116 C182,116 208,128 213,155"
+      fill="none" stroke="#f9a825" stroke-width="8" stroke-linecap="round"/>
+    <path d="M112,158 C118,133 140,122 160,122 C180,122 202,133 208,158"
+      fill="none" stroke="#f9a825" stroke-width="3.5" stroke-linecap="round" opacity=".5"/>
+    <!-- Turban jewel -->
+    <circle cx="160" cy="118" r="9" fill="#f9a825" stroke="#080810" stroke-width="2.5" class="crystal-g"/>
+    <circle cx="160" cy="118" r="5" fill="#fff9c4" opacity=".85" filter="url(#djn-glow)"/>
+
+    <!-- Eyes (glowing bright) -->
+    <ellipse cx="140" cy="165" rx="14" ry="12" fill="url(#djn-eye)" stroke="#080810" stroke-width="2.5" class="eye-pulse"/>
+    <ellipse cx="140" cy="166" rx="7" ry="6" fill="#004d40"/>
+    <circle cx="143" cy="162" r="3" fill="white" opacity=".9"/>
+    <ellipse cx="180" cy="165" rx="14" ry="12" fill="url(#djn-eye)" stroke="#080810" stroke-width="2.5" class="eye-pulse"/>
+    <ellipse cx="180" cy="166" rx="7" ry="6" fill="#004d40"/>
+    <circle cx="183" cy="162" r="3" fill="white" opacity=".9"/>
+
+    <!-- Smile -->
+    <path d="M144,186 C152,194 168,194 176,186" stroke="#080810" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+    <!-- Floating smoke sparks -->
+    <circle cx="110" cy="310" r="4" fill="#80cbc4" opacity=".6" filter="url(#djn-glow)"/>
+    <circle cx="210" cy="316" r="3.5" fill="#80cbc4" opacity=".55" filter="url(#djn-glow)"/>
+    <circle cx="96" cy="268" r="3" fill="#b2dfdb" opacity=".5" filter="url(#djn-glow)"/>
+    <circle cx="224" cy="275" r="3.5" fill="#b2dfdb" opacity=".5" filter="url(#djn-glow)"/>
+
+  </g>
+</svg>
