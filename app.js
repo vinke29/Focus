@@ -1257,8 +1257,8 @@ function startTimer() {
       LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}).finally(() => {
         LocalNotif.schedule({ notifications: [{
           id: TIMER_NOTIF_ID,
-          title: 'Your egg is hatching! 🥚',
-          body: 'Tap to reveal your creature.',
+          title: 'Kokoon',
+          body: 'Your egg is hatching 🥚',
           schedule: { at: new Date(state.timer.endTime), allowWhileIdle: true },
           sound: 'default',
         }]}).catch(() => {});

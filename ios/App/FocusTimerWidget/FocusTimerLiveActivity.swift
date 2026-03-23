@@ -58,7 +58,7 @@ struct FocusTimerLiveActivity: Widget {
             }
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(isComplete ? "Your egg is hatching! 🥚" : "Focus Session")
+                Text(isComplete ? "Session complete 🎉" : "Focus Session")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(isComplete ? Color(red: 0.55, green: 0.85, blue: 0.45) : .white.opacity(0.6))
 
@@ -95,7 +95,7 @@ struct FocusTimerLiveActivity: Widget {
     func expandedView(context: ActivityViewContext<FocusTimerAttributes>) -> some View {
         let isComplete = !context.state.isPaused && context.state.endTime <= Date()
         VStack(spacing: 6) {
-            Text(isComplete ? "Your egg is hatching! 🥚" : "Focus Session")
+            Text(isComplete ? "Session complete 🎉" : "Focus Session")
                 .font(.system(size: 13, weight: .medium))
                 .foregroundColor(isComplete ? Color(red: 0.55, green: 0.85, blue: 0.45) : .white.opacity(0.6))
 
