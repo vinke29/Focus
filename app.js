@@ -2565,9 +2565,12 @@ async function performAppleSignIn() {
   document.getElementById('apple-error').textContent = '';
   try {
     const result = await DB.signInWithApple();
+    // Apple only returns name on the very first sign-in — pre-seed localStorage
+    // so handleSignedIn's new-user path picks it up and shows onboarding
     if (result?.appleName) {
-      await DB.saveProfile(result.appleName);
+      localStorage.setItem('focus-name', result.appleName);
     }
+    await handleSignedIn(result.user);
   } catch(e) {
     const msg = e.message || 'apple sign-in failed';
     document.getElementById('apple-error').textContent = msg;

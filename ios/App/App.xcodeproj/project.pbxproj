@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2FAD9763203C412B000D30F8 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAD9762203C412B000D30F8 /* config.xml */; };
 		4D22ABE92AF431CB00220026 /* CapApp-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = 4D22ABE82AF431CB00220026 /* CapApp-SPM */; };
+		4F3CEB062F71CFB600FD5DCD /* AppleSignInPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CEB052F71CFB600FD5DCD /* AppleSignInPlugin.swift */; };
 		4F3D7B052F6DD7A400185E9F /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3D7B042F6DD7A400185E9F /* WidgetKit.framework */; };
 		4F3D7B072F6DD7A400185E9F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3D7B062F6DD7A400185E9F /* SwiftUI.framework */; };
 		4F3D7B122F6DD7A500185E9F /* FocusTimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4F3D7B022F6DD7A400185E9F /* FocusTimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -51,6 +52,7 @@
 /* Begin PBXFileReference section */
 		2FAD9762203C412B000D30F8 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = config.xml; sourceTree = "<group>"; };
 		4F3CEB042F71B3E300FD5DCD /* AppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppRelease.entitlements; sourceTree = "<group>"; };
+		4F3CEB052F71CFB600FD5DCD /* AppleSignInPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInPlugin.swift; sourceTree = "<group>"; };
 		4F3D7B022F6DD7A400185E9F /* FocusTimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FocusTimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F3D7B042F6DD7A400185E9F /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4F3D7B062F6DD7A400185E9F /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -135,6 +137,7 @@
 		504EC3061FED79650016851F /* App */ = {
 			isa = PBXGroup;
 			children = (
+				4F3CEB052F71CFB600FD5DCD /* AppleSignInPlugin.swift */,
 				4F3CEB042F71B3E300FD5DCD /* AppRelease.entitlements */,
 				4F3D7B1F2F6DE33200185E9F /* FocusViewController.swift */,
 				4F3D7B1A2F6DD87A00185E9F /* FocusTimerAttributes.swift */,
@@ -277,6 +280,7 @@
 			files = (
 				4F3D7B1C2F6DD87A00185E9F /* FocusTimerAttributes.swift in Sources */,
 				4F3D7B1D2F6DD87A00185E9F /* LiveActivityPlugin.swift in Sources */,
+				4F3CEB062F71CFB600FD5DCD /* AppleSignInPlugin.swift in Sources */,
 				504EC3081FED79650016851F /* AppDelegate.swift in Sources */,
 				4F3D7B202F6DE33200185E9F /* FocusViewController.swift in Sources */,
 			);
@@ -510,6 +514,7 @@
 			baseConfigurationReference = 958DCC722DB07C7200EA8C5F /* debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App/App.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -114,7 +114,7 @@ body::after {
   content: ''; flex: 1; height: 1px; background: var(--ink); opacity: .28;
 }
 
-body.dark .auth-btn-social { border-color: rgba(221,215,200,.2); color: var(--paper); }
+body.dark .auth-btn-social { border-color: rgba(221,215,200,.2); }
 body.dark .auth-btn-social:hover, body.dark .auth-btn-social:active { border-color: rgba(221,215,200,.6); background: rgba(221,215,200,.04); }
 
 .auth-error {
