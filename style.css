@@ -1130,7 +1130,8 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
   text-align: center; background: var(--paper);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-body.dark .badge-tile-info { border-top-color: rgba(221,215,200,.1); }
+body.dark .badge-tile-info { border-top-color: rgba(221,215,200,.1); background: #14141f; }
+body.dark .badge-tile.earned { box-shadow: 0 2px 8px rgba(0,0,0,.35), 0 1px 2px rgba(0,0,0,.25); }
 
 /* Unearned tiles — dashed border like locked collection cards */
 .badge-tile.unearned {
