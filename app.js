@@ -2559,6 +2559,22 @@ function setAuthLoading(btn, loading) {
   span.textContent = loading ? '...' : btn.dataset.origText;
 }
 
+async function performAppleSignIn() {
+  const btn = document.getElementById('btn-apple');
+  btn.disabled = true;
+  document.getElementById('apple-error').textContent = '';
+  try {
+    const result = await DB.signInWithApple();
+    if (result?.appleName) {
+      await DB.saveProfile(result.appleName);
+    }
+  } catch(e) {
+    const msg = e.message || 'apple sign-in failed';
+    document.getElementById('apple-error').textContent = msg;
+    btn.disabled = false;
+  }
+}
+
 async function performGoogleSignIn() {
   const btn = document.getElementById('btn-google');
   btn.disabled = true;
@@ -2956,6 +2972,13 @@ async function init() {
     SFX.crack(0.7);
     startOnboarding();
   });
+
+  // Apple sign-in (native only)
+  if (!IS_NATIVE) {
+    const appleBtn = document.getElementById('btn-apple');
+    if (appleBtn) appleBtn.style.display = 'none';
+  }
+  document.getElementById('btn-apple').addEventListener('click', performAppleSignIn);
 
   // Google sign-in
   document.getElementById('btn-google').addEventListener('click', performGoogleSignIn);

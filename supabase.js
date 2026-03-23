@@ -68,6 +68,31 @@ const DB = {
     if (error) throw error;
   },
 
+  async signInWithApple() {
+    if (!_sb) throw new Error('offline');
+    const SignInWithApple = window.Capacitor?.Plugins?.SignInWithApple;
+    if (!SignInWithApple) throw new Error('Apple sign-in not available on this platform');
+
+    const result = await SignInWithApple.authorize({
+      clientId: 'app.kokoon.focus',
+      redirectURI: 'app.kokoon.focus://callback',
+      scopes: 'name email',
+    });
+
+    const { identityToken, givenName, familyName } = result.response;
+    if (!identityToken) throw new Error('No identity token returned from Apple');
+
+    const { data, error } = await _sb.auth.signInWithIdToken({
+      provider: 'apple',
+      token: identityToken,
+    });
+    if (error) throw error;
+
+    // Apple only provides name on the very first sign-in — capture it while we have it
+    const appleName = [givenName, familyName].filter(Boolean).join(' ') || null;
+    return { ...data, appleName };
+  },
+
   async signInWithGoogle() {
     if (!_sb) throw new Error('offline');
     const isNative = typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform();

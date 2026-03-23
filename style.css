@@ -93,7 +93,7 @@ body::after {
 .auth-btn:hover::before, .auth-btn:active::before { transform: scaleX(1); }
 .auth-btn:disabled { opacity: .45; pointer-events: none; }
 
-.auth-btn-google {
+.auth-btn-social {
   display: flex; align-items: center; justify-content: center; gap: .55rem;
   width: 100%; padding: .62rem 1rem;
   background: none; border: 1.5px solid rgba(8,8,16,.28);
@@ -102,8 +102,8 @@ body::after {
   font-size: .72rem; letter-spacing: .06em; color: var(--ink);
   transition: border-color .2s, background .2s;
 }
-.auth-btn-google:hover, .auth-btn-google:active { border-color: var(--ink); background: rgba(8,8,16,.04); }
-.auth-btn-google:disabled { opacity: .45; pointer-events: none; }
+.auth-btn-social:hover, .auth-btn-social:active { border-color: var(--ink); background: rgba(8,8,16,.04); }
+.auth-btn-social:disabled { opacity: .45; pointer-events: none; }
 
 .auth-divider {
   display: flex; align-items: center; gap: .7rem;
@@ -114,8 +114,8 @@ body::after {
   content: ''; flex: 1; height: 1px; background: var(--ink); opacity: .28;
 }
 
-body.dark .auth-btn-google { border-color: rgba(221,215,200,.2); }
-body.dark .auth-btn-google:hover, body.dark .auth-btn-google:active { border-color: rgba(221,215,200,.6); background: rgba(221,215,200,.04); }
+body.dark .auth-btn-social { border-color: rgba(221,215,200,.2); color: var(--paper); }
+body.dark .auth-btn-social:hover, body.dark .auth-btn-social:active { border-color: rgba(221,215,200,.6); background: rgba(221,215,200,.04); }
 
 .auth-error {
   font-size: .65rem; letter-spacing: .06em;
