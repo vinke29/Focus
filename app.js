@@ -2942,6 +2942,10 @@ async function init() {
     if (state.timer.remaining <= 0) resetTimerState();
     navigateTo('timer');
   });
+  document.getElementById('btn-tab-timer').addEventListener('click', () => {
+    if (state.timer.remaining <= 0) resetTimerState();
+    navigateTo('timer');
+  });
 
   // Sign out
   // Account sheet
