@@ -1067,6 +1067,7 @@ body.dark .profile-badge-chip { border-color: rgba(221,215,200,.18); }
   display: flex; flex-direction: column;
   align-items: center; text-align: center;
   overflow: hidden;
+  border-radius: 12px;
   transition: transform .15s ease, box-shadow .15s ease;
 }
 .badge-tile:active { transform: scale(.97); }
@@ -1177,7 +1178,7 @@ body.dark .badge-progress-fill { background: var(--paper); }
 }
 
 /* ── BADGE MODAL ── */
-.badge-modal-inner { width: min(300px, 88vw); }
+.badge-modal-inner { width: min(300px, 88vw); overflow: hidden; border-radius: 16px; }
 .badge-modal-card { aspect-ratio: 300 / 190; }
 .badge-modal-front {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -1397,6 +1398,7 @@ body.dark #milestone-toast.region-unlock #milestone-num { color: #6fa3e0; }
   border: 2px solid var(--ink);
   display: flex; flex-direction: column; align-items: center;
   width: min(320px, 92vw);
+  overflow: hidden;
   transform: scale(.82) translateY(24px);
   transition: transform .32s cubic-bezier(.34,1.42,.64,1);
 }
