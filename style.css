@@ -682,16 +682,16 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 
 /* ── BADGE TOAST ── */
 #badge-toast {
-  position: fixed; top: 1.5rem; left: 50%; transform: translateX(-50%) translateY(-100%);
+  position: fixed; top: calc(env(safe-area-inset-top) + 3.5rem); left: 50%; transform: translateX(-50%) translateY(-140%);
   z-index: 200;
   display: flex; align-items: center; gap: .8rem;
   background: var(--paper);
   border: 1px solid rgba(8,8,16,.12);
   border-radius: 12px;
   padding: .6rem 1.2rem .6rem .6rem;
-  box-shadow: 0 4px 20px rgba(8,8,16,.12);
+  box-shadow: 0 4px 24px rgba(8,8,16,.15);
   opacity: 0; pointer-events: none;
-  transition: transform .5s cubic-bezier(.4,0,.2,1), opacity .5s ease;
+  transition: transform .5s cubic-bezier(.4,0,.2,1), opacity .4s ease;
   max-width: 320px;
 }
 #badge-toast.show {
@@ -719,9 +719,9 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
   color: var(--ink);
 }
 body.dark #badge-toast {
-  background: rgba(18,18,28,.95);
-  border-color: rgba(221,215,200,.12);
-  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  background: #2a2a3c;
+  border-color: rgba(221,215,200,.2);
+  box-shadow: 0 4px 24px rgba(0,0,0,.5);
 }
 
 #hatch-actions button {
