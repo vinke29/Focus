@@ -184,20 +184,33 @@ body.dark .auth-btn-social:hover, body.dark .auth-btn-social:active { border-col
   padding: .4rem 0; transition: opacity .2s;
   width: 100%; text-align: left;
 }
-#btn-account-delete:hover { opacity: .85; }
-
 .account-links {
-  display: flex; gap: 1.4rem;
+  display: flex; flex-wrap: wrap; gap: .6rem 1.4rem;
   padding-top: .2rem;
 }
 .account-links a {
   font-family: 'Zen Antique Soft', serif;
   font-size: .62rem; letter-spacing: .15em;
   color: var(--ink); opacity: .35;
-  text-decoration: none;
+  text-decoration: none; cursor: pointer;
   transition: opacity .2s;
 }
 .account-links a:hover { opacity: .65; }
+.account-link-delete { color: #c0392b !important; opacity: .5 !important; }
+.account-link-delete:hover { opacity: .8 !important; }
+
+.auth-footer-links {
+  display: flex; gap: 1.4rem; justify-content: center;
+  padding: 1rem 0 .5rem;
+}
+.auth-footer-links a {
+  font-family: 'Noto Serif JP', serif;
+  font-size: .6rem; letter-spacing: .12em;
+  color: var(--ink); opacity: .3;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.auth-footer-links a:hover { opacity: .6; }
 
 body.dark #account-sheet { background: #0f0f1a; border-top-color: rgba(221,215,200,.1); }
 body.dark .account-sheet-divider { background: rgba(221,215,200,.1); }
