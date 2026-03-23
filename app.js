@@ -1334,11 +1334,9 @@ function onTimerComplete() {
   releaseWakeLock();
   // Clear the LocalNotification from the notification centre now that the user is in-app
   if (LocalNotif) { LocalNotif.removeAllDeliveredNotifications().catch(() => {}); }
-  if (LiveActivity) {
-    LiveActivity.stopActivity({ withAlert: true }).catch(() => {});
-    // After the 4s Swift alert window + buffer, dismiss the ended Live Activity too
-    setTimeout(() => { LiveActivity.stopActivity({ dismissImmediately: true }).catch(() => {}); }, 6000);
-  }
+  // End the Live Activity cleanly — LocalNotif handles ringing, no alert needed here.
+  // dismissImmediately clears it from the notification centre right after hatch.
+  if (LiveActivity) { LiveActivity.stopActivity({ dismissImmediately: true }).catch(() => {}); }
 
   const prevSessionCount = sessions.length;
   addSession(state.timer.duration / 60);
