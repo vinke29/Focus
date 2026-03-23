@@ -2464,6 +2464,7 @@ async function shareCreature() {
     const fileName = `focus-${char.id}-${variant.id}.png`;
 
     canvas.toBlob(async (blob) => {
+      if (!blob) return;
       const file = new File([blob], fileName, { type: 'image/png' });
 
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
@@ -2503,6 +2504,7 @@ async function shareFromModal() {
     const fileName = `focus-${char.id}-${variant.id}.png`;
 
     canvas.toBlob(async (blob) => {
+      if (!blob) return;
       const file = new File([blob], fileName, { type: 'image/png' });
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         try {
@@ -2677,7 +2679,6 @@ async function handleSignedIn(user) {
                user.user_metadata?.full_name?.split(' ')[0] ||
                user.user_metadata?.name || 'there';
 
-  console.log('[Kokoon] New user path — sending welcome email to:', user.email, 'name:', name);
   localStorage.setItem('focus-name', name);
   state.collection = [];
   sessions = [];
@@ -2687,8 +2688,7 @@ async function handleSignedIn(user) {
     console.error('Failed to save profile:', e);
   }
   DB.invokeFunction('send-welcome-email', { email: user.email, name })
-    .then(result => { console.log('[Kokoon] Welcome email result:', JSON.stringify(result)); })
-    .catch(err => console.error('[Kokoon] Welcome email invocation failed:', err));
+    .catch(() => {});
   showOnboardingEgg(name);
 }
 
@@ -2806,14 +2806,14 @@ async function performDeleteAccount() {
   const btn = document.getElementById('btn-delete-confirm');
   btn.textContent = 'deleting…';
   btn.disabled = true;
+  document.getElementById('delete-error').textContent = '';
   try {
     await DB.deleteAccount();
     await performSignOut();
   } catch(e) {
     btn.textContent = 'delete my account';
     btn.disabled = false;
-    closeDeleteConfirm();
-    console.error('Delete account failed:', e);
+    document.getElementById('delete-error').textContent = 'deletion failed — please try again or contact support.';
   }
 }
 
