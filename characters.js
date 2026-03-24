@@ -49,6 +49,216 @@ const EVOLUTIONS = {
     </g>
   </g>
 </svg>`
+  },
+
+  karasu: {
+    id: 'karasu_evolved',
+    name: '烏天狗 · Karasu',
+    nameShort: '烏天狗',
+    region: 'japanese',
+    subtitle: 'Crow Tengu · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#d40000',
+    lore: 'Having memorised every secret the forest ever held, Karasu now commands the wind itself. His wings carry the weight of a thousand whispered truths.',
+    haiku: '嵐の翼<br>千の秘密を抱いて<br>天狗は翔ける',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/karasu_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  tanuki: {
+    id: 'tanuki_evolved',
+    name: '狸 · Tanuki',
+    nameShort: '狸',
+    region: 'japanese',
+    subtitle: 'Raccoon Dog Spirit · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#8B5E14',
+    lore: 'No longer a wanderer, Tanuki has mastered every shape the world offers. His belly-drum now shakes the earth and calls the harvest moon.',
+    haiku: '形を変えて<br>満月に腹を打つ<br>古狸の力',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/tanuki_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  koi: {
+    id: 'koi_evolved',
+    name: '錦鯉 · Koi',
+    nameShort: '錦鯉',
+    region: 'japanese',
+    subtitle: 'Sacred Carp · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#E84000',
+    lore: 'Having crested every waterfall the world could place before it, Koi now blazes through the sky, its scales burning like a comet at dusk.',
+    haiku: '滝を越えて<br>炎の鱗が輝く<br>空を泳ぐ鯉',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/koi_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  kappa: {
+    id: 'kappa_evolved',
+    name: '河童 · Kappa',
+    nameShort: '河童',
+    region: 'japanese',
+    subtitle: 'River Imp · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#2E7D52',
+    lore: 'Kappa has grown into a true guardian of rivers. His dish-plate never spills now, brimming with water that can heal or command the deep currents.',
+    haiku: '皿に満ちた水<br>川の命を守りて<br>河童は立つ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/kappa_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  kodama: {
+    id: 'kodama_evolved',
+    name: '木霊 · Kodama',
+    nameShort: '木霊',
+    region: 'japanese',
+    subtitle: 'Forest Echo · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#7AAE3E',
+    lore: 'Rooted in centuries of whispered wishes, Kodama has grown into the forest itself. Every tree in the grove now echoes its ancient voice.',
+    haiku: '森全体が<br>一つの声となりて<br>木霊は歌う',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/kodama_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  oni: {
+    id: 'oni_evolved',
+    name: '鬼 · Oni',
+    nameShort: '鬼',
+    region: 'japanese',
+    subtitle: 'Mountain Demon · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#C41C1C',
+    lore: 'The mountains themselves tremble when Oni passes. His judgment is now absolute — those with focused hearts find safe passage; those who wander are turned back.',
+    haiku: '山が震える<br>鬼の一声で道<br>開かれる今',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/oni_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  baku: {
+    id: 'baku_evolved',
+    name: '獏 · Baku',
+    nameShort: '獏',
+    region: 'japanese',
+    subtitle: 'Dream Eater · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#7b4aff',
+    lore: 'Baku no longer merely consumes nightmares — it shapes the dreamscape itself, weaving focus and clarity into the sleep of those it protects.',
+    haiku: '夢を織りなし<br>闇を光へと変え<br>獏は守る',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/baku_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  raijin_wolf: {
+    id: 'raijin_wolf_evolved',
+    name: '雷神狼 · Raijin',
+    nameShort: '雷神狼',
+    region: 'japanese',
+    subtitle: 'Thunder Wolf · Evolved',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#00b4ff',
+    lore: 'Born from a thundercloud, Raijin has grown into a storm unto himself. His howl splits the sky and his paws leave scorched earth crackling with lightning.',
+    haiku: '嵐を纏い<br>雷神狼が駆ける<br>天地が揺れる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/raijin_wolf_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  tsuru: {
+    id: 'tsuru_evolved',
+    name: '鶴 · Tsuru',
+    nameShort: '鶴',
+    region: 'japanese',
+    subtitle: 'Sacred Crane · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#C62828',
+    lore: 'A thousand years of patience have made Tsuru\'s dance a force of nature. Where she lands, the mist clears and time slows to a perfect stillness.',
+    haiku: '千年の舞<br>霧が晴れ時が止む<br>鶴の羽広げ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/tsuru_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  jorogumo: {
+    id: 'jorogumo_evolved',
+    name: '絡新婦 · Jorogumo',
+    nameShort: '絡新婦',
+    region: 'japanese',
+    subtitle: 'Spider Enchantress · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#B8860B',
+    lore: 'Jorogumo\'s webs now span entire valleys, each thread a golden story. Those who follow them find not a trap, but the path to their deepest focus.',
+    haiku: '谷を渡る糸<br>黄金の物語紡ぎ<br>蜘蛛は待ちわびる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/jorogumo_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
   }
 };
 
