@@ -1233,6 +1233,8 @@ function saveTimerState() {
   }));
 }
 
+let _hatchInProgress = false;
+
 function clearTimerState() {
   localStorage.removeItem('focus-timer');
 }
@@ -1323,7 +1325,6 @@ function resetTimerState() {
   document.getElementById('view-timer').classList.remove('running');
 }
 
-let _hatchInProgress = false;
 function onTimerComplete() {
   // Guard against duplicate completions (e.g. two tabs, visibilitychange + interval race).
   if (_hatchInProgress) return;
@@ -1897,19 +1898,7 @@ function renderCollection() {
     b.classList.toggle('active', b.dataset.region === state.filter);
   });
 
-  // Preview mode indicator
-  let indicator = document.getElementById('preview-indicator');
-  if (state.previewAll) {
-    if (!indicator) {
-      indicator = document.createElement('div');
-      indicator.id = 'preview-indicator';
-      indicator.textContent = '[ dev preview — press A to exit ]';
-      indicator.style.cssText = 'position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%);font-size:.7rem;opacity:.35;letter-spacing:.1em;pointer-events:none;';
-      document.body.appendChild(indicator);
-    }
-  } else {
-    if (indicator) indicator.remove();
-  }
+  // Preview mode indicator (removed for production)
 
   // Guard: if the current filter is a locked region, reset to 'all'
   const unlockedRegions = getUnlockedRegions();
