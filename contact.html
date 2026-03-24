@@ -117,7 +117,11 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
   try {
     const res = await fetch('https://bvfxxedhvdknwvvkyuph.supabase.co/functions/v1/send-contact-email', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer sb_publishable_XyzHbIwzLhRbGbqOfIY8UA_K8Gfw78R',
+        'apikey': 'sb_publishable_XyzHbIwzLhRbGbqOfIY8UA_K8Gfw78R',
+      },
       body: JSON.stringify({ name, email, message }),
     });
     if (res.ok) {
