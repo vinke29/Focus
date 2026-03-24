@@ -93,6 +93,8 @@ function renderCards(d) {
   document.getElementById('m-animals').textContent  = fmt(d.total_animals);
   document.getElementById('m-sessions').textContent = fmt(d.total_sessions);
   document.getElementById('m-dau').textContent      = fmt(d.dau);
+  document.getElementById('m-nurture').textContent  = fmt(d.total_nurture_sessions);
+  document.getElementById('m-evolved').textContent  = fmt(d.total_evolved);
 
   const mins = d.total_focus_minutes;
   const hrs  = Math.floor(mins / 60);
@@ -158,6 +160,7 @@ function renderLeaders(data) {
   const rows = data.map((d, i) => {
     const pct = (d.unique_chars / TOTAL_CHARS * 100).toFixed(0);
     const barW = Math.max(pct, 2);
+    const hintIcon = d.evo_hint_seen ? '✓' : '—';
     return `<tr>
       <td>${i + 1}</td>
       <td>${esc(d.name)}${d.email ? `<br><span style="opacity:.4;font-size:.55rem">${esc(d.email)}</span>` : ''}</td>
@@ -167,10 +170,13 @@ function renderLeaders(data) {
       <td style="color:#c0392b">${d.crimson || 0}/${TOTAL_CHARS}</td>
       <td style="color:#5b2d8e">${d.void || 0}/${TOTAL_CHARS}</td>
       <td>${d.total_animals}</td>
+      <td>${d.nurture_sessions || 0}</td>
+      <td>${d.evolved_count || 0}</td>
+      <td style="opacity:.5">${hintIcon}</td>
     </tr>`;
   }).join('');
   el.innerHTML = `<table class="admin-table">
-    <thead><tr><th>#</th><th>name</th><th>unique</th><th>standard</th><th style="color:#c9a227">gold</th><th style="color:#c0392b">crimson</th><th style="color:#5b2d8e">void</th><th>total</th></tr></thead>
+    <thead><tr><th>#</th><th>name</th><th>unique</th><th>standard</th><th style="color:#c9a227">gold</th><th style="color:#c0392b">crimson</th><th style="color:#5b2d8e">void</th><th>total</th><th>nurture</th><th>evolved</th><th>hint</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }

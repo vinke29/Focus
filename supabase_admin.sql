@@ -33,6 +33,12 @@ AS $$
 $$;
 
 
+-- Schema additions (safe to re-run)
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS nurture_sessions int DEFAULT 0;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evolved_count    int DEFAULT 0;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evo_hint_seen    bool DEFAULT false;
+
+
 -- A: Overview metrics
 CREATE OR REPLACE FUNCTION admin_overview(p_period text DEFAULT 'all')
 RETURNS json
@@ -44,13 +50,15 @@ DECLARE
 BEGIN
   PERFORM _assert_admin();
   SELECT json_build_object(
-    'total_users',         (SELECT count(*) FROM public.profiles),
-    'new_users',           (SELECT count(*) FROM public.profiles WHERE created_at >= cutoff),
-    'total_animals',       (SELECT count(*) FROM public.collection WHERE hatched_at >= cutoff),
-    'total_sessions',      (SELECT count(*) FROM public.sessions WHERE completed_at >= cutoff),
-    'total_focus_minutes', (SELECT coalesce(sum(duration), 0) FROM public.sessions WHERE completed_at >= cutoff),
-    'dau',                 (SELECT count(DISTINCT user_id) FROM public.sessions
-                            WHERE completed_at >= now() - interval '24 hours')
+    'total_users',            (SELECT count(*) FROM public.profiles),
+    'new_users',              (SELECT count(*) FROM public.profiles WHERE created_at >= cutoff),
+    'total_animals',          (SELECT count(*) FROM public.collection WHERE hatched_at >= cutoff),
+    'total_sessions',         (SELECT count(*) FROM public.sessions WHERE completed_at >= cutoff),
+    'total_focus_minutes',    (SELECT coalesce(sum(duration), 0) FROM public.sessions WHERE completed_at >= cutoff),
+    'dau',                    (SELECT count(DISTINCT user_id) FROM public.sessions
+                               WHERE completed_at >= now() - interval '24 hours'),
+    'total_nurture_sessions', (SELECT coalesce(sum(nurture_sessions), 0) FROM public.profiles),
+    'total_evolved',          (SELECT coalesce(sum(evolved_count), 0) FROM public.profiles)
   ) INTO result;
   RETURN result;
 END;
@@ -103,10 +111,13 @@ BEGIN
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'gold') as gold,
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'crimson') as crimson,
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'void') as void,
-           count(*) as total_animals
+           count(*) as total_animals,
+           coalesce(p.nurture_sessions, 0) as nurture_sessions,
+           coalesce(p.evolved_count, 0) as evolved_count,
+           coalesce(p.evo_hint_seen, false) as evo_hint_seen
     FROM public.collection c
     JOIN public.profiles p ON p.id = c.user_id
-    GROUP BY c.user_id, p.name, p.email
+    GROUP BY c.user_id, p.name, p.email, p.nurture_sessions, p.evolved_count, p.evo_hint_seen
     ORDER BY unique_chars DESC, total_animals DESC
     LIMIT 25
   ) t;

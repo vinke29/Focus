@@ -284,6 +284,23 @@ const DB = {
     await _sb.from('profiles').update({ max_streak: streak }).eq('id', user.id);
   },
 
+  async updateNurtureProgress(nurtureSessionsTotal, evolvedCount) {
+    if (!_sb) return;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return;
+    await _sb.from('profiles').update({
+      nurture_sessions: nurtureSessionsTotal,
+      evolved_count: evolvedCount,
+    }).eq('id', user.id);
+  },
+
+  async setEvoHintSeen() {
+    if (!_sb) return;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return;
+    await _sb.from('profiles').update({ evo_hint_seen: true }).eq('id', user.id);
+  },
+
   async loadBadgeStats() {
     if (!_sb) return null;
     const { data, error } = await _sb.from('badge_stats').select('badge_id, earned_count');

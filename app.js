@@ -953,6 +953,8 @@ function savePinnedCreature() {
   }
   localStorage.setItem('focus-evolution-sessions', JSON.stringify(state.evolutionSessions));
   localStorage.setItem('focus-evolved', JSON.stringify(state.evolvedCreatures));
+  const nurtureTotal = Object.values(state.evolutionSessions).reduce((a, b) => a + b, 0);
+  DB.updateNurtureProgress(nurtureTotal, state.evolvedCreatures.length).catch(() => {});
 }
 
 function pinCreature(charId) {
@@ -1416,6 +1418,7 @@ function maybeShowEvoHint() {
 function dismissEvoHint() {
   document.getElementById('evo-hint-banner')?.classList.remove('show');
   localStorage.setItem('focus-evo-hint-seen', '1');
+  DB.setEvoHintSeen().catch(() => {});
 }
 
 function initDarkMode() {
