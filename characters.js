@@ -35,7 +35,7 @@ const EVOLUTIONS = {
     name: '白猫 · Shiro',
     nameShort: '白猫',
     region: 'japanese',
-    subtitle: 'White Cat Spirit · Evolved Form',
+    subtitle: 'White Cat Spirit · Evolved',
     rarity: 'common',
     rarityLabel: '◇ Common',
     accentColor: '#f0a500',

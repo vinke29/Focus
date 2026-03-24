@@ -2266,7 +2266,18 @@ function openCardModal(charId, vc) {
   if (hint) hint.classList.remove('hidden');
 
   // Front: art (filter applied in renderModalVariantNav after variant is known)
-  document.getElementById('modal-art').innerHTML = char.svg;
+  const modalArtEl = document.getElementById('modal-art');
+  modalArtEl.innerHTML = char.svg;
+  // Evolved corner marker
+  const existingEvoMark = modalArtEl.querySelector('.modal-evolved-mark');
+  if (existingEvoMark) existingEvoMark.remove();
+  if (isEvolved(charId)) {
+    const mark = document.createElement('span');
+    mark.className = 'modal-evolved-mark';
+    mark.textContent = '✦';
+    mark.style.color = char.accentColor;
+    modalArtEl.appendChild(mark);
+  }
 
   // Back: lore + haiku + meta
   document.getElementById('modal-back-name').textContent = nameEn;
