@@ -111,19 +111,25 @@ function renderCards(d) {
 
 // ── Render: bar charts ───────────────────────────────────────────────────────
 
-function renderBarChart(container, items, labelFn, valueFn, classFn) {
+function renderBarChart(container, items, labelFn, valueFn, classFn, clickFn) {
   const el = document.getElementById(container);
   if (!items.length) { el.innerHTML = '<span style="opacity:.3;font-size:.6rem">no data</span>'; return; }
   const max = Math.max(...items.map(valueFn), 1);
-  el.innerHTML = items.map(item => {
+  el.innerHTML = items.map((item, i) => {
     const pct = (valueFn(item) / max * 100).toFixed(1);
     const cls = classFn ? classFn(item) : '';
-    return `<div class="bar-row">
+    const clickable = clickFn ? 'style="cursor:pointer" data-i="' + i + '"' : '';
+    return `<div class="bar-row" ${clickable}>
       <span class="bar-label">${labelFn(item)}</span>
       <div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
       <span class="bar-value">${fmt(valueFn(item))}</span>
     </div>`;
   }).join('');
+  if (clickFn) {
+    el.querySelectorAll('.bar-row[data-i]').forEach(row => {
+      row.addEventListener('click', () => clickFn(items[+row.dataset.i]));
+    });
+  }
 }
 
 function renderAnimalChart(data) {
@@ -145,7 +151,37 @@ function renderSignupsChart(data) {
 
 function renderDAUChart(data) {
   const label = currentPeriod === 'all' ? d => 'wk ' + formatDay(d.day) : d => formatDay(d.day);
-  renderBarChart('chart-dau', data, label, d => d.active_users);
+  renderBarChart('chart-dau', data, label, d => d.active_users, null, d => showDAUDetail(d.day));
+}
+
+async function showDAUDetail(day) {
+  const date = new Date(day);
+  const dateStr = date.toISOString().slice(0, 10); // YYYY-MM-DD
+  const label = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+
+  const modal = document.getElementById('dau-modal');
+  const title = document.getElementById('dau-modal-title');
+  const body  = document.getElementById('dau-modal-body');
+
+  title.textContent = `Active users — ${label}`;
+  body.innerHTML = '<span style="opacity:.4;font-size:.6rem">loading...</span>';
+  modal.style.display = 'flex';
+
+  const { data, error } = await DB.rpc('admin_dau_detail', { p_date: dateStr });
+  if (error || !data) { body.innerHTML = '<span style="opacity:.4;font-size:.6rem">error loading data</span>'; return; }
+
+  if (!data.length) { body.innerHTML = '<span style="opacity:.4;font-size:.6rem">no sessions found</span>'; return; }
+
+  const rows = data.map((d, i) => `<tr>
+    <td>${i + 1}</td>
+    <td>${esc(d.name)}</td>
+    <td style="opacity:.5;font-size:.55rem">${esc(d.email || '—')}</td>
+    <td>${d.sessions}</td>
+  </tr>`).join('');
+  body.innerHTML = `<table class="admin-table">
+    <thead><tr><th>#</th><th>name</th><th>email</th><th>sessions</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
 }
 
 function renderStreaksChart(data) {

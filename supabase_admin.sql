@@ -235,6 +235,28 @@ END;
 $$;
 
 
+-- H2: DAU detail — who was active on a specific date
+CREATE OR REPLACE FUNCTION admin_dau_detail(p_date date)
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER
+AS $$
+DECLARE result json;
+BEGIN
+  PERFORM _assert_admin();
+  SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
+  FROM (
+    SELECT p.name, p.email, count(*) as sessions
+    FROM public.sessions s
+    JOIN public.profiles p ON p.id = s.user_id
+    WHERE s.completed_at::date = p_date
+    GROUP BY p.name, p.email
+    ORDER BY sessions DESC
+  ) t;
+  RETURN result;
+END;
+$$;
+
+
 -- H: Signup list (name, email, created_at) for a given period
 CREATE OR REPLACE FUNCTION admin_signup_list(p_period text DEFAULT 'all')
 RETURNS json

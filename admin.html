@@ -139,6 +139,29 @@ body::after {
   margin-left: .4rem; vertical-align: middle;
 }
 
+/* DAU detail modal */
+#dau-modal {
+  display: none; position: fixed; inset: 0; z-index: 100;
+  background: rgba(8,8,16,.45); align-items: center; justify-content: center;
+}
+#dau-modal-inner {
+  background: var(--paper); border: 1.5px solid rgba(8,8,16,.15);
+  padding: 1.8rem; max-width: 560px; width: 90%; max-height: 80vh;
+  display: flex; flex-direction: column; gap: 1rem;
+}
+#dau-modal-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+#dau-modal-title {
+  font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; opacity: .5;
+}
+#dau-modal-close {
+  background: none; border: none; cursor: pointer; font-size: .8rem;
+  font-family: inherit; opacity: .35; padding: 0;
+}
+#dau-modal-close:hover { opacity: .7; }
+#dau-modal-body { overflow-y: auto; }
+
 /* Responsive */
 @media (max-width: 640px) {
   body { padding: 1.2rem; }
@@ -148,6 +171,16 @@ body::after {
 </style>
 </head>
 <body>
+
+<div id="dau-modal">
+  <div id="dau-modal-inner">
+    <div id="dau-modal-header">
+      <span id="dau-modal-title"></span>
+      <button id="dau-modal-close" onclick="document.getElementById('dau-modal').style.display='none'">✕</button>
+    </div>
+    <div id="dau-modal-body"></div>
+  </div>
+</div>
 
 <div id="admin-loading" class="admin-gate">loading...</div>
 <div id="admin-unauthorized" class="admin-gate" style="display:none">unauthorized — redirecting</div>
