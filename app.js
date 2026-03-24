@@ -3562,11 +3562,11 @@ async function init() {
     resetTimerState();
     navigateTo('timer');
   });
-  document.getElementById('evo-hint-banner').addEventListener('click', () => {
+  document.getElementById('evo-hint-banner')?.addEventListener('click', () => {
     dismissEvoHint();
     navigateTo('collection');
   });
-  document.getElementById('evo-hint-dismiss').addEventListener('click', e => {
+  document.getElementById('evo-hint-dismiss')?.addEventListener('click', e => {
     e.stopPropagation();
     dismissEvoHint();
   });
