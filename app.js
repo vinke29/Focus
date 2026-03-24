@@ -2406,17 +2406,25 @@ function openCardModal(charId, vc) {
     const canEvolve = EVOLUTIONS[charId] && !isEvolved(charId);
     if (canEvolve) {
       pinBtn.style.display = '';
+      const timerRunning = state.timer.running;
       const isPinned = state.pinnedCreature === charId;
-      pinBtn.textContent = isPinned ? 'unpin' : 'nurture';
-      pinBtn.onclick = () => {
-        if (state.pinnedCreature === charId) {
-          unpinCreature();
-          pinBtn.textContent = 'nurture';
-        } else {
-          pinCreature(charId);
-          pinBtn.textContent = 'unpin';
-        }
-      };
+      if (timerRunning) {
+        pinBtn.textContent = isPinned ? 'nurturing · timer running' : 'timer is running';
+        pinBtn.disabled = true;
+        pinBtn.onclick = null;
+      } else {
+        pinBtn.disabled = false;
+        pinBtn.textContent = isPinned ? 'unpin' : 'nurture';
+        pinBtn.onclick = () => {
+          if (state.pinnedCreature === charId) {
+            unpinCreature();
+            pinBtn.textContent = 'nurture';
+          } else {
+            pinCreature(charId);
+            pinBtn.textContent = 'unpin';
+          }
+        };
+      }
     } else {
       pinBtn.style.display = 'none';
     }

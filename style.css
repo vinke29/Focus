@@ -2019,6 +2019,9 @@ body.dark .modal-pin-btn:hover, body.dark .modal-pin-btn:active {
   background: rgba(221,215,200,.08);
   border-color: rgba(221,215,200,.4);
 }
+.modal-pin-btn:disabled {
+  opacity: .35; cursor: default; pointer-events: none;
+}
 
 /* ── EVOLUTION OVERLAY ── */
 .evo-overlay {
