@@ -2199,8 +2199,7 @@ function renderCollection() {
       info.className = 'card-info';
       info.innerHTML = `
         <div class="card-name">${nameEn}</div>
-        <div class="card-rarity">${char.rarity}</div>
-        ${isEvolved(id) ? `<div class="card-evolved" style="color:${char.accentColor}">✦ evolved</div>` : ''}
+        <div class="card-rarity">${char.rarity}${isEvolved(id) ? ` · <span class="card-evolved-inline" style="color:${char.accentColor}">✦ evolved</span>` : ''}</div>
         <div class="card-variants">${variantDots}</div>
       `;
       card.appendChild(info);

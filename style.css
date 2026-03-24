@@ -1359,11 +1359,7 @@ body.dark #milestone-toast.region-unlock #milestone-num { color: #6fa3e0; }
   text-transform: uppercase; margin-top: .1rem;
   opacity: .7;
 }
-.card-evolved {
-  font-size: .46rem; letter-spacing: .2em;
-  text-transform: uppercase; margin-top: .1rem;
-  font-weight: 600;
-}
+.card-evolved-inline { font-weight: 600; }
 .card-variants {
   display: flex; justify-content: center; gap: .22rem;
   margin-top: .28rem;
@@ -2301,7 +2297,6 @@ body.dark .modal-pin-btn:hover, body.dark .modal-pin-btn:active {
   }
   .card-name    { font-size: .82rem; letter-spacing: .06em; }
   .card-rarity  { font-size: .62rem; letter-spacing: .1em; opacity: .55; margin-top: .12rem; }
-  .card-evolved { font-size: .58rem; letter-spacing: .15em; margin-top: .12rem; }
 
   .locked-icon { font-size: .55rem; opacity: .3; }
 
