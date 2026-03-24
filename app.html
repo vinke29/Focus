@@ -99,7 +99,7 @@
 
 <!-- ── GLOBAL MUTE BUTTON ── -->
 <button id="btn-mute" class="nav-btn mute-btn" title="Toggle sound">
-  <svg class="icon-sound" viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+  <svg class="icon-sound" viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <path d="M3 6.5h3l4.5-3.5v10L6 9.5H3z" fill="currentColor" stroke="none" opacity=".7"/>
     <path class="sv-waves" d="M12.5 6.8a3.2 3.2 0 0 1 0 4.4"/>
     <line class="sv-x" x1="12" y1="6.5" x2="16.5" y2="11.5"/>
@@ -110,7 +110,7 @@
 <!-- ── TIMER VIEW ── -->
 <div id="view-timer" class="view">
   <button id="btn-mini-timer" class="nav-btn mini-timer-btn" title="Mini timer">
-    <svg viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <svg viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <rect x="2" y="4" width="14" height="10" rx="1.5"/>
       <line x1="6" y1="1.5" x2="12" y2="1.5"/>
     </svg>
@@ -119,7 +119,7 @@
 
   <main class="timer-main">
     <div id="egg-stage">
-      <svg id="progress-ring" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg id="progress-ring" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <circle class="ring-track" cx="130" cy="130" r="118"/>
         <circle id="ring-fill" class="ring-fill" cx="130" cy="130" r="118"/>
       </svg>
@@ -157,15 +157,15 @@
   </div>
   <div id="flash"></div>
   <div id="speed-wrap">
-    <svg id="speed-svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice"></svg>
+    <svg id="speed-svg" viewBox="0 0 800 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
   </div>
-  <canvas id="particles"></canvas>
+  <canvas id="particles" aria-hidden="true"></canvas>
 
   <div id="hatch-stage">
     <!-- Character art takes center stage -->
     <div id="hatch-egg-wrap">
       <!-- Egg -->
-      <svg id="hatch-egg" width="220" height="280" viewBox="0 0 220 280">
+      <svg id="hatch-egg" width="220" height="280" viewBox="0 0 220 280" aria-hidden="true">
         <defs>
           <radialGradient id="heggGrd" cx="40%" cy="35%" r="65%">
             <stop offset="0%" stop-color="#fefcf5"/>
@@ -191,7 +191,7 @@
       </svg>
 
       <!-- Cracks -->
-      <svg id="hatch-cracks" width="220" height="280" viewBox="0 0 220 280">
+      <svg id="hatch-cracks" width="220" height="280" viewBox="0 0 220 280" aria-hidden="true">
         <g stroke="#080810" stroke-linecap="round" stroke-linejoin="round" fill="none">
           <path id="hc1" d="M110,80 L98,102 L107,108 L95,132" stroke-width="2.5" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
           <path id="hc2" d="M107,108 L120,122 L115,138" stroke-width="2" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
@@ -245,13 +245,13 @@
       <div class="collection-title-group">
         <span class="collection-title" id="collection-title">collection</span>
         <button id="btn-share-collection" class="nav-btn share-collection-btn" title="Copy collection link">
-          <svg viewBox="0 0 18 18" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <svg viewBox="0 0 18 18" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M10.5 3H15v4.5"/><path d="M15 3l-7 7"/><path d="M7.5 5H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3.5"/>
           </svg>
         </button>
       </div>
       <button id="btn-dark" class="nav-btn dark-btn-inline" title="Toggle dark mode">
-        <svg class="icon-dark" viewBox="0 0 18 18" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon-dark" viewBox="0 0 18 18" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path class="icon-moon" d="M13.5 10a5 5 0 1 1-5.5-5.5 3.8 3.8 0 0 0 5.5 5.5z"/>
           <g class="icon-sun">
             <circle cx="9" cy="9" r="3"/>
@@ -263,7 +263,7 @@
         </svg>
       </button>
       <button id="btn-account" class="nav-btn account-btn" title="Account">
-        <svg viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 18 18" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="9" cy="6.5" r="2.8"/>
           <path d="M2.5 15.5c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6"/>
         </svg>
@@ -290,25 +290,25 @@
   </div>
   <nav class="bottom-tabs" id="bottom-tabs">
     <button class="bottom-tab" id="btn-tab-timer">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>
       </svg>
       <span>Timer</span>
     </button>
     <button class="bottom-tab" data-top="stats">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/>
       </svg>
       <span>Stats</span>
     </button>
     <button class="bottom-tab active" data-top="collection">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>
       </svg>
       <span>Collection</span>
     </button>
     <button class="bottom-tab" data-top="achievements">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
       </svg>
       <span>Achievements</span>
@@ -363,7 +363,7 @@
       <div class="modal-name-row">
         <div id="modal-name" class="modal-name"></div>
         <button id="btn-modal-share" class="modal-share-icon" title="Share">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
         </button>
       </div>
       <div id="modal-sub" class="modal-sub"></div>

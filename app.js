@@ -1,3 +1,6 @@
+// Suppress unhandled promise rejections (offline DB writes, plugin calls, etc.)
+window.addEventListener('unhandledrejection', e => e.preventDefault());
+
 // ── NATIVE (CAPACITOR) ───────────────────────────────────────────────────────
 const IS_NATIVE = typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform();
 
