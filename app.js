@@ -1060,28 +1060,11 @@ function renderEvolutionRing(charId, progress) {
 }
 
 function showNurtureComplete(charId, progress) {
-  resetTimerState(); // removes .running class, resets button + ring fill
+  resetTimerState();
   _hatchInProgress = false;
-  navigateTo('timer');
-  setTimeout(() => {
-    renderPinnedCreature(); // re-renders ring with updated segment count
-    // Pulse the newly-filled segment
-    const svg = document.getElementById('progress-ring');
-    const segments = svg ? [...svg.querySelectorAll('.evo-segment')] : [];
-    const newSeg = segments[progress - 1];
-    if (newSeg) newSeg.classList.add('seg-pulse');
-    // Show nurture message in nudge area
-    const nudge = document.getElementById('timer-nudge');
-    if (nudge) {
-      const char = CHARACTERS[charId];
-      const left = EVOLUTION_SESSIONS - progress;
-      nudge.innerHTML = left > 0
-        ? `${char.nameShort} · session ${progress} of ${EVOLUTION_SESSIONS} complete`
-        : `${char.nameShort} · ready to evolve ✦`;
-      nudge.classList.add('show');
-      setTimeout(() => renderNudge(), 3500);
-    }
-  }, 200);
+  prepareNurtureView(charId, progress);
+  navigateTo('hatch');
+  setTimeout(() => runNurtureSequence(charId, progress), 400);
 }
 
 function initEggInteraction() {
@@ -1816,8 +1799,16 @@ function prepareHatchView(character, variant) {
   particleCanvas.height = window.innerHeight;
 
   // Reset speed lines + flash
-  document.getElementById('flash').style.opacity     = '0';
+  const flashEl = document.getElementById('flash');
+  flashEl.style.background = '';
+  flashEl.style.opacity    = '0';
   document.getElementById('speed-wrap').style.opacity = '0';
+
+  // Restore hatch buttons (may have been hidden during nurture sequence)
+  document.getElementById('btn-share').style.display           = '';
+  document.getElementById('btn-see-collection').style.display  = '';
+  document.getElementById('btn-focus-again').style.display     = '';
+  document.getElementById('btn-nurture-continue').style.display = 'none';
 }
 
 function runHatchSequence() {
@@ -1937,6 +1928,184 @@ function shakeEgg(egg) {
       egg.style.transform = '';
     }
   }, 48);
+}
+
+// ── NURTURE COMPLETE SEQUENCE ────────────────────────────────────────────────
+function prepareNurtureView(charId, progress) {
+  const char = CHARACTERS[charId];
+  const wrap = document.getElementById('char-wrap');
+
+  // Show nurture image (creature holding egg) or fall back to portrait SVG
+  if (NURTURE_IMAGES.has(charId)) {
+    wrap.innerHTML = `<img src="/chars/${charId}_nurture.png" class="nurture-seq-img" alt="${char.nameShort}">`;
+  } else {
+    wrap.innerHTML = char.svg;
+  }
+  wrap.style.opacity   = '0';
+  wrap.style.transition = 'none';
+
+  // Hide egg + cracks — creature is the centerpiece, no egg to crack
+  const egg = document.getElementById('hatch-egg');
+  egg.style.opacity  = '0';
+  egg.style.animation = 'none';
+  document.getElementById('hatch-cracks').style.opacity = '0';
+
+  // Footer text
+  const left = EVOLUTION_SESSIONS - progress;
+  document.getElementById('char-name').textContent = char.name;
+  document.getElementById('char-sub').textContent  = left > 0
+    ? `session ${progress} of ${EVOLUTION_SESSIONS} complete`
+    : `${char.nameShort} is ready to evolve ✦`;
+  document.getElementById('char-drop-hint').textContent = '';
+  document.getElementById('hatch-footer').classList.remove('show');
+  document.getElementById('milestone-toast').classList.remove('show', 'region-complete', 'region-unlock');
+
+  // Show nurture continue button, hide hatch-specific buttons
+  document.getElementById('btn-share').style.display          = 'none';
+  document.getElementById('btn-see-collection').style.display = 'none';
+  document.getElementById('btn-focus-again').style.display    = 'none';
+  document.getElementById('btn-nurture-continue').style.display = '';
+
+  // Flash stays white — reset background + opacity
+  const flash = document.getElementById('flash');
+  flash.style.background = '';
+  flash.style.opacity    = '0';
+  flash.style.transition = 'opacity .05s';
+  document.getElementById('speed-wrap').style.opacity = '0';
+
+  // Reset region overlay
+  const discoverOverlay = document.getElementById('region-discover-overlay');
+  discoverOverlay.classList.remove('show', 'fade-out');
+
+  // Resize particle canvas
+  particleCanvas.width  = window.innerWidth;
+  particleCanvas.height = window.innerHeight;
+}
+
+function runNurtureSequence(charId, progress) {
+  const char  = CHARACTERS[charId];
+  const wrap  = document.getElementById('char-wrap');
+  const flash = document.getElementById('flash');
+  const speedW = document.getElementById('speed-wrap');
+  const art   = wrap.querySelector('img, svg');
+
+  // Creature fades in immediately with a soft glow
+  wrap.style.transition = 'opacity .6s ease';
+  wrap.style.opacity    = '1';
+  if (art) {
+    art.style.filter     = `drop-shadow(0 0 18px ${char.accentColor}77)`;
+    art.style.transition = 'filter .6s ease';
+  }
+
+  // 1. Shake at 0.8s — creature pulses with energy
+  setTimeout(() => {
+    shakeElement(wrap);
+    SFX.rumble();
+    Haptic.rumble();
+  }, 800);
+
+  // 2. BURST at 1.4s
+  setTimeout(() => {
+    SFX.nurtureProgress();
+    Haptic.heavy();
+
+    // Flash
+    flash.style.opacity = '1';
+    setTimeout(() => {
+      flash.style.transition = 'opacity .5s ease';
+      flash.style.opacity    = '0';
+    }, 55);
+
+    // Speed lines in accent color
+    buildNurtureSpeedLines(char.accentColor);
+    speedW.style.transition = 'opacity .5s ease';
+    speedW.style.opacity    = '1';
+    setTimeout(() => { speedW.style.opacity = '0'; }, 480);
+
+    // Particles in accent color
+    const rect = document.getElementById('hatch-egg-wrap').getBoundingClientRect();
+    spawnNurtureParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, char.accentColor);
+    tickParticles();
+
+    // Big glow burst on creature, then settles
+    if (art) {
+      art.style.filter = `drop-shadow(0 0 42px ${char.accentColor}cc)`;
+      setTimeout(() => {
+        art.style.transition = 'filter 1.2s ease';
+        art.style.filter     = `drop-shadow(0 0 14px ${char.accentColor}55)`;
+      }, 350);
+    }
+  }, 1400);
+
+  // 3. Show footer at 2.2s
+  setTimeout(() => {
+    document.getElementById('hatch-footer').classList.add('show');
+  }, 2200);
+}
+
+function shakeElement(el) {
+  let i = 0;
+  const shake = setInterval(() => {
+    const tx  = (Math.random() - .5) * 9;
+    const ty  = (Math.random() - .5) * 5;
+    const rot = (Math.random() - .5) * 4;
+    el.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
+    if (++i > 16) {
+      clearInterval(shake);
+      el.style.transform = '';
+    }
+  }, 48);
+}
+
+function buildNurtureSpeedLines(accentColor) {
+  const svg = document.getElementById('speed-svg');
+  svg.innerHTML = '';
+  const cx = 400, cy = 400;
+  for (let i = 0; i < 96; i++) {
+    const a     = (i / 96) * Math.PI * 2 + (Math.random() - .5) * .06;
+    const inner = 50 + Math.random() * 50;
+    const outer = 340 + Math.random() * 240;
+    const line  = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', cx + Math.cos(a) * inner);
+    line.setAttribute('y1', cy + Math.sin(a) * inner);
+    line.setAttribute('x2', cx + Math.cos(a) * outer);
+    line.setAttribute('y2', cy + Math.sin(a) * outer);
+    line.setAttribute('stroke', i % 6 === 0 ? accentColor : i % 9 === 0 ? '#fff' : '#080810');
+    line.setAttribute('stroke-width', .5 + Math.random() * 2.5);
+    line.setAttribute('opacity', .35 + Math.random() * .6);
+    svg.appendChild(line);
+  }
+}
+
+function spawnNurtureParticles(cx, cy, accentColor) {
+  for (let i = 0; i < 110; i++) {
+    const a   = Math.random() * Math.PI * 2;
+    const spd = 2 + Math.random() * 10;
+    const big = Math.random() > .85;
+    parts.push({
+      x: cx, y: cy,
+      vx: Math.cos(a) * spd, vy: Math.sin(a) * spd,
+      r: big ? 4 + Math.random() * 5 : 1.5 + Math.random() * 3,
+      color: Math.random() > .38 ? accentColor : '#080810',
+      alpha: 1, decay: .013 + Math.random() * .024,
+      trail: [], trailLen: big ? 11 : 5,
+      gravity: .08
+    });
+  }
+  // Glowing orbs in accent color (no egg shards — no egg to break)
+  for (let i = 0; i < 16; i++) {
+    const a   = (i / 16) * Math.PI * 2 + (Math.random() - .5) * .3;
+    const spd = 2 + Math.random() * 6;
+    parts.push({
+      x: cx, y: cy,
+      vx: Math.cos(a) * spd * .8, vy: Math.sin(a) * spd - 2,
+      r: 4 + Math.random() * 10,
+      color: accentColor,
+      alpha: 1, decay: .018,
+      trail: [], trailLen: 8,
+      gravity: .10
+    });
+  }
 }
 
 // ── SPEED LINES ──────────────────────────────────────────────────────────────
@@ -3372,6 +3541,17 @@ async function init() {
     if (state.onboarding) { finishOnboarding(); return; }
     resetTimerState();
     navigateTo('timer');
+  });
+  document.getElementById('btn-nurture-continue').addEventListener('click', () => {
+    navigateTo('timer');
+    setTimeout(() => {
+      renderPinnedCreature();
+      const svg = document.getElementById('progress-ring');
+      const segs = svg ? [...svg.querySelectorAll('.evo-segment')] : [];
+      const progress = state.evolutionSessions[state.pinnedCreature] || 0;
+      const newSeg = segs[progress - 1];
+      if (newSeg) newSeg.classList.add('seg-pulse');
+    }, 200);
   });
 
   // Onboarding egg tap → welcome hatch

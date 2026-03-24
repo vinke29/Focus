@@ -534,6 +534,260 @@ const EVOLUTIONS = {
     </g>
   </g>
 </svg>`
+  },
+
+  // ── European evolutions ───────────────────────────────────────────────────
+
+  hedgehog: {
+    id: 'hedgehog_evolved',
+    name: 'Hedgehog · ハリネズミ',
+    nameShort: 'ハリネズミ',
+    region: 'european',
+    subtitle: 'Iron Spine · Dusk Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#6D4C41',
+    lore: 'Every quill now hums with night-ward magic. The Hedgehog curls into a sphere of silent force, deflecting doubt as easily as danger.',
+    haiku: '夜の護符<br>全ての刺が光る<br>疑いを払う',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/hedgehog_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  hare: {
+    id: 'hare_evolved',
+    name: 'Hare · 野兎',
+    nameShort: '野兎',
+    region: 'european',
+    subtitle: 'Lunar Hare · Moonfield Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#9E9E9E',
+    lore: 'The Hare has outrun its own shadow and stepped into the moon\'s reflection. It now runs paths that exist between one breath and the next.',
+    haiku: '影を超えて<br>月の鏡の中へ<br>息の間を走る',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/hare_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  stag: {
+    id: 'stag_evolved',
+    name: 'Stag · 牡鹿',
+    nameShort: '牡鹿',
+    region: 'european',
+    subtitle: 'Elder Crown · Eternal Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#8B6914',
+    lore: 'The Stag\'s antlers have grown into a living canopy of oak and starlight. Entire forests hush when he passes. He remembers the first tree.',
+    haiku: '星と樫の<br>枝角広げる王<br>最初の木を知る',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/stag_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  gryphon: {
+    id: 'gryphon_evolved',
+    name: 'Gryphon · グリフォン',
+    nameShort: 'グリフォン',
+    region: 'european',
+    subtitle: 'Sky Sovereign · Ascendant Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#c8a840',
+    lore: 'The Gryphon no longer needs perches — it circles at the altitude where weather begins. Its cry alone clears storm clouds from the mountain passes.',
+    haiku: '嵐の上に<br>翼を広げ君臨<br>山の雲払う',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/gryphon_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  unicorn: {
+    id: 'unicorn_evolved',
+    name: 'Unicorn · ユニコーン',
+    nameShort: 'ユニコーン',
+    region: 'european',
+    subtitle: 'Starhorn · Radiant Form',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#D500F9',
+    lore: 'The Unicorn\'s horn has crystallised into condensed starlight. It walks between worlds now, leaving rainbow hoofprints on every surface it touches.',
+    haiku: '星の結晶<br>世界の狭間を歩く<br>虹の足跡',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/unicorn_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  selkie: {
+    id: 'selkie_evolved',
+    name: 'Selkie · セルキー',
+    nameShort: 'セルキー',
+    region: 'european',
+    subtitle: 'Tide Weaver · Deep Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#29B6F6',
+    lore: 'The Selkie shed her seal skin for the last time and merged with the current. She is the pull of every wave now, calling and receding in the same breath.',
+    haiku: '皮を脱ぎ捨て<br>潮の流れとなりぬ<br>呼び返す波',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/selkie_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  wisp: {
+    id: 'wisp_evolved',
+    name: "Will-o'-Wisp · 鬼火",
+    nameShort: '鬼火',
+    region: 'european',
+    subtitle: 'Lantern Soul · Beacon Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#00E5B4',
+    lore: 'No longer drifting, the Wisp has anchored itself to a fixed point in the sky. Those who are truly lost can always find it. It guides only those who choose to follow.',
+    haiku: '空に定まる<br>迷える者だけ見える<br>意志ある光',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/wisp_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  wyvern: {
+    id: 'wyvern_evolved',
+    name: 'Wyvern · ワイバーン',
+    nameShort: 'ワイバーン',
+    region: 'european',
+    subtitle: 'Leviathan Drake · Deep Storm Form',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#006064',
+    lore: 'The Wyvern has grown to fill the horizon. Ships see only a ripple where it dives. Its breath now summons sea-fog that can last for months.',
+    haiku: '地平に潜る<br>月の海霧を呼ぶ<br>忘れられた嵐',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/wyvern_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  robin: {
+    id: 'robin_evolved',
+    name: 'Robin · コマドリ',
+    nameShort: 'コマドリ',
+    region: 'european',
+    subtitle: 'Ember Herald · Dawn Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#D84315',
+    lore: 'The Robin\'s song no longer just warms — it opens the day. Every dawn begins with three notes it chooses. Silence it and the sun hesitates.',
+    haiku: '三つの音符<br>夜明けを開く歌声<br>太陽が待つ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/robin_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  badger: {
+    id: 'badger_evolved',
+    name: 'Badger · アナグマ',
+    nameShort: 'アナグマ',
+    region: 'european',
+    subtitle: 'Iron Burrow · Citadel Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#455A64',
+    lore: 'The Badger has dug so deep it found the root of things. Nothing moves it now. Its sett holds the weight of mountains and still stands.',
+    haiku: '根まで掘り抜き<br>山の重さを支える<br>動かぬ砦',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/badger_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  salamander: {
+    id: 'salamander_evolved',
+    name: 'Salamander · サラマンダー',
+    nameShort: 'サラマンダー',
+    region: 'european',
+    subtitle: 'Forge Elemental · Magma Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#E64A19',
+    lore: 'The Salamander no longer merely survives fire — it is fire. It has swallowed the core of the mountain and now walks where volcanoes sleep.',
+    haiku: '山の核を<br>飲み込んだ小さき者<br>火山の夢に',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/salamander_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  fenrir: {
+    id: 'fenrir_evolved',
+    name: 'Fenrir · フェンリル',
+    nameShort: 'フェンリル',
+    region: 'european',
+    subtitle: 'World Fang · Unchained Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#546E7A',
+    lore: 'The chains that once bound Fenrir are now worn as trophies. Every howl sends auroras rippling across three countries. The mountains learned to step aside.',
+    haiku: '鎖を纏い<br>三国に揺れるオーロラ<br>山々が退く',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/fenrir_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
   }
 };
 

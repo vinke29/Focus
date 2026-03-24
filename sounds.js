@@ -183,5 +183,20 @@ const SFX = (() => {
     tone(c, 1047, 'triangle', t+sd+0.55, 0.9, 0.06);
   }
 
-  return { unlock, setMuted, isMuted, crack, rumble, burst, fusionOrbPop, fusionConverge, fusionBurst, fusionReveal, regionDiscover };
+  // Warm energy bloom for nurture session complete — no crack/shatter, rising chimes
+  function nurtureProgress() {
+    if (muted) return;
+    const c = ac(), t = c.currentTime;
+    // Soft low pulse — energy gathering
+    tone(c, 95, 'sine', t, 0.5, 0.32, 48);
+    noise(c, t, 0.4, 140, 1.0, 0.07);
+    // Rising shimmer cascade
+    const sd = 0.1;
+    tone(c, 440,  'sine', t+sd,      0.55, 0.14);
+    tone(c, 660,  'sine', t+sd+0.1,  0.6,  0.15);
+    tone(c, 880,  'sine', t+sd+0.22, 0.65, 0.14);
+    tone(c, 1320, 'sine', t+sd+0.36, 0.6,  0.11);
+  }
+
+  return { unlock, setMuted, isMuted, crack, rumble, burst, nurtureProgress, fusionOrbPop, fusionConverge, fusionBurst, fusionReveal, regionDiscover };
 })();
