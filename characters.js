@@ -788,6 +788,260 @@ const EVOLUTIONS = {
     </g>
   </g>
 </svg>`
+  },
+
+  // ── African Evolutions ────────────────────────────────────────────────────
+
+  meerkat: {
+    id: 'meerkat_evolved',
+    name: 'Meerkat · ミーアキャット',
+    nameShort: 'ミーアキャット',
+    region: 'african',
+    subtitle: 'Sentinel Eternal · Ascended Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#C49A2A',
+    lore: 'Once a watchman, now a beacon. The entire Kalahari tilts toward this meerkat when it stands tall — its gaze alone calms sandstorms and calls rain.',
+    haiku: '砂嵐静まる<br>その眼差し一つで<br>大地が頷く',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/meerkat_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  mongoose: {
+    id: 'mongoose_evolved',
+    name: 'Mongoose · マングース',
+    nameShort: 'マングース',
+    region: 'african',
+    subtitle: 'Serpent Master · Transcendent Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#8D6E63',
+    lore: 'Every cobra it has faced has made it faster. Now the mongoose moves between heartbeats, a blur of earth and instinct that venom cannot touch.',
+    haiku: '毒も届かぬ<br>鼓動と鼓動の間<br>影が踊り抜ける',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/mongoose_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  pangolin: {
+    id: 'pangolin_evolved',
+    name: 'Pangolin · センザンコウ',
+    nameShort: 'センザンコウ',
+    region: 'african',
+    subtitle: 'Living Fortress · Ironscale Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#B8956E',
+    lore: 'Its scales now reflect starlight like a scattered galaxy. Rolled tight, it becomes indistinguishable from an ancient meteorite — and just as indestructible.',
+    haiku: '星屑纏い<br>月明かりに輝く<br>無敵の球体',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/pangolin_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  warthog: {
+    id: 'warthog_evolved',
+    name: 'Warthog · イボイノシシ',
+    nameShort: 'イボイノシシ',
+    region: 'african',
+    subtitle: 'Tusk Lord · Unbroken Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#8B7355',
+    lore: 'Lions still watch from a distance. The warthog that charged back and won has never stopped running — now the whole savanna parts like water before its tusks.',
+    haiku: '草原割れる<br>牙は風より速く<br>百獣が道を開く',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/warthog_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  hyena: {
+    id: 'hyena_evolved',
+    name: 'Hyena · ハイエナ',
+    nameShort: 'ハイエナ',
+    region: 'african',
+    subtitle: 'Dusk Sovereign · Laughing Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#C8A84B',
+    lore: 'The laugh that once mocked the defeated now summons the clan from twenty kilometres. Under a blood moon, the hyena\'s call rewrites the law of the savanna.',
+    haiku: '血の月に笑う<br>二十里を呼び集め<br>掟を書き換える',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/hyena_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  okapi: {
+    id: 'okapi_evolved',
+    name: 'Okapi · オカピ',
+    nameShort: 'オカピ',
+    region: 'african',
+    subtitle: 'Forest Phantom · Revealed Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#7B4F2E',
+    lore: 'For centuries it was myth. Now the okapi steps into open light for the first time, and the forest itself holds its breath at what has been hiding inside it.',
+    haiku: '密林の神話<br>初めて光の中へ<br>森が息を止める',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/okapi_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  chameleon: {
+    id: 'chameleon_evolved',
+    name: 'Chameleon · カメレオン',
+    nameShort: 'カメレオン',
+    region: 'african',
+    subtitle: 'Spectrum Lord · True Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#43A047',
+    lore: 'It spent a lifetime wearing every colour but its own. Now the chameleon blazes with every hue at once — a living aurora that cannot be unseen.',
+    haiku: '全ての色彩<br>ついに己を纏い<br>オーロラが生まれる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/chameleon_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  honey_badger: {
+    id: 'honey_badger_evolved',
+    name: 'Honey Badger · ラーテル',
+    nameShort: 'ラーテル',
+    region: 'african',
+    subtitle: 'Fearless Apex · Defiant Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#78909C',
+    lore: 'Bitten by a black mamba, it slept for six hours and woke up hungry. Now nothing on this continent dares to start a fight — and the honey badger is still annoyed.',
+    haiku: '毒で眠り<br>六時間後に目覚め<br>まだ腹が立つ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/honey_badger_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  hippo: {
+    id: 'hippo_evolved',
+    name: 'Hippo · カバ',
+    nameShort: 'カバ',
+    region: 'african',
+    subtitle: 'River Throne · Ascended Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#607D8B',
+    lore: 'The river bends around the hippo now, not the other way. It has sat so still for so long that fish nest in its shadow and crocodiles bring tribute at dawn.',
+    haiku: '川が曲がる<br>魚は影に巣を作り<br>夜明けに貢ぎ物',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/hippo_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  serval: {
+    id: 'serval_evolved',
+    name: 'Serval · サーバル',
+    nameShort: 'サーバル',
+    region: 'african',
+    subtitle: 'Sky Leap · Sovereign Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#F9A825',
+    lore: 'Its leap was always extraordinary. Now the serval hangs in the air a beat too long — long enough for gravity to reconsider, and then politely yield.',
+    haiku: '重力迷う<br>空中に佇む猫<br>礼儀正しく退く',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/serval_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  tau: {
+    id: 'tau_evolved',
+    name: 'Tau · タウ',
+    nameShort: 'タウ',
+    region: 'african',
+    subtitle: 'White Lion Spirit · Celestial Form',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#FFB300',
+    lore: 'The white lion of legend stepped through a sunbeam and never quite came back. What remains is more light than lion — a sovereign spirit the stars bow down to greet.',
+    haiku: '光の中へ<br>白獅子消えた後に<br>星が頭を垂れる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/tau_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  gorilla: {
+    id: 'gorilla_evolved',
+    name: 'Gorilla · ゴリラ',
+    nameShort: 'ゴリラ',
+    region: 'african',
+    subtitle: 'Mountain Guardian · Eternal Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#37474F',
+    lore: 'It has not moved from this mountain in forty years. The forest has grown up around it like a cathedral. Every creature within a hundred miles knows: this is the still centre of the world.',
+    haiku: '四十年静寂<br>森が大聖堂となり<br>世界の中心に',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/gorilla_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
   }
 };
 
