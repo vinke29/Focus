@@ -979,7 +979,10 @@ function getDisplayCharacter(charId) {
 }
 
 // Characters that have a nurture (holding-egg) image — add IDs here as images are created
-const NURTURE_IMAGES = new Set(['kappa']);
+const NURTURE_IMAGES = new Set([
+  'shiro','karasu','kyubi','tanuki','koi','kappa',
+  'kodama','oni','baku','raijin_wolf','tsuru','jorogumo',
+]);
 
 function renderPinnedCreature() {
   const container = document.getElementById('pinned-creature');
