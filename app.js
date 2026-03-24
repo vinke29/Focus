@@ -1046,12 +1046,36 @@ function renderEvolutionRing(charId, progress) {
     circle.setAttribute('stroke', char.accentColor);
     circle.setAttribute('stroke-width', '4');
     circle.setAttribute('stroke-linecap', 'round');
-    circle.setAttribute('opacity', i < filled ? '0.75' : '0.15');
+    circle.setAttribute('opacity', i < filled ? '0.85' : '0.12');
     circle.setAttribute('stroke-dasharray', `${segLen} ${circumference - segLen}`);
     circle.setAttribute('stroke-dashoffset', '0');
     circle.setAttribute('transform', `rotate(${-90 + i * segAngle}, ${cx}, ${cy})`);
     svg.appendChild(circle);
   }
+}
+
+function showNurtureComplete(charId, progress) {
+  _hatchInProgress = false; // allow next session to start
+  navigateTo('timer');
+  setTimeout(() => {
+    renderPinnedCreature(); // re-renders ring with updated segment count
+    // Pulse the newly-filled segment
+    const svg = document.getElementById('progress-ring');
+    const segments = svg ? [...svg.querySelectorAll('.evo-segment')] : [];
+    const newSeg = segments[progress - 1];
+    if (newSeg) newSeg.classList.add('seg-pulse');
+    // Show nurture message in nudge area
+    const nudge = document.getElementById('timer-nudge');
+    if (nudge) {
+      const char = CHARACTERS[charId];
+      const left = EVOLUTION_SESSIONS - progress;
+      nudge.innerHTML = left > 0
+        ? `${char.nameShort} · session ${progress} of ${EVOLUTION_SESSIONS} complete`
+        : `${char.nameShort} · ready to evolve ✦`;
+      nudge.classList.add('show');
+      setTimeout(() => renderNudge(), 3500);
+    }
+  }, 200);
 }
 
 function initEggInteraction() {
@@ -1494,10 +1518,14 @@ function startTimer() {
     LocalNotif.requestPermissions().then(({ display }) => {
       if (display !== 'granted') return;
       LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}).finally(() => {
+        const isNurturing = state.pinnedCreature && EVOLUTIONS[state.pinnedCreature] && !isEvolved(state.pinnedCreature);
+        const notifBody = isNurturing
+          ? `${CHARACTERS[state.pinnedCreature].nameShort} nurtured · session complete 🥚`
+          : 'Your egg is hatching 🥚';
         LocalNotif.schedule({ notifications: [{
           id: TIMER_NOTIF_ID,
           title: 'Kokoon',
-          body: 'Your egg is hatching 🥚',
+          body: notifBody,
           schedule: { at: new Date(state.timer.endTime), allowWhileIdle: true },
           sound: 'default',
         }]}).catch(() => {});
@@ -1633,6 +1661,13 @@ function onTimerComplete() {
     // Hide hatch-stage elements so only evolution overlay shows
     document.getElementById('hatch-stage').style.opacity = '0';
     setTimeout(() => showEvolutionScreen(evo.baseChar, evo.evolvedChar), 600);
+    return;
+  }
+
+  // ── Nurture path: creature pinned → no hatch, show progress animation ──
+  if (state.pinnedCreature && EVOLUTIONS[state.pinnedCreature] && !isEvolved(state.pinnedCreature)) {
+    const progress = state.evolutionSessions[state.pinnedCreature] || 0;
+    showNurtureComplete(state.pinnedCreature, progress);
     return;
   }
 
@@ -2616,8 +2651,12 @@ function notifySessionComplete() {
   if (!('Notification' in window)) return;
   if (Notification.permission !== 'granted') return;
   if (!document.hidden) return; // tab is visible — no need
+  const isNurturing = state.pinnedCreature && EVOLUTIONS[state.pinnedCreature] && !isEvolved(state.pinnedCreature);
+  const body = isNurturing
+    ? `${CHARACTERS[state.pinnedCreature].nameShort} nurtured · session complete 🥚`
+    : 'Session complete — your creature is ready to hatch 🥚';
   new Notification('Kokoon', {
-    body: 'Session complete — your creature is ready to hatch 🥚',
+    body,
     icon: '/icon.svg',
     tag:  'focus-complete',
     renotify: false
