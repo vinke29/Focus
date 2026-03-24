@@ -2764,6 +2764,8 @@ async function performSignOut() {
   if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
   // Reset auth form
   clearAuthErrors();
+  setAuthLoading(document.getElementById('btn-signin'), false);
+  setAuthLoading(document.getElementById('btn-signup'), false);
   document.getElementById('si-email').value    = '';
   document.getElementById('si-password').value = '';
   document.getElementById('panel-signin').style.display = 'flex';
