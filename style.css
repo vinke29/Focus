@@ -1264,15 +1264,15 @@ body.dark .badge-modal-back { background: #14141f; }
   grid-column: 1 / -1;
   text-align: center;
   padding: .9rem 1rem;
-  border: 1.5px solid #c9a227;
-  color: #c9a227;
-  font-size: .52rem; letter-spacing: .28em;
-  text-transform: uppercase;
-  background: rgba(201,162,39,.06);
+  border: 1px solid rgba(8,8,16,.12);
+  color: var(--ink);
+  font-size: .65rem; letter-spacing: .06em;
+  text-transform: none;
+  opacity: .7;
+  background: transparent;
 }
 body.dark .region-complete-banner {
-  border-color: #d4ad3a; color: #d4ad3a;
-  background: rgba(212,173,58,.08);
+  border-color: rgba(221,215,200,.12);
 }
 
 /* Region complete toast — more prominent than milestone */
