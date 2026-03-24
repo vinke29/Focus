@@ -352,7 +352,8 @@ function closeEvolutionScreen() {
   document.getElementById('hatch-stage').style.opacity = '';
   state.pendingEvolution = null;
   _hatchInProgress = false;
-  renderPinnedCreature();
+  // Auto-unpin after evolution — creature is maxed out
+  unpinCreature();
   resetTimerState();
   navigateTo('timer');
 }
@@ -2275,20 +2276,47 @@ function openCardModal(charId, vc) {
   document.getElementById('modal-name').textContent = nameEn;
   document.getElementById('modal-sub').textContent  = char.subtitle;
 
-  // Pin button
+  // Pin button — only show if creature can evolve and hasn't yet
   const pinBtn = document.getElementById('modal-pin-btn');
   if (pinBtn) {
-    const isPinned = state.pinnedCreature === charId;
-    pinBtn.textContent = isPinned ? 'unpin' : 'nurture';
-    pinBtn.onclick = () => {
-      if (state.pinnedCreature === charId) {
-        unpinCreature();
-        pinBtn.textContent = 'nurture';
-      } else {
-        pinCreature(charId);
-        pinBtn.textContent = 'unpin';
+    const canEvolve = EVOLUTIONS[charId] && !isEvolved(charId);
+    if (canEvolve) {
+      pinBtn.style.display = '';
+      const isPinned = state.pinnedCreature === charId;
+      pinBtn.textContent = isPinned ? 'unpin' : 'nurture';
+      pinBtn.onclick = () => {
+        if (state.pinnedCreature === charId) {
+          unpinCreature();
+          pinBtn.textContent = 'nurture';
+        } else {
+          pinCreature(charId);
+          pinBtn.textContent = 'unpin';
+        }
+      };
+    } else {
+      pinBtn.style.display = 'none';
+    }
+  }
+
+  // Nurture progress on card back — only for evolvable creatures
+  const nurtureEl = document.getElementById('modal-back-nurture');
+  if (nurtureEl) {
+    const canEvolve = EVOLUTIONS[charId] && !isEvolved(charId);
+    if (canEvolve) {
+      const progress = state.evolutionSessions[charId] || 0;
+      const filled = Math.min(progress, EVOLUTION_SESSIONS);
+      const dots = [];
+      for (let i = 0; i < EVOLUTION_SESSIONS; i++) {
+        dots.push(i < filled ? '●' : '○');
       }
-    };
+      nurtureEl.innerHTML = `<span class="nurture-label">nurture</span> ${dots.join('')}`;
+      nurtureEl.style.display = '';
+    } else if (isEvolved(charId)) {
+      nurtureEl.innerHTML = `<span class="nurture-label">evolved</span> ✦`;
+      nurtureEl.style.display = '';
+    } else {
+      nurtureEl.style.display = 'none';
+    }
   }
 
   renderModalVariantNav();
