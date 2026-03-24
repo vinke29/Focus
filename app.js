@@ -1407,8 +1407,8 @@ function toggleMute() {
 
 function maybeShowEvoHint() {
   if (localStorage.getItem('focus-evo-hint-seen')) return;
-  if (state.sessions.length < 3) return;
-  const hasNurtured = Object.values(state.evolutionSessions).some(n => n > 0);
+  if (sessions.length < 3) return;
+  const hasNurtured = Object.values(state.evolutionSessions || {}).some(n => n > 0);
   if (hasNurtured) return;
   setTimeout(() => document.getElementById('evo-hint-banner')?.classList.add('show'), 700);
 }
