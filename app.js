@@ -982,6 +982,8 @@ function getDisplayCharacter(charId) {
 const NURTURE_IMAGES = new Set([
   'shiro','karasu','kyubi','tanuki','koi','kappa',
   'kodama','oni','baku','raijin_wolf','tsuru','jorogumo',
+  'capybara','axolotl','quetzal','condor','jaguar','armadillo',
+  'llama','chupacabra','coati','tapir','anaconda','colibri',
 ]);
 
 function renderPinnedCreature() {
