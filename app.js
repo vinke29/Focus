@@ -2222,11 +2222,44 @@ function renderCollection() {
   if (state.filter !== 'all') {
     const ownedIds = new Set(state.collection.map(e => e.id));
     const regionChars = Object.values(CHARACTERS).filter(c => c.region === state.filter);
-    const isComplete  = regionChars.length > 0 && regionChars.every(c => ownedIds.has(c.id));
-    if (isComplete) {
+    const allFound = regionChars.length > 0 && regionChars.every(c => ownedIds.has(c.id));
+    if (allFound) {
+      // Determine next goal in priority order
+      const evolvable = regionChars.filter(c => EVOLUTIONS[c.id]);
+      const allEvolved = evolvable.length === 0 || evolvable.every(c => state.evolvedCreatures.includes(c.id));
+      const allGold    = regionChars.every(c => (variantCounts[c.id]?.gold || 0) > 0);
+      const allCrimson = regionChars.every(c => (variantCounts[c.id]?.crimson || 0) > 0);
+      const allVoid    = regionChars.every(c => (variantCounts[c.id]?.void || 0) > 0);
+
+      const evolvedCount = evolvable.filter(c => state.evolvedCreatures.includes(c.id)).length;
+
+      let msg;
+      if (!allEvolved) {
+        msg = evolvedCount === 0
+          ? `you got them all — try evolving them next`
+          : `${evolvedCount} of ${evolvable.length} evolved — keep going`;
+      } else if (!allGold) {
+        const goldCount = regionChars.filter(c => (variantCounts[c.id]?.gold || 0) > 0).length;
+        msg = goldCount === 0
+          ? `all evolved — hunt for gold variants`
+          : `${goldCount} of ${regionChars.length} gold — keep hunting`;
+      } else if (!allCrimson) {
+        const crimsonCount = regionChars.filter(c => (variantCounts[c.id]?.crimson || 0) > 0).length;
+        msg = crimsonCount === 0
+          ? `all gold — try for crimson next`
+          : `${crimsonCount} of ${regionChars.length} crimson — keep going`;
+      } else if (!allVoid) {
+        const voidCount = regionChars.filter(c => (variantCounts[c.id]?.void || 0) > 0).length;
+        msg = voidCount === 0
+          ? `all crimson — try for void next`
+          : `${voidCount} of ${regionChars.length} void — almost there`;
+      } else {
+        msg = `${REGION_LABELS[state.filter] || state.filter} mastered ✦`;
+      }
+
       const banner = document.createElement('div');
       banner.className = 'region-complete-banner';
-      banner.textContent = `✦  ${REGION_LABELS[state.filter] || state.filter} complete  ✦  all ${regionChars.length} characters discovered`;
+      banner.textContent = msg;
       grid.appendChild(banner);
     }
   }
