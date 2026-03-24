@@ -2,8 +2,5 @@
   "framework": null,
   "outputDirectory": ".",
   "cleanUrls": true,
-  "trailingSlash": false,
-  "analytics": {
-    "enabled": true
-  }
+  "trailingSlash": false
 }
