@@ -1062,6 +1062,9 @@ function renderEvolutionRing(charId, progress) {
 function showNurtureComplete(charId, progress) {
   resetTimerState();
   _hatchInProgress = false;
+  // Dismiss Live Activity and delivered notification from lock screen (same as hatch path)
+  if (LocalNotif) { LocalNotif.removeAllDeliveredNotifications().catch(() => {}); }
+  if (LiveActivity) { LiveActivity.stopActivity({ dismissImmediately: true }).catch(() => {}); }
   prepareNurtureView(charId, progress);
   navigateTo('hatch');
   setTimeout(() => runNurtureSequence(charId, progress), 400);
