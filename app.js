@@ -1003,7 +1003,7 @@ function renderPinnedCreature() {
     return;
   }
 
-  if (unpinBtn) unpinBtn.style.display = '';
+  if (unpinBtn) unpinBtn.style.display = 'block';
 
   if (NURTURE_IMAGES.has(charId)) {
     if (eggEl) { eggEl.innerHTML = `<img src="/chars/${charId}_nurture.png" class="nurture-egg-img" alt="${charId}">`; eggEl.style.cursor = ''; }
@@ -1055,12 +1055,13 @@ function renderEvolutionRing(charId, progress) {
 }
 
 function initEggInteraction() {
-  // Tap egg when no creature pinned → go to collection
+  // Tap egg → always go to collection (to pick or change creature)
   document.getElementById('timer-egg')?.addEventListener('click', () => {
-    if (!state.pinnedCreature) navigateTo('collection');
+    navigateTo('collection');
   });
   // ✕ button → unpin
-  document.getElementById('btn-unpin-creature')?.addEventListener('click', () => {
+  document.getElementById('btn-unpin-creature')?.addEventListener('click', e => {
+    e.stopPropagation();
     unpinCreature();
   });
 }
