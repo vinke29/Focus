@@ -1979,13 +1979,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   width: 100%; height: 100%;
 }
 
-/* ── NURTURE PROGRESS (card modal back) ── */
-.modal-back-nurture {
-  font-size: .48rem; letter-spacing: .18em; text-transform: uppercase;
-  opacity: .45; padding-top: .55rem; margin-top: .45rem;
-  border-top: 1px solid rgba(0,0,0,.07); width: 100%; text-align: center;
-}
-body.dark .modal-back-nurture { border-top-color: rgba(221,215,200,.08); }
+/* nurture span inherits modal-back-meta styles */
 
 /* ── PIN BUTTON (card modal) ── */
 .modal-pin-btn {
