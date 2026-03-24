@@ -349,8 +349,12 @@ function showEvolutionScreen(baseChar, evolvedChar) {
 
 function closeEvolutionScreen() {
   document.getElementById('evolution-overlay').classList.remove('open');
+  document.getElementById('hatch-stage').style.opacity = '';
   state.pendingEvolution = null;
+  _hatchInProgress = false;
   renderPinnedCreature();
+  resetTimerState();
+  navigateTo('timer');
 }
 
 // Apply colour-filter class matching a variant to any art container element
@@ -1549,6 +1553,24 @@ function onTimerComplete() {
     setTimeout(showReminderPrompt, 1000);
   }
 
+  // Update max streak and check for new badges
+  updateMaxStreak();
+  const newBadges = checkBadges();
+  if (newBadges.length) {
+    _pendingBadgeToasts = newBadges.map(b => BADGES.find(def => def.id === b.id)).filter(Boolean);
+  }
+
+  // ── Evolution path: skip hatch entirely, go straight to evolution screen ──
+  if (state.pendingEvolution) {
+    const evo = state.pendingEvolution;
+    navigateTo('hatch'); // reuse view as a blank dark canvas
+    // Hide hatch-stage elements so only evolution overlay shows
+    document.getElementById('hatch-stage').style.opacity = '0';
+    setTimeout(() => showEvolutionScreen(evo.baseChar, evo.evolvedChar), 600);
+    return;
+  }
+
+  // ── Normal hatch path ──
   // If a new region just unlocked, guarantee a creature from that region
   const rollResult = state.pendingRegionUnlock
     ? rollFromRegion(state.pendingRegionUnlock, state.timer.duration)
@@ -1575,13 +1597,6 @@ function onTimerComplete() {
     }
   } else {
     pendingFusion = null;
-  }
-
-  // Update max streak and check for new badges
-  updateMaxStreak();
-  const newBadges = checkBadges();
-  if (newBadges.length) {
-    _pendingBadgeToasts = newBadges.map(b => BADGES.find(def => def.id === b.id)).filter(Boolean);
   }
 
   prepareHatchView(character, variant);
@@ -1612,7 +1627,6 @@ function onTimerComplete() {
     setTimeout(runHatchSequence, 3200);
 
     // Fusion after hatch (with region overlay delay)
-    let postHatchDelay = 3200 + 5600;
     if (pendingFusion) {
       setTimeout(() => {
         if (pendingFusion) {
@@ -1620,18 +1634,12 @@ function onTimerComplete() {
           pendingFusion = null;
           showFusionScreen(char, fromVariant, toVariant);
         }
-      }, postHatchDelay);
-      postHatchDelay += 3500; // extra time for fusion animation
-    }
-    if (state.pendingEvolution) {
-      const evo = state.pendingEvolution;
-      setTimeout(() => showEvolutionScreen(evo.baseChar, evo.evolvedChar), postHatchDelay);
+      }, 3200 + 5600);
     }
   } else {
     setTimeout(runHatchSequence, 400);
 
     // Auto-trigger fusion animation after the hatch sequence finishes
-    let postHatchDelay = 5600;
     if (pendingFusion) {
       setTimeout(() => {
         if (pendingFusion) {
@@ -1639,12 +1647,7 @@ function onTimerComplete() {
           pendingFusion = null;
           showFusionScreen(char, fromVariant, toVariant);
         }
-      }, postHatchDelay);
-      postHatchDelay += 3500;
-    }
-    if (state.pendingEvolution) {
-      const evo = state.pendingEvolution;
-      setTimeout(() => showEvolutionScreen(evo.baseChar, evo.evolvedChar), postHatchDelay);
+      }, 5600);
     }
   }
 }
