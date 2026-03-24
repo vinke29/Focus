@@ -909,6 +909,13 @@ function showNextBadgeToast() {
   document.getElementById('badge-toast-art').innerHTML = badgeArtHtml(badge);
   document.getElementById('badge-toast-name').textContent = badge.name;
   toast.classList.add('show');
+  toast.onclick = () => {
+    toast.classList.remove('show');
+    _pendingBadgeToasts = [];
+    state.topTab = 'achievements';
+    navigateTo('collection');
+    setTimeout(() => openBadgeModal(badge, { earned: true }), 300);
+  };
   setTimeout(() => {
     toast.classList.remove('show');
     // Show next badge after fade out

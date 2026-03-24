@@ -696,6 +696,7 @@ body.dark .nudge-bar-fill { background: var(--paper); opacity: .4; }
 }
 #badge-toast.show {
   opacity: 1; transform: translateX(-50%) translateY(0);
+  pointer-events: auto; cursor: pointer;
   pointer-events: auto;
 }
 #badge-toast-art {
