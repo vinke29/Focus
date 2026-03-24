@@ -943,6 +943,9 @@ function loadPinnedCreature() {
     const evolved = localStorage.getItem('focus-evolved');
     if (evolved) state.evolvedCreatures = JSON.parse(evolved);
   } catch(e) {}
+  // Backfill Supabase with whatever is in localStorage (no-op if all zeros)
+  const nurtureTotal = Object.values(state.evolutionSessions).reduce((a, b) => a + b, 0);
+  DB.updateNurtureProgress(nurtureTotal, state.evolvedCreatures.length).catch(() => {});
 }
 
 function savePinnedCreature() {

@@ -163,20 +163,20 @@ function renderLeaders(data) {
     const hintIcon = d.evo_hint_seen ? '✓' : '—';
     return `<tr>
       <td>${i + 1}</td>
-      <td>${esc(d.name)}${d.email ? `<br><span style="opacity:.4;font-size:.55rem">${esc(d.email)}</span>` : ''}</td>
-      <td>${d.unique_chars}/${TOTAL_CHARS} <span class="completion-bar" style="width:${barW}px"></span></td>
-      <td>${d.std || 0}/${TOTAL_CHARS}</td>
-      <td style="color:#c9a227">${d.gold || 0}/${TOTAL_CHARS}</td>
-      <td style="color:#c0392b">${d.crimson || 0}/${TOTAL_CHARS}</td>
-      <td style="color:#5b2d8e">${d.void || 0}/${TOTAL_CHARS}</td>
+      <td style="min-width:140px">${esc(d.name)}${d.email ? `<br><span style="opacity:.4;font-size:.55rem">${esc(d.email)}</span>` : ''}</td>
+      <td>${d.unique_chars}<span style="opacity:.3">/${TOTAL_CHARS}</span> <span class="completion-bar" style="width:${barW}px"></span></td>
+      <td>${d.std || 0}</td>
+      <td style="color:#c9a227">${d.gold || 0}</td>
+      <td style="color:#c0392b">${d.crimson || 0}</td>
+      <td style="color:#5b2d8e">${d.void || 0}</td>
       <td>${d.total_animals}</td>
       <td>${d.nurture_sessions || 0}</td>
       <td>${d.evolved_count || 0}</td>
-      <td style="opacity:.5">${hintIcon}</td>
+      <td>${hintIcon}</td>
     </tr>`;
   }).join('');
   el.innerHTML = `<table class="admin-table">
-    <thead><tr><th>#</th><th>name</th><th>unique</th><th>standard</th><th style="color:#c9a227">gold</th><th style="color:#c0392b">crimson</th><th style="color:#5b2d8e">void</th><th>total</th><th>nurture</th><th>evolved</th><th>hint</th></tr></thead>
+    <thead><tr><th>#</th><th>name</th><th>unique</th><th>std</th><th style="color:#c9a227">gold</th><th style="color:#c0392b">crim</th><th style="color:#5b2d8e">void</th><th>total</th><th>nurture</th><th>evolved</th><th>hint</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
 }
