@@ -2012,7 +2012,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   border-color: rgba(8,8,16,.35);
 }
 body.dark .modal-pin-btn {
-  color: var(--paper);
+  color: var(--ink);
   border-color: rgba(221,215,200,.2);
 }
 body.dark .modal-pin-btn:hover, body.dark .modal-pin-btn:active {
