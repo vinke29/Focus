@@ -65,22 +65,20 @@ function releaseWakeLock() {
 // ── FUSION ────────────────────────────────────────────────────────────────────
 const VARIANT_NEXT = { standard: 'gold', gold: 'crimson', crimson: 'void' };
 
-// Drop hint: per-character odds (rarity × variant ÷ pool size)
-// Pools: common 12 chars, rare 11, legendary 5. Variant weights: std 1000, gold 100, crimson 10, void 1 / 1111 total
-const DROP_HINTS = {
-  'common-standard':   '~1 in 19 sessions',
-  'rare-standard':     '~1 in 44 sessions',
-  'legendary-standard':'~1 in 80 sessions',
-  'common-gold':       '~1 in 200 sessions',
-  'rare-gold':         '~1 in 440 sessions',
-  'legendary-gold':    '~1 in 800 sessions',
-  'common-crimson':    '~1 in 2,000 sessions',
-  'rare-crimson':      '~1 in 4,400 sessions',
-  'legendary-crimson': '~1 in 8,000 sessions',
-  'common-void':       '~1 in 20,000 sessions',
-  'rare-void':         '~1 in 44,000 sessions',
-  'legendary-void':    '~1 in 80,000 sessions',
-};
+// Drop hint: dynamically calculated per-character odds based on unlocked regions
+function calcDropOdds(rarity, variantId) {
+  const unlocked = getUnlockedRegions();
+  const tier = RARITY_WEIGHTS.find(t => t.rarity === rarity);
+  if (!tier) return '';
+  const poolSize = tier.pool.filter(id => unlocked.has(CHARACTERS[id]?.region)).length;
+  if (!poolSize) return '';
+  const variantObj = VARIANTS.find(v => v.id === variantId);
+  if (!variantObj) return '';
+  const variantTotal = VARIANTS.reduce((s, v) => s + v.weight, 0);
+  const odds = 1 / ((tier.weight / 100) * (1 / poolSize) * (variantObj.weight / variantTotal));
+  const rounded = odds < 100 ? Math.round(odds) : Math.round(odds / 10) * 10;
+  return `~1 in ${rounded.toLocaleString()} sessions`;
+}
 
 // ── MILESTONES ────────────────────────────────────────────────────────────────
 const MILESTONES = {
@@ -2329,8 +2327,7 @@ function renderModalVariantNav() {
   applyVariantFilter(document.getElementById('modal-art'), variant.id);
 
   // Update rarity odds on card back for current variant
-  const oddsKey = `${modalChar.rarity}-${variant.id}`;
-  document.getElementById('modal-back-odds').textContent = DROP_HINTS[oddsKey] || '';
+  document.getElementById('modal-back-odds').textContent = calcDropOdds(modalChar.rarity, variant.id);
 
   const nav = document.getElementById('modal-var-nav');
   if (modalOwnedVariants.length < 2) { nav.style.display = 'none'; return; }
