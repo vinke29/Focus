@@ -2629,7 +2629,8 @@ function openCardModal(charId, vc) {
             pinBtn.textContent = 'nurture';
           } else {
             pinCreature(charId);
-            pinBtn.textContent = 'unpin';
+            closeCardModal();
+            navigateTo('timer');
           }
         };
       }
