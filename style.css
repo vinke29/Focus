@@ -1979,14 +1979,22 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   font-size: .7rem;
   letter-spacing: .12em;
   text-transform: lowercase;
-  color: var(--paper);
+  color: var(--ink);
   background: transparent;
-  border: 1px solid rgba(221,215,200,.2);
+  border: 1px solid rgba(8,8,16,.18);
   border-radius: 999px;
   cursor: pointer;
   transition: all .2s ease;
 }
 .modal-pin-btn:hover, .modal-pin-btn:active {
+  background: rgba(8,8,16,.06);
+  border-color: rgba(8,8,16,.35);
+}
+body.dark .modal-pin-btn {
+  color: var(--paper);
+  border-color: rgba(221,215,200,.2);
+}
+body.dark .modal-pin-btn:hover, body.dark .modal-pin-btn:active {
   background: rgba(221,215,200,.08);
   border-color: rgba(221,215,200,.4);
 }
