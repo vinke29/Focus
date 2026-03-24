@@ -1383,6 +1383,9 @@ function navigateTo(viewId) {
   if (viewId === 'timer') {
     renderTimerStats();
     if (_pendingBadgeToasts.length) setTimeout(showNextBadgeToast, 800);
+    maybeShowEvoHint();
+  } else {
+    document.getElementById('evo-hint-banner')?.classList.remove('show');
   }
   const noMute = viewId === 'collection' || viewId === 'auth' || viewId === 'onboard' || viewId === 'profile';
   const muteBtn = document.getElementById('btn-mute');
@@ -1400,6 +1403,19 @@ function toggleMute() {
   SFX.setMuted(m);
   localStorage.setItem('focus-muted', String(m));
   document.getElementById('btn-mute').classList.toggle('muted', m);
+}
+
+function maybeShowEvoHint() {
+  if (localStorage.getItem('focus-evo-hint-seen')) return;
+  if (state.sessions.length < 3) return;
+  const hasNurtured = Object.values(state.evolutionSessions).some(n => n > 0);
+  if (hasNurtured) return;
+  setTimeout(() => document.getElementById('evo-hint-banner')?.classList.add('show'), 700);
+}
+
+function dismissEvoHint() {
+  document.getElementById('evo-hint-banner')?.classList.remove('show');
+  localStorage.setItem('focus-evo-hint-seen', '1');
 }
 
 function initDarkMode() {
@@ -3545,6 +3561,14 @@ async function init() {
     if (state.onboarding) { finishOnboarding(); return; }
     resetTimerState();
     navigateTo('timer');
+  });
+  document.getElementById('evo-hint-banner').addEventListener('click', () => {
+    dismissEvoHint();
+    navigateTo('collection');
+  });
+  document.getElementById('evo-hint-dismiss').addEventListener('click', e => {
+    e.stopPropagation();
+    dismissEvoHint();
   });
   document.getElementById('btn-nurture-continue').addEventListener('click', () => {
     navigateTo('timer');
