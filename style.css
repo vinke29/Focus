@@ -1936,6 +1936,15 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 #btn-fusion-ok:hover, #btn-fusion-ok:active { color: var(--ink); border-color: var(--paper); }
 #btn-fusion-ok:hover::before, #btn-fusion-ok:active::before { transform: scaleX(1); }
 
+/* ── NURTURE EGG IMAGE (creature holding egg) ── */
+.nurture-egg-img {
+  width: 200px; height: auto;
+  display: block; margin: 0 auto;
+  animation: eggPulse 2s ease-in-out infinite;
+}
+@media (max-width: 600px) { .nurture-egg-img { width: 160px; } }
+@media (max-width: 390px) { .nurture-egg-img { width: 140px; } }
+
 /* ── PINNED CREATURE (timer view companion) ── */
 #pinned-creature {
   display: none;

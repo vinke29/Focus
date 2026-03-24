@@ -978,26 +978,38 @@ function getDisplayCharacter(charId) {
   return CHARACTERS[charId];
 }
 
+// Characters that have a nurture (holding-egg) image — add IDs here as images are created
+const NURTURE_IMAGES = new Set(['kappa']);
+
 function renderPinnedCreature() {
   const container = document.getElementById('pinned-creature');
+  const eggEl = document.getElementById('timer-egg');
   if (!container) return;
-  if (!state.pinnedCreature || !CHARACTERS[state.pinnedCreature]) {
-    container.innerHTML = '';
-    container.classList.remove('show');
-    return;
-  }
-  // Only show if the user actually owns this creature
-  const owns = state.collection.some(e => e.id === state.pinnedCreature);
+
+  const charId = state.pinnedCreature;
+  const owns = charId && CHARACTERS[charId] && state.collection.some(e => e.id === charId);
+
   if (!owns) {
     container.innerHTML = '';
     container.classList.remove('show');
+    if (eggEl) eggEl.innerHTML = EGG_SVG_SMALL;
     return;
   }
-  const char = getDisplayCharacter(state.pinnedCreature);
-  const rarestVariant = getRarestOwnedVariant(state.pinnedCreature);
-  container.innerHTML = `<div class="pinned-art">${char.svg}</div>`;
-  applyVariantFilter(container.querySelector('.pinned-art'), rarestVariant);
-  container.classList.add('show');
+
+  if (NURTURE_IMAGES.has(charId)) {
+    // Show creature-with-egg image in the egg slot; hide the small companion
+    if (eggEl) eggEl.innerHTML = `<img src="/chars/${charId}_nurture.png" class="nurture-egg-img" alt="${charId}">`;
+    container.innerHTML = '';
+    container.classList.remove('show');
+  } else {
+    // Fallback: show regular egg + small companion
+    if (eggEl) eggEl.innerHTML = EGG_SVG_SMALL;
+    const char = getDisplayCharacter(charId);
+    const rarestVariant = getRarestOwnedVariant(charId);
+    container.innerHTML = `<div class="pinned-art">${char.svg}</div>`;
+    applyVariantFilter(container.querySelector('.pinned-art'), rarestVariant);
+    container.classList.add('show');
+  }
 }
 
 function getRarestOwnedVariant(charId) {
