@@ -681,15 +681,19 @@ function renderNudge() {
     }
   }
 
-  // Priority 2: next region unlock with progress bar
+  // Priority 2: milestones — nurture progress + next region unlock
+  const parts = [];
+  if (state.pinnedCreature && EVOLUTIONS[state.pinnedCreature] && !isEvolved(state.pinnedCreature)) {
+    const name = charNameEn(getDisplayCharacter(state.pinnedCreature));
+    const done = state.evolutionSessions[state.pinnedCreature] || 0;
+    const left = Math.max(EVOLUTION_SESSIONS - done, 0);
+    parts.push(`${name} evolves in ${left} session${left !== 1 ? 's' : ''}`);
+  }
   const next = getNextUnlock();
-  if (next) {
-    const threshold = REGION_UNLOCKS[next.region];
-    const progress  = sessions.length / threshold;
-    const pct       = Math.round(progress * 100);
-    el.innerHTML =
-      `${REGION_LABELS[next.region]} unlocks in ${next.sessionsAway} session${next.sessionsAway !== 1 ? 's' : ''}` +
-      `<div class="nudge-bar"><div class="nudge-bar-fill" style="width:${pct}%"></div></div>`;
+  if (next) parts.push(`${REGION_LABELS[next.region]} unlocks in ${next.sessionsAway} session${next.sessionsAway !== 1 ? 's' : ''}`);
+
+  if (parts.length) {
+    el.textContent = parts.join('  ·  ');
     el.classList.add('show');
     return;
   }
@@ -991,16 +995,7 @@ function renderPinnedCreature() {
   }
   const char = getDisplayCharacter(state.pinnedCreature);
   const rarestVariant = getRarestOwnedVariant(state.pinnedCreature);
-  const canEvolve = EVOLUTIONS[state.pinnedCreature] && !isEvolved(state.pinnedCreature);
-  let progressStr = '';
-  if (canEvolve) {
-    const filled = Math.min(state.evolutionSessions[state.pinnedCreature] || 0, EVOLUTION_SESSIONS);
-    progressStr = '  ' + Array.from({ length: EVOLUTION_SESSIONS }, (_, i) => i < filled ? '●' : '○').join('');
-  }
-  container.innerHTML = `
-    <div class="pinned-art">${char.svg}</div>
-    <div class="pinned-name"><span class="pinned-label">nurturing</span> ${charNameEn(char)}${progressStr}</div>
-  `;
+  container.innerHTML = `<div class="pinned-art">${char.svg}</div>`;
   applyVariantFilter(container.querySelector('.pinned-art'), rarestVariant);
   container.classList.add('show');
 }
