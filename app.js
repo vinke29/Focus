@@ -282,6 +282,77 @@ function closeFusionScreen() {
   document.getElementById('fusion-overlay').classList.remove('open');
 }
 
+// ── EVOLUTION SCREEN ─────────────────────────────────────────────────────────
+
+function showEvolutionScreen(baseChar, evolvedChar) {
+  const overlay = document.getElementById('evolution-overlay');
+  const baseArt = document.getElementById('evo-base-art');
+  const evolvedArt = document.getElementById('evo-evolved-art');
+  const title = document.getElementById('evo-title');
+  const subtitle = document.getElementById('evo-subtitle');
+  const btn = document.getElementById('btn-evo-ok');
+  const flash = document.getElementById('evo-flash');
+
+  // Reset
+  title.classList.remove('show');
+  subtitle.classList.remove('show');
+  btn.classList.remove('show');
+  baseArt.classList.remove('morph-out');
+  evolvedArt.classList.remove('reveal');
+  flash.style.opacity = '0';
+
+  // Populate
+  baseArt.innerHTML = baseChar.svg;
+  evolvedArt.innerHTML = evolvedChar.svg;
+
+  // Apply rarest variant filter
+  const rarestVariant = getRarestOwnedVariant(baseChar.id);
+  applyVariantFilter(baseArt, rarestVariant);
+  applyVariantFilter(evolvedArt, rarestVariant);
+
+  document.getElementById('evo-name').textContent = charNameEn(evolvedChar);
+  document.getElementById('evo-form').textContent = evolvedChar.subtitle;
+
+  overlay.classList.add('open');
+
+  // Animation sequence
+  setTimeout(() => { title.classList.add('show'); }, 300);
+
+  // Base art glows and pulses
+  setTimeout(() => {
+    baseArt.classList.add('morph-out');
+    SFX.burst('rare');
+    Haptic.heavy();
+  }, 1800);
+
+  // Flash
+  setTimeout(() => {
+    flash.style.transition = 'opacity .12s ease';
+    flash.style.opacity = '1';
+    setTimeout(() => {
+      flash.style.transition = 'opacity .5s ease';
+      flash.style.opacity = '0';
+    }, 120);
+  }, 2200);
+
+  // Reveal evolved
+  setTimeout(() => {
+    evolvedArt.classList.add('reveal');
+    SFX.burst('legendary');
+    Haptic.burst();
+  }, 2400);
+
+  // Show subtitle + button
+  setTimeout(() => { subtitle.classList.add('show'); }, 3000);
+  setTimeout(() => { btn.classList.add('show'); }, 3600);
+}
+
+function closeEvolutionScreen() {
+  document.getElementById('evolution-overlay').classList.remove('open');
+  state.pendingEvolution = null;
+  renderPinnedCreature();
+}
+
 // Apply colour-filter class matching a variant to any art container element
 function applyVariantFilter(el, variantId) {
   el.classList.remove('vf-gold', 'vf-crimson', 'vf-void');
@@ -814,6 +885,10 @@ const state = {
   pendingRegionUnlock: null,
   badges: [],        // [{id, earned_at}]
   maxStreak: 0,
+  pinnedCreature: null,    // character id (e.g. 'shiro') or null
+  evolutionSessions: {},   // { charId: count } — sessions completed while pinned
+  evolvedCreatures: [],    // [ charId, ... ] — characters that have evolved
+  pendingEvolution: null,  // { baseChar, evolvedChar } — queued evolution animation
 };
 
 // ── PERSISTENCE ──────────────────────────────────────────────────────────────
@@ -849,6 +924,88 @@ function loadBadges() {
     if (saved) state.badges = JSON.parse(saved);
     state.maxStreak = parseInt(localStorage.getItem('focus-max-streak') || '0') || 0;
   } catch(e) {}
+}
+
+// ── PINNED CREATURE & EVOLUTION PERSISTENCE ──────────────────────────────────
+
+function loadPinnedCreature() {
+  try {
+    state.pinnedCreature = localStorage.getItem('focus-pinned') || null;
+    const evo = localStorage.getItem('focus-evolution-sessions');
+    if (evo) state.evolutionSessions = JSON.parse(evo);
+    const evolved = localStorage.getItem('focus-evolved');
+    if (evolved) state.evolvedCreatures = JSON.parse(evolved);
+  } catch(e) {}
+}
+
+function savePinnedCreature() {
+  if (state.pinnedCreature) {
+    localStorage.setItem('focus-pinned', state.pinnedCreature);
+  } else {
+    localStorage.removeItem('focus-pinned');
+  }
+  localStorage.setItem('focus-evolution-sessions', JSON.stringify(state.evolutionSessions));
+  localStorage.setItem('focus-evolved', JSON.stringify(state.evolvedCreatures));
+}
+
+function pinCreature(charId) {
+  state.pinnedCreature = charId;
+  if (!state.evolutionSessions[charId]) state.evolutionSessions[charId] = 0;
+  savePinnedCreature();
+  renderPinnedCreature();
+}
+
+function unpinCreature() {
+  state.pinnedCreature = null;
+  savePinnedCreature();
+  renderPinnedCreature();
+}
+
+function isEvolved(charId) {
+  return state.evolvedCreatures.includes(charId);
+}
+
+function getDisplayCharacter(charId) {
+  // Returns the evolved version if this creature has evolved, otherwise the base
+  if (isEvolved(charId) && EVOLUTIONS[charId]) return EVOLUTIONS[charId];
+  return CHARACTERS[charId];
+}
+
+function renderPinnedCreature() {
+  const container = document.getElementById('pinned-creature');
+  if (!container) return;
+  if (!state.pinnedCreature || !CHARACTERS[state.pinnedCreature]) {
+    container.innerHTML = '';
+    container.classList.remove('show');
+    return;
+  }
+  // Only show if the user actually owns this creature
+  const owns = state.collection.some(e => e.id === state.pinnedCreature);
+  if (!owns) {
+    container.innerHTML = '';
+    container.classList.remove('show');
+    return;
+  }
+  const char = getDisplayCharacter(state.pinnedCreature);
+  const rarestVariant = getRarestOwnedVariant(state.pinnedCreature);
+  container.innerHTML = `
+    <div class="pinned-art">${char.svg}</div>
+    <div class="pinned-name">${charNameEn(char)}</div>
+  `;
+  applyVariantFilter(container.querySelector('.pinned-art'), rarestVariant);
+  container.classList.add('show');
+}
+
+function getRarestOwnedVariant(charId) {
+  const vc = {};
+  state.collection.forEach(e => {
+    if (e.id === charId) {
+      const v = e.variant || 'standard';
+      vc[v] = (vc[v] || 0) + 1;
+    }
+  });
+  const rarest = [...VARIANTS].reverse().find(v => (vc[v.id] || 0) > 0);
+  return rarest ? rarest.id : 'standard';
 }
 
 function calcMaxStreakFromHistory() {
@@ -1354,6 +1511,21 @@ function onTimerComplete() {
   renderTimerStats();
   notifySessionComplete();
 
+  // ── Evolution tracking: increment sessions for pinned creature ──
+  state.pendingEvolution = null;
+  if (state.pinnedCreature && !isEvolved(state.pinnedCreature) && EVOLUTIONS[state.pinnedCreature]) {
+    state.evolutionSessions[state.pinnedCreature] = (state.evolutionSessions[state.pinnedCreature] || 0) + 1;
+    if (state.evolutionSessions[state.pinnedCreature] >= EVOLUTION_SESSIONS) {
+      // Evolution triggered!
+      state.evolvedCreatures.push(state.pinnedCreature);
+      state.pendingEvolution = {
+        baseChar: CHARACTERS[state.pinnedCreature],
+        evolvedChar: EVOLUTIONS[state.pinnedCreature],
+      };
+    }
+    savePinnedCreature();
+  }
+
   // Detect a newly-unlocked region (session count just crossed a threshold)
   state.pendingRegionUnlock = REGION_UNLOCK_ORDER.find(r => {
     const t = REGION_UNLOCKS[r];
@@ -1440,6 +1612,7 @@ function onTimerComplete() {
     setTimeout(runHatchSequence, 3200);
 
     // Fusion after hatch (with region overlay delay)
+    let postHatchDelay = 3200 + 5600;
     if (pendingFusion) {
       setTimeout(() => {
         if (pendingFusion) {
@@ -1447,12 +1620,18 @@ function onTimerComplete() {
           pendingFusion = null;
           showFusionScreen(char, fromVariant, toVariant);
         }
-      }, 3200 + 5600);
+      }, postHatchDelay);
+      postHatchDelay += 3500; // extra time for fusion animation
+    }
+    if (state.pendingEvolution) {
+      const evo = state.pendingEvolution;
+      setTimeout(() => showEvolutionScreen(evo.baseChar, evo.evolvedChar), postHatchDelay);
     }
   } else {
     setTimeout(runHatchSequence, 400);
 
     // Auto-trigger fusion animation after the hatch sequence finishes
+    let postHatchDelay = 5600;
     if (pendingFusion) {
       setTimeout(() => {
         if (pendingFusion) {
@@ -1460,7 +1639,12 @@ function onTimerComplete() {
           pendingFusion = null;
           showFusionScreen(char, fromVariant, toVariant);
         }
-      }, 5600);
+      }, postHatchDelay);
+      postHatchDelay += 3500;
+    }
+    if (state.pendingEvolution) {
+      const evo = state.pendingEvolution;
+      setTimeout(() => showEvolutionScreen(evo.baseChar, evo.evolvedChar), postHatchDelay);
     }
   }
 }
@@ -1956,7 +2140,7 @@ function renderCollection() {
   });
 
   allIds.forEach(id => {
-    const char  = CHARACTERS[id];
+    const char  = getDisplayCharacter(id);
     if (!char) return;
 
     // Region filter
@@ -2050,8 +2234,11 @@ function charNameEn(char) {
 }
 
 function openCardModal(charId, vc) {
-  const char = CHARACTERS[charId];
-  if (!char) return;
+  const baseChar = CHARACTERS[charId];
+  if (!baseChar) return;
+
+  // Use evolved version for display if applicable
+  const char = getDisplayCharacter(charId);
 
   modalChar          = char;
   modalVc            = vc;
@@ -2084,6 +2271,22 @@ function openCardModal(charId, vc) {
   // Info strip
   document.getElementById('modal-name').textContent = nameEn;
   document.getElementById('modal-sub').textContent  = char.subtitle;
+
+  // Pin button
+  const pinBtn = document.getElementById('modal-pin-btn');
+  if (pinBtn) {
+    const isPinned = state.pinnedCreature === charId;
+    pinBtn.textContent = isPinned ? 'unpin' : 'nurture';
+    pinBtn.onclick = () => {
+      if (state.pinnedCreature === charId) {
+        unpinCreature();
+        pinBtn.textContent = 'nurture';
+      } else {
+        pinCreature(charId);
+        pinBtn.textContent = 'unpin';
+      }
+    };
+  }
 
   renderModalVariantNav();
   document.getElementById('card-modal').classList.add('open');
@@ -2597,7 +2800,9 @@ async function handleSignedIn(user) {
   loadCollection();
   loadSessions();
   loadBadges();
+  loadPinnedCreature();
   renderTimerStats();
+  renderPinnedCreature();
 
   // Check new-user flag BEFORE profile — a DB trigger may have already
   // created the profile row during sign-up, so profile existence alone

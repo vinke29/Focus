@@ -143,6 +143,7 @@
 
     <button id="btn-start-focus"><span>begin focus</span></button>
     <button id="btn-reset-timer"><span>reset</span></button>
+    <div id="pinned-creature"></div>
     <div id="timer-stats"></div>
     <div id="timer-nudge"></div>
     <div id="reminder-prompt"></div>
@@ -373,7 +374,25 @@
       </div>
       <!-- Variant navigation dots (rendered dynamically) -->
       <div id="modal-var-nav" class="modal-var-nav"></div>
+      <button id="modal-pin-btn" class="modal-pin-btn">nurture</button>
     </div>
+  </div>
+</div>
+
+<!-- ── EVOLUTION OVERLAY ── -->
+<div id="evolution-overlay" class="evo-overlay">
+  <div class="evo-content">
+    <div id="evo-title" class="evo-title">evolving...</div>
+    <div class="evo-stage">
+      <div id="evo-base-art" class="evo-art evo-base"></div>
+      <div id="evo-evolved-art" class="evo-art evo-evolved"></div>
+    </div>
+    <div id="evo-flash" class="evo-flash"></div>
+    <div id="evo-subtitle" class="evo-subtitle">
+      <div id="evo-name" class="evo-name"></div>
+      <div id="evo-form" class="evo-form"></div>
+    </div>
+    <button id="btn-evo-ok" class="evo-btn" onclick="closeEvolutionScreen()">amazing</button>
   </div>
 </div>
 

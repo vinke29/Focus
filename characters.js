@@ -26,6 +26,34 @@ const EGG_SVG_SMALL = `
 
 // ── CHARACTERS ───────────────────────────────────────────────────────────────
 
+// ── EVOLUTION MAP ─────────────────────────────────────────────────────────────
+// Maps base character id → evolved character definition.
+// Only characters with an entry here can evolve.
+const EVOLUTIONS = {
+  shiro: {
+    id: 'shiro_evolved',
+    name: '白猫 · Shiro',
+    nameShort: '白猫',
+    region: 'japanese',
+    subtitle: 'White Cat Spirit · Evolved Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#f0a500',
+    lore: 'Through patient devotion, Shiro\'s single tail has bloomed into flowing spirit flames. She now guards her keeper\'s focus with ancient power.',
+    haiku: '静かな炎<br>白猫の尾が光る<br>集中の守り',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/shiro_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  }
+};
+
+const EVOLUTION_SESSIONS = 5; // sessions with creature pinned to trigger evolution
+
 const CHARACTERS = {
 
   // ── 白猫 · Shiro ─ Common ─ Amber ──────────────────────────────────────────
