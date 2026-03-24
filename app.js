@@ -2167,13 +2167,23 @@ function renderCollection() {
       applyVariantFilter(art, rarestOwned.id);
       card.appendChild(art);
 
+      card.style.position = 'relative';
+
       // Count badge (only for real earned dupes)
       if (count > 1) {
         const badge = document.createElement('span');
         badge.className   = 'card-count';
         badge.textContent = `× ${count}`;
-        card.style.position = 'relative';
         card.appendChild(badge);
+      }
+
+      // Evolved corner marker
+      if (isEvolved(id)) {
+        const evo = document.createElement('span');
+        evo.className = 'card-evolved-mark';
+        evo.textContent = '✦';
+        evo.style.color = char.accentColor;
+        card.appendChild(evo);
       }
 
       // Tooltip — haiku only on small card; lore lives in the modal
@@ -2199,7 +2209,7 @@ function renderCollection() {
       info.className = 'card-info';
       info.innerHTML = `
         <div class="card-name">${nameEn}</div>
-        <div class="card-rarity">${char.rarity}${isEvolved(id) ? ` · <span class="card-evolved-inline" style="color:${char.accentColor}">✦ evolved</span>` : ''}</div>
+        <div class="card-rarity">${char.rarity}</div>
         <div class="card-variants">${variantDots}</div>
       `;
       card.appendChild(info);
