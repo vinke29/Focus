@@ -115,12 +115,12 @@ BEGIN
   SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
   FROM (
     SELECT c.user_id, p.name, p.email,
-           count(DISTINCT c.char_id) as unique_chars,
-           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'standard') as std,
-           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'gold') as gold,
-           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'crimson') as crimson,
-           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'void') as void,
-           count(*) as total_animals,
+           count(DISTINCT c.char_id) FILTER (WHERE c.char_id NOT LIKE '%_evolved') as unique_chars,
+           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'standard' AND c.char_id NOT LIKE '%_evolved') as std,
+           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'gold'     AND c.char_id NOT LIKE '%_evolved') as gold,
+           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'crimson'  AND c.char_id NOT LIKE '%_evolved') as crimson,
+           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'void'     AND c.char_id NOT LIKE '%_evolved') as void,
+           count(*) FILTER (WHERE c.char_id NOT LIKE '%_evolved') as total_animals,
            coalesce(p.nurture_sessions, 0) as nurture_sessions,
            coalesce(p.evolved_count, 0) as evolved_count,
            coalesce(p.evo_hint_seen, false) as evo_hint_seen
