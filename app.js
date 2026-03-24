@@ -2306,21 +2306,15 @@ function openCardModal(charId, vc) {
     }
   }
 
-  // Nurture progress on card back — only for evolvable creatures
+  // Nurture progress in meta row — only for evolvable, not-yet-evolved creatures
   const nurtureEl = document.getElementById('modal-back-nurture');
   if (nurtureEl) {
     const canEvolve = EVOLUTIONS[charId] && !isEvolved(charId);
     if (canEvolve) {
       const progress = state.evolutionSessions[charId] || 0;
       const filled = Math.min(progress, EVOLUTION_SESSIONS);
-      const dots = [];
-      for (let i = 0; i < EVOLUTION_SESSIONS; i++) {
-        dots.push(i < filled ? '●' : '○');
-      }
-      nurtureEl.innerHTML = `<span class="nurture-label">nurture</span> ${dots.join('')}`;
-      nurtureEl.style.display = '';
-    } else if (isEvolved(charId)) {
-      nurtureEl.innerHTML = `<span class="nurture-label">evolved</span> ✦`;
+      const dots = Array.from({ length: EVOLUTION_SESSIONS }, (_, i) => i < filled ? '●' : '○').join('');
+      nurtureEl.textContent = dots;
       nurtureEl.style.display = '';
     } else {
       nurtureEl.style.display = 'none';

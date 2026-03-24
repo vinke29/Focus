@@ -1976,21 +1976,8 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   letter-spacing: .04em;
 }
 
-/* ── NURTURE PROGRESS (card modal back) ── */
-.modal-back-nurture {
-  text-align: center;
-  font-size: .72rem;
-  letter-spacing: .18em;
-  color: var(--ink);
-  opacity: .45;
-  margin-top: .5rem;
-}
-.nurture-label {
-  font-family: 'Zen Antique Soft', serif;
-  text-transform: lowercase;
-  letter-spacing: .1em;
-  margin-right: .35rem;
-}
+/* ── NURTURE PROGRESS (card modal back meta row) ── */
+#modal-back-nurture { letter-spacing: .22em; }
 
 /* ── PIN BUTTON (card modal) ── */
 .modal-pin-btn {
