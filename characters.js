@@ -259,6 +259,281 @@ const EVOLUTIONS = {
     </g>
   </g>
 </svg>`
+  },
+
+  kyubi: {
+    id: 'kyubi_evolved',
+    name: '九尾狐 · Kyūbi',
+    nameShort: '九尾狐',
+    region: 'japanese',
+    subtitle: 'Nine-Tail Fox Spirit · Evolved',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#0047ff',
+    lore: 'All nine tails blazing, Kyūbi has grown into the full power of her ancient bloodline. Each tail now holds a century of focus, fanned wide like a corona of living starlight.',
+    haiku: '九つの炎<br>満ちた力で輝く<br>星の意志よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/kyubi_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  // ── Americas Evolutions ────────────────────────────────────────────────────
+
+  capybara: {
+    id: 'capybara_evolved',
+    name: 'Capybara · カピバラ',
+    nameShort: 'カピバラ',
+    region: 'americas',
+    subtitle: 'River Giant · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#C4924A',
+    lore: 'The river itself bends around the elder capybara now. Every creature in the wetlands has rested on its back at least once, and it remembers them all.',
+    haiku: '川の長老<br>全ての命を抱く<br>大地の母よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/capybara_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  axolotl: {
+    id: 'axolotl_evolved',
+    name: 'Axolotl · アホロートル',
+    nameShort: 'アホロートル',
+    region: 'americas',
+    subtitle: 'Eternal Larva · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#FF69B4',
+    lore: 'Axolotl has chosen to bloom without ever leaving its waters. Its gills glow like coral lanterns now, a living proof that renewal never requires becoming something else.',
+    haiku: '変わらぬ美しさ<br>水底で花が咲く<br>永遠の光よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/axolotl_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  quetzal: {
+    id: 'quetzal_evolved',
+    name: 'Quetzal · ケツァル',
+    nameShort: 'ケツァル',
+    region: 'americas',
+    subtitle: 'Sacred Bird · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#00A854',
+    lore: 'The quetzal\'s tail now trails a full comet arc of jade light. When it flies overhead, the Maya say a new age of clarity has arrived.',
+    haiku: '翡翠の尾が<br>空に新時代を描く<br>神の鳥よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/quetzal_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  condor: {
+    id: 'condor_evolved',
+    name: 'Condor · コンドル',
+    nameShort: 'コンドル',
+    region: 'americas',
+    subtitle: 'Sky Elder · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#C62828',
+    lore: 'The condor now rides thermals that circle the entire Andes. It has not touched the ground in three years — it no longer needs to.',
+    haiku: '大空を舞い<br>三年間翼を休めず<br>風の王者よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/condor_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  jaguar: {
+    id: 'jaguar_evolved',
+    name: 'Jaguar · ジャガー',
+    nameShort: 'ジャガー',
+    region: 'americas',
+    subtitle: 'Spotted King · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#3a8c2f',
+    lore: 'The jaguar\'s spots have deepened into windows through which the rainforest itself watches. It no longer hunts — the forest simply delivers.',
+    haiku: '斑点は窓<br>密林の目となりて<br>静かに待つ王',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/jaguar_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  armadillo: {
+    id: 'armadillo_evolved',
+    name: 'Armadillo · アルマジロ',
+    nameShort: 'アルマジロ',
+    region: 'americas',
+    subtitle: 'Iron Shell · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#7C5C3A',
+    lore: 'The armadillo\'s shell has grown rings like a tree, each one a year of perfect, patient focus. When it curls now, it becomes a world unto itself.',
+    haiku: '年輪の甲羅<br>丸くなれば宇宙<br>古き旅人よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/armadillo_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  llama: {
+    id: 'llama_evolved',
+    name: 'Llama · リャマ',
+    nameShort: 'リャマ',
+    region: 'americas',
+    subtitle: 'Andean Guide · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#e88c50',
+    lore: 'The llama has walked every pass in the Andes twice over. Its wool now holds the warmth of every hearth fire it has ever passed, and pilgrims follow it without knowing why.',
+    haiku: '山道を越えて<br>羊毛に宿る温もり<br>道しるべの魂',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/llama_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  chupacabra: {
+    id: 'chupacabra_evolved',
+    name: 'Chupacabra · チュパカブラ',
+    nameShort: 'チュパカブラ',
+    region: 'americas',
+    subtitle: 'Glowing Cryptid · Evolved',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#76FF03',
+    lore: 'The chupacabra is no longer a rumor at the edge of sight — it blazes openly now, too radiant to dismiss. Those who see it no longer doubt what they are capable of.',
+    haiku: '光り輝き<br>疑いを焼き尽くし<br>伝説は実となる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/chupacabra_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  coati: {
+    id: 'coati_evolved',
+    name: 'Coati · コアティ',
+    nameShort: 'コアティ',
+    region: 'americas',
+    subtitle: 'Ring-Tail Wanderer · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#E8762A',
+    lore: 'The coati has poked its nose into every corner of the forest floor and memorized them all. Now it leads the curious to exactly what they were looking for.',
+    haiku: '森の隅々<br>長い鼻で探し当て<br>導く旅人よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/coati_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  tapir: {
+    id: 'tapir_evolved',
+    name: 'Tapir · バク',
+    nameShort: 'バク',
+    region: 'americas',
+    subtitle: 'Dream-Eater · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#7B6B5A',
+    lore: 'Tapir has walked the same forest path for sixty million years and finally knows every dream that lives beneath it. Its footsteps barely leave a mark now.',
+    haiku: '六千万年<br>同じ道を歩み続け<br>夢を知り尽くす',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/tapir_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  anaconda: {
+    id: 'anaconda_evolved',
+    name: 'Anaconda · アナコンダ',
+    nameShort: 'アナコンダ',
+    region: 'americas',
+    subtitle: 'River Sovereign · Evolved',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#2E7D32',
+    lore: 'The anaconda now spans the full width of the river. Boats pass over it without knowing, feeling only a strange peace, as if the current itself were alive and guiding them.',
+    haiku: '川幅を超え<br>知らぬ間に渡る舟<br>静けさの神よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/anaconda_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  colibri: {
+    id: 'colibri_evolved',
+    name: 'Colibri · コリブリ',
+    nameShort: 'コリブリ',
+    region: 'americas',
+    subtitle: 'Jeweled Hummingbird · Evolved',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#00BFA5',
+    lore: 'Colibri now drinks from blooms in three time zones simultaneously. Its wings leave trails of iridescent color that linger for hours, lighting the way for slower creatures.',
+    haiku: '三つの時間<br>同時に花から飲む<br>虹の道しるべ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/colibri_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
   }
 };
 
