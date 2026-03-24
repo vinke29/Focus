@@ -991,9 +991,15 @@ function renderPinnedCreature() {
   }
   const char = getDisplayCharacter(state.pinnedCreature);
   const rarestVariant = getRarestOwnedVariant(state.pinnedCreature);
+  const canEvolve = EVOLUTIONS[state.pinnedCreature] && !isEvolved(state.pinnedCreature);
+  let progressStr = '';
+  if (canEvolve) {
+    const filled = Math.min(state.evolutionSessions[state.pinnedCreature] || 0, EVOLUTION_SESSIONS);
+    progressStr = '  ' + Array.from({ length: EVOLUTION_SESSIONS }, (_, i) => i < filled ? '●' : '○').join('');
+  }
   container.innerHTML = `
     <div class="pinned-art">${char.svg}</div>
-    <div class="pinned-name">${charNameEn(char)}</div>
+    <div class="pinned-name"><span class="pinned-label">nurturing</span> ${charNameEn(char)}${progressStr}</div>
   `;
   applyVariantFilter(container.querySelector('.pinned-art'), rarestVariant);
   container.classList.add('show');

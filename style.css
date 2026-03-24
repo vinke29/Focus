@@ -1976,6 +1976,11 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   opacity: .55;
   letter-spacing: .04em;
 }
+.pinned-label {
+  font-size: .55rem; letter-spacing: .14em;
+  text-transform: uppercase; opacity: .6;
+  margin-right: .2rem;
+}
 
 /* ── NURTURE PROGRESS (card modal back) ── */
 .modal-back-nurture {
