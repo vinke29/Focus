@@ -4,7 +4,7 @@
   "description": "",
   "main": "admin.js",
   "scripts": {
-    "cap:build": "rsync -a --exclude=www --exclude=node_modules --exclude=ios --exclude=.git --exclude=creature-samples --exclude=supabase --exclude=emails --exclude=admin.html --exclude=admin.js --exclude=supabase_admin.sql --exclude=supabase_setup.sql . www/ && cp www/app.html www/index.html",
+    "cap:build": "rsync -a --delete --exclude=www --exclude=node_modules --exclude=ios --exclude=.git --exclude=creature-samples --exclude=supabase --exclude=emails --exclude=admin.html --exclude=admin.js --exclude=supabase_admin.sql --exclude=supabase_setup.sql . www/ && cp www/app.html www/index.html",
     "cap:sync": "npm run cap:build && npx cap sync ios && sed -i '' 's/swift-tools-version: 5.9/swift-tools-version: 6.0/' ios/App/CapApp-SPM/Package.swift",
     "cap:open": "npx cap open ios",
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -16,7 +16,7 @@ try {
     });
   }
 } catch(e) {
-  console.warn('Supabase init failed:', e);
+  // Supabase init failed — app falls back to localStorage
 }
 
 // ── DB FACADE ─────────────────────────────────────────────────────────────────
