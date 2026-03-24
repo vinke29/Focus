@@ -1058,7 +1058,8 @@ function renderEvolutionRing(charId, progress) {
 }
 
 function showNurtureComplete(charId, progress) {
-  _hatchInProgress = false; // allow next session to start
+  resetTimerState(); // removes .running class, resets button + ring fill
+  _hatchInProgress = false;
   navigateTo('timer');
   setTimeout(() => {
     renderPinnedCreature(); // re-renders ring with updated segment count
