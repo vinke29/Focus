@@ -1977,8 +1977,25 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   letter-spacing: .04em;
 }
 
-/* ── NURTURE PROGRESS (card modal back meta row) ── */
-#modal-back-nurture { letter-spacing: .22em; }
+/* ── NURTURE PROGRESS (card modal back) ── */
+.modal-back-nurture {
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+  padding-top: .55rem; margin-top: .45rem;
+  border-top: 1px solid rgba(0,0,0,.07);
+  width: 100%;
+}
+.nurture-label {
+  font-size: .48rem; letter-spacing: .18em; text-transform: uppercase;
+  opacity: .45; font-family: 'Zen Antique Soft', serif;
+}
+.nurture-dots { display: flex; gap: .22rem; align-items: center; }
+.nurture-pip { font-size: .7rem; opacity: .25; transition: opacity .15s; }
+.nurture-pip.filled { opacity: 1; }
+.nurture-count {
+  font-size: .48rem; letter-spacing: .1em; opacity: .4;
+  font-variant-numeric: tabular-nums;
+}
+body.dark .modal-back-nurture { border-top-color: rgba(221,215,200,.08); }
 
 /* ── PIN BUTTON (card modal) ── */
 .modal-pin-btn {
