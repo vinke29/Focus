@@ -992,52 +992,76 @@ function renderPinnedCreature() {
 
   if (menu) menu.classList.remove('open');
 
+  const unpinBtn = document.getElementById('btn-unpin-creature');
+
   if (!owns) {
     container.innerHTML = '';
     container.classList.remove('show');
-    if (eggEl) { eggEl.innerHTML = EGG_SVG_SMALL; eggEl.style.cursor = ''; }
+    if (eggEl) { eggEl.innerHTML = EGG_SVG_SMALL; eggEl.style.cursor = 'pointer'; }
+    if (unpinBtn) unpinBtn.style.display = 'none';
+    renderEvolutionRing(null, 0);
     return;
   }
 
+  if (unpinBtn) unpinBtn.style.display = '';
+
   if (NURTURE_IMAGES.has(charId)) {
-    if (eggEl) {
-      eggEl.innerHTML = `<img src="/chars/${charId}_nurture.png" class="nurture-egg-img" alt="${charId}">`;
-      eggEl.style.cursor = 'pointer';
-    }
+    if (eggEl) { eggEl.innerHTML = `<img src="/chars/${charId}_nurture.png" class="nurture-egg-img" alt="${charId}">`; eggEl.style.cursor = ''; }
     container.innerHTML = '';
     container.classList.remove('show');
   } else {
-    if (eggEl) { eggEl.innerHTML = EGG_SVG_SMALL; eggEl.style.cursor = 'pointer'; }
+    if (eggEl) { eggEl.innerHTML = EGG_SVG_SMALL; eggEl.style.cursor = ''; }
     const char = getDisplayCharacter(charId);
     const rarestVariant = getRarestOwnedVariant(charId);
     container.innerHTML = `<div class="pinned-art">${char.svg}</div>`;
     applyVariantFilter(container.querySelector('.pinned-art'), rarestVariant);
     container.classList.add('show');
   }
+
+  const progress = state.evolutionSessions[charId] || 0;
+  renderEvolutionRing(charId, progress);
 }
 
-function initEggActionMenu() {
-  const eggEl = document.getElementById('timer-egg');
-  const menu  = document.getElementById('egg-action-menu');
-  if (!eggEl || !menu) return;
+function renderEvolutionRing(charId, progress) {
+  const svg = document.getElementById('progress-ring');
+  if (!svg) return;
+  svg.querySelectorAll('.evo-segment').forEach(el => el.remove());
+  if (!charId || !EVOLUTIONS[charId] || isEvolved(charId)) return;
 
-  eggEl.addEventListener('click', () => {
-    if (!state.pinnedCreature) return;
-    menu.classList.toggle('open');
+  const char = CHARACTERS[charId];
+  const r = 118, cx = 130, cy = 130;
+  const circumference = 2 * Math.PI * r;
+  const gap = 12;
+  const segLen = (circumference - EVOLUTION_SESSIONS * gap) / EVOLUTION_SESSIONS;
+  const filled = Math.min(progress, EVOLUTION_SESSIONS);
+  const segAngle = (segLen + gap) / circumference * 360;
+
+  for (let i = 0; i < EVOLUTION_SESSIONS; i++) {
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('class', 'evo-segment');
+    circle.setAttribute('cx', cx);
+    circle.setAttribute('cy', cy);
+    circle.setAttribute('r', r);
+    circle.setAttribute('fill', 'none');
+    circle.setAttribute('stroke', char.accentColor);
+    circle.setAttribute('stroke-width', '4');
+    circle.setAttribute('stroke-linecap', 'round');
+    circle.setAttribute('opacity', i < filled ? '0.75' : '0.15');
+    circle.setAttribute('stroke-dasharray', `${segLen} ${circumference - segLen}`);
+    circle.setAttribute('stroke-dashoffset', '0');
+    circle.setAttribute('transform', `rotate(${-90 + i * segAngle}, ${cx}, ${cy})`);
+    svg.appendChild(circle);
+  }
+}
+
+function initEggInteraction() {
+  // Tap egg when no creature pinned → go to collection
+  document.getElementById('timer-egg')?.addEventListener('click', () => {
+    if (!state.pinnedCreature) navigateTo('collection');
   });
-
-  document.getElementById('egg-action-change')?.addEventListener('click', () => {
-    menu.classList.remove('open');
-    navigateTo('collection');
-  });
-
-  document.getElementById('egg-action-unpin')?.addEventListener('click', () => {
-    menu.classList.remove('open');
+  // ✕ button → unpin
+  document.getElementById('btn-unpin-creature')?.addEventListener('click', () => {
     unpinCreature();
-  });
-
-  document.addEventListener('click', e => {
-    if (!e.target.closest('#egg-stage')) menu.classList.remove('open');
   });
 }
 
@@ -2887,7 +2911,7 @@ async function handleSignedIn(user) {
   loadPinnedCreature();
   renderTimerStats();
   renderPinnedCreature();
-  initEggActionMenu();
+  initEggInteraction();
 
   // Check new-user flag BEFORE profile — a DB trigger may have already
   // created the profile row during sign-up, so profile existence alone
