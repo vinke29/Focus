@@ -121,7 +121,7 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
       body: JSON.stringify({ name, email, message }),
     });
     if (res.ok) {
-      status.textContent = 'Message sent. We'll get back to you within a day or two.';
+      status.textContent = "Message sent. We'll get back to you within a day or two.";
       status.classList.add('success');
       e.target.reset();
     } else {
