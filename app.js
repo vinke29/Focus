@@ -984,32 +984,61 @@ const NURTURE_IMAGES = new Set(['kappa']);
 function renderPinnedCreature() {
   const container = document.getElementById('pinned-creature');
   const eggEl = document.getElementById('timer-egg');
+  const menu = document.getElementById('egg-action-menu');
   if (!container) return;
 
   const charId = state.pinnedCreature;
   const owns = charId && CHARACTERS[charId] && state.collection.some(e => e.id === charId);
 
+  if (menu) menu.classList.remove('open');
+
   if (!owns) {
     container.innerHTML = '';
     container.classList.remove('show');
-    if (eggEl) eggEl.innerHTML = EGG_SVG_SMALL;
+    if (eggEl) { eggEl.innerHTML = EGG_SVG_SMALL; eggEl.style.cursor = ''; }
     return;
   }
 
   if (NURTURE_IMAGES.has(charId)) {
-    // Show creature-with-egg image in the egg slot; hide the small companion
-    if (eggEl) eggEl.innerHTML = `<img src="/chars/${charId}_nurture.png" class="nurture-egg-img" alt="${charId}">`;
+    if (eggEl) {
+      eggEl.innerHTML = `<img src="/chars/${charId}_nurture.png" class="nurture-egg-img" alt="${charId}">`;
+      eggEl.style.cursor = 'pointer';
+    }
     container.innerHTML = '';
     container.classList.remove('show');
   } else {
-    // Fallback: show regular egg + small companion
-    if (eggEl) eggEl.innerHTML = EGG_SVG_SMALL;
+    if (eggEl) { eggEl.innerHTML = EGG_SVG_SMALL; eggEl.style.cursor = 'pointer'; }
     const char = getDisplayCharacter(charId);
     const rarestVariant = getRarestOwnedVariant(charId);
     container.innerHTML = `<div class="pinned-art">${char.svg}</div>`;
     applyVariantFilter(container.querySelector('.pinned-art'), rarestVariant);
     container.classList.add('show');
   }
+}
+
+function initEggActionMenu() {
+  const eggEl = document.getElementById('timer-egg');
+  const menu  = document.getElementById('egg-action-menu');
+  if (!eggEl || !menu) return;
+
+  eggEl.addEventListener('click', () => {
+    if (!state.pinnedCreature) return;
+    menu.classList.toggle('open');
+  });
+
+  document.getElementById('egg-action-change')?.addEventListener('click', () => {
+    menu.classList.remove('open');
+    navigateTo('collection');
+  });
+
+  document.getElementById('egg-action-unpin')?.addEventListener('click', () => {
+    menu.classList.remove('open');
+    unpinCreature();
+  });
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#egg-stage')) menu.classList.remove('open');
+  });
 }
 
 function getRarestOwnedVariant(charId) {
@@ -2336,11 +2365,8 @@ function openCardModal(charId, vc) {
     const canEvolve = EVOLUTIONS[charId] && !isEvolved(charId);
     if (canEvolve) {
       const progress = state.evolutionSessions[charId] || 0;
-      const filled = Math.min(progress, EVOLUTION_SESSIONS);
-      const dots = Array.from({ length: EVOLUTION_SESSIONS }, (_, i) =>
-        `<span class="nurture-pip ${i < filled ? 'filled' : ''}">${i < filled ? '●' : '○'}</span>`
-      ).join('');
-      nurtureEl.innerHTML = `<span class="nurture-label">nurture</span><span class="nurture-dots">${dots}</span><span class="nurture-count">${filled} / ${EVOLUTION_SESSIONS}</span>`;
+      const left = Math.max(EVOLUTION_SESSIONS - progress, 0);
+      nurtureEl.textContent = `evolves in ${left} session${left !== 1 ? 's' : ''}`;
       nurtureEl.style.display = '';
     } else {
       nurtureEl.style.display = 'none';
@@ -2861,6 +2887,7 @@ async function handleSignedIn(user) {
   loadPinnedCreature();
   renderTimerStats();
   renderPinnedCreature();
+  initEggActionMenu();
 
   // Check new-user flag BEFORE profile — a DB trigger may have already
   // created the profile row during sign-up, so profile existence alone

@@ -1945,6 +1945,24 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 @media (max-width: 600px) { .nurture-egg-img { width: 160px; } }
 @media (max-width: 390px) { .nurture-egg-img { width: 140px; } }
 
+/* ── EGG ACTION MENU ── */
+.egg-action-menu {
+  position: absolute; bottom: -2rem; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: .5rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity .15s ease;
+  white-space: nowrap; z-index: 10;
+}
+.egg-action-menu.open { opacity: 1; pointer-events: auto; }
+.egg-action-btn {
+  font-family: 'Zen Antique Soft', serif;
+  font-size: .52rem; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink); opacity: .5; background: none; border: none;
+  cursor: pointer; padding: 0;
+}
+.egg-action-btn:hover { opacity: 1; }
+.egg-action-sep { font-size: .52rem; opacity: .3; }
+
 /* ── PINNED CREATURE (timer view companion) ── */
 #pinned-creature {
   display: none;
@@ -1968,21 +1986,9 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 
 /* ── NURTURE PROGRESS (card modal back) ── */
 .modal-back-nurture {
-  display: flex; align-items: center; justify-content: center; gap: .5rem;
-  padding-top: .55rem; margin-top: .45rem;
-  border-top: 1px solid rgba(0,0,0,.07);
-  width: 100%;
-}
-.nurture-label {
   font-size: .48rem; letter-spacing: .18em; text-transform: uppercase;
-  opacity: .45; font-family: 'Zen Antique Soft', serif;
-}
-.nurture-dots { display: flex; gap: .22rem; align-items: center; }
-.nurture-pip { font-size: .7rem; opacity: .25; transition: opacity .15s; }
-.nurture-pip.filled { opacity: 1; }
-.nurture-count {
-  font-size: .48rem; letter-spacing: .1em; opacity: .4;
-  font-variant-numeric: tabular-nums;
+  opacity: .45; padding-top: .55rem; margin-top: .45rem;
+  border-top: 1px solid rgba(0,0,0,.07); width: 100%; text-align: center;
 }
 body.dark .modal-back-nurture { border-top-color: rgba(221,215,200,.08); }
 
