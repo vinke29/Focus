@@ -284,14 +284,23 @@ const DB = {
     await _sb.from('profiles').update({ max_streak: streak }).eq('id', user.id);
   },
 
-  async updateNurtureProgress(nurtureSessionsTotal, evolvedCount) {
+  async updateNurtureProgress(nurtureSessionsTotal, evolvedCount, evolutionSessionsJson, evolvedCreatures) {
     if (!_sb) return;
     const { data: { user } } = await _sb.auth.getUser();
     if (!user) return;
     await _sb.from('profiles').update({
-      nurture_sessions: nurtureSessionsTotal,
-      evolved_count: evolvedCount,
+      nurture_sessions:        nurtureSessionsTotal,
+      evolved_count:           evolvedCount,
+      evolution_sessions_json: evolutionSessionsJson || {},
+      evolved_creatures:       evolvedCreatures || [],
     }).eq('id', user.id);
+  },
+
+  async recordEvolution(charId) {
+    if (!_sb) return;
+    const { data: { user } } = await _sb.auth.getUser();
+    if (!user) return;
+    await _sb.from('evolutions').insert({ user_id: user.id, char_id: charId });
   },
 
   async setEvoHintSeen() {

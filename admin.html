@@ -162,6 +162,20 @@ body::after {
 #dau-modal-close:hover { opacity: .7; }
 #dau-modal-body { overflow-y: auto; }
 
+/* Animal chart tabs */
+.animal-tabs {
+  display: flex; gap: 0; margin-bottom: .8rem;
+}
+.animal-tab {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: .5rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--ink); opacity: .3;
+  padding: .3rem .7rem .3rem 0; border-bottom: 1.5px solid transparent;
+  transition: opacity .15s, border-color .15s;
+}
+.animal-tab:hover { opacity: .55; }
+.animal-tab.active { opacity: 1; border-bottom-color: var(--ink); }
+
 /* Responsive */
 @media (max-width: 640px) {
   body { padding: 1.2rem; }
@@ -209,7 +223,12 @@ body::after {
   <section class="admin-charts">
     <div class="admin-chart-panel">
       <h2>Animal Distribution</h2>
-      <div id="chart-animals" style="max-height:320px;overflow-y:auto"></div>
+      <div class="animal-tabs">
+        <button class="animal-tab active" data-tab="hatched">hatched</button>
+        <button class="animal-tab" data-tab="nurtured">nurtured</button>
+        <button class="animal-tab" data-tab="evolved">evolved</button>
+      </div>
+      <div id="chart-animals" style="max-height:300px;overflow-y:auto"></div>
     </div>
     <div class="admin-chart-panel">
       <h2>Session Duration</h2>
@@ -225,6 +244,17 @@ body::after {
     <div class="admin-chart-panel">
       <h2>Daily Active Users</h2>
       <div id="chart-dau"></div>
+    </div>
+  </section>
+
+  <section class="admin-charts">
+    <div class="admin-chart-panel">
+      <h2>Sessions Over Time</h2>
+      <div id="chart-sessions-time"></div>
+    </div>
+    <div class="admin-chart-panel">
+      <h2>Evolutions Over Time</h2>
+      <div id="chart-evolutions-time"></div>
     </div>
   </section>
 

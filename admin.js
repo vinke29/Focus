@@ -62,25 +62,39 @@ async function init() {
 
 // ── Data loading ─────────────────────────────────────────────────────────────
 
+let _animalData = { hatched: [], nurtured: [], evolved: [] };
+
 async function loadDashboard() {
-  const [overview, animals, leaders, splits, signups, streaks, dau, signupList] = await Promise.all([
-    DB.rpc('admin_overview',            { p_period: currentPeriod }),
-    DB.rpc('admin_animal_distribution', { p_period: currentPeriod }),
-    DB.rpc('admin_collection_leaders',  { p_period: currentPeriod }),
-    DB.rpc('admin_session_splits',      { p_period: currentPeriod }),
-    DB.rpc('admin_signups_over_time',   { p_period: currentPeriod }),
+  const [overview, animals, nurtured, evolved, leaders, splits, signups, streaks, dau, sessionsTime, evolutionsTime, signupList] = await Promise.all([
+    DB.rpc('admin_overview',              { p_period: currentPeriod }),
+    DB.rpc('admin_animal_distribution',   { p_period: currentPeriod }),
+    DB.rpc('admin_nurture_per_animal'),
+    DB.rpc('admin_evolutions_per_animal'),
+    DB.rpc('admin_collection_leaders',    { p_period: currentPeriod }),
+    DB.rpc('admin_session_splits',        { p_period: currentPeriod }),
+    DB.rpc('admin_signups_over_time',     { p_period: currentPeriod }),
     DB.rpc('admin_streak_distribution'),
-    DB.rpc('admin_daily_active_users',  { p_period: currentPeriod }),
-    DB.rpc('admin_signup_list',         { p_period: currentPeriod }),
+    DB.rpc('admin_daily_active_users',    { p_period: currentPeriod }),
+    DB.rpc('admin_sessions_over_time',    { p_period: currentPeriod }),
+    DB.rpc('admin_evolutions_over_time',  { p_period: currentPeriod }),
+    DB.rpc('admin_signup_list',           { p_period: currentPeriod }),
   ]);
 
   if (overview.error) { console.error('admin_overview:', overview.error); return; }
 
+  _animalData = {
+    hatched:  animals.data  || [],
+    nurtured: nurtured.data || [],
+    evolved:  evolved.data  || [],
+  };
+
   renderCards(overview.data);
-  renderAnimalChart(animals.data || []);
+  renderAnimalTabs();
   renderSplitsChart(splits.data || []);
   renderSignupsChart(signups.data || []);
   renderDAUChart(dau.data || []);
+  renderSessionsOverTimeChart(sessionsTime.data || []);
+  renderEvolutionsOverTimeChart(evolutionsTime.data || []);
   renderStreaksChart(streaks.data || []);
   renderLeaders(leaders.data || []);
   renderSignupList(signupList.data || []);
@@ -132,7 +146,17 @@ function renderBarChart(container, items, labelFn, valueFn, classFn, clickFn) {
   }
 }
 
-function renderAnimalChart(data) {
+let _activeAnimalTab = 'hatched';
+
+function renderAnimalTabs() {
+  document.querySelectorAll('.animal-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === _activeAnimalTab);
+    btn.onclick = () => {
+      _activeAnimalTab = btn.dataset.tab;
+      renderAnimalTabs();
+    };
+  });
+  const data = _animalData[_activeAnimalTab] || [];
   renderBarChart('chart-animals', data,
     d => CHAR_META[d.char_id] || d.char_id,
     d => d.count,
@@ -186,6 +210,16 @@ async function showDAUDetail(day) {
 
 function renderStreaksChart(data) {
   renderBarChart('chart-streaks', data, d => d.bucket, d => d.count);
+}
+
+function renderSessionsOverTimeChart(data) {
+  const label = currentPeriod === 'all' ? d => 'wk ' + formatDay(d.day) : d => formatDay(d.day);
+  renderBarChart('chart-sessions-time', data, label, d => d.sessions);
+}
+
+function renderEvolutionsOverTimeChart(data) {
+  const label = currentPeriod === 'all' ? d => 'wk ' + formatDay(d.day) : d => formatDay(d.day);
+  renderBarChart('chart-evolutions-time', data, label, d => d.evolutions);
 }
 
 // ── Render: leaders table ────────────────────────────────────────────────────

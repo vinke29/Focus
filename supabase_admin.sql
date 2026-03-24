@@ -34,9 +34,18 @@ $$;
 
 
 -- Schema additions (safe to re-run)
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS nurture_sessions int DEFAULT 0;
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evolved_count    int DEFAULT 0;
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evo_hint_seen    bool DEFAULT false;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS nurture_sessions       int     DEFAULT 0;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evolved_count          int     DEFAULT 0;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evo_hint_seen          bool    DEFAULT false;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evolution_sessions_json jsonb   DEFAULT '{}';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS evolved_creatures       text[]  DEFAULT '{}';
+
+CREATE TABLE IF NOT EXISTS public.evolutions (
+  id         uuid        PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id    uuid        NOT NULL REFERENCES auth.users ON DELETE CASCADE,
+  char_id    text        NOT NULL,
+  evolved_at timestamptz NOT NULL DEFAULT now()
+);
 
 
 -- A: Overview metrics
@@ -227,6 +236,96 @@ BEGIN
            count(DISTINCT user_id) as active_users
     FROM public.sessions
     WHERE completed_at >= cutoff
+    GROUP BY day
+    ORDER BY day
+  ) t;
+  RETURN result;
+END;
+$$;
+
+
+-- I: Nurture sessions per animal (sum evolutionSessions JSON across all users)
+CREATE OR REPLACE FUNCTION admin_nurture_per_animal()
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER
+AS $$
+DECLARE result json;
+BEGIN
+  PERFORM _assert_admin();
+  SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
+  FROM (
+    SELECT key as char_id, sum(value::int) as count
+    FROM public.profiles, jsonb_each_text(coalesce(evolution_sessions_json, '{}'))
+    WHERE value::int > 0
+    GROUP BY key
+    ORDER BY count DESC
+  ) t;
+  RETURN result;
+END;
+$$;
+
+
+-- J: Evolutions per animal (unnest evolved_creatures arrays across all users)
+CREATE OR REPLACE FUNCTION admin_evolutions_per_animal()
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER
+AS $$
+DECLARE result json;
+BEGIN
+  PERFORM _assert_admin();
+  SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
+  FROM (
+    SELECT unnest(evolved_creatures) as char_id, count(*) as count
+    FROM public.profiles
+    WHERE array_length(evolved_creatures, 1) > 0
+    GROUP BY char_id
+    ORDER BY count DESC
+  ) t;
+  RETURN result;
+END;
+$$;
+
+
+-- K: Total sessions over time (grouped by day or week)
+CREATE OR REPLACE FUNCTION admin_sessions_over_time(p_period text DEFAULT 'all')
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER
+AS $$
+DECLARE
+  cutoff timestamptz := _period_cutoff(p_period);
+  bucket text := CASE WHEN p_period = 'all' THEN 'week' ELSE 'day' END;
+  result json;
+BEGIN
+  PERFORM _assert_admin();
+  SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
+  FROM (
+    SELECT date_trunc(bucket, completed_at)::date as day, count(*) as sessions
+    FROM public.sessions
+    WHERE completed_at >= cutoff
+    GROUP BY day
+    ORDER BY day
+  ) t;
+  RETURN result;
+END;
+$$;
+
+
+-- L: Evolutions over time (grouped by day or week)
+CREATE OR REPLACE FUNCTION admin_evolutions_over_time(p_period text DEFAULT 'all')
+RETURNS json
+LANGUAGE plpgsql SECURITY DEFINER
+AS $$
+DECLARE
+  cutoff timestamptz := _period_cutoff(p_period);
+  bucket text := CASE WHEN p_period = 'all' THEN 'week' ELSE 'day' END;
+  result json;
+BEGIN
+  PERFORM _assert_admin();
+  SELECT coalesce(json_agg(row_to_json(t)), '[]'::json) INTO result
+  FROM (
+    SELECT date_trunc(bucket, evolved_at)::date as day, count(*) as evolutions
+    FROM public.evolutions
+    WHERE evolved_at >= cutoff
     GROUP BY day
     ORDER BY day
   ) t;

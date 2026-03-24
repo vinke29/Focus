@@ -945,7 +945,7 @@ function loadPinnedCreature() {
   } catch(e) {}
   // Backfill Supabase with whatever is in localStorage (no-op if all zeros)
   const nurtureTotal = Object.values(state.evolutionSessions).reduce((a, b) => a + b, 0);
-  DB.updateNurtureProgress(nurtureTotal, state.evolvedCreatures.length).catch(() => {});
+  DB.updateNurtureProgress(nurtureTotal, state.evolvedCreatures.length, state.evolutionSessions, state.evolvedCreatures).catch(() => {});
 }
 
 function savePinnedCreature() {
@@ -957,7 +957,7 @@ function savePinnedCreature() {
   localStorage.setItem('focus-evolution-sessions', JSON.stringify(state.evolutionSessions));
   localStorage.setItem('focus-evolved', JSON.stringify(state.evolvedCreatures));
   const nurtureTotal = Object.values(state.evolutionSessions).reduce((a, b) => a + b, 0);
-  DB.updateNurtureProgress(nurtureTotal, state.evolvedCreatures.length).catch(() => {});
+  DB.updateNurtureProgress(nurtureTotal, state.evolvedCreatures.length, state.evolutionSessions, state.evolvedCreatures).catch(() => {});
 }
 
 function pinCreature(charId) {
@@ -1634,6 +1634,7 @@ function onTimerComplete() {
         baseChar: CHARACTERS[state.pinnedCreature],
         evolvedChar: EVOLUTIONS[state.pinnedCreature],
       };
+      DB.recordEvolution(state.pinnedCreature).catch(() => {});
     }
     savePinnedCreature();
   }
