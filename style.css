@@ -498,6 +498,8 @@ body.dark .ob-input                 { border-bottom-color: var(--ink); }
 #timer-nudge.show { opacity: .55; }
 #view-timer.running #timer-nudge { opacity: 0; pointer-events: none; }
 #view-timer.running .evo-segment { opacity: 0 !important; transition: opacity .4s; }
+#view-timer.running .btn-unpin-creature { display: none !important; }
+#view-timer.running #timer-egg { pointer-events: none; cursor: default !important; }
 
 #reminder-prompt {
   margin-top: .5rem;
