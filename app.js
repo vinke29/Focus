@@ -2674,7 +2674,7 @@ async function handleSignedIn(user) {
   try {
     await DB.saveProfile(name);
   } catch(e) {
-    console.error('Failed to save profile:', e);
+    // Profile save failed — offline cache will retry
   }
   DB.invokeFunction('send-welcome-email', { email: user.email, name })
     .catch(() => {});
@@ -2723,8 +2723,7 @@ async function performSignUp() {
     sessions = [];
     localStorage.removeItem('focus-new-user');
     DB.invokeFunction('send-welcome-email', { email, name })
-      .then(result => { if (result?.error) console.error('Welcome email failed:', result.error); })
-      .catch(err => console.error('Welcome email invocation failed:', err));
+      .catch(() => {});
     showOnboardingEgg(name);
   } catch(e) {
     showAuthError('signup', e.message || 'sign up failed');
