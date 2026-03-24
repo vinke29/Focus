@@ -693,7 +693,7 @@ function renderNudge() {
   if (next) parts.push(`${REGION_LABELS[next.region]} unlocks in ${next.sessionsAway} session${next.sessionsAway !== 1 ? 's' : ''}`);
 
   if (parts.length) {
-    el.textContent = parts.join('  ·  ');
+    el.innerHTML = parts.join('<br>');
     el.classList.add('show');
     return;
   }
