@@ -103,6 +103,7 @@ const DB = {
         options: {
           redirectTo: 'app.kokoon.focus://callback',
           skipBrowserRedirect: true,
+          queryParams: { prompt: 'select_account' },
         }
       });
       if (error) throw error;
@@ -111,7 +112,7 @@ const DB = {
     } else {
       const { error } = await _sb.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: window.location.origin + '/app' }
+        options: { redirectTo: window.location.origin + '/app', queryParams: { prompt: 'select_account' } }
       });
       if (error) throw error;
     }

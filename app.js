@@ -3395,6 +3395,7 @@ async function performSignOut() {
   clearAuthErrors();
   setAuthLoading(document.getElementById('btn-signin'), false);
   setAuthLoading(document.getElementById('btn-signup'), false);
+  document.getElementById('btn-google').disabled = false;
   document.getElementById('si-email').value    = '';
   document.getElementById('si-password').value = '';
   document.getElementById('panel-signin').style.display = 'flex';
