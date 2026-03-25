@@ -3479,6 +3479,13 @@ async function init() {
     // Hide mini timer — window.open not available in native webview
     const miniBtn = document.getElementById('btn-mini-timer');
     if (miniBtn) miniBtn.style.display = 'none';
+    // Open external links (target="_blank") in SFSafariViewController, not system Safari
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[target="_blank"]');
+      if (!a || !a.href) return;
+      e.preventDefault();
+      window.Capacitor.Plugins.Browser.open({ url: a.href });
+    });
     // Handle OAuth deep link callback
     const AppPlugin = window.Capacitor.Plugins.App;
     AppPlugin?.addListener('appUrlOpen', async ({ url }) => {

@@ -487,6 +487,15 @@
 <script src="sounds.js"></script>
 <script src="supabase.js"></script>
 <script src="app.js"></script>
-<script defer src="https://va.vercel-scripts.com/v1/script.js" data-sdkn="@vercel/analytics" data-sdkv="1"></script>
+<script>
+  if (!(typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform())) {
+    const s = document.createElement('script');
+    s.defer = true;
+    s.src = 'https://va.vercel-scripts.com/v1/script.js';
+    s.dataset.sdkn = '@vercel/analytics';
+    s.dataset.sdkv = '1';
+    document.body.appendChild(s);
+  }
+</script>
 </body>
 </html>
