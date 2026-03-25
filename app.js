@@ -989,6 +989,12 @@ const NURTURE_IMAGES = new Set([
   'kodama','oni','baku','raijin_wolf','tsuru','jorogumo',
   'capybara','axolotl','quetzal','condor','jaguar','armadillo',
   'llama','chupacabra','coati','tapir','anaconda','colibri',
+  'badger','chameleon','fenrir','gorilla','gryphon','hare',
+  'hedgehog','hippo','honey_badger','hyena','meerkat','mongoose',
+  'okapi','pangolin','robin','salamander','selkie','serval',
+  'stag','tau','unicorn','warthog','wisp','wyvern',
+  'basilisk','chimera','djinn','fairy','golem','imp',
+  'kraken','mimic','myconid','phoenix','sprite','wyrm',
 ]);
 
 function renderPinnedCreature() {
