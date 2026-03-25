@@ -355,6 +355,7 @@ function renderQAGrid() {
     const shortName = char.nameShort || id;
     const enName = (char.name || id).split('·')[0].trim();
     let artHtml;
+    let hasContent = true;
 
     if (qaForm === 'plain') {
       artHtml = `<div class="qa-art ${vfClass}">${char.svg}</div>`;
@@ -365,6 +366,7 @@ function renderQAGrid() {
         artHtml = `<div class="qa-art ${vfClass}">${evo.svg}</div>`;
       } else {
         artHtml = `<div class="qa-placeholder">no evolved form</div>`;
+        hasContent = false;
       }
 
     } else { // nurtured
@@ -372,15 +374,70 @@ function renderQAGrid() {
         artHtml = `<div class="qa-art"><img src="/chars/${id}_nurture.png" alt="${id}" onerror="this.parentElement.outerHTML='<div class=\\'qa-placeholder\\'>no image</div>'"></div>`;
       } else {
         artHtml = `<div class="qa-placeholder">no nurture image</div>`;
+        hasContent = false;
       }
     }
 
-    return `<div class="qa-card">
+    const clickable = hasContent ? `data-qa-id="${id}" style="cursor:pointer"` : '';
+    return `<div class="qa-card" ${clickable}>
       ${artHtml}
       <div class="qa-name">${esc(enName)}<br><span style="opacity:.5">${esc(shortName)}</span></div>
       <div class="qa-rarity">${rarity}</div>
     </div>`;
   }).join('');
+
+  // Event delegation — one listener on the grid
+  grid.onclick = e => {
+    const card = e.target.closest('[data-qa-id]');
+    if (card) openQAModal(card.dataset.qaId);
+  };
+}
+
+function openQAModal(id) {
+  const char = CHARACTERS[id];
+  if (!char) return;
+
+  const enName  = (char.name || id).split('·')[0].trim();
+  const subtitle = char.subtitle || char.nameShort || '';
+  const vfClass  = qaVariant !== 'standard' ? `vf-${qaVariant}` : '';
+
+  // Resolve art + lore
+  let artHtml, lore, haiku;
+  if (qaForm === 'evolved') {
+    const evo = typeof EVOLUTIONS !== 'undefined' && EVOLUTIONS[id];
+    artHtml = evo ? evo.svg : char.svg;
+    lore    = evo?.lore || char.lore || '';
+    haiku   = evo?.haiku || char.haiku || '';
+  } else if (qaForm === 'nurtured') {
+    artHtml = `<img src="/chars/${id}_nurture.png" alt="${id}">`;
+    lore    = char.lore || '';
+    haiku   = char.haiku || '';
+  } else {
+    artHtml = char.svg;
+    lore    = char.lore || '';
+    haiku   = char.haiku || '';
+  }
+
+  // Populate modal
+  const art = document.getElementById('qa-modal-art');
+  art.className = 'qa-modal-art' + (vfClass ? ' ' + vfClass : '');
+  art.innerHTML = artHtml;
+
+  document.getElementById('qa-modal-back-name').textContent  = enName;
+  document.getElementById('qa-modal-back-lore').textContent  = lore;
+  document.getElementById('qa-modal-back-haiku').innerHTML   = haiku.split('\n').join('<br>');
+  document.getElementById('qa-modal-back-rarity').textContent = char.rarity || '';
+  document.getElementById('qa-modal-name').textContent = enName;
+  document.getElementById('qa-modal-sub').textContent  = subtitle;
+
+  // Reset flip state
+  document.getElementById('qa-modal-card').classList.remove('flipped');
+
+  document.getElementById('qa-modal').classList.add('open');
+}
+
+function closeQAModal() {
+  document.getElementById('qa-modal').classList.remove('open');
 }
 
 // ── Boot ─────────────────────────────────────────────────────────────────────
