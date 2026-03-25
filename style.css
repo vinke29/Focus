@@ -1639,7 +1639,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 /* Float */
 @keyframes charFloat {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
+  50%       { transform: translateY(-3px); }
 }
 @keyframes charBreath {
   0%, 100% { transform: scaleX(1) scaleY(1); }
@@ -1719,7 +1719,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 .rune        { animation: runeFlash   3s ease-in-out infinite; }
 
 /* ── SHARED GENERIC CLASSES (new characters) ── */
-.char-float { animation: charFloat 3.5s ease-in-out infinite; transform-origin: center bottom; }
+.char-float { animation: charFloat 6s ease-in-out infinite; transform-origin: center bottom; }
 .char-body  { animation: charBreath 3.2s ease-in-out infinite; transform-origin: center center; }
 .char-aura  { animation: auraPulse 3s ease-in-out infinite; transform-origin: center center; }
 
