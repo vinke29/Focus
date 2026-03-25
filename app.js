@@ -2604,6 +2604,8 @@ function openCardModal(charId, vc) {
   // Front: art (filter applied in renderModalVariantNav after variant is known)
   const modalArtEl = document.getElementById('modal-art');
   modalArtEl.innerHTML = char.svg;
+  const DARK_ART_EVOLVED = ['raijin_wolf_evolved','kyubi_evolved','jorogumo_evolved','tsuru_evolved'];
+  modalArtEl.classList.toggle('dark-art', DARK_ART_EVOLVED.includes(char.id));
   // Evolved corner marker
   const existingEvoMark = modalArtEl.querySelector('.modal-evolved-mark');
   if (existingEvoMark) existingEvoMark.remove();

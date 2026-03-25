@@ -1576,6 +1576,7 @@ body.dark .modal-back-name::after { opacity: .2; }
 }
 .modal-art svg { width: 100%; height: 100%; }
 .modal-art svg * { animation-play-state: running; }
+body.dark .modal-art.dark-art svg { filter: brightness(1.3) contrast(1.25); }
 
 /* ── Info strip ── */
 .modal-info {
