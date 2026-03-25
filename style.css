@@ -2000,7 +2000,11 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   animation: eggPulse 2s ease-in-out infinite;
 }
 body.dark .nurture-egg-img {
-  filter: drop-shadow(0 0 18px rgba(255,255,255,.18)) brightness(1.2);
+  filter: drop-shadow(0 0 22px rgba(255,255,255,.28)) brightness(1.35);
+}
+body.dark #timer-egg:has(.nurture-egg-img) {
+  background: radial-gradient(ellipse 80% 70% at 50% 55%, rgba(255,255,255,.07) 0%, transparent 70%);
+  border-radius: 50%;
 }
 @media (max-width: 600px) { .nurture-egg-img { width: 160px; } }
 @media (max-width: 390px) { .nurture-egg-img { width: 140px; } }
