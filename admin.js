@@ -56,6 +56,7 @@ async function init() {
   });
 
   await loadDashboard();
+  initCharactersView();
   document.getElementById('admin-loading').style.display = 'none';
   document.getElementById('admin-dashboard').style.display = 'block';
 }
@@ -289,6 +290,97 @@ function esc(s) {
   const d = document.createElement('div');
   d.textContent = s || '';
   return d.innerHTML;
+}
+
+// ── Characters QA view ───────────────────────────────────────────────────────
+
+const NURTURE_IDS = new Set([
+  'shiro','karasu','kyubi','tanuki','koi','kappa',
+  'kodama','oni','baku','raijin_wolf','tsuru','jorogumo',
+  'capybara','axolotl','quetzal','condor','jaguar','armadillo',
+  'llama','chupacabra','coati','tapir','anaconda','colibri',
+]);
+
+let qaForm    = 'plain';
+let qaVariant = 'standard';
+
+function initCharactersView() {
+  // Top-level tab switching
+  document.querySelectorAll('.admin-top-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.admin-top-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const view = btn.dataset.view;
+      document.getElementById('view-dashboard').classList.toggle('active', view === 'dashboard');
+      document.getElementById('view-characters').classList.toggle('active', view === 'characters');
+      // Hide period toggle when in characters view
+      document.querySelector('.admin-period-toggle').style.visibility =
+        view === 'characters' ? 'hidden' : 'visible';
+      if (view === 'characters') renderQAGrid();
+    });
+  });
+
+  // Filter pills
+  document.querySelectorAll('.qa-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const filter = pill.dataset.filter;
+      document.querySelectorAll(`.qa-pill[data-filter="${filter}"]`).forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      if (filter === 'form') {
+        qaForm = pill.dataset.value;
+        // Disable variant pills for nurtured (variants don't apply)
+        document.querySelectorAll('#variant-pills .qa-pill').forEach(p => {
+          p.disabled = qaForm === 'nurtured';
+          p.classList.toggle('active', p.dataset.value === 'standard');
+        });
+        if (qaForm === 'nurtured') qaVariant = 'standard';
+      } else {
+        qaVariant = pill.dataset.value;
+      }
+      renderQAGrid();
+    });
+  });
+}
+
+function renderQAGrid() {
+  const grid = document.getElementById('qa-grid');
+  if (!grid) return;
+
+  const ids = Object.keys(CHARACTERS);
+  const vfClass = qaVariant !== 'standard' ? `vf-${qaVariant}` : '';
+
+  grid.innerHTML = ids.map(id => {
+    const char  = CHARACTERS[id];
+    const rarity = char.rarity || 'common';
+    const shortName = char.nameShort || id;
+    const enName = (char.name || id).split('·')[0].trim();
+    let artHtml;
+
+    if (qaForm === 'plain') {
+      artHtml = `<div class="qa-art ${vfClass}">${char.svg}</div>`;
+
+    } else if (qaForm === 'evolved') {
+      const evo = typeof EVOLUTIONS !== 'undefined' && EVOLUTIONS[id];
+      if (evo) {
+        artHtml = `<div class="qa-art ${vfClass}">${evo.svg}</div>`;
+      } else {
+        artHtml = `<div class="qa-placeholder">no evolved form</div>`;
+      }
+
+    } else { // nurtured
+      if (NURTURE_IDS.has(id)) {
+        artHtml = `<div class="qa-art"><img src="/chars/${id}_nurture.png" alt="${id}" onerror="this.parentElement.outerHTML='<div class=\\'qa-placeholder\\'>no image</div>'"></div>`;
+      } else {
+        artHtml = `<div class="qa-placeholder">no nurture image</div>`;
+      }
+    }
+
+    return `<div class="qa-card">
+      ${artHtml}
+      <div class="qa-name">${esc(enName)}<br><span style="opacity:.5">${esc(shortName)}</span></div>
+      <div class="qa-rarity">${rarity}</div>
+    </div>`;
+  }).join('');
 }
 
 // ── Boot ─────────────────────────────────────────────────────────────────────

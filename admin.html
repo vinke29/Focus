@@ -176,6 +176,83 @@ body::after {
 .animal-tab:hover { opacity: .55; }
 .animal-tab.active { opacity: 1; border-bottom-color: var(--ink); }
 
+/* Top-level admin tabs */
+.admin-top-tabs {
+  display: flex; gap: 0;
+}
+.admin-top-tab {
+  background: none; border: none; cursor: pointer;
+  font-family: inherit; font-size: .6rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink); opacity: .35;
+  padding: .5rem 1rem .5rem 0; border-bottom: 2px solid transparent;
+  transition: opacity .2s, border-color .2s;
+}
+.admin-top-tab:hover { opacity: .6; }
+.admin-top-tab.active { opacity: 1; border-bottom-color: var(--ink); }
+
+/* Characters QA view */
+#view-characters { display: none; }
+#view-characters.active { display: block; }
+#view-dashboard.active { display: block; }
+#view-dashboard { display: none; }
+
+.qa-filters {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 2rem; padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(8,8,16,.08);
+}
+.qa-filter-group { display: flex; flex-direction: column; gap: .5rem; }
+.qa-filter-label {
+  font-size: .5rem; letter-spacing: .2em; text-transform: uppercase; opacity: .35;
+}
+.qa-filter-pills { display: flex; gap: .4rem; flex-wrap: wrap; }
+.qa-pill {
+  background: none; border: 1.5px solid rgba(8,8,16,.15); cursor: pointer;
+  font-family: inherit; font-size: .55rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink); opacity: .5;
+  padding: .3rem .7rem; transition: opacity .15s, border-color .15s, background .15s;
+}
+.qa-pill:hover { opacity: .8; }
+.qa-pill.active {
+  opacity: 1; border-color: var(--ink); background: var(--ink); color: var(--paper);
+}
+.qa-pill:disabled { opacity: .2; cursor: default; }
+
+/* Characters grid */
+.qa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 1rem;
+}
+.qa-card {
+  display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  border: 1.5px solid rgba(8,8,16,.08); padding: .6rem .4rem;
+}
+.qa-art {
+  width: 80px; height: 96px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.qa-art svg { width: 100%; height: 100%; }
+.qa-art img { width: 100%; height: 100%; object-fit: contain; }
+.qa-art.vf-gold    { filter: sepia(.48) saturate(2.6) hue-rotate(8deg) brightness(1.1); }
+.qa-art.vf-crimson { filter: sepia(.52) saturate(3.2) hue-rotate(-22deg) brightness(1.04); }
+.qa-art.vf-void {
+  background: radial-gradient(ellipse at 48% 42%, #2e1158 0%, #130426 55%, #060110 100%);
+}
+.qa-art.vf-void svg { filter: hue-rotate(255deg) saturate(2.6) brightness(1.45) contrast(1.08); }
+.qa-placeholder {
+  width: 80px; height: 96px; display: flex; align-items: center; justify-content: center;
+  opacity: .15; font-size: .55rem; letter-spacing: .08em; text-align: center;
+}
+.qa-name {
+  font-size: .5rem; letter-spacing: .08em; text-align: center;
+  opacity: .5; line-height: 1.3;
+}
+.qa-rarity {
+  font-size: .45rem; letter-spacing: .1em; text-transform: uppercase; opacity: .3;
+}
+
 /* Responsive */
 @media (max-width: 640px) {
   body { padding: 1.2rem; }
@@ -202,13 +279,22 @@ body::after {
 <div id="admin-dashboard" style="display:none">
   <header class="admin-header">
     <h1>Kokoon · Admin</h1>
-    <div class="admin-period-toggle">
-      <button data-period="day">day</button>
-      <button data-period="week">week</button>
-      <button data-period="month">month</button>
-      <button data-period="all" class="active">all time</button>
+    <div style="display:flex;gap:2rem;align-items:center">
+      <div class="admin-top-tabs">
+        <button class="admin-top-tab active" data-view="dashboard">Dashboard</button>
+        <button class="admin-top-tab" data-view="characters">Characters</button>
+      </div>
+      <div class="admin-period-toggle">
+        <button data-period="day">day</button>
+        <button data-period="week">week</button>
+        <button data-period="month">month</button>
+        <button data-period="all" class="active">all time</button>
+      </div>
     </div>
   </header>
+
+  <!-- ── Dashboard view ── -->
+  <div id="view-dashboard" class="active">
 
   <section class="admin-cards">
     <div class="admin-card"><span class="label">users</span><span class="value" id="m-users">—</span><span class="sub" id="m-new-users"></span></div>
@@ -278,10 +364,38 @@ body::after {
       <div id="panel-signups-list" style="max-height:400px;overflow-y:auto"></div>
     </div>
   </section>
+
+  </div><!-- end #view-dashboard -->
+
+  <!-- ── Characters QA view ── -->
+  <div id="view-characters">
+    <div class="qa-filters">
+      <div class="qa-filter-group">
+        <span class="qa-filter-label">Form</span>
+        <div class="qa-filter-pills">
+          <button class="qa-pill active" data-filter="form" data-value="plain">Plain</button>
+          <button class="qa-pill" data-filter="form" data-value="evolved">Evolved</button>
+          <button class="qa-pill" data-filter="form" data-value="nurtured">Nurtured</button>
+        </div>
+      </div>
+      <div class="qa-filter-group">
+        <span class="qa-filter-label">Variant</span>
+        <div class="qa-filter-pills" id="variant-pills">
+          <button class="qa-pill active" data-filter="variant" data-value="standard">Standard</button>
+          <button class="qa-pill" data-filter="variant" data-value="gold">Gold</button>
+          <button class="qa-pill" data-filter="variant" data-value="crimson">Crimson</button>
+          <button class="qa-pill" data-filter="variant" data-value="void">Void</button>
+        </div>
+      </div>
+    </div>
+    <div class="qa-grid" id="qa-grid"></div>
+  </div><!-- end #view-characters -->
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="supabase.js"></script>
+<script src="characters.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>
