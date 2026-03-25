@@ -3230,9 +3230,14 @@ async function handleSignedIn(user) {
       return;
     }
 
-    if (profile?.name) {
+    if (profile !== null) {
       // ── Returning user ────────────────────────────────────────────────────
-      localStorage.setItem('focus-name', profile.name);
+      // profile row exists → existing user even if name is somehow missing
+      const resolvedName = profile.name ||
+                           user.user_metadata?.full_name?.split(' ')[0] ||
+                           user.user_metadata?.name ||
+                           localStorage.getItem('focus-name') || '';
+      if (resolvedName) localStorage.setItem('focus-name', resolvedName);
       updateCollectionTitle();
       navigateTo('timer');
       // Sync collection + sessions in background
@@ -3269,7 +3274,26 @@ async function handleSignedIn(user) {
   }
 
   // ── New user ──────────────────────────────────────────────────────────────
+  // Safety check: even if the new-user flag was set, verify this account has
+  // no existing collection in Supabase before wiping local state and onboarding.
+  // This prevents re-onboarding returning users who hit an auth edge case.
   localStorage.removeItem('focus-new-user');
+
+  let existingCollection = null;
+  try { existingCollection = await DB.loadCollection(); } catch(_) {}
+  if (existingCollection && existingCollection.length > 0) {
+    // Account has data — treat as returning user with a broken profile
+    const name = localStorage.getItem('focus-name') ||
+                 user.user_metadata?.full_name?.split(' ')[0] ||
+                 user.user_metadata?.name || '';
+    if (name) {
+      localStorage.setItem('focus-name', name);
+      DB.saveProfile(name).catch(() => {});
+    }
+    updateCollectionTitle();
+    navigateTo('timer');
+    return;
+  }
 
   const name = localStorage.getItem('focus-name') ||
                user.user_metadata?.full_name?.split(' ')[0] ||
