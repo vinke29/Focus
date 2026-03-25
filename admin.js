@@ -342,6 +342,13 @@ function initCharactersView() {
   });
 }
 
+function qaCharNameEn(char) {
+  const name = char.name || '';
+  if (!name.includes('·')) return name;
+  const parts = name.split('·').map(s => s.trim());
+  return /^[A-Za-z0-9'\-\s]+$/.test(parts[0]) ? parts[0] : parts[parts.length - 1];
+}
+
 function renderQAGrid() {
   const grid = document.getElementById('qa-grid');
   if (!grid) return;
@@ -352,8 +359,7 @@ function renderQAGrid() {
   grid.innerHTML = ids.map(id => {
     const char  = CHARACTERS[id];
     const rarity = char.rarity || 'common';
-    const shortName = char.nameShort || id;
-    const enName = (char.name || id).split('·')[0].trim();
+    const enName = qaCharNameEn(char) || id;
     let artHtml;
     let hasContent = true;
 
@@ -381,7 +387,7 @@ function renderQAGrid() {
     const clickable = hasContent ? `data-qa-id="${id}" style="cursor:pointer"` : '';
     return `<div class="qa-card" ${clickable}>
       ${artHtml}
-      <div class="qa-name">${esc(enName)}<br><span style="opacity:.5">${esc(shortName)}</span></div>
+      <div class="qa-name">${esc(enName)}<br><span style="opacity:.4">${id}</span></div>
       <div class="qa-rarity">${rarity}</div>
     </div>`;
   }).join('');
@@ -397,8 +403,8 @@ function openQAModal(id) {
   const char = CHARACTERS[id];
   if (!char) return;
 
-  const enName  = (char.name || id).split('·')[0].trim();
-  const subtitle = char.subtitle || char.nameShort || '';
+  const enName  = qaCharNameEn(char) || id;
+  const subtitle = char.subtitle || '';
   const vfClass  = qaVariant !== 'standard' ? `vf-${qaVariant}` : '';
 
   // Resolve art + lore
