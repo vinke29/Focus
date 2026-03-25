@@ -3483,6 +3483,8 @@ async function init() {
     const AppPlugin = window.Capacitor.Plugins.App;
     AppPlugin?.addListener('appUrlOpen', async ({ url }) => {
       if (!url) return;
+      // Close the in-app SFSafariViewController browser
+      window.Capacitor.Plugins.Browser?.close();
       // PKCE flow: app.kokoon.focus://callback?code=XXX
       const queryIndex = url.indexOf('?');
       if (queryIndex >= 0) {

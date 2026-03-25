@@ -107,7 +107,7 @@ const DB = {
       });
       if (error) throw error;
       if (!data?.url) throw new Error('no OAuth URL returned from Supabase');
-      window.open(data.url, '_system');
+      await window.Capacitor.Plugins.Browser.open({ url: data.url });
     } else {
       const { error } = await _sb.auth.signInWithOAuth({
         provider: 'google',
