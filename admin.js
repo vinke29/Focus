@@ -180,9 +180,9 @@ function renderDAUChart(data) {
 }
 
 async function showDAUDetail(day) {
-  const date = new Date(day);
-  const dateStr = date.toISOString().slice(0, 10); // YYYY-MM-DD
-  const label = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+  const dateStr = String(day).slice(0, 10); // YYYY-MM-DD, no timezone shift
+  const [yr, mo, dy] = dateStr.split('-');
+  const label = `${parseInt(mo)}/${parseInt(dy)}/${yr}`;
 
   const modal = document.getElementById('dau-modal');
   const title = document.getElementById('dau-modal-title');
@@ -282,8 +282,8 @@ function fmt(n) {
 
 function formatDay(d) {
   if (!d) return '';
-  const date = new Date(d);
-  return `${date.getMonth() + 1}/${date.getDate()}`;
+  const [, month, day] = String(d).split('-');
+  return `${parseInt(month)}/${parseInt(day)}`;
 }
 
 function esc(s) {
