@@ -116,7 +116,7 @@ BEGIN
   FROM (
     SELECT c.user_id, p.name, p.email,
            count(DISTINCT c.char_id) FILTER (WHERE c.char_id NOT LIKE '%_evolved') as unique_chars,
-           count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'standard' AND c.char_id NOT LIKE '%_evolved') as std,
+           count(DISTINCT c.char_id) FILTER (WHERE c.char_id NOT LIKE '%_evolved') as std,
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'gold'     AND c.char_id NOT LIKE '%_evolved') as gold,
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'crimson'  AND c.char_id NOT LIKE '%_evolved') as crimson,
            count(DISTINCT c.char_id) FILTER (WHERE c.variant = 'void'     AND c.char_id NOT LIKE '%_evolved') as void,
