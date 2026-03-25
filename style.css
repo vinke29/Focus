@@ -325,6 +325,8 @@ body.dark .char-card.locked         { border-color: rgba(221,215,200,.18); box-s
 body.dark .char-card.locked:hover   { box-shadow: 0 1px 4px rgba(0,0,0,.2); }
 body.dark .card-info                { background: #14141f; border-top-color: rgba(221,215,200,.1); }
 body.dark .card-art                 { background: rgba(255,255,255,.015); }
+body.dark .card-art svg             { filter: drop-shadow(0 0 10px rgba(255,255,255,.12)) brightness(1.15); }
+body.dark .modal-art svg            { filter: drop-shadow(0 0 18px rgba(255,255,255,.15)) brightness(1.2); }
 body.dark .card-tooltip             { background: rgba(20,20,31,.96); }
 body.dark .collection-header        { border-bottom-color: rgba(221,215,200,.1); background: #0f0f1a; }
 body.dark .region-btn               { border-color: rgba(221,215,200,.18); }
@@ -1996,6 +1998,9 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
   width: 200px; height: auto;
   display: block; margin: 0 auto;
   animation: eggPulse 2s ease-in-out infinite;
+}
+body.dark .nurture-egg-img {
+  filter: drop-shadow(0 0 18px rgba(255,255,255,.18)) brightness(1.2);
 }
 @media (max-width: 600px) { .nurture-egg-img { width: 160px; } }
 @media (max-width: 390px) { .nurture-egg-img { width: 140px; } }
