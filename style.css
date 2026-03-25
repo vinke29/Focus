@@ -1890,7 +1890,7 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 /* Character SVG: vivid electric glow against the dark field */
 .vf-void svg {
   position: relative; z-index: 1;
-  filter: hue-rotate(255deg) saturate(2.6) brightness(1.45) contrast(1.08);
+  filter: grayscale(1) sepia(1) hue-rotate(240deg) saturate(4.5) brightness(1.45) contrast(1.06);
 }
 
 /* ── FUSION OVERLAY ── */
