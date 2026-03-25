@@ -1042,6 +1042,260 @@ const EVOLUTIONS = {
     </g>
   </g>
 </svg>`
+  },
+
+  // ── Fantasy Evolutions ────────────────────────────────────────────────────
+
+  sprite: {
+    id: 'sprite_evolved',
+    name: 'Sprite · 精霊',
+    nameShort: '精霊',
+    region: 'fantasy',
+    subtitle: 'Pure Magic · Ascended Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#7c4dff',
+    lore: 'The spark has become a sun. The Sprite no longer drifts — it blazes with focused intent, and every room it enters fills with the electric certainty that something great is about to happen.',
+    haiku: '火花が太陽<br>漂うことをやめて<br>意志が部屋を照らす',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/sprite_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  imp: {
+    id: 'imp_evolved',
+    name: 'Imp · インプ',
+    nameShort: 'インプ',
+    region: 'fantasy',
+    subtitle: 'Chaos Lord · Unbound Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#c62828',
+    lore: 'What began as stolen idle thoughts is now an empire of them. The Imp has become something the demons fear — a creature of pure creative havoc that bends distraction into genius.',
+    haiku: '怠けの帝国<br>盗んだ思いが咲いて<br>悪魔が畏れる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/imp_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  golem: {
+    id: 'golem_evolved',
+    name: 'Golem · ゴーレム',
+    nameShort: 'ゴーレム',
+    region: 'fantasy',
+    subtitle: 'Eternal Sentinel · Titan Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#558b2f',
+    lore: 'Stone has become something older than stone. The Golem no longer guards a boundary — it is the boundary. Mountains consult it before deciding where to stand.',
+    haiku: '石より古く<br>境界線そのものに<br>山も相談する',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/golem_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  djinn: {
+    id: 'djinn_evolved',
+    name: 'Djinn · ジン',
+    nameShort: 'ジン',
+    region: 'fantasy',
+    subtitle: 'Wish Sovereign · Embodied Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#0277bd',
+    lore: 'It no longer waits in smoke. The Djinn has stepped fully into the world and found it too small. Every wish it grants now reshapes the landscape slightly — permanently.',
+    haiku: '煙を抜けて<br>世界に踏み込んだ神<br>願いが地形を変える',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/djinn_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  basilisk: {
+    id: 'basilisk_evolved',
+    name: 'Basilisk · バジリスク',
+    nameShort: 'バジリスク',
+    region: 'fantasy',
+    subtitle: 'Stone King · Unblinking Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#827717',
+    lore: 'Its gaze no longer merely petrifies — it clarifies. Philosophers travel weeks to sit before the Basilisk and have their scattered thoughts crystallised into a single, perfect truth.',
+    haiku: '石化する目<br>散らばった思想が<br>一つの真実へ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/basilisk_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  fairy: {
+    id: 'fairy_evolved',
+    name: 'Fairy · フェアリー',
+    nameShort: 'フェアリー',
+    region: 'fantasy',
+    subtitle: 'Bloom Queen · Radiant Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#e91e8c',
+    lore: 'One pinch of her dust used to clear the mind. Now her wings scatter whole seasons into a single afternoon — every petal a completed thought, every gust a finished work.',
+    haiku: '羽ばたく季節<br>花びらは完成した思い<br>風が仕事を運ぶ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/fairy_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  chimera: {
+    id: 'chimera_evolved',
+    name: 'Chimera · キマイラ',
+    nameShort: 'キマイラ',
+    region: 'fantasy',
+    subtitle: 'Unified Beast · Sovereign Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#e65100',
+    lore: 'The three minds have stopped arguing. Lion, goat, and serpent now move as one — a single will so unified it bends reality slightly wherever it walks.',
+    haiku: '三つが一つに<br>言い争いが止まった<br>現実が曲がる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/chimera_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  kraken: {
+    id: 'kraken_evolved',
+    name: 'Kraken · クラーケン',
+    nameShort: 'クラーケン',
+    region: 'fantasy',
+    subtitle: 'Deep Sovereign · Leviathan Form',
+    rarity: 'rare',
+    rarityLabel: '◈ Rare',
+    accentColor: '#1565c0',
+    lore: 'The eight arms have learned patience. The Kraken no longer thrashes — it waits in absolute stillness, and ships reroute their courses just from the shape of its shadow on the seafloor.',
+    haiku: '八本の腕<br>忍耐を学んだ後<br>船が航路を変える',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/kraken_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  phoenix: {
+    id: 'phoenix_evolved',
+    name: 'Phoenix · フェニックス',
+    nameShort: 'フェニックス',
+    region: 'fantasy',
+    subtitle: 'Eternal Flame · Undying Form',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#e65100',
+    lore: 'It has died and risen so many times it has stopped counting. Now the Phoenix burns without consuming — an eternal fire that gives light and heat without ever going out.',
+    haiku: '数えるのをやめ<br>消費せずに燃え続ける<br>永遠の光よ',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/phoenix_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  myconid: {
+    id: 'myconid_evolved',
+    name: 'Myconid · マイコニド',
+    nameShort: 'マイコニド',
+    region: 'fantasy',
+    subtitle: 'Spore Network · Hive Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#8E6B5E',
+    lore: 'Its spores have spread through every forest on three continents. The Myconid no longer walks anywhere — it simply appears where calm is needed, growing from the ground in an instant.',
+    haiku: '三大陸の森<br>胞子が網を張り巡らし<br>必要な場所に咲く',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/myconid_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  mimic: {
+    id: 'mimic_evolved',
+    name: 'Mimic · ミミック',
+    nameShort: 'ミミック',
+    region: 'fantasy',
+    subtitle: 'Grand Hoarder · Vault Form',
+    rarity: 'common',
+    rarityLabel: '◇ Common',
+    accentColor: '#A1887F',
+    lore: 'The chest has become a vault. The Mimic now holds every distraction that has ever threatened a deep work session — entire libraries of temptation, locked away forever behind a very toothy grin.',
+    haiku: '誘惑の図書館<br>歯ある金庫の奥に<br>永久に封印',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/mimic_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
+  },
+
+  wyrm: {
+    id: 'wyrm_evolved',
+    name: 'Wyrm · ワーム',
+    nameShort: 'ワーム',
+    region: 'fantasy',
+    subtitle: 'Ancient Dragon · World Form',
+    rarity: 'legendary',
+    rarityLabel: '✦ Legendary',
+    accentColor: '#4A148C',
+    lore: 'It has grown large enough to circle the world. The Wyrm sleeps with its tail in its mouth and the continents drift slowly on its back. It yawns once per century, and the tides change.',
+    haiku: '世界を一周<br>大陸が背に漂い<br>あくびで潮が変わる',
+    svg: `
+<svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g class="char-float">
+    <g class="char-body">
+      <image href="/chars/wyrm_evolved.png" x="10" y="0" width="300" height="380"/>
+    </g>
+  </g>
+</svg>`
   }
 };
 
