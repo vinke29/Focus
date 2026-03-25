@@ -388,7 +388,7 @@ body.dark #egg-stage:has(.nurture-egg-img)::before {
   position: absolute;
   width: 228px; height: 228px;
   border-radius: 50%;
-  background: var(--paper);
+  background: #f7f2e8;
   z-index: 0;
 }
 
