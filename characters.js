@@ -1299,7 +1299,7 @@ const EVOLUTIONS = {
   }
 };
 
-const EVOLUTION_SESSIONS = 5; // sessions with creature pinned to trigger evolution
+const EVOLUTION_SESSIONS = 3; // sessions with creature pinned to trigger evolution
 
 const CHARACTERS = {
 
