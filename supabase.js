@@ -54,7 +54,7 @@ const DB = {
     // Pass name as metadata — a DB trigger picks it up and writes profiles
     const { data, error } = await _sb.auth.signUp({
       email, password,
-      options: { data: { name }, emailRedirectTo: window.location.origin + '/app' }
+      options: { data: { name }, emailRedirectTo: 'app.kokoon.focus://confirm' }
     });
     if (error) throw error;
     return data; // data.session is null when email confirmation is required
