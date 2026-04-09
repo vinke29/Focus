@@ -47,7 +47,8 @@ button:disabled { opacity: .45; pointer-events: none; }
   <input id="pw2" type="password" placeholder="confirm password" autocomplete="new-password">
   <div class="error" id="err"></div>
   <button id="btn">set password</button>
-  <p id="success" class="success" style="display:none">password updated — you can sign in now.</p>
+  <p id="success" class="success" style="display:none; margin-bottom: 1.5rem;">password updated.</p>
+  <a id="signin-link" href="https://kokoon.app/app" style="display:none; margin-top: 1rem;">sign in to kokoon</a>
 </div>
 
 <script>
@@ -106,6 +107,7 @@ const SUPABASE_KEY = 'sb_publishable_XyzHbIwzLhRbGbqOfIY8UA_K8Gfw78R';
       if (error) throw error;
       btn.style.display = 'none';
       document.getElementById('success').style.display = 'block';
+      document.getElementById('signin-link').style.display = 'inline-block';
     } catch(e) {
       err.textContent = e.message || 'could not update password';
       btn.disabled = false;

@@ -31,8 +31,7 @@ a:hover, button:hover { background: var(--ink); color: var(--paper); }
 <div id="content">
   <h1>Kokoon</h1>
   <p id="msg">your email has been confirmed.<br>open the app to start your collection.</p>
-  <a id="app-link" href="app.kokoon.focus://confirm" style="display:none">open kokoon</a>
-  <a href="https://apps.apple.com/app/id6741886982" id="store-link" style="display:none">download on the app store</a>
+  <a id="open-link" href="https://kokoon.app/app" style="display:none">open kokoon</a>
 </div>
 
 <script>
@@ -56,14 +55,8 @@ const SUPABASE_KEY = 'sb_publishable_XyzHbIwzLhRbGbqOfIY8UA_K8Gfw78R';
   loading.style.display = 'none';
   content.style.display = 'flex';
 
-  if (isIOS) {
-    // Try to open app, show "open kokoon" button
-    document.getElementById('app-link').style.display = 'inline-block';
-    window.location.href = 'app.kokoon.focus://confirm';
-  } else {
-    // Desktop — show App Store link
-    document.getElementById('store-link').style.display = 'inline-block';
-  }
+  document.getElementById('open-link').style.display = 'inline-block';
+  if (isIOS) window.location.href = 'app.kokoon.focus://confirm';
 })();
 </script>
 </body>
