@@ -2057,13 +2057,13 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 
 /* ── NURTURE EGG IMAGE (creature holding egg) ── */
 .nurture-egg-img {
-  width: 140px; height: auto;
+  width: 160px; height: auto;
   display: block; margin: 0 auto;
 }
-@media (max-width: 600px) { .nurture-egg-img { width: 120px; } }
-@media (max-width: 390px) { .nurture-egg-img { width: 100px; } }
+@media (max-width: 600px) { .nurture-egg-img { width: 140px; } }
+@media (max-width: 390px) { .nurture-egg-img { width: 120px; } }
 /* On 3x retina screens, cap at 93px so 280px source never upscales */
-@media (-webkit-min-device-pixel-ratio: 3) { .nurture-egg-img { width: 93px; } }
+@media (-webkit-min-device-pixel-ratio: 3) { .nurture-egg-img { width: 110px; } }
 @keyframes eggPulseSubtle {
   0%, 100% { transform: scaleX(1) scaleY(1); }
   50%       { transform: scaleX(1.008) scaleY(.993); }
