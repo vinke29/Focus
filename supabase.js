@@ -41,6 +41,14 @@ const DB = {
     return data;
   },
 
+  async resetPassword(email) {
+    if (!_sb) throw new Error('offline');
+    const { error } = await _sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'app.kokoon.focus://reset-password'
+    });
+    if (error) throw error;
+  },
+
   async signUp(name, email, password) {
     if (!_sb) throw new Error('offline');
     // Pass name as metadata — a DB trigger picks it up and writes profiles

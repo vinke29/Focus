@@ -53,6 +53,16 @@
       <input id="si-password" type="password" class="auth-input" placeholder="password" autocomplete="current-password">
       <button id="btn-signin" class="auth-btn"><span>begin</span></button>
       <p id="si-error" class="auth-error"></p>
+      <button id="btn-forgot-password" class="auth-link-btn">forgot password?</button>
+    </div>
+
+    <!-- Forgot password panel -->
+    <div id="panel-forgot" class="auth-panel" style="display:none">
+      <p class="auth-confirm-msg">enter your email and we'll send a reset link.</p>
+      <input id="fp-email" type="email" class="auth-input" placeholder="email" autocomplete="email">
+      <button id="btn-send-reset" class="auth-btn"><span>send reset link</span></button>
+      <p id="fp-error" class="auth-error"></p>
+      <button id="btn-back-signin" class="auth-link-btn">back to sign in</button>
     </div>
 
     <!-- Sign up panel -->

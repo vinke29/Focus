@@ -3733,6 +3733,38 @@ async function init() {
     document.getElementById('tab-signin').classList.add('active');
     document.getElementById('tab-signup').classList.remove('active');
   });
+  document.getElementById('btn-forgot-password').addEventListener('click', () => {
+    const email = document.getElementById('si-email').value;
+    document.getElementById('panel-signin').style.display = 'none';
+    document.getElementById('panel-forgot').style.display = 'flex';
+    if (email) document.getElementById('fp-email').value = email;
+  });
+  document.getElementById('btn-back-signin').addEventListener('click', () => {
+    document.getElementById('panel-forgot').style.display = 'none';
+    document.getElementById('panel-signin').style.display = 'flex';
+    document.getElementById('fp-error').textContent = '';
+  });
+  document.getElementById('btn-send-reset').addEventListener('click', async () => {
+    const email = document.getElementById('fp-email').value.trim();
+    const btn = document.getElementById('btn-send-reset');
+    const err = document.getElementById('fp-error');
+    if (!email) { err.textContent = 'please enter your email'; return; }
+    setAuthLoading(btn, true);
+    try {
+      await DB.resetPassword(email);
+      err.style.color = 'var(--ink)';
+      err.textContent = 'reset link sent — check your email.';
+      btn.style.display = 'none';
+    } catch (e) {
+      err.style.color = '';
+      err.textContent = e.message || 'could not send reset link';
+    } finally {
+      setAuthLoading(btn, false);
+    }
+  });
+  document.getElementById('fp-email').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('btn-send-reset').click();
+  });
   // Allow Enter key in auth inputs
   ['si-email','si-password'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') performSignIn(); });
