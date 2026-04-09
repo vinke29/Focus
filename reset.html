@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reset Password — Kokoon</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root { --ink: #080810; --paper: #fdf4e5; --muted: rgba(8,8,16,.42); --red: #c0392b; }
+html, body { height: 100%; background: var(--paper); font-family: 'Georgia', serif; color: var(--ink); }
+body { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
+h1 { font-size: 1.6rem; font-weight: 400; letter-spacing: .08em; margin-bottom: .5rem; }
+p  { font-size: .8rem; color: var(--muted); margin-bottom: 2rem; letter-spacing: .04em; }
+input {
+  display: block; width: 100%; max-width: 320px;
+  padding: .75rem 0; margin-bottom: 1rem;
+  border: none; border-bottom: 1px solid rgba(8,8,16,.25);
+  background: transparent; font-size: .9rem; color: var(--ink);
+  outline: none; letter-spacing: .04em;
+}
+input::placeholder { color: var(--muted); }
+button {
+  display: block; width: 100%; max-width: 320px;
+  padding: .75rem 1.5rem; margin-bottom: .75rem;
+  border: 1.5px solid var(--ink); background: transparent;
+  font-size: .8rem; letter-spacing: .12em; cursor: pointer;
+  color: var(--ink); transition: background .2s, color .2s;
+}
+button:hover { background: var(--ink); color: var(--paper); }
+button:disabled { opacity: .45; pointer-events: none; }
+.error { font-size: .7rem; color: var(--red); min-height: 1rem; margin-bottom: .5rem; letter-spacing: .04em; }
+.success { font-size: .8rem; color: var(--ink); letter-spacing: .04em; text-align: center; }
+#form { display: none; flex-direction: column; align-items: center; width: 100%; }
+#loading { font-size: .8rem; color: var(--muted); letter-spacing: .06em; }
+</style>
+</head>
+<body>
+
+<div id="loading">one moment…</div>
+
+<div id="form">
+  <h1>Kokoon</h1>
+  <p>choose a new password.</p>
+  <input id="pw"  type="password" placeholder="new password"     autocomplete="new-password">
+  <input id="pw2" type="password" placeholder="confirm password" autocomplete="new-password">
+  <div class="error" id="err"></div>
+  <button id="btn">set password</button>
+  <p id="success" class="success" style="display:none">password updated — you can sign in now.</p>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://bvfxxedhvdknwvvkyuph.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_XyzHbIwzLhRbGbqOfIY8UA_K8Gfw78R';
+
+(async () => {
+  const loading = document.getElementById('loading');
+  const form    = document.getElementById('form');
+
+  // Try to open the app first (iOS with app installed)
+  const fullUrl = window.location.href;
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+
+  if (isIOS) {
+    // Redirect to deep link, show form after short delay as fallback
+    const deepLink = fullUrl.replace('https://kokoon.app/reset', 'app.kokoon.focus://reset-password');
+    window.location.href = deepLink;
+    await new Promise(r => setTimeout(r, 600));
+  }
+
+  // Exchange code for session (PKCE flow)
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+
+  let sb;
+  try {
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    if (code) {
+      const { error } = await sb.auth.exchangeCodeForSession(window.location.href);
+      if (error) throw error;
+    } else {
+      // Implicit flow — session may already be in hash
+      const { data, error } = await sb.auth.getSession();
+      if (error || !data.session) throw new Error('invalid or expired link');
+    }
+  } catch(e) {
+    loading.textContent = 'this link has expired. please request a new password reset.';
+    return;
+  }
+
+  loading.style.display = 'none';
+  form.style.display = 'flex';
+
+  document.getElementById('btn').addEventListener('click', async () => {
+    const pw  = document.getElementById('pw').value;
+    const pw2 = document.getElementById('pw2').value;
+    const btn = document.getElementById('btn');
+    const err = document.getElementById('err');
+    if (pw.length < 6) { err.textContent = 'password must be at least 6 characters'; return; }
+    if (pw !== pw2)    { err.textContent = 'passwords do not match'; return; }
+    btn.disabled = true;
+    btn.textContent = '...';
+    try {
+      const { error } = await sb.auth.updateUser({ password: pw });
+      if (error) throw error;
+      btn.style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+    } catch(e) {
+      err.textContent = e.message || 'could not update password';
+      btn.disabled = false;
+      btn.textContent = 'set password';
+    }
+  });
+})();
+</script>
+</body>
+</html>

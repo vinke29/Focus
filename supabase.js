@@ -50,7 +50,7 @@ const DB = {
   async resetPassword(email) {
     if (!_sb) throw new Error('offline');
     const { error } = await _sb.auth.resetPasswordForEmail(email, {
-      redirectTo: 'app.kokoon.focus://reset-password'
+      redirectTo: 'https://kokoon.app/reset'
     });
     if (error) throw error;
   },
