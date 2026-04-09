@@ -3559,7 +3559,11 @@ async function init() {
           const { data, error } = await DB.exchangeCode(url);
           if (error) return;
           if (!error && data?.session) {
-            await handleSignedIn(data.session.user);
+            if (params.get('type') === 'recovery') {
+              showResetPasswordPanel();
+            } else {
+              await handleSignedIn(data.session.user);
+            }
           }
           return;
         }
