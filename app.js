@@ -3797,8 +3797,8 @@ async function init() {
     setAuthLoading(btn, true);
     try {
       await DB.updatePassword(pw);
-      const session = await DB.getSession();
-      if (session?.user) await handleSignedIn(session.user);
+      const { data } = await DB.getSession();
+      if (data?.session?.user) await handleSignedIn(data.session.user);
     } catch (e) {
       err.textContent = e.message || 'could not update password';
       setAuthLoading(btn, false);
