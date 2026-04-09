@@ -3441,6 +3441,19 @@ async function performSignOut() {
   navigateTo('auth');
 }
 
+function showResetPasswordPanel() {
+  // Hide all auth panels, show reset password panel
+  document.getElementById('panel-signin').style.display = 'none';
+  document.getElementById('panel-signup').style.display = 'none';
+  document.getElementById('panel-forgot').style.display = 'none';
+  document.getElementById('auth-confirm').style.display = 'none';
+  document.getElementById('panel-reset-password').style.display = 'flex';
+  document.getElementById('rp-error').textContent = '';
+  document.getElementById('rp-password').value = '';
+  document.getElementById('rp-password2').value = '';
+  navigateTo('auth');
+}
+
 function openAccountSheet() {
   const name  = getUserName();
   const initial = (name || '?')[0].toUpperCase();
@@ -3558,10 +3571,15 @@ async function init() {
       const params = new URLSearchParams(fragment);
       const accessToken = params.get('access_token');
       const refreshToken = params.get('refresh_token');
+      const type = params.get('type');
       if (accessToken) {
         const { data, error } = await DB.setSession(accessToken, refreshToken);
         if (!error && data?.session) {
-          await handleSignedIn(data.session.user);
+          if (type === 'recovery') {
+            showResetPasswordPanel();
+          } else {
+            await handleSignedIn(data.session.user);
+          }
         }
       }
     });
@@ -3764,6 +3782,23 @@ async function init() {
   });
   document.getElementById('fp-email').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('btn-send-reset').click();
+  });
+  document.getElementById('btn-set-password').addEventListener('click', async () => {
+    const pw  = document.getElementById('rp-password').value;
+    const pw2 = document.getElementById('rp-password2').value;
+    const btn = document.getElementById('btn-set-password');
+    const err = document.getElementById('rp-error');
+    if (pw.length < 6) { err.textContent = 'password must be at least 6 characters'; return; }
+    if (pw !== pw2)    { err.textContent = 'passwords do not match'; return; }
+    setAuthLoading(btn, true);
+    try {
+      await DB.updatePassword(pw);
+      const session = await DB.getSession();
+      if (session?.user) await handleSignedIn(session.user);
+    } catch (e) {
+      err.textContent = e.message || 'could not update password';
+      setAuthLoading(btn, false);
+    }
   });
   // Allow Enter key in auth inputs
   ['si-email','si-password'].forEach(id => {

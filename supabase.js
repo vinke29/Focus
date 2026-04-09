@@ -41,6 +41,12 @@ const DB = {
     return data;
   },
 
+  async updatePassword(newPassword) {
+    if (!_sb) throw new Error('offline');
+    const { error } = await _sb.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+  },
+
   async resetPassword(email) {
     if (!_sb) throw new Error('offline');
     const { error } = await _sb.auth.resetPasswordForEmail(email, {
