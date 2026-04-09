@@ -3281,6 +3281,11 @@ async function handleSignedIn(user) {
                            user.user_metadata?.name ||
                            localStorage.getItem('focus-name') || '';
       if (resolvedName) localStorage.setItem('focus-name', resolvedName);
+      // DB is source of truth for evolved creatures — overwrite localStorage
+      if (Array.isArray(profile.evolved_creatures)) {
+        state.evolvedCreatures = profile.evolved_creatures;
+        localStorage.setItem('focus-evolved', JSON.stringify(state.evolvedCreatures));
+      }
       updateCollectionTitle();
       navigateTo('timer');
       // Sync collection + sessions in background

@@ -138,8 +138,8 @@ const DB = {
     if (!_sb) return null;
     const { data: { user } } = await _sb.auth.getUser();
     if (!user) return null;
-    const { data } = await _sb.from('profiles').select('name').eq('id', user.id).maybeSingle();
-    return data; // { name } or null
+    const { data } = await _sb.from('profiles').select('name, evolved_creatures').eq('id', user.id).maybeSingle();
+    return data; // { name, evolved_creatures } or null
   },
 
   async saveProfile(name) {
