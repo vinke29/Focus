@@ -492,6 +492,51 @@ body.dark #egg-stage:has(.nurture-egg-img)::before {
 
 #view-timer.running #duration-picker { opacity: 0; pointer-events: none; }
 
+#block-apps-row {
+  display: none;
+  margin-top: .85rem;
+  align-items: center; gap: .6rem;
+}
+.is-native #block-apps-row { display: flex; justify-content: center; }
+#btn-choose-apps {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Noto Serif JP', serif;
+  font-size: .58rem; letter-spacing: .1em;
+  color: var(--ink); opacity: .35;
+  padding: .2rem .1rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity .2s;
+}
+#btn-choose-apps:hover, #btn-choose-apps:active { opacity: .7; }
+#block-apps-label {
+  display: flex; align-items: center; gap: .6rem;
+  cursor: pointer;
+  font-family: 'Noto Serif JP', serif;
+  font-size: .62rem; letter-spacing: .12em;
+  color: var(--ink); opacity: .5;
+  transition: opacity .2s;
+}
+#block-apps-label:has(#btn-block-apps:checked) { opacity: 1; }
+.toggle-track {
+  position: relative; width: 34px; height: 20px;
+  background: rgba(0,0,0,.15); border-radius: 10px;
+  transition: background .2s;
+}
+#btn-block-apps:checked ~ .toggle-thumb,
+#btn-block-apps:checked + .toggle-thumb { left: 16px; }
+#block-apps-label:has(#btn-block-apps:checked) .toggle-track { background: var(--ink); }
+#btn-block-apps {
+  position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+}
+.toggle-thumb {
+  position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg); box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  transition: left .2s;
+}
+#view-timer.running #block-apps-row { opacity: 0; pointer-events: none; }
+
 #timer-stats {
   margin-top: 1.2rem;
   display: flex; flex-direction: column; align-items: center; gap: .3rem;
@@ -2003,12 +2048,14 @@ body.dark .modal-var-dot { border-color: rgba(221,215,200,.2); }
 
 /* ── NURTURE EGG IMAGE (creature holding egg) ── */
 .nurture-egg-img {
-  width: 200px; height: auto;
+  width: 140px; height: auto;
   display: block; margin: 0 auto;
   animation: eggPulse 2s ease-in-out infinite;
 }
-@media (max-width: 600px) { .nurture-egg-img { width: 160px; } }
-@media (max-width: 390px) { .nurture-egg-img { width: 140px; } }
+@media (max-width: 600px) { .nurture-egg-img { width: 120px; } }
+@media (max-width: 390px) { .nurture-egg-img { width: 100px; } }
+/* On 3x retina screens, cap at 93px so 280px source never upscales */
+@media (-webkit-min-device-pixel-ratio: 3) { .nurture-egg-img { width: 93px; } }
 @media (hover: hover) { .nurture-egg-img { animation-duration: 4s; animation-name: eggPulseSubtle; } }
 @keyframes eggPulseSubtle {
   0%, 100% { transform: scaleX(1) scaleY(1); }

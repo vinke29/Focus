@@ -18,11 +18,17 @@ const Haptic = {
 // Live Activity bridge (iOS 16.1+ Lock Screen / Dynamic Island timer)
 const LiveActivity = IS_NATIVE && (window.Capacitor.Plugins?.LiveActivity || null);
 
+// App Blocking bridge (iOS Screen Time / Family Controls)
+const AppBlocking = IS_NATIVE && (window.Capacitor.Plugins?.AppBlocking || null);
+
 // LocalNotifications — needed for reliable ring/vibrate when the app is backgrounded.
 // The Live Activity AlertConfiguration only fires while the app is running in foreground;
 // when iOS suspends the WKWebView the JS timer stops and stopActivity is never called.
 const LocalNotif = IS_NATIVE && (window.Capacitor.Plugins?.LocalNotifications || null);
 const TIMER_NOTIF_ID = 77;
+
+// Mark body so CSS can show native-only UI
+if (IS_NATIVE) document.body.classList.add('is-native');
 
 // Dismiss keyboard on tap outside inputs (native iOS)
 if (IS_NATIVE) {
@@ -1430,6 +1436,16 @@ function dismissEvoHint() {
   DB.setEvoHintSeen().catch(() => {});
 }
 
+function initBlockApps() {
+  const on = localStorage.getItem('focus-block-apps') === 'true';
+  const el = document.getElementById('btn-block-apps');
+  if (el) el.checked = on;
+}
+
+function isBlockAppsEnabled() {
+  return document.getElementById('btn-block-apps')?.checked ?? false;
+}
+
 function initDarkMode() {
   const dark = localStorage.getItem('focus-dark') === 'true';
   document.documentElement.classList.toggle('dark', dark);
@@ -1532,6 +1548,17 @@ function startTimer() {
       remainingSeconds: state.timer.remaining,
     }).catch(() => {});
   }
+  if (AppBlocking && isBlockAppsEnabled()) {
+    AppBlocking.getAuthorizationStatus().then(({ status }) => {
+      if (status === 'notDetermined') {
+        return AppBlocking.requestAuthorization().then(({ granted }) => {
+          if (granted) return AppBlocking.startBlocking();
+        });
+      } else if (status === 'approved') {
+        return AppBlocking.startBlocking();
+      }
+    }).catch(() => {});
+  }
   // Schedule a LocalNotification at exact end time so the phone rings even when
   // the app is backgrounded and JS is suspended (Live Activity alert needs foreground).
   if (LocalNotif) {
@@ -1578,7 +1605,11 @@ function pauseTimer() {
   clearInterval(state.timer.interval);
   releaseWakeLock();
   saveTimerState();
-  if (LocalNotif) { LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}); }
+  if (LocalNotif) {
+    LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {});
+    LocalNotif.removeAllDeliveredNotifications().catch(() => {});
+  }
+  if (AppBlocking) { AppBlocking.stopBlocking().catch(() => {}); }
   if (LiveActivity) {
     LiveActivity.updateActivity({
       remainingSeconds: state.timer.remaining,
@@ -1598,8 +1629,12 @@ function resetTimerState() {
   clearInterval(state.timer.interval);
   clearTimerState();
   releaseWakeLock();
-  if (LocalNotif) { LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {}); }
+  if (LocalNotif) {
+    LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {});
+    LocalNotif.removeAllDeliveredNotifications().catch(() => {});
+  }
   if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
+  if (AppBlocking) { AppBlocking.stopBlocking().catch(() => {}); }
   state.timer.running   = false;
   state.timer.remaining = state.timer.duration;
   updateTimerDisplay();
@@ -3478,6 +3513,7 @@ async function init() {
 
   loadMuteState();
   initDarkMode();
+  initBlockApps();
   initReminder();
   if (!IS_NATIVE) registerSW();
 
@@ -3562,6 +3598,27 @@ async function init() {
   // Mute + dark toggles
   document.getElementById('btn-mute').addEventListener('click', toggleMute);
   document.getElementById('btn-dark').addEventListener('click', toggleDark);
+  document.getElementById('btn-block-apps')?.addEventListener('change', async e => {
+    localStorage.setItem('focus-block-apps', String(e.target.checked));
+    if (e.target.checked && AppBlocking) {
+      const { status } = await AppBlocking.getAuthorizationStatus();
+      if (status !== 'approved') {
+        await AppBlocking.requestAuthorization();
+      }
+    }
+  });
+  document.getElementById('btn-choose-apps')?.addEventListener('click', async () => {
+    if (!AppBlocking) return;
+    const { status } = await AppBlocking.getAuthorizationStatus();
+    if (status !== 'approved') {
+      const { granted } = await AppBlocking.requestAuthorization();
+      if (!granted) {
+        alert('To block apps during focus, go to Settings → Screen Time and allow Kokoon access.');
+        return;
+      }
+    }
+    AppBlocking.showPicker().catch(() => {});
+  });
 
   // Start/pause button
   document.getElementById('btn-start-focus').addEventListener('click', () => {
