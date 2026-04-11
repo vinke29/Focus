@@ -1943,6 +1943,7 @@ function runHatchSequence() {
   // 4. Show UI at 3.6s
   setTimeout(() => {
     document.getElementById('hatch-footer').classList.add('show');
+    maybeShowGuestPrompt();
   }, 3600);
 
   // 5. Region complete or milestone toast — appears after actions settle
@@ -2107,6 +2108,7 @@ function runNurtureSequence(charId, progress) {
   // 3. Show footer at 2.2s
   setTimeout(() => {
     document.getElementById('hatch-footer').classList.add('show');
+    maybeShowGuestPrompt();
   }, 2200);
 }
 
@@ -3348,6 +3350,25 @@ async function handleSignedIn(user) {
                user.user_metadata?.name || 'there';
 
   localStorage.setItem('focus-name', name);
+
+  const hasGuestData = localStorage.getItem('focus-guest-migrate') === 'true';
+  if (hasGuestData && (state.collection.length > 0 || sessions.length > 0)) {
+    // Migrate guest data to the new account instead of starting fresh
+    localStorage.removeItem('focus-guest');
+    localStorage.removeItem('focus-guest-migrate');
+    try { await DB.saveProfile(name); } catch(_) {}
+    if (state.collection.length > 0) DB.saveCollection(state.collection).catch(() => {});
+    if (sessions.length > 0) {
+      sessions.forEach(s => DB.addSession(s.duration).catch(() => {}));
+    }
+    DB.invokeFunction('send-welcome-email', { email: user.email, name }).catch(() => {});
+    updateCollectionTitle();
+    navigateTo('timer');
+    return;
+  }
+
+  localStorage.removeItem('focus-guest');
+  localStorage.removeItem('focus-guest-migrate');
   state.collection = [];
   sessions = [];
   try {
@@ -3391,19 +3412,35 @@ async function performSignUp() {
     // Always persist name + new-user flag so onboarding fires after email confirmation too
     localStorage.setItem('focus-name', name);
     localStorage.setItem('focus-new-user', 'true');
+    const hasGuestData = localStorage.getItem('focus-guest-migrate') === 'true';
     if (!data.session) {
       // Email confirmation required — show notice; onboarding will fire on next sign-in
       document.getElementById('panel-signup').style.display  = 'none';
       document.getElementById('auth-confirm').style.display  = 'flex';
       return;
     }
-    // Auto-confirmed: go straight to onboarding egg
-    state.collection = [];
-    sessions = [];
     localStorage.removeItem('focus-new-user');
-    DB.invokeFunction('send-welcome-email', { email, name })
-      .catch(() => {});
-    showOnboardingEgg(name);
+    if (hasGuestData && (state.collection.length > 0 || sessions.length > 0)) {
+      // Migrate guest data to the new account instead of starting fresh
+      localStorage.removeItem('focus-guest');
+      localStorage.removeItem('focus-guest-migrate');
+      DB.saveProfile(name).catch(() => {});
+      if (state.collection.length > 0) DB.saveCollection(state.collection).catch(() => {});
+      if (sessions.length > 0) {
+        sessions.forEach(s => DB.addSession(s.duration).catch(() => {}));
+      }
+      DB.invokeFunction('send-welcome-email', { email, name }).catch(() => {});
+      updateCollectionTitle();
+      navigateTo('timer');
+    } else {
+      // Fresh start: go straight to onboarding egg
+      localStorage.removeItem('focus-guest');
+      localStorage.removeItem('focus-guest-migrate');
+      state.collection = [];
+      sessions = [];
+      DB.invokeFunction('send-welcome-email', { email, name }).catch(() => {});
+      showOnboardingEgg(name);
+    }
   } catch(e) {
     showAuthError('signup', e.message || 'sign up failed');
     setAuthLoading(btn, false);
@@ -3809,6 +3846,35 @@ async function init() {
       setAuthLoading(btn, false);
     }
   });
+  // Guest mode: explore without account
+  document.getElementById('btn-guest').addEventListener('click', () => {
+    localStorage.setItem('focus-guest', 'true');
+    loadCollection();
+    loadSessions();
+    loadBadges();
+    renderTimerStats();
+    initEggInteraction();
+    navigateTo('timer');
+  });
+
+  // Guest signup prompt buttons
+  document.getElementById('btn-guest-create-account').addEventListener('click', () => {
+    document.getElementById('guest-signup-prompt').classList.remove('show');
+    localStorage.setItem('focus-guest-migrate', 'true');
+    // Switch to sign-up tab
+    document.getElementById('tab-signup').classList.add('active');
+    document.getElementById('tab-signin').classList.remove('active');
+    document.getElementById('panel-signup').style.display = 'flex';
+    document.getElementById('panel-signin').style.display = 'none';
+    document.getElementById('auth-confirm').style.display = 'none';
+    clearAuthErrors();
+    navigateTo('auth');
+    setTimeout(() => document.getElementById('su-name').focus(), 60);
+  });
+  document.getElementById('btn-guest-dismiss').addEventListener('click', () => {
+    document.getElementById('guest-signup-prompt').classList.remove('show');
+  });
+
   // Allow Enter key in auth inputs
   ['si-email','si-password'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') performSignIn(); });
@@ -3899,11 +3965,34 @@ async function init() {
         clearTimerState();
       }
     } catch(e) { clearTimerState(); }
+  } else if (localStorage.getItem('focus-guest') === 'true') {
+    loadCollection();
+    loadSessions();
+    loadBadges();
+    renderTimerStats();
+    initEggInteraction();
+    navigateTo('timer');
   } else {
     navigateTo('auth');
     setTimeout(() => document.getElementById('si-email').focus(), 100);
   }
   document.body.style.opacity = '1';
+}
+
+// ── Guest mode ────────────────────────────────────────────────────────────────
+
+function isGuest() {
+  return localStorage.getItem('focus-guest') === 'true';
+}
+
+function maybeShowGuestPrompt() {
+  if (!isGuest()) return;
+  const name = state.hatch?.character?.name;
+  const label = name ? `you hatched ${name}` : 'your creature hatched';
+  document.getElementById('guest-creature-name').textContent = label;
+  setTimeout(() => {
+    document.getElementById('guest-signup-prompt').classList.add('show');
+  }, 1200);
 }
 
 document.addEventListener('DOMContentLoaded', init);

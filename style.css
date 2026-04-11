@@ -221,6 +221,53 @@ body.dark .auth-btn-social:hover, body.dark .auth-btn-social:active { border-col
 }
 .auth-footer-links a:hover { opacity: .6; }
 
+.auth-guest-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'Noto Serif JP', serif;
+  font-size: .6rem; letter-spacing: .12em;
+  color: var(--ink); opacity: .3;
+  padding: .5rem 0 1rem;
+  text-decoration: underline;
+  transition: opacity .2s;
+}
+.auth-guest-btn:hover { opacity: .6; }
+
+/* ── GUEST SIGNUP PROMPT ── */
+#guest-signup-prompt {
+  position: fixed; inset: 0; z-index: 400;
+  background: rgba(8,8,16,.6);
+  display: flex; align-items: flex-end;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+#guest-signup-prompt.show { opacity: 1; pointer-events: all; }
+.guest-signup-sheet {
+  width: 100%; background: var(--paper);
+  border-radius: 18px 18px 0 0;
+  padding: 2rem 2rem calc(2.5rem + env(safe-area-inset-bottom));
+  display: flex; flex-direction: column; align-items: center;
+  gap: .5rem; text-align: center;
+  transform: translateY(100%);
+  transition: transform .35s cubic-bezier(.32,.72,0,1);
+}
+#guest-signup-prompt.show .guest-signup-sheet { transform: translateY(0); }
+.guest-creature-label {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1rem; letter-spacing: .08em;
+  color: var(--ink); margin-bottom: .2rem;
+}
+.guest-signup-msg {
+  font-size: .7rem; letter-spacing: .06em;
+  color: var(--ink); opacity: .55;
+  line-height: 1.7; margin-bottom: .3rem;
+}
+body.dark .guest-signup-sheet { background: #0f0f1a; border-top: 1px solid rgba(221,215,200,.1); }
+body.dark .guest-creature-label,
+body.dark .guest-signup-msg { color: #ddd7c8; }
+body.dark #guest-signup-prompt .auth-btn { border-color: rgba(221,215,200,.7); color: #ddd7c8; }
+body.dark #guest-signup-prompt .auth-btn::before { background: rgba(221,215,200,.7); }
+body.dark #guest-signup-prompt .auth-link-btn { color: #ddd7c8; }
+
 body.dark #account-sheet { background: #0f0f1a; border-top-color: rgba(221,215,200,.1); }
 body.dark .account-sheet-divider { background: rgba(221,215,200,.1); }
 
