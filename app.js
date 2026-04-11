@@ -1712,6 +1712,23 @@ function onTimerComplete() {
 
   // ── Evolution path: skip hatch entirely, go straight to evolution screen ──
   if (state.pendingEvolution) {
+    if (isGuest()) {
+      // Undo evolution — roll back state so one more session triggers it after sign-up
+      state.evolvedCreatures = state.evolvedCreatures.filter(id => id !== state.pinnedCreature);
+      localStorage.setItem('focus-evolved', JSON.stringify(state.evolvedCreatures));
+      state.evolutionSessions[state.pinnedCreature] = EVOLUTION_SESSIONS - 1;
+      state.pendingEvolution = null;
+      // Show guest prompt on dark canvas
+      state.hatch.guestBlocked = true;
+      state.hatch.character = null;
+      state.hatch.variant   = null;
+      navigateTo('hatch');
+      document.getElementById('hatch-stage').style.opacity = '0';
+      document.getElementById('guest-creature-name').textContent = 'evolution awaits';
+      document.getElementById('guest-signup-msg').textContent    = 'create an account to evolve your creature and unlock its final form.';
+      setTimeout(() => document.getElementById('guest-signup-prompt').classList.add('show'), 600);
+      return;
+    }
     const evo = state.pendingEvolution;
     navigateTo('hatch'); // reuse view as a blank dark canvas
     // Hide hatch-stage elements so only evolution overlay shows
@@ -3907,6 +3924,7 @@ async function init() {
       state.hatch.guestBlocked = false;
       state.hatch.character    = null;
       state.hatch.variant      = null;
+      document.getElementById('hatch-stage').style.opacity = '';
       resetTimerState();
       navigateTo('timer');
     }
