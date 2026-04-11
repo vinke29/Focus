@@ -1658,6 +1658,7 @@ function onTimerComplete() {
   // End the Live Activity cleanly — LocalNotif handles ringing, no alert needed here.
   // dismissImmediately clears it from the notification centre right after hatch.
   if (LiveActivity) { LiveActivity.stopActivity({ dismissImmediately: true }).catch(() => {}); }
+  if (AppBlocking) { AppBlocking.stopBlocking().catch(() => {}); }
 
   const prevSessionCount = sessions.length;
   addSession(state.timer.duration / 60);
