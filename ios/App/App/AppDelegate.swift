@@ -1,5 +1,6 @@
 import UIKit
 import Capacitor
+import ManagedSettings
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -7,8 +8,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         return true
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        let defaults = UserDefaults(suiteName: "group.app.kokoon.focus")
+        if defaults?.bool(forKey: "stop-blocking") == true {
+            defaults?.removeObject(forKey: "stop-blocking")
+            let store = ManagedSettingsStore(named: .init("group.app.kokoon.focus"))
+            store.shield.applications = nil
+            store.shield.applicationCategories = nil
+            store.shield.webDomainCategories = nil
+            store.shield.webDomains = nil
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

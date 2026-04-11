@@ -6,19 +6,17 @@ class ShieldActionExtension: ShieldActionDelegate {
 
     // MARK: - App tokens
 
-    // Clears all shields so the app opens regardless of blocking mode (all vs custom).
-    private func clearAllShields() {
-        store.shield.applications = nil
-        store.shield.applicationCategories = nil
-        store.shield.webDomainCategories = nil
-        store.shield.webDomains = nil
+    // Signals the main app to stop blocking via shared UserDefaults.
+    // The main app reads this flag in applicationDidBecomeActive and clears all shields.
+    private func requestStopBlocking() {
+        UserDefaults(suiteName: "group.app.kokoon.focus")?.set(true, forKey: "stop-blocking")
     }
 
     override func handle(action: ShieldAction, for application: ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            clearAllShields()
-            completionHandler(.close)
+            requestStopBlocking()
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.defer)
         @unknown default:
@@ -31,8 +29,8 @@ class ShieldActionExtension: ShieldActionDelegate {
     override func handle(action: ShieldAction, for webDomain: WebDomainToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            clearAllShields()
-            completionHandler(.close)
+            requestStopBlocking()
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.defer)
         @unknown default:
@@ -45,8 +43,8 @@ class ShieldActionExtension: ShieldActionDelegate {
     override func handle(action: ShieldAction, for category: ActivityCategoryToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            clearAllShields()
-            completionHandler(.close)
+            requestStopBlocking()
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.defer)
         @unknown default:
