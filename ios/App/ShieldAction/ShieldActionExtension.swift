@@ -2,7 +2,7 @@ import ManagedSettings
 
 class ShieldActionExtension: ShieldActionDelegate {
 
-    private let store = ManagedSettingsStore()
+    private let store = ManagedSettingsStore(named: .init("group.app.kokoon.focus"))
 
     // MARK: - App tokens
 
