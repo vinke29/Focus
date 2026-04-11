@@ -1739,6 +1739,19 @@ function onTimerComplete() {
 
   // ── Nurture path: creature pinned → no hatch, show progress animation ──
   if (state.pinnedCreature && EVOLUTIONS[state.pinnedCreature] && !isEvolved(state.pinnedCreature)) {
+    if (isGuest()) {
+      // Undo the session increment so no progress is banked without an account
+      state.evolutionSessions[state.pinnedCreature] = Math.max(0, (state.evolutionSessions[state.pinnedCreature] || 0) - 1);
+      state.hatch.guestBlocked = true;
+      state.hatch.character    = null;
+      state.hatch.variant      = null;
+      navigateTo('hatch');
+      document.getElementById('hatch-stage').style.opacity = '0';
+      document.getElementById('guest-creature-name').textContent = 'evolution awaits';
+      document.getElementById('guest-signup-msg').textContent    = 'create an account to evolve your creature and unlock its final form.';
+      setTimeout(() => document.getElementById('guest-signup-prompt').classList.add('show'), 600);
+      return;
+    }
     const progress = state.evolutionSessions[state.pinnedCreature] || 0;
     showNurtureComplete(state.pinnedCreature, progress);
     return;
