@@ -24,11 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let defaults = UserDefaults(suiteName: "group.app.kokoon.focus")
         if defaults?.bool(forKey: "stop-blocking") == true {
             defaults?.removeObject(forKey: "stop-blocking")
-            let store = ManagedSettingsStore(named: .init("group.app.kokoon.focus"))
-            store.shield.applications = nil
-            store.shield.applicationCategories = nil
-            store.shield.webDomainCategories = nil
-            store.shield.webDomains = nil
+            ManagedSettingsStore(named: .init("group.app.kokoon.focus")).clearAllSettings()
+            ManagedSettingsStore().clearAllSettings()
         }
     }
 

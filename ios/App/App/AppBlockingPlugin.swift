@@ -125,10 +125,9 @@ class AppBlockingPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc func stopBlocking(_ call: CAPPluginCall) {
-        store.shield.applications = nil
-        store.shield.applicationCategories = nil
-        store.shield.webDomainCategories = nil
-        store.shield.webDomains = nil
+        store.clearAllSettings()
+        // Also clear default store in case of leftover shields
+        ManagedSettingsStore().clearAllSettings()
         call.resolve(["blocking": false])
     }
 
