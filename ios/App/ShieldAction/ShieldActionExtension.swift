@@ -6,17 +6,23 @@ class ShieldActionExtension: ShieldActionDelegate {
 
     // MARK: - App tokens
 
+    // Clears all shields so the app opens regardless of blocking mode (all vs custom).
+    private func clearAllShields() {
+        store.shield.applications = nil
+        store.shield.applicationCategories = nil
+        store.shield.webDomainCategories = nil
+        store.shield.webDomains = nil
+    }
+
     override func handle(action: ShieldAction, for application: ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            // "Use Anyway" — unblock just this app for the rest of the session
-            store.shield.applications?.remove(application)
+            clearAllShields()
             completionHandler(.close)
         case .secondaryButtonPressed:
-            // "Stay Focused" — go back to home screen
-            completionHandler(.close)
+            completionHandler(.defer)
         @unknown default:
-            completionHandler(.close)
+            completionHandler(.defer)
         }
     }
 
@@ -25,12 +31,12 @@ class ShieldActionExtension: ShieldActionDelegate {
     override func handle(action: ShieldAction, for webDomain: WebDomainToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            store.shield.webDomains?.remove(webDomain)
+            clearAllShields()
             completionHandler(.close)
         case .secondaryButtonPressed:
-            completionHandler(.close)
+            completionHandler(.defer)
         @unknown default:
-            completionHandler(.close)
+            completionHandler(.defer)
         }
     }
 
@@ -39,14 +45,12 @@ class ShieldActionExtension: ShieldActionDelegate {
     override func handle(action: ShieldAction, for category: ActivityCategoryToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            // For category blocks we can't remove a single token — clear all category blocks
-            store.shield.applicationCategories = nil
-            store.shield.webDomainCategories = nil
+            clearAllShields()
             completionHandler(.close)
         case .secondaryButtonPressed:
-            completionHandler(.close)
+            completionHandler(.defer)
         @unknown default:
-            completionHandler(.close)
+            completionHandler(.defer)
         }
     }
 }
