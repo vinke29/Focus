@@ -1727,6 +1727,21 @@ function onTimerComplete() {
     return;
   }
 
+  // ── Guest gate: block second+ hatch until account is created ──
+  if (isGuest() && state.collection.length >= 1) {
+    const rollResult = rollCharacterInUnlockedRegions(state.timer.duration);
+    state.hatch.character  = rollResult.character;
+    state.hatch.variant    = rollResult.variant;
+    state.hatch.guestBlocked = true;
+    state.pendingRegionUnlock  = null;
+    state.pendingRegionComplete = null;
+    prepareHatchView(rollResult.character, rollResult.variant);
+    navigateTo('hatch');
+    setTimeout(runHatchSequence, 400);
+    return;
+  }
+  state.hatch.guestBlocked = false;
+
   // ── Normal hatch path ──
   // If a new region just unlocked, guarantee a creature from that region
   const rollResult = state.pendingRegionUnlock
@@ -1921,29 +1936,34 @@ function runHatchSequence() {
     spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
     tickParticles();
 
-    // Hide egg, show character
+    // Hide egg, show character (or keep hidden if guest is blocked)
     egg.style.transition    = 'opacity .15s ease';
     egg.style.opacity       = '0';
     cracks.style.opacity    = '0';
-    wrap.style.transition   = 'opacity .4s ease .1s';
-    wrap.style.opacity      = '1';
-
-    // Character glow burst
-    const char = state.hatch.character;
-    const svg  = wrap.querySelector('svg');
-    if (svg) {
-      svg.style.filter     = `drop-shadow(0 0 28px ${char.accentColor}bb)`;
-      svg.style.transition = 'filter 1.2s ease';
-      setTimeout(() => {
-        svg.style.filter = `drop-shadow(0 0 10px ${char.accentColor}44)`;
-      }, 350);
+    if (!state.hatch.guestBlocked) {
+      wrap.style.transition   = 'opacity .4s ease .1s';
+      wrap.style.opacity      = '1';
+      // Character glow burst
+      const char = state.hatch.character;
+      const svg  = wrap.querySelector('svg');
+      if (svg) {
+        svg.style.filter     = `drop-shadow(0 0 28px ${char.accentColor}bb)`;
+        svg.style.transition = 'filter 1.2s ease';
+        setTimeout(() => {
+          svg.style.filter = `drop-shadow(0 0 10px ${char.accentColor}44)`;
+        }, 350);
+      }
     }
   }, 3000);
 
   // 4. Show UI at 3.6s
   setTimeout(() => {
-    document.getElementById('hatch-footer').classList.add('show');
-    maybeShowGuestPrompt();
+    if (state.hatch.guestBlocked) {
+      maybeShowGuestPrompt();
+    } else {
+      document.getElementById('hatch-footer').classList.add('show');
+      maybeShowGuestPrompt();
+    }
   }, 3600);
 
   // 5. Region complete or milestone toast — appears after actions settle
@@ -3356,6 +3376,11 @@ async function handleSignedIn(user) {
     // Migrate guest data to the new account instead of starting fresh
     localStorage.removeItem('focus-guest');
     localStorage.removeItem('focus-guest-migrate');
+    // If a hatch was blocked mid-flow, add that creature now
+    if (state.hatch.guestBlocked && state.hatch.character) {
+      addToCollection(state.hatch.character, state.hatch.variant);
+      state.hatch.guestBlocked = false;
+    }
     try { await DB.saveProfile(name); } catch(_) {}
     if (state.collection.length > 0) DB.saveCollection(state.collection).catch(() => {});
     if (sessions.length > 0) {
@@ -3424,6 +3449,11 @@ async function performSignUp() {
       // Migrate guest data to the new account instead of starting fresh
       localStorage.removeItem('focus-guest');
       localStorage.removeItem('focus-guest-migrate');
+      // If a hatch was blocked mid-flow, add that creature now
+      if (state.hatch.guestBlocked && state.hatch.character) {
+        addToCollection(state.hatch.character, state.hatch.variant);
+        state.hatch.guestBlocked = false;
+      }
       DB.saveProfile(name).catch(() => {});
       if (state.collection.length > 0) DB.saveCollection(state.collection).catch(() => {});
       if (sessions.length > 0) {
@@ -3873,6 +3903,13 @@ async function init() {
   });
   document.getElementById('btn-guest-dismiss').addEventListener('click', () => {
     document.getElementById('guest-signup-prompt').classList.remove('show');
+    if (state.hatch.guestBlocked) {
+      state.hatch.guestBlocked = false;
+      state.hatch.character    = null;
+      state.hatch.variant      = null;
+      resetTimerState();
+      navigateTo('timer');
+    }
   });
 
   // Allow Enter key in auth inputs
@@ -3987,12 +4024,19 @@ function isGuest() {
 
 function maybeShowGuestPrompt() {
   if (!isGuest()) return;
-  const name = state.hatch?.character?.name;
-  const label = name ? `you hatched ${name}` : 'your creature hatched';
-  document.getElementById('guest-creature-name').textContent = label;
+  const nameEl = document.getElementById('guest-creature-name');
+  const msgEl  = document.getElementById('guest-signup-msg');
+  if (state.hatch.guestBlocked) {
+    nameEl.textContent = 'your creature is waiting';
+    msgEl.textContent  = 'create an account to reveal it and keep building your collection.';
+  } else {
+    const name = state.hatch?.character?.name;
+    nameEl.textContent = name ? `you hatched ${name}` : 'your creature hatched';
+    msgEl.textContent  = 'create an account to save your creatures and build your collection.';
+  }
   setTimeout(() => {
     document.getElementById('guest-signup-prompt').classList.add('show');
-  }, 1200);
+  }, state.hatch.guestBlocked ? 800 : 1200);
 }
 
 document.addEventListener('DOMContentLoaded', init);
