@@ -25,7 +25,7 @@ class AppBlockingPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "stopBlocking", returnType: CAPPluginReturnPromise),
     ]
 
-    private let store = ManagedSettingsStore()
+    private let store = ManagedSettingsStore(named: .init("group.app.kokoon.focus"))
     private let center = AuthorizationCenter.shared
     private let selectionKey = "focus-app-blocking-selection"
     private let modeKey = "focus-app-blocking-mode"
