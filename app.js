@@ -1536,7 +1536,7 @@ function clearTimerState() {
   localStorage.removeItem('focus-timer');
 }
 
-function startTimer() {
+async function startTimer() {
   _hatchInProgress = false;
   state.timer.running = true;
   state.timer.endTime = Date.now() + state.timer.remaining * 1000;
@@ -1549,15 +1549,15 @@ function startTimer() {
     }).catch(() => {});
   }
   if (AppBlocking && isBlockAppsEnabled()) {
-    AppBlocking.getAuthorizationStatus().then(({ status }) => {
+    try {
+      const { status } = await AppBlocking.getAuthorizationStatus();
       if (status === 'notDetermined') {
-        return AppBlocking.requestAuthorization().then(({ granted }) => {
-          if (granted) return AppBlocking.startBlocking();
-        });
+        const { granted } = await AppBlocking.requestAuthorization();
+        if (granted) await AppBlocking.startBlocking();
       } else if (status === 'approved') {
-        return AppBlocking.startBlocking();
+        await AppBlocking.startBlocking();
       }
-    }).catch(() => {});
+    } catch (_) { /* blocking is best-effort */ }
   }
   // Schedule a LocalNotification at exact end time so the phone rings even when
   // the app is backgrounded and JS is suspended (Live Activity alert needs foreground).

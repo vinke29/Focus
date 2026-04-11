@@ -5,23 +5,30 @@ class ShieldActionExtension: ShieldActionDelegate {
 
     private let store = ManagedSettingsStore(named: .init("group.app.kokoon.focus"))
 
-    // MARK: - App tokens
+    // MARK: - Shield clearing
 
-    // Signals the main app to stop blocking via shared UserDefaults.
-    // The main app reads this flag in applicationDidBecomeActive and clears all shields.
-    private func requestStopBlocking() {
+    /// Clears all shields directly in the extension process, then also
+    /// sets a shared-defaults flag so the main app can double-check on resume.
+    private func clearAllShields() {
+        store.shield.applications = nil
+        store.shield.applicationCategories = nil
+        store.shield.webDomainCategories = nil
+        store.shield.webDomains = nil
+        // Backup flag for main app to pick up on resume
         UserDefaults(suiteName: "group.app.kokoon.focus")?.set(true, forKey: "stop-blocking")
     }
+
+    // MARK: - App tokens
 
     override func handle(action: ShieldAction, for application: ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            requestStopBlocking()
-            completionHandler(.defer)
+            clearAllShields()
+            completionHandler(.close)
         case .secondaryButtonPressed:
-            completionHandler(.defer)
+            completionHandler(.close)
         @unknown default:
-            completionHandler(.defer)
+            completionHandler(.close)
         }
     }
 
@@ -30,12 +37,12 @@ class ShieldActionExtension: ShieldActionDelegate {
     override func handle(action: ShieldAction, for webDomain: WebDomainToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            requestStopBlocking()
-            completionHandler(.defer)
+            clearAllShields()
+            completionHandler(.close)
         case .secondaryButtonPressed:
-            completionHandler(.defer)
+            completionHandler(.close)
         @unknown default:
-            completionHandler(.defer)
+            completionHandler(.close)
         }
     }
 
@@ -44,12 +51,12 @@ class ShieldActionExtension: ShieldActionDelegate {
     override func handle(action: ShieldAction, for category: ActivityCategoryToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
         switch action {
         case .primaryButtonPressed:
-            requestStopBlocking()
-            completionHandler(.defer)
+            clearAllShields()
+            completionHandler(.close)
         case .secondaryButtonPressed:
-            completionHandler(.defer)
+            completionHandler(.close)
         @unknown default:
-            completionHandler(.defer)
+            completionHandler(.close)
         }
     }
 }

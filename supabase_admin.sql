@@ -47,6 +47,15 @@ CREATE TABLE IF NOT EXISTS public.evolutions (
   evolved_at timestamptz NOT NULL DEFAULT now()
 );
 
+ALTER TABLE public.evolutions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "evolutions_select" ON public.evolutions
+  FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "evolutions_insert" ON public.evolutions
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "evolutions_delete" ON public.evolutions
+  FOR DELETE USING (auth.uid() = user_id);
+
 
 -- A: Overview metrics
 CREATE OR REPLACE FUNCTION admin_overview(p_period text DEFAULT 'all')

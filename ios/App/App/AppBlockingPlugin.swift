@@ -129,12 +129,6 @@ class AppBlockingPlugin: CAPPlugin, CAPBridgedPlugin {
         store.shield.applicationCategories = nil
         store.shield.webDomainCategories = nil
         store.shield.webDomains = nil
-        // Clean up named store that was briefly used — remove after one release cycle
-        let namedStore = ManagedSettingsStore(named: .init("group.app.kokoon.focus"))
-        namedStore.shield.applications = nil
-        namedStore.shield.applicationCategories = nil
-        namedStore.shield.webDomainCategories = nil
-        namedStore.shield.webDomains = nil
         call.resolve(["blocking": false])
     }
 
