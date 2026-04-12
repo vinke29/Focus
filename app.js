@@ -2735,17 +2735,28 @@ function openCardModal(charId, vc) {
         pinBtn.onclick = null;
       } else {
         pinBtn.disabled = false;
-        pinBtn.textContent = isPinned ? 'unpin' : 'nurture';
-        pinBtn.onclick = () => {
-          if (state.pinnedCreature === charId) {
-            unpinCreature();
-            pinBtn.textContent = 'nurture';
-          } else {
-            pinCreature(charId);
+        if (isGuest() && !isPinned) {
+          pinBtn.textContent = 'nurture';
+          pinBtn.onclick = () => {
             closeCardModal();
-            navigateTo('timer');
-          }
-        };
+            state.hatch.guestBlocked = true;
+            document.getElementById('guest-creature-name').textContent = 'nurture requires an account';
+            document.getElementById('guest-signup-msg').textContent    = 'create an account to nurture and evolve your creatures.';
+            document.getElementById('guest-signup-prompt').classList.add('show');
+          };
+        } else {
+          pinBtn.textContent = isPinned ? 'unpin' : 'nurture';
+          pinBtn.onclick = () => {
+            if (state.pinnedCreature === charId) {
+              unpinCreature();
+              pinBtn.textContent = 'nurture';
+            } else {
+              pinCreature(charId);
+              closeCardModal();
+              navigateTo('timer');
+            }
+          };
+        }
       }
     } else {
       pinBtn.style.display = 'none';
