@@ -23,6 +23,7 @@ class AppBlockingPlugin: CAPPlugin, CAPBridgedPlugin {
         CAPPluginMethod(name: "showPicker", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "startBlocking", returnType: CAPPluginReturnPromise),
         CAPPluginMethod(name: "stopBlocking", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "checkAndClearIfRequested", returnType: CAPPluginReturnPromise),
     ]
 
     private let store = ManagedSettingsStore()
@@ -125,8 +126,27 @@ class AppBlockingPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc func stopBlocking(_ call: CAPPluginCall) {
-        store.clearAllSettings()
+        clearAllStores()
         call.resolve(["blocking": false])
+    }
+
+    /// Called from JS on app resume to check if the ShieldAction extension
+    /// requested a stop via shared UserDefaults.
+    @objc func checkAndClearIfRequested(_ call: CAPPluginCall) {
+        let defaults = UserDefaults(suiteName: "group.app.kokoon.focus")
+        let requested = defaults?.bool(forKey: "stop-blocking") ?? false
+        if requested {
+            defaults?.removeObject(forKey: "stop-blocking")
+            clearAllStores()
+        }
+        call.resolve(["cleared": requested])
+    }
+
+    /// Clears both default and named stores to handle shields from any build.
+    private func clearAllStores() {
+        store.clearAllSettings()
+        // Also clear the named store — earlier builds may have set shields there
+        ManagedSettingsStore(named: .init("group.app.kokoon.focus")).clearAllSettings()
     }
 
     // MARK: - Persistence

@@ -781,6 +781,8 @@ function initReminder() {
   checkReminderNotification();
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
+      // Check if ShieldAction extension requested a stop while we were in background
+      if (AppBlocking) AppBlocking.checkAndClearIfRequested().catch(() => {});
       checkReminderNotification();
       // Reconcile timer against wall clock after coming back from background
       if (state.timer.running && state.timer.endTime && !_hatchInProgress) {
