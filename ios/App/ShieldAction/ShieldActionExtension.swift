@@ -19,7 +19,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.close)
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
@@ -33,7 +33,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.close)
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
@@ -47,7 +47,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.close)
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
