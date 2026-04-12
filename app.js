@@ -4053,7 +4053,6 @@ async function init() {
     navigateTo('timer');
   } else {
     navigateTo('auth');
-    setTimeout(() => document.getElementById('si-email').focus(), 100);
   }
   document.body.style.opacity = '1';
 }
