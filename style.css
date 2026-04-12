@@ -222,15 +222,16 @@ body.dark .auth-btn-social:hover, body.dark .auth-btn-social:active { border-col
 .auth-footer-links a:hover { opacity: .6; }
 
 .auth-guest-btn {
-  background: none; border: none; cursor: pointer;
+  background: none; border: 1px solid var(--ink); cursor: pointer;
   font-family: 'Noto Serif JP', serif;
-  font-size: .6rem; letter-spacing: .12em;
-  color: var(--ink); opacity: .3;
-  padding: .5rem 0 1rem;
-  text-decoration: underline;
+  font-size: .68rem; letter-spacing: .14em;
+  color: var(--ink); opacity: .55;
+  padding: .6rem 1.4rem;
+  border-radius: 0;
   transition: opacity .2s;
+  margin-top: .5rem;
 }
-.auth-guest-btn:hover { opacity: .6; }
+.auth-guest-btn:hover { opacity: .8; }
 
 /* ── GUEST SIGNUP PROMPT ── */
 #guest-signup-prompt {
