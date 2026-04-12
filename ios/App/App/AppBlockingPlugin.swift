@@ -94,11 +94,6 @@ class AppBlockingPlugin: CAPPlugin, CAPBridgedPlugin {
     // MARK: - Blocking
 
     @objc func startBlocking(_ call: CAPPluginCall) {
-        guard center.authorizationStatus == .approved else {
-            call.reject("Family Controls not authorized")
-            return
-        }
-
         let mode = loadMode()
 
         switch mode {

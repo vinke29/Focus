@@ -1556,12 +1556,10 @@ async function startTimer() {
       if (status === 'notDetermined') {
         const { granted } = await AppBlocking.requestAuthorization();
         if (granted) {
-          // After first authorization, poll until status is approved before blocking
-          for (let i = 0; i < 5; i++) {
-            await new Promise(r => setTimeout(r, 600));
-            const check = await AppBlocking.getAuthorizationStatus();
-            if (check.status === 'approved') { await AppBlocking.startBlocking(); break; }
-          }
+          // Try immediately — may work if authorization propagated fast
+          await AppBlocking.startBlocking().catch(() => {});
+          // Retry after 2s in case it didn't take effect yet
+          setTimeout(() => { AppBlocking.startBlocking().catch(() => {}); }, 2000);
         }
       } else if (status === 'approved') {
         await AppBlocking.startBlocking();

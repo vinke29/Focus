@@ -5,13 +5,11 @@ class ShieldActionExtension: ShieldActionDelegate {
 
     // MARK: - Shield clearing
 
-    /// Clears all shields from the default store and signals the main app
-    /// via shared UserDefaults as a backup.
+    /// Clears all shields from both default and named stores, then signals
+    /// the main app via shared UserDefaults as a backup.
     private func clearAllShields() {
-        // Clear the default store (same one used by AppBlockingPlugin)
         ManagedSettingsStore().clearAllSettings()
-
-        // Backup: signal main app to also clear on resume
+        ManagedSettingsStore(named: .init("group.app.kokoon.focus")).clearAllSettings()
         UserDefaults(suiteName: "group.app.kokoon.focus")?.set(true, forKey: "stop-blocking")
     }
 
@@ -21,7 +19,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.defer)
+            completionHandler(.close)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
@@ -35,7 +33,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.defer)
+            completionHandler(.close)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
@@ -49,7 +47,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.defer)
+            completionHandler(.close)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
