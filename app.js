@@ -1538,7 +1538,7 @@ function clearTimerState() {
   localStorage.removeItem('focus-timer');
 }
 
-async function startTimer() {
+function startTimer() {
   _hatchInProgress = false;
   state.timer.running = true;
   state.timer.endTime = Date.now() + state.timer.remaining * 1000;
@@ -1551,20 +1551,7 @@ async function startTimer() {
     }).catch(() => {});
   }
   if (AppBlocking && isBlockAppsEnabled()) {
-    try {
-      const { status } = await AppBlocking.getAuthorizationStatus();
-      if (status === 'notDetermined') {
-        const { granted } = await AppBlocking.requestAuthorization();
-        if (granted) {
-          // Try immediately — may work if authorization propagated fast
-          await AppBlocking.startBlocking().catch(() => {});
-          // Retry after 2s in case it didn't take effect yet
-          setTimeout(() => { AppBlocking.startBlocking().catch(() => {}); }, 2000);
-        }
-      } else if (status === 'approved') {
-        await AppBlocking.startBlocking();
-      }
-    } catch (_) { /* blocking is best-effort */ }
+    AppBlocking.startBlocking().catch(() => {});
   }
   // Schedule a LocalNotification at exact end time so the phone rings even when
   // the app is backgrounded and JS is suspended (Live Activity alert needs foreground).
@@ -3731,13 +3718,18 @@ async function init() {
   document.getElementById('btn-mute').addEventListener('click', toggleMute);
   document.getElementById('btn-dark').addEventListener('click', toggleDark);
   document.getElementById('btn-block-apps')?.addEventListener('change', async e => {
-    localStorage.setItem('focus-block-apps', String(e.target.checked));
     if (e.target.checked && AppBlocking) {
       const { status } = await AppBlocking.getAuthorizationStatus();
       if (status !== 'approved') {
-        await AppBlocking.requestAuthorization();
+        const { granted } = await AppBlocking.requestAuthorization();
+        if (!granted) {
+          e.target.checked = false;
+          localStorage.setItem('focus-block-apps', 'false');
+          return;
+        }
       }
     }
+    localStorage.setItem('focus-block-apps', String(e.target.checked));
   });
   document.getElementById('btn-choose-apps')?.addEventListener('click', async () => {
     if (!AppBlocking) return;
