@@ -264,6 +264,7 @@ body.dark .auth-btn-social:hover, body.dark .auth-btn-social:active { border-col
 body.dark .guest-signup-sheet { background: #0f0f1a; border-top: 1px solid rgba(221,215,200,.1); }
 body.dark .guest-creature-label,
 body.dark .guest-signup-msg { color: #ddd7c8; }
+#guest-signup-prompt .auth-btn { align-self: center; }
 body.dark #guest-signup-prompt .auth-btn { border-color: rgba(221,215,200,.7); color: #ddd7c8; }
 body.dark #guest-signup-prompt .auth-btn::before { background: rgba(221,215,200,.7); }
 body.dark #guest-signup-prompt .auth-link-btn { color: #ddd7c8; }
