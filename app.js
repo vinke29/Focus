@@ -1627,7 +1627,7 @@ function resetTimerState() {
     LocalNotif.cancel({ notifications: [{ id: TIMER_NOTIF_ID }] }).catch(() => {});
     LocalNotif.removeAllDeliveredNotifications().catch(() => {});
   }
-  if (LiveActivity) { LiveActivity.stopActivity().catch(() => {}); }
+  if (LiveActivity) { LiveActivity.stopActivity({ dismissImmediately: true }).catch(() => {}); }
   if (AppBlocking) { AppBlocking.stopBlocking().catch(() => {}); }
   state.timer.running   = false;
   state.timer.remaining = state.timer.duration;
