@@ -5,18 +5,13 @@ class ShieldActionExtension: ShieldActionDelegate {
 
     // MARK: - Shield clearing
 
-    /// Clears all shields from both named and default stores, then sets
-    /// a shared-defaults flag so the main app can double-check on resume.
+    /// Clears all shields from the default store and signals the main app
+    /// via shared UserDefaults as a backup.
     private func clearAllShields() {
-        // Clear the named store (used by AppBlockingPlugin.startBlocking)
-        let named = ManagedSettingsStore(named: .init("group.app.kokoon.focus"))
-        named.clearAllSettings()
+        // Clear the default store (same one used by AppBlockingPlugin)
+        ManagedSettingsStore().clearAllSettings()
 
-        // Also clear the default store in case it has leftover shields
-        let defaultStore = ManagedSettingsStore()
-        defaultStore.clearAllSettings()
-
-        // Backup flag for main app to pick up on resume
+        // Backup: signal main app to also clear on resume
         UserDefaults(suiteName: "group.app.kokoon.focus")?.set(true, forKey: "stop-blocking")
     }
 
@@ -26,7 +21,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.close)
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
@@ -40,7 +35,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.close)
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:
@@ -54,7 +49,7 @@ class ShieldActionExtension: ShieldActionDelegate {
         switch action {
         case .primaryButtonPressed:
             clearAllShields()
-            completionHandler(.close)
+            completionHandler(.defer)
         case .secondaryButtonPressed:
             completionHandler(.close)
         @unknown default:

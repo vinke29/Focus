@@ -1550,13 +1550,16 @@ async function startTimer() {
   }
   if (AppBlocking && isBlockAppsEnabled()) {
     try {
-      let { status } = await AppBlocking.getAuthorizationStatus();
+      const { status } = await AppBlocking.getAuthorizationStatus();
       if (status === 'notDetermined') {
         const { granted } = await AppBlocking.requestAuthorization();
         if (granted) {
-          // Brief pause for authorization to propagate before setting shields
-          await new Promise(r => setTimeout(r, 500));
-          await AppBlocking.startBlocking();
+          // After first authorization, poll until status is approved before blocking
+          for (let i = 0; i < 5; i++) {
+            await new Promise(r => setTimeout(r, 600));
+            const check = await AppBlocking.getAuthorizationStatus();
+            if (check.status === 'approved') { await AppBlocking.startBlocking(); break; }
+          }
         }
       } else if (status === 'approved') {
         await AppBlocking.startBlocking();
