@@ -23,21 +23,20 @@ Deno.serve(async (req) => {
   const serviceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
   const anonKey        = Deno.env.get('SUPABASE_ANON_KEY')!;
 
-  // User client — to verify who's calling
-  const userClient = createClient(supabaseUrl, anonKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
-  // Pass the JWT explicitly — getUser() without a stored session needs it directly
+  // Extract and validate the caller's JWT
   const token = authHeader.replace(/^Bearer\s+/i, '');
-  const { data: { user }, error: userError } = await userClient.auth.getUser(token);
-  if (userError || !user) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
-  }
-
-  // Admin client — to delete the auth user (cascades all their data)
+  // Use admin client to verify the token — more reliable than anon client server-side
   const adminClient = createClient(supabaseUrl, serviceRoleKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
+  const { data: { user }, error: userError } = await adminClient.auth.getUser(token);
+  if (userError || !user) {
+    return new Response(
+      JSON.stringify({ error: 'Unauthorized', detail: userError?.message, tokenPrefix: token.slice(0, 20) }),
+      { status: 401, headers: corsHeaders }
+    );
+  }
+
   const { error } = await adminClient.auth.admin.deleteUser(user.id);
   if (error) return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: corsHeaders });
 

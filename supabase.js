@@ -229,7 +229,10 @@ const DB = {
 
   async deleteAccount() {
     if (!_sb) throw new Error('offline');
-    const { error } = await _sb.functions.invoke('delete-account', { body: {} });
+    const { data: { session } } = await _sb.auth.getSession();
+    console.log('[delete] session:', session ? 'present' : 'null', '| token prefix:', session?.access_token?.slice(0, 20));
+    const { data, error } = await _sb.functions.invoke('delete-account', { body: {} });
+    console.log('[delete] response data:', data, 'error:', error);
     if (error) throw error;
   },
 
