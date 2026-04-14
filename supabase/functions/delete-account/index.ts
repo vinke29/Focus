@@ -25,10 +25,11 @@ Deno.serve(async (req) => {
 
   // User client — to verify who's calling
   const userClient = createClient(supabaseUrl, anonKey, {
-    global: { headers: { Authorization: authHeader } },
     auth: { autoRefreshToken: false, persistSession: false },
   });
-  const { data: { user }, error: userError } = await userClient.auth.getUser();
+  // Pass the JWT explicitly — getUser() without a stored session needs it directly
+  const token = authHeader.replace(/^Bearer\s+/i, '');
+  const { data: { user }, error: userError } = await userClient.auth.getUser(token);
   if (userError || !user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
   }
