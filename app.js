@@ -3600,6 +3600,7 @@ async function performDeleteAccount() {
       throw new Error('not signed in');
     }
     await DB.deleteAccount();
+    closeDeleteConfirm();
     await performSignOut();
   } catch(e) {
     btn.textContent = 'delete my account';
