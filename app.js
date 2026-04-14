@@ -3594,12 +3594,21 @@ async function performDeleteAccount() {
   btn.disabled = true;
   document.getElementById('delete-error').textContent = '';
   try {
+    // Ensure we have a valid session before attempting deletion
+    const { data: { session } } = await DB.getSession();
+    if (!session) {
+      throw new Error('not signed in');
+    }
     await DB.deleteAccount();
     await performSignOut();
   } catch(e) {
     btn.textContent = 'delete my account';
     btn.disabled = false;
-    document.getElementById('delete-error').textContent = 'deletion failed — please try again or contact support.';
+    if (e.message === 'not signed in') {
+      document.getElementById('delete-error').textContent = 'please sign in again, then try deleting your account.';
+    } else {
+      document.getElementById('delete-error').textContent = 'deletion failed — please try again or contact support.';
+    }
   }
 }
 
